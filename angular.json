@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "csc309-project"
+  "defaultProject": "csc309-project",
+  "cli": {
+    "analytics": "594344fa-fbd9-45ca-8e32-7542c6b69839"
+  }
 }
