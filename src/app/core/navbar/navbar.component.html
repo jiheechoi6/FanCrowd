@@ -3,7 +3,7 @@
     <section>
         <span class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
         <span class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
-        <span class="nav-item" [routerLink]="'/user'" routerLinkActive="active">Profile</span>
+        <span class="nav-item" [routerLink]="['/users', user?.username || '']" routerLinkActive="active">Profile</span>
         <span class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
         <span class="nav-item" [routerLink]="'/discussion-board'" routerLinkActive="active">Discussion Board</span>
     </section>
