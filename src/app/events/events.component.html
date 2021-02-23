@@ -1,1 +1,8 @@
-<p>events works!</p>
+<div>
+    <div class="All"><button mat-raised-button color="primary">All Events</button></div>
+    <div class="Create"><button mat-raised-button color="primary">Create Event</button></div>
+</div>
+
+<div *ngFor="let event of this.events; let i = index">
+    {{i}} {{event}}
+</div>
