@@ -1,4 +1,51 @@
-<section *ngIf="user">
-    <p>{{user.realName}}</p>
-    <i class="fas fa-home"></i>
+<section *ngIf="user" class="container">
+    <div class="profile-info-container">
+        <section class="profile-img-info-container">
+            <div>
+                <img class="profile-img" src="{{user.profileUrl}}" alt="Profile Picture">
+            </div>
+            <mat-card class="user-info">
+                <mat-card-content>
+                    <p><span class="user-info-label">Username:
+                        </span><span>{{user?.username}}</span></p>
+                    <p><span class="user-info-label">Full Name: </span><span>{{user?.fullName | titlecase}}</span></p>
+                    <p><span class="user-info-label">E-mail: </span><span>{{user?.email}}</span></p>
+                    <p><span class="user-info-label">Country: </span><span>{{user?.country}}</span></p>
+                    <p><span class="user-info-label">City: </span><span>{{user?.city}}</span></p>
+                    <div>
+                        <button mat-raised-button color="primary"><i class="fas fa-edit"></i> Edit Info</button>
+                        <button mat-raised-button color="warn"><i class="fas fa-user-times"></i> Delete Account</button>
+                        <button mat-raised-button color="warn"><i class="fas fa-ban"></i> Ban User</button>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </section>
+        <section class="bio-fandom-container">
+            <mat-card class="bio">
+                <mat-card-title>Bio</mat-card-title>
+                <mat-card-content>
+                    <p>{{user?.bio}}</p>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="fandom-container">
+                <mat-card-title>Fandoms</mat-card-title>
+                <mat-card-content>
+                    <p class="fandom-item"><span>Name</span><span>Level</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                </mat-card-content>
+            </mat-card>
+        </section>
+        <mat-card class="events-container">
+            <mat-card-title>Events Attending</mat-card-title>
+            <mat-card-content>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </section>

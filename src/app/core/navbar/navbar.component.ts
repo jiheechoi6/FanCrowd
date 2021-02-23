@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.user = {
       username: 'chandra-panta',
-      realName: 'Chandra Panta Chhetri',
+      fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',

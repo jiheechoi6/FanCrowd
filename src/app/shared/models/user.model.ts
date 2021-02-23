@@ -1,6 +1,6 @@
 interface User {
   username: string;
-  realName: string;
+  fullName: string;
   email: string;
   country: string;
   city: string;
