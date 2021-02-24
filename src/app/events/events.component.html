@@ -1,8 +1,28 @@
-<div>
-    <div class="All"><button mat-raised-button color="primary">All Events</button></div>
-    <div class="Create"><button mat-raised-button color="primary">Create Event</button></div>
+<div class="button-container">
+    <div class="all"><button mat-raised-button color="primary">All Events</button></div>
+    <div class="create" (click)="create()"><button mat-raised-button color="primary">Create Event</button></div>
+</div>
+
+<div *ngIf="this.events.length === 0" class="empty">
+    <h1 class="center-pos"> Sorry, no events taking place </h1>
 </div>
 
 <div *ngFor="let event of this.events; let i = index">
-    {{i}} {{event}}
+    <div class="event-card">
+        <div class="event-container"> 
+            <div><h2>{{event.name}}</h2></div>
+            <div class="flex-container header">
+                <h4 class="flex-one">{{event.location}}</h4>
+                <h4 class="date">{{event.startDate}} - {{event.endDate}}</h4>
+            </div>
+            <div class="desc">{{event.description}}</div>
+            <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
+
+            <div class="flex-container footer">
+                <div class="flex-one postedBy"><u>Posted By</u>: {{event.postedBy}}</div>
+                <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button color="warn">Delete</button></div>
+                <div class="more"><button mat-raised-button color="accent">See More</button></div>
+            </div>
+        </div>
+    </div>
 </div>
