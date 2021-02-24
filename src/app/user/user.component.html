@@ -7,16 +7,23 @@
             </div>
             <mat-card class="user-info">
                 <mat-card-content>
-                    <p><span class="user-info-label">Username:
+                    <p class="user-info-item"><span class="user-info-label">Username
                         </span><span>{{user?.username}}</span></p>
-                    <p><span class="user-info-label">Full Name: </span><span>{{user?.fullName | titlecase}}</span></p>
-                    <p><span class="user-info-label">E-mail: </span><span>{{user?.email}}</span></p>
-                    <p><span class="user-info-label">Country: </span><span>{{user?.country}}</span></p>
-                    <p><span class="user-info-label">City: </span><span>{{user?.city}}</span></p>
-                    <div>
-                        <button mat-raised-button color="primary"><i class="fas fa-edit"></i> Edit Info</button>
-                        <button mat-raised-button color="warn"><i class="fas fa-user-times"></i> Delete Account</button>
-                        <button mat-raised-button color="warn"><i class="fas fa-ban"></i> Ban User</button>
+                    <p class="user-info-item"><span class="user-info-label">Full Name
+                        </span><span>{{user?.fullName | titlecase}}</span></p>
+                    <p class="user-info-item"><span class="user-info-label">E-mail </span><span>{{user?.email}}</span>
+                    </p>
+                    <p class="user-info-item"><span class="user-info-label">Country
+                        </span><span>{{user?.country}}</span></p>
+                    <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span></p>
+                    <div class="profile-action-button-container">
+                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"><i
+                                class="fas fa-edit"></i> Edit
+                            Info</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"><i
+                                class="fas fa-user-times"></i> Delete Account</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"><i
+                                class="fas fa-ban"></i> Ban User</button>
                     </div>
                 </mat-card-content>
             </mat-card>

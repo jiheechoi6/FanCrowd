@@ -10,6 +10,7 @@ import User from '../shared/models/user.model';
 })
 export class UserComponent implements OnInit {
   user: User | null = null;
+  loggedInUser: User | null = null;
 
   constructor(
     private userService: UserService,
@@ -20,6 +21,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     const username = this.activatedRoute.snapshot.params['username'];
     this.user = this.userService.getUserByUsername(username);
+    this.loggedInUser = this.userService.getUserByUsername('chandra-panta');
     if (!this.user) {
       this.router.navigate(['../']);
     }
