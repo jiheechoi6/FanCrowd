@@ -1,5 +1,6 @@
-<section *ngIf="user" class="container">
-    <div class="profile-info-container">
+<section class="container">
+    <app-spinner *ngIf="!user"></app-spinner>
+    <div class="profile-info-container" *ngIf="user">
         <section class="profile-img-info-container">
             <div>
                 <img class="profile-img" src="{{user.profileUrl}}" alt="Profile Picture">
