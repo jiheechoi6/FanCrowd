@@ -14,5 +14,4 @@ export class EventsComponent implements OnInit {
   ngOnInit(): void {
     this.events = ["Event 1", "Event 2", "Event 3"];
   }
-
 }
