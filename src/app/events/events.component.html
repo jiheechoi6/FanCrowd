@@ -16,11 +16,11 @@
                 <h4 class="date">{{event.startDate}} - {{event.endDate}}</h4>
             </div>
             <div class="desc">{{event.description}}</div>
-            <div>Total People Attending: {{event.totalAttendance}} </div>
+            <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
 
             <div class="flex-container footer">
-                <div class="flex-one postedBy">{{event.postedBy}}</div>
-                <div class="delete" (click)="delete(event.id)"><button mat-raised-button color="warn">Delete</button></div>
+                <div class="flex-one postedBy"><u>Posted By</u>: {{event.postedBy}}</div>
+                <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button color="warn">Delete</button></div>
                 <div class="more"><button mat-raised-button color="accent">See More</button></div>
             </div>
         </div>
