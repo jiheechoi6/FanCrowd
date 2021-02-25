@@ -23,8 +23,8 @@
                         <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"
                             (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
                             Account</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"><i
-                                class="fas fa-ban"></i> Ban User</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
+                            (click)="openBanUserAccountDialog()"><i class="fas fa-ban"></i> Ban User</button>
                     </div>
                 </mat-card-content>
             </mat-card>

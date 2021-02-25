@@ -34,6 +34,10 @@ export class UserComponent implements OnInit {
     this.router.navigate(['../']);
   }
 
+  banUser() {
+    this.router.navigate(['../']);
+  }
+
   openDeleteAccountDialog() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
@@ -45,7 +49,20 @@ export class UserComponent implements OnInit {
       height: '180px',
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
-      closeOnNavigation: true,
+    });
+  }
+
+  openBanUserAccountDialog() {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Ban User Confirmation',
+        details: `Are you sure you want to ban ${this.user?.username}?`,
+        onConfirmCb: this.banUser.bind(this),
+      },
+      width: '360px',
+      height: '180px',
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
     });
   }
 }
