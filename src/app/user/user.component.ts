@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../core/services/user.service';
+import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import User from '../shared/models/user.model';
 
 @Component({
@@ -15,7 +17,8 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -25,5 +28,24 @@ export class UserComponent implements OnInit {
     if (!this.user) {
       this.router.navigate(['../']);
     }
+  }
+
+  deleteUser() {
+    this.router.navigate(['../']);
+  }
+
+  openDeleteAccountDialog() {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Delete Account Confirmation',
+        details: 'Are you sure you want to delete your account?',
+        onConfirmCb: this.deleteUser.bind(this),
+      },
+      width: '360px',
+      height: '180px',
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+      closeOnNavigation: true,
+    });
   }
 }

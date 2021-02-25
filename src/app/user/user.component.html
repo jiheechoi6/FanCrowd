@@ -20,8 +20,9 @@
                         <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"><i
                                 class="fas fa-edit"></i> Edit
                             Info</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"><i
-                                class="fas fa-user-times"></i> Delete Account</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"
+                            (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
+                            Account</button>
                         <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"><i
                                 class="fas fa-ban"></i> Ban User</button>
                     </div>
