@@ -1,3 +1,5 @@
+import EventDTO from './event.dto';
+
 interface User {
   username: string;
   fullName: string;
@@ -7,6 +9,7 @@ interface User {
   bio: string;
   profileUrl: string;
   role: string;
+  attendingEvents: EventDTO[];
 }
 
 export default User;

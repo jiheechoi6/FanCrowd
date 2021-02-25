@@ -1,3 +1,15 @@
+@keyframes shake
+    0%
+        transform: rotate(0deg)
+    80%
+        transform: rotate(0deg)
+    85%
+        transform: rotate(2deg)
+    95%
+        transform: rotate(-2deg)
+    100%
+        transform: rotate(0deg)
+
 .container
     padding: 5px 25px
 
@@ -20,10 +32,11 @@
     display: flex
     flex-direction: column
     justify-content: space-between
-    width: 33.33%
+    width: 30%
 
     .user-info
-        margin-top: 18px
+        margin-top: 20px
+        flex-grow: 1
 
         .user-info-item
             display: flex
@@ -33,7 +46,7 @@
     display: flex
     flex-direction: column
     justify-content: space-between
-    width: 33.33%
+    width: 33%
 
     .bio
         flex-grow: 1
@@ -47,7 +60,7 @@
     justify-content: space-between
 
 .events-container
-    width: 30%
+    width: 35%
 
 .profile-action-button-container
     display: flex
@@ -56,3 +69,19 @@
     button
         width: 100%
         margin-bottom: 15px
+
+.event-item
+    background-color: #5c5b5b
+    margin-top: 20px
+    cursor: pointer
+
+    &:hover
+        animation: shake 950ms infinite
+
+    &:focus
+        outline: none
+
+    .event-header,
+    .event-stats
+        display: flex
+        justify-content: space-between
