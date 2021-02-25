@@ -1,39 +1,45 @@
 <h1 mat-dialog-title>Edit Info</h1>
 <section mat-dialog-content>
-    <div>
-        <mat-form-field color="primary">
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>Username</mat-label>
             <input matInput [(ngModel)]="user.username" required />
+            <mat-error>Username is a required field</mat-error>
         </mat-form-field>
     </div>
-    <div>
-        <mat-form-field>
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>Full Name</mat-label>
             <input matInput [(ngModel)]="user.fullName" required />
+            <mat-error>Full Name is a required field</mat-error>
         </mat-form-field>
     </div>
-    <div>
-        <mat-form-field>
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>Email</mat-label>
             <input matInput type="email" [(ngModel)]="user.email" required />
+            <mat-error>Email is a required field</mat-error>
         </mat-form-field>
     </div>
-    <div>
-        <mat-form-field>
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>Country</mat-label>
             <input matInput [(ngModel)]="user.country" required />
+            <mat-error>Country is a required field</mat-error>
         </mat-form-field>
     </div>
-    <div>
-        <mat-form-field>
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>City</mat-label>
             <input matInput [(ngModel)]="user.city" required />
+            <mat-error>City is a required field</mat-error>
         </mat-form-field>
     </div>
-    <div>
-        <mat-form-field>
+    <div class="form-group">
+        <mat-form-field color="accent">
             <mat-label>Bio</mat-label>
             <textarea class="bio-field" matInput [(ngModel)]="user.bio" rows="7" required></textarea>
+            <mat-error>Bio is a required field</mat-error>
         </mat-form-field>
     </div>
 </section>
