@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
-import User from '../shared/models/user.model';
+import User from '../shared/models/user';
 
 @Component({
   selector: 'app-user',

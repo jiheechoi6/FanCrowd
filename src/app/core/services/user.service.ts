@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import User from 'src/app/shared/models/user.model';
+import User from 'src/app/shared/models/user';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -33,6 +33,28 @@ export class UserService {
           id: 4,
         },
       ],
+      fandoms: [
+        {
+          name: 'Harry Potter',
+          id: 1,
+          activityLevel: 5,
+        },
+        {
+          name: 'Spiderman',
+          id: 2,
+          activityLevel: 2,
+        },
+        {
+          name: 'Superman',
+          id: 3,
+          activityLevel: 1,
+        },
+        {
+          name: 'Batman',
+          id: 4,
+          activityLevel: 10,
+        },
+      ],
     },
     {
       username: 'raj-p',
@@ -45,6 +67,7 @@ export class UserService {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [],
+      fandoms: [],
     },
     {
       username: 'jihee423',
@@ -57,6 +80,7 @@ export class UserService {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [],
+      fandoms: [],
     },
   ];
 

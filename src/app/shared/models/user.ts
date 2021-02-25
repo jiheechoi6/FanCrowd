@@ -1,4 +1,5 @@
-import EventDTO from './event.dto';
+import DiscussionBoardDTO from './discussion-board-dto';
+import EventDTO from './event-dto';
 
 interface User {
   username: string;
@@ -10,6 +11,7 @@ interface User {
   profileUrl: string;
   role: string;
   attendingEvents: EventDTO[];
+  fandoms: DiscussionBoardDTO[];
 }
 
 export default User;
