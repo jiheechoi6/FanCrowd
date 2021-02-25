@@ -89,4 +89,10 @@ export class UserService {
   getUserByUsername(username: string) {
     return this.users.find((user) => user.username === username) || null;
   }
+
+  deleteUserByUsername(username: string) {}
+
+  banUserByUsername(username: string) {}
+
+  updateUserByUsername(updatedUser: User, usernameBeforeUpdate: string) {}
 }

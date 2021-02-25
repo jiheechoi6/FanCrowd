@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import User from '../shared/models/user';
+import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -31,11 +32,26 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser() {
+    this.userService.deleteUserByUsername(this.user?.username || '');
     this.router.navigate(['../']);
   }
 
   banUser() {
+    this.userService.banUserByUsername(this.user?.username || '');
     this.router.navigate(['../']);
+  }
+
+  openEditAccountDialog() {
+    const dialogRef = this.dialog.open(EditUserDialogComponent, {
+      data: { ...this.user },
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+      width: '400px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((updatedUser: User) => {
+      this.user = updatedUser;
+    });
   }
 
   openDeleteAccountDialog() {

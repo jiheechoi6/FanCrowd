@@ -17,8 +17,8 @@
                         </span><span>{{user?.country}}</span></p>
                     <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span></p>
                     <div class="profile-action-button-container">
-                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"><i
-                                class="fas fa-edit"></i> Edit
+                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"
+                            (click)="openEditAccountDialog()"><i class="fas fa-edit"></i> Edit
                             Info</button>
                         <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"
                             (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
