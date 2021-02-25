@@ -18,8 +18,8 @@ export class EventService {
         are multi-day events hosted at convention centers, hotels, or college campuses.`,
         postedBy: "user1",
         location: "Toronto, Ontario, Canada",
-        startDate: this.setDateFromToday(0),
-        endDate: this.setDateFromToday(2),
+        startDate: "Feb/25/2021",
+        endDate: "Feb/29/2021",
         totalAttendance: 2,
       },
       {
@@ -35,8 +35,8 @@ export class EventService {
         and architecture to friendships and business opportunities.`,
         postedBy: "user2",
         location: "Dubai, UAE",
-        startDate: this.setDateFromToday(-1),
-        endDate: this.setDateFromToday(1),
+        startDate: "Feb/26/2021",
+        endDate: "Feb/28/2021",
         totalAttendance: 0,
       },
       {
@@ -49,8 +49,8 @@ export class EventService {
         that appear in Marvel Comics publications.`,
         postedBy: "admin",
         location: "San Fransico, California, USA",
-        startDate: this.setDateFromToday(-2),
-        endDate: this.setDateFromToday(3),
+        startDate: "Feb/25/2021",
+        endDate: "Mar/1/2021",
         totalAttendance: 1,
       }
   ];
@@ -72,13 +72,5 @@ export class EventService {
     }
 
     return false;
-  }
-
-  setDateFromToday(offset: number): string{
-    let day = this.today.getDate() + offset;
-    let month = this.today.getMonth() + 1;
-    let year = this.today.getFullYear();
-
-    return day + "/" + month + "/" + year;
   }
 }
