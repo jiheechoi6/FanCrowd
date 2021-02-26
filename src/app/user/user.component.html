@@ -17,14 +17,13 @@
                         </span><span>{{user?.country}}</span></p>
                     <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span></p>
                     <div class="profile-action-button-container">
-                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"
-                            (click)="openEditAccountDialog()"><i class="fas fa-edit"></i> Edit
+                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"><i
+                                class="fas fa-edit"></i> Edit
                             Info</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"
-                            (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
-                            Account</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
-                            (click)="openBanUserAccountDialog()"><i class="fas fa-ban"></i> Ban User</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"><i
+                                class="fas fa-user-times"></i> Delete Account</button>
+                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"><i
+                                class="fas fa-ban"></i> Ban User</button>
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -39,25 +38,22 @@
             <mat-card class="fandom-container">
                 <mat-card-title>Fandoms</mat-card-title>
                 <mat-card-content>
-                    <p class="fandom-header"><span>Name</span><span>Level</span></p>
-                    <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms"
-                        [routerLink]="[ '/discussion-boards', fandom.id ]">
-                        <p class="fandom-item"><span>{{fandom.name}}</span><span>{{fandom.activityLevel}}</span></p>
-                    </mat-card>
+                    <p class="fandom-item"><span>Name</span><span>Level</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
+                    <p class="fandom-item"><span>Harry Potter</span><span>4</span></p>
                 </mat-card-content>
             </mat-card>
         </section>
         <mat-card class="events-container">
             <mat-card-title>Events Attending</mat-card-title>
-            <mat-card class="event-item-container" *ngFor="let event of user?.attendingEvents"
-                [routerLink]="[ '/events', event.id ]">
-                <mat-card-content>
-                    <p class="event-header">
-                        <span>{{event.name | titlecase}}</span><span>{{event.date | date:'medium'}}</span>
-                    </p>
-                    <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
-                </mat-card-content>
-            </mat-card>
+            <mat-card-content>
+            </mat-card-content>
         </mat-card>
     </div>
 </section>

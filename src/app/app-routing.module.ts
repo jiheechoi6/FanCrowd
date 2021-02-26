@@ -27,7 +27,7 @@ const routes: Routes = [
       import('./calendar/calendar.module').then((m) => m.CalendarModule),
   },
   {
-    path: 'discussion-boards',
+    path: 'discussion-board',
     loadChildren: () =>
       import('./discussion-board/discussion-board.module').then(
         (m) => m.DiscussionBoardModule
