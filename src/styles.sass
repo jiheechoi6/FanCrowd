@@ -1,13 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+@keyframes shake
+    0%
+        transform: rotate(0deg)
+    80%
+        transform: rotate(0deg)
+    85%
+        transform: rotate(2deg)
+    95%
+        transform: rotate(-2deg)
+    100%
+        transform: rotate(0deg)
+
 body
     margin: 0px
 
+.material-dialog-backdrop
+    background-color: black
+    opacity: 0.7 !important
+
+.mat-form-field
+    width: 100%
+
 *::-webkit-scrollbar 
-  width: 12px               /* width of the entire scrollbar */
+  width: 12px
 
 *::-webkit-scrollbar-track 
-  background: transparent        /* color of the tracking area */
+  background: transparent
 
 *::-webkit-scrollbar-thumb 
-  background-color: #d4d4d4    /* color of the scroll thumb */
-  border-radius: 20px       /* roundness of the scroll thumb */
+  background-color: #d4d4d4
+  border-radius: 20px
