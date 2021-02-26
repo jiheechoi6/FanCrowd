@@ -1,12 +1,13 @@
 <div id='background'>
     <div id='login_container'>
         <h1 id='login_title'>Sign Up</h1>
-        <div><input type="text" placeholder="First Name"></div>
-        <div><input type="text" placeholder="Last Name"></div>
-        <div><input type="text" placeholder="ID"></div>
-        <div><input type="password" placeholder="Password"></div>
-        <div><input type="password" placeholder="Confirm Password"></div>
-        <button [routerLink]="'/user'" routerLinkActive="active">Sign Up</button>
+        <div><input [(ngModel)]="firstname" placeholder="First Name"></div>
+        <div><input [(ngModel)]="lastname" placeholder="Last Name"></div>
+        <div><input [(ngModel)]="username" placeholder="username"></div>
+        <div><input type="password" [(ngModel)]="password" placeholder="Password"></div>
+        <div><input type="password" [(ngModel)]="passwordConfirm" placeholder="Confirm Password"></div>
+        <div id='error'> {{errorMessage}} </div>
+        <button mat-raised-button color="primary" (click)="onSignUp()">Sign Up</button>
     </div>
 </div>
 
