@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
 import User from 'src/app/shared/models/user';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserComponent } from 'src/app/user/user.component';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
-  users: User[] = [
+export class AuthService {
+  private _usernamePassord:Map<string, string> = 
+    new Map([
+        ["user1", "user1"],
+        ["user2", "user2"],
+        ["admin", "admin"]
+    ]);
+  currentLoggedInUser:string = "";
+  users: Map<string, User> = 
+    new Map([
+    ['user1',
     {
-      username: 'chandra-panta',
+      username: 'user1',
       password: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
@@ -55,11 +65,12 @@ export class UserService {
           id: 4,
           activityLevel: 10,
         },
-      ],
-    },
-    {
-      username: 'raj-p',
-      password: 'user1',
+      ]
+    }],
+    ['user2',
+      {
+      username: 'user2',
+      password: 'user2',
       fullName: 'Raj Patel',
       city: 'Toronto',
       country: 'Canada',
@@ -69,11 +80,12 @@ export class UserService {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [],
-      fandoms: [],
-    },
-    {
-      username: 'jihee423',
-      password: 'user1',
+      fandoms: []
+    }],
+    ['admin',
+      {
+      username: 'admin',
+      password: 'admin',
       fullName: 'Jihee',
       city: 'Toronto',
       country: 'Canada',
@@ -83,19 +95,32 @@ export class UserService {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [],
-      fandoms: [],
-    },
-  ];
+      fandoms: []
+    }],
+  ]);
 
   constructor(private http: HttpClient) {}
 
-  getUserByUsername(username: string) {
-    return this.users.find((user) => user.username === username) || null;
+  getPasswordByUsername(username: string) {
+    if(!this._usernamePassord.has(username)){
+      return null
+    }
+    return this._usernamePassord.get(username);
   }
 
-  deleteUserByUsername(username: string) {}
-
-  banUserByUsername(username: string) {}
-
-  updateUserByUsername(updatedUser: User, usernameBeforeUpdate: string) {}
+  addNewUser(username: string, firstname:string, lastname:string, password:string, usertype: string){
+    this.users.set(username, 
+      {username: username,
+      password: password,
+      fullName: firstname + lastname,
+      city: '',
+      country: '',
+      email: '',
+      profileUrl: '',
+      role: usertype,
+      bio: '',
+      attendingEvents: [],
+      fandoms: []});
+      console.log(this.users.get(username));
+  }
 }

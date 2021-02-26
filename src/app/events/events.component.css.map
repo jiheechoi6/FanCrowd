@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,IAAI,CAAC;EACD,KAAK,EAAE,IAAI;CAAG;;AAElB,AAAA,OAAO,CAAC;EACJ,MAAM,EAAE,iBAAiB;CAAG;;AAEhC,AAAA,iBAAiB,CAAC;EACd,MAAM,EAAE,kBAAkB;CAAG;;AAEjC,AAAA,gBAAgB,CAAC;EACb,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,KAAK;EACb,MAAM,EAAE,IAAI;EACZ,YAAY,EAAE,KAAK;EACnB,aAAa,EAAE,GAAG;CAAG",
-    "sources": [
-        "events.component.sass"
-    ],
-    "names": [],
-    "file": "events.component.css"
-}

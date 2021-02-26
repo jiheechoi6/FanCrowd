@@ -1,9 +1,10 @@
 <div id='background'>
     <div id='login_container'>
-        <h1 id='login_title'>Log In</h1>
-        <div><input type="text" placeholder="ID"></div>
-        <div><input type="password" placeholder="Password"></div>
-        <button [routerLink]="'/user'" routerLinkActive="active">Log in</button>
-        <div>Don't have an account? Click <a [routerLink]="'/signup'" routerLinkActive="active">here</a> to sign up</div>
+        <h2 id='login_title'>Log In</h2>
+        <div><input type="text" [(ngModel)]="username" placeholder="username"></div>
+        <div><input type="password" [(ngModel)]="password" placeholder="Password"></div>
+        <button mat-raised-button color="primary" (click)="onLogIn()">Log in</button>
+        <div id='error_message' *ngIf="loginfailed">{{errorMessage}}</div>
+        <div id='signup_instruction'>Don't have an account? Click <a [routerLink]="'/signup'" routerLinkActive="active">here</a> to sign up</div>
     </div>
 </div>
