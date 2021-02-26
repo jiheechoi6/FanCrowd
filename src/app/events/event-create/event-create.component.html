@@ -1,58 +1,49 @@
 <h1 mat-dialog-title>Create Event</h1>
-
-<mat-dialog-content class="mat-typography">
-    <div class="form">
-        <div>
-            Event Name: 
-            <span class="spacing">
-                <mat-form-field appearance="fill">
-                    <mat-label></mat-label>
-                    <input matInput [(ngModel)]='eventName' cols="60">
-                </mat-form-field>
-            </span>
-        </div>
-        
-        <div>
-            Location: 
-            <span class="spacing">
-                <mat-form-field appearance="fill">
-                    <mat-label></mat-label>
-                    <input matInput [(ngModel)]='eventLocation' cols="60">
-                </mat-form-field>
-            </span>
-        </div>
-        
-        <div>
-            Date Range: 
-            <span class="spacing">
-                <mat-form-field appearance="fill">
-                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-                        <input matStartDate placeholder="Start date" formControlName="start">
-                        <input matEndDate placeholder="End date" formControlName="end">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-                </mat-form-field>
-            </span>
-        </div>
-
-        <div>Description</div>
-        <div>
-            <mat-form-field class="desc" appearance="fill">
-                <mat-label></mat-label>
-                <textarea matInput [(ngModel)]='description' rows="8">
-                </textarea>
+<section mat-dialog-content class="mat-typography">
+    <form (ngSubmit)="createEvent()" #createEventForm="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="newEvent.name" name="name" required pattern=".*\S+.*" autocomplete="off">
+                <mat-error>Name is a required field</mat-error>
             </mat-form-field>
         </div>
-    </div>
-</mat-dialog-content>
-
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Location</mat-label>
+                <input matInput [(ngModel)]="newEvent.location" name="location" required pattern=".*\S+.*"
+                    autocomplete="off">
+                <mat-error>Location is a required field</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Date Range</mat-label>
+                <mat-date-range-input [rangePicker]="picker" required [min]="minDate">
+                    <input matStartDate placeholder="Start date" name="startDate" [(ngModel)]="newEvent.startDate"
+                        required>
+                    <input matEndDate placeholder="End date" name="endDate" required [(ngModel)]="newEvent.endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-error *ngIf="!newEvent.startDate ||  newEvent.startDate > newEvent.endDate">
+                    Start date must be
+                    before end date</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Description</mat-label>
+                <textarea class="description-field" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="3" cdkTextareaAutosize matInput [(ngModel)]="newEvent.description"
+                    name="description" required pattern=".*\S+.*" autocomplete="off"></textarea>
+                <mat-error>Description is a required field</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-button 
-        type="submit"
-        [mat-dialog-close]="true" 
-        (click)="submit($event)">
-        Create
-    </button>
+    <button mat-flat-button mat-dialog-close color="accent">Cancel</button>
+    <button mat-flat-button color="warn" (click)="createEventForm.ngSubmit.emit()"
+        [disabled]="!createEventForm.form.valid">Create</button>
 </mat-dialog-actions>
