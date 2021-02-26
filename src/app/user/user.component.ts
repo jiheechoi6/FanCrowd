@@ -50,7 +50,9 @@ export class UserComponent implements OnInit {
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((updatedUser: User) => {
-      this.user = updatedUser;
+      if (updatedUser) {
+        this.user = updatedUser;
+      }
     });
   }
 
