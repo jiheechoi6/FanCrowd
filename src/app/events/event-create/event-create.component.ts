@@ -10,12 +10,14 @@ import Event from '../../shared/models/event.model';
 })
 export class EventCreateDialogComponent implements OnInit {
   newEvent: Event;
+  minDate: Date;
 
   constructor(
     public dialogRef: MatDialogRef<EventCreateDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {},
     private eventService: EventService
   ) {
+    this.minDate = new Date();
     const defaultStartDate = new Date();
     const defaultEndDate = new Date();
     defaultEndDate.setDate(defaultStartDate.getDate() + 1);

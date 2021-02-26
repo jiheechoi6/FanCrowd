@@ -19,13 +19,16 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Date Range</mat-label>
-                <mat-date-range-input [rangePicker]="picker" required>
-                    <input matStartDate placeholder="Start date" name="startDate" [(ngModel)]="newEvent.startDate">
-                    <input matEndDate placeholder="End date" name="endDate" [(ngModel)]="newEvent.endDate">
+                <mat-date-range-input [rangePicker]="picker" required [min]="minDate">
+                    <input matStartDate placeholder="Start date" name="startDate" [(ngModel)]="newEvent.startDate"
+                        required>
+                    <input matEndDate placeholder="End date" name="endDate" required [(ngModel)]="newEvent.endDate">
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-                <mat-error>Date Range is a required field</mat-error>
+                <mat-error *ngIf="!newEvent.startDate ||  newEvent.startDate > newEvent.endDate">
+                    Start date must be
+                    before end date</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
