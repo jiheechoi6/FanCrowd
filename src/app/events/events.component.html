@@ -9,18 +9,21 @@
 <div *ngFor="let event of this.events; let i = index">
     <mat-card class="event-card">
         <mat-card-content>
-            <div class="event-container"> 
-                <div><h2>{{event.name}}</h2></div>
+            <div class="event-container">
+                <div>
+                    <h2>{{event.name}}</h2>
+                </div>
                 <div class="flex-container header">
                     <h4 class="flex-one">{{event.location}}</h4>
-                    <h4 class="date">{{event.startDate}} - {{event.endDate}}</h4>
+                    <h4 class="date">{{event.startDate | date:'medium'}} - {{event.endDate | date:'medium'}}</h4>
                 </div>
                 <div class="desc">{{event.description}}</div>
                 <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
 
                 <div class="flex-container footer">
                     <div class="flex-one postedBy"><u>Posted By</u>: {{event.postedBy}}</div>
-                    <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button color="warn">Delete</button></div>
+                    <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button
+                            color="warn">Delete</button></div>
                     <div class="more"><button mat-raised-button color="accent">See More</button></div>
                 </div>
             </div>

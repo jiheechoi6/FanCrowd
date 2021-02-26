@@ -4,50 +4,54 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Username</mat-label>
-                <input matInput [(ngModel)]="user.username" name="username" required autocomplete="off" />
+                <input matInput [(ngModel)]="user.username" name="username" required pattern=".*\S+.*"
+                    autocomplete="off" />
                 <mat-error>Username is a required field</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Full Name</mat-label>
-                <input matInput [(ngModel)]="user.fullName" name="fullName" required autocomplete="off" />
+                <input matInput [(ngModel)]="user.fullName" name="fullName" required pattern=".*\S+.*"
+                    autocomplete="off" />
                 <mat-error>Full Name is a required field</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" [(ngModel)]="user.email" name="email" required autocomplete="off" />
+                <input matInput type="email" [(ngModel)]="user.email" name="email" required pattern=".*\S+.*"
+                    autocomplete="off" />
                 <mat-error>Email is a required field</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Country</mat-label>
-                <input matInput [(ngModel)]="user.country" name="country" required autocomplete="off" />
+                <input matInput [(ngModel)]="user.country" name="country" required pattern=".*\S+.*"
+                    autocomplete="off" />
                 <mat-error>Country is a required field</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>City</mat-label>
-                <input matInput [(ngModel)]="user.city" name="city" required autocomplete="off" />
+                <input matInput [(ngModel)]="user.city" name="city" required pattern=".*\S+.*" autocomplete="off" />
                 <mat-error>City is a required field</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Bio</mat-label>
-                <textarea class="bio-field" matInput [(ngModel)]="user.bio" name="bio" rows="7" required
-                    autocomplete="off"></textarea>
+                <textarea class="bio-field" matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*" rows="7"
+                    required autocomplete="off"></textarea>
                 <mat-error>Bio is a required field</mat-error>
             </mat-form-field>
         </div>
     </form>
 </section>
 <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="accent" type="button">Cancel</button>
+    <button mat-flat-button mat-dialog-close color="accent">Cancel</button>
     <button mat-flat-button color="warn" (click)="editUserFrom.ngSubmit.emit()"
         [disabled]="!editUserFrom.form.valid">Confirm</button>
 </div>
