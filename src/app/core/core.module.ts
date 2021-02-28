@@ -7,7 +7,13 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [NavbarComponent],
-  imports: [CommonModule, MaterialModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    FormsModule,
+    RouterModule,
+    ReactiveFormsModule,
+  ],
   exports: [MaterialModule, FormsModule, ReactiveFormsModule, NavbarComponent],
 })
 export class CoreModule {}
