@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import User from 'src/app/shared/models/user';
+import UserDTO from 'src/app/shared/models/user-dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  users: User[] = [
+  users: UserDTO[] = [
     {
       username: 'chandra-panta',
       fullName: 'Chandra Panta Chhetri',
@@ -94,5 +94,5 @@ export class UserService {
 
   banUserByUsername(username: string) {}
 
-  updateUserByUsername(updatedUser: User, usernameBeforeUpdate: string) {}
+  updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string) {}
 }

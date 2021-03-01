@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-import User from 'src/app/shared/models/user';
+import UserDTO from 'src/app/shared/models/user-dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import NewUser from 'src/app/shared/models/new-user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  currentUser = new BehaviorSubject<User | null | undefined>(null);
+  currentUser = new BehaviorSubject<UserDTO | null | undefined>(null);
   usernameToPassword = new Map([
     ['user1', 'user1'],
     ['user2', 'user2'],
     ['admin', 'admin'],
   ]);
-  users: User[] = [
+  users: UserDTO[] = [
     {
       username: 'user1',
       fullName: 'Chandra Panta Chhetri',
@@ -130,11 +131,22 @@ export class AuthService {
     return user;
   }
 
-  createNewUser(
-    username: string,
-    firstname: string,
-    lastname: string,
-    password: string,
-    usertype: string
-  ) {}
+  createNewUser(newUser: NewUser) {
+    //API request to users endpoint to create new user
+    this.usernameToPassword.set(newUser.username, newUser.password);
+    const newUserDTO = {
+      ...newUser,
+      bio:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      city: 'Toronto',
+      country: 'Canada',
+      role: 'user',
+      fandoms: [],
+      attendingEvents: [],
+      profileUrl: 'https://dummyimage.com/250',
+    };
+    this.users.push(newUserDTO);
+    this.currentUser.next(newUserDTO);
+    return newUserDTO;
+  }
 }

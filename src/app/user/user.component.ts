@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
-import User from '../shared/models/user';
+import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 
 @Component({
@@ -12,8 +12,8 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
   styleUrls: ['./user.component.sass'],
 })
 export class UserComponent implements OnInit {
-  user: User | null = null;
-  loggedInUser: User | null = null;
+  user: UserDTO | null = null;
+  loggedInUser: UserDTO | null = null;
 
   constructor(
     private userService: UserService,
@@ -49,7 +49,7 @@ export class UserComponent implements OnInit {
       width: '400px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((updatedUser: User) => {
+    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
       }
@@ -73,7 +73,7 @@ export class UserComponent implements OnInit {
   openBanUserAccountDialog() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: 'Ban User Confirmation',
+        title: 'Ban UserDTO Confirmation',
         details: `Are you sure you want to ban ${this.user?.username}?`,
         onConfirmCb: this.banUser.bind(this),
       },

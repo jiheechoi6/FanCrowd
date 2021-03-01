@@ -1,7 +1,7 @@
 import DiscussionBoardDTO from './discussion-board-dto';
 import EventDTO from './event-dto';
 
-interface User {
+interface UserDTO {
   username: string;
   fullName: string;
   email: string;
@@ -14,4 +14,4 @@ interface User {
   fandoms: DiscussionBoardDTO[];
 }
 
-export default User;
+export default UserDTO;

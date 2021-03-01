@@ -1,7 +1,7 @@
 <section>
     <mat-card class="signup-container">
         <mat-card-title class="header">Sign Up</mat-card-title>
-        <form #signUpForm="ngForm" (ngSubmit)="onSignUp()">
+        <form #signUpForm="ngForm" (ngSubmit)="onSignUp()" (keydown.enter)="$event.preventDefault()">
             <div class="form-group">
                 <mat-form-field color="accent">
                     <mat-label>Username</mat-label>
@@ -64,7 +64,7 @@
             </div>
             <p *ngIf="signUpError" class="mat-body error-message">{{signUpError}}</p>
             <div class="button-action-container">
-                <button mat-raised-button color="primary" type="submit" [disabled]="!signUpForm.valid"
+                <button mat-raised-button color="primary" [disabled]="!signUpForm.valid"
                     [class.loading-animation]="isSigningUp">
                     {{isSigningUp ? 'Signing Up': 'Sign Up'}}
                 </button>

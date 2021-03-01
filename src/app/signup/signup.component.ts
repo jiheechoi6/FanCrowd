@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
+import NewUser from '../shared/models/new-user';
 
 @Component({
   selector: 'app-signup',
@@ -22,11 +23,19 @@ export class SignupComponent implements OnInit {
   ngOnInit(): void {}
 
   onSignUp() {
-    console.log(
-      this.username,
-      this.password,
-      this.passwordConfirm,
-      this.fullName
-    );
+    this.isSigningUp = true;
+    const newUser: NewUser = {
+      email: this.email,
+      fullName: this.fullName,
+      password: this.password,
+      username: this.username,
+    };
+    const user = this.authService.createNewUser(newUser);
+    this.isSigningUp = false;
+    if (user) {
+      this.router.navigate(['/users', user.username]);
+    } else {
+      this.signUpError = 'Username is already taken';
+    }
   }
 }

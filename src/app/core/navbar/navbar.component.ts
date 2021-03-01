@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import User from 'src/app/shared/models/user';
+import UserDTO from 'src/app/shared/models/user-dto';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +7,7 @@ import User from 'src/app/shared/models/user';
   styleUrls: ['./navbar.component.sass'],
 })
 export class NavbarComponent implements OnInit {
-  user: User | null = null;
+  user: UserDTO | null = null;
 
   constructor() {}
 
