@@ -157,4 +157,6 @@ export class AuthService {
   logOut() {
     this.currentUser.next(null);
   }
+
+  autoLogin() {}
 }

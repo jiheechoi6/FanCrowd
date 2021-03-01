@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './core/services/auth.guard';
+import { LoggedInGuard } from './core/services/logged-in.guard';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -11,20 +13,24 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'signup',
     loadChildren: () =>
       import('./signup/signup.module').then((m) => m.SignupModule),
+    canActivate: [LoggedInGuard],
   },
   {
     path: 'users/:username',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'calendar',
     loadChildren: () =>
       import('./calendar/calendar.module').then((m) => m.CalendarModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'discussion-boards',
@@ -32,11 +38,13 @@ const routes: Routes = [
       import('./discussion-board/discussion-board.module').then(
         (m) => m.DiscussionBoardModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'events',
     loadChildren: () =>
       import('./events/events.module').then((m) => m.EventsModule),
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: 'login' },
 ];
