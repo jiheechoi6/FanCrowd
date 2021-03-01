@@ -84,7 +84,7 @@ export class UserService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   getUserByUsername(username: string) {
     return this.users.find((user) => user.username === username) || null;

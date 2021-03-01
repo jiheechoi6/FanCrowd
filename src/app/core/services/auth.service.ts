@@ -8,7 +8,7 @@ import NewUser from 'src/app/shared/models/new-user';
   providedIn: 'root',
 })
 export class AuthService {
-  currentUser = new BehaviorSubject<UserDTO | null | undefined>(null);
+  currentUser = new BehaviorSubject<UserDTO | null>(null);
   usernameToPassword = new Map([
     ['user1', 'user1'],
     ['user2', 'user2'],
@@ -114,7 +114,7 @@ export class AuthService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
@@ -125,10 +125,14 @@ export class AuthService {
       this.currentUser.next(null);
       return null;
     }
-
-    const user = this.users.find((user) => user.username === username);
-    this.currentUser.next(user);
-    return user;
+    let loggedInUser = null;
+    for (let user of this.users) {
+      if (user.username === username) {
+        loggedInUser = user;
+      }
+    }
+    this.currentUser.next(loggedInUser);
+    return loggedInUser;
   }
 
   createNewUser(newUser: NewUser) {
@@ -148,5 +152,9 @@ export class AuthService {
     this.users.push(newUserDTO);
     this.currentUser.next(newUserDTO);
     return newUserDTO;
+  }
+
+  logOut() {
+    this.currentUser.next(null);
   }
 }

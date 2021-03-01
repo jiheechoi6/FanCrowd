@@ -55,7 +55,7 @@ export class EventService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   getEvents(): Event[] {
     return this.events;

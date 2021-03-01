@@ -1,29 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.sass'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
+  userSubscription!: Subscription;
   user: UserDTO | null = null;
 
-  constructor() {}
+  constructor(private _authService: AuthService) {}
 
   ngOnInit(): void {
-    this.user = {
-      username: 'chandra-panta',
-      fullName: 'Chandra Panta Chhetri',
-      city: 'Toronto',
-      country: 'Canada',
-      email: 'chandra@gmail.com',
-      profileUrl: 'https://dummyimage.com/250',
-      role: 'user',
-      bio:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      attendingEvents: [],
-      fandoms: [],
-    };
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.user = user)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+  }
+
+  onLogOut() {
+    this._authService.logOut();
   }
 }
