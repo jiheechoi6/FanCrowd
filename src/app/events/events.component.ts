@@ -12,6 +12,7 @@ import Event from '../shared/models/event.model';
 })
 export class EventsComponent implements OnInit {
   events: Array<Event> = [];
+  pageSizeOptions = [5, 10, 20, 50];
   today = new Date();
   isAdmin = false;
 

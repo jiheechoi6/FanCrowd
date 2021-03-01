@@ -102,6 +102,8 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   getPasswordByUsername(username: string) {
+    // Get user's password from server, code below requires server call
+    
     if(!this._usernamePassord.has(username)){
       return null
     }
@@ -109,6 +111,8 @@ export class AuthService {
   }
 
   addNewUser(username: string, firstname:string, lastname:string, password:string, usertype: string){
+    // Add user to server, code below requires server call
+
     this.users.set(username, 
       {username: username,
       password: password,

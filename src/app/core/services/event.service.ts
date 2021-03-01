@@ -58,14 +58,26 @@ export class EventService {
   constructor(private http: HttpClient) {}
 
   getEvents(): Event[] {
-    return this.events;
+    // Get events from server, code below requires server call
+
+    return this.events.sort((a,b) => this.sortFunction(a,b));
+  }
+
+  sortFunction(a: Event, b: Event) : number{  
+    var dateA = new Date(a.startDate).getTime();
+    var dateB = new Date(b.startDate).getTime();
+    return dateA > dateB ? 1 : -1;  
   }
 
   createEvent(event: Event): void {
+    // Add event to server, code below requires server call
+
     this.events.push(event);
   }
 
   deleteEvent(index: number): boolean {
+    // Delete event from server, code below requires server call
+    
     if (index >= 0) {
       this.events.splice(index, 1);
       return true;

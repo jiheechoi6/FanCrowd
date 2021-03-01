@@ -1,4 +1,5 @@
 <h1 mat-dialog-title>Create Event</h1>
+
 <section mat-dialog-content class="mat-typography">
     <form (ngSubmit)="createEvent()" #createEventForm="ngForm">
         <div class="form-group">
@@ -42,8 +43,9 @@
         </div>
     </form>
 </section>
+
 <mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="accent">Cancel</button>
-    <button mat-flat-button color="warn" (click)="createEventForm.ngSubmit.emit()"
+    <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
+    <button mat-flat-button color="primary" (click)="createEventForm.ngSubmit.emit()"
         [disabled]="!createEventForm.form.valid">Create</button>
 </mat-dialog-actions>
