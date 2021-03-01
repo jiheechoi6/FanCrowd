@@ -4,9 +4,10 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
+import { PageFooterComponent } from './page-footer/page-footer.component';
 
 @NgModule({
-  declarations: [NavbarComponent],
+  declarations: [NavbarComponent, PageFooterComponent],
   imports: [
     CommonModule,
     MaterialModule,
@@ -14,6 +15,12 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     ReactiveFormsModule,
   ],
-  exports: [MaterialModule, FormsModule, ReactiveFormsModule, NavbarComponent],
+  exports: [
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NavbarComponent,
+    PageFooterComponent,
+  ],
 })
 export class CoreModule {}
