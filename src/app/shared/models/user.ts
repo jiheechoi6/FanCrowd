@@ -3,7 +3,6 @@ import EventDTO from './event-dto';
 
 interface User {
   username: string;
-  password: string;
   fullName: string;
   email: string;
   country: string;

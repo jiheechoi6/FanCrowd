@@ -1,6 +1,6 @@
 <section>
     <mat-card class="login-container">
-        <mat-card-title>Log In</mat-card-title>
+        <mat-card-title class="header">Log In</mat-card-title>
         <form #logInForm="ngForm" (ngSubmit)="onLogIn()">
             <div class="form-group">
                 <mat-form-field color="accent">
@@ -20,8 +20,12 @@
                     <mat-error>Password is a required field</mat-error>
                 </mat-form-field>
             </div>
+            <p *ngIf="loginError" class="mat-body error-message">{{loginError}}</p>
             <div class="button-action-container">
-                <button mat-raised-button color="primary" [disabled]="!logInForm.valid">Log in</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!logInForm.valid"
+                    [class.loading-animation]="isLoggingIn">
+                    {{isLoggingIn ? 'Logging In': 'Log In'}}
+                </button>
             </div>
         </form>
         <mat-card-footer class="sign-up-footer mat-body">

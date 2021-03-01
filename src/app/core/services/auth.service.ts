@@ -1,25 +1,21 @@
 import { Injectable } from '@angular/core';
 import User from 'src/app/shared/models/user';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { UserComponent } from 'src/app/user/user.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _usernamePassord:Map<string, string> = 
-    new Map([
-        ["user1", "user1"],
-        ["user2", "user2"],
-        ["admin", "admin"]
-    ]);
-  currentLoggedInUser:string = "";
-  users: Map<string, User> = 
-    new Map([
-    ['user1',
+  currentUser = new BehaviorSubject<User | null | undefined>(null);
+  usernameToPassword = new Map([
+    ['user1', 'user1'],
+    ['user2', 'user2'],
+    ['admin', 'admin'],
+  ]);
+  users: User[] = [
     {
       username: 'user1',
-      password: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
       country: 'Canada',
@@ -65,12 +61,10 @@ export class AuthService {
           id: 4,
           activityLevel: 10,
         },
-      ]
-    }],
-    ['user2',
-      {
+      ],
+    },
+    {
       username: 'user2',
-      password: 'user2',
       fullName: 'Raj Patel',
       city: 'Toronto',
       country: 'Canada',
@@ -79,48 +73,68 @@ export class AuthService {
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      attendingEvents: [],
-      fandoms: []
-    }],
-    ['admin',
-      {
+      attendingEvents: [
+        {
+          name: 'Harry Potter Convention',
+          date: new Date(),
+          totalAttending: 10,
+          id: 3,
+        },
+      ],
+      fandoms: [
+        {
+          name: 'Harry Potter',
+          id: 1,
+          activityLevel: 2,
+        },
+        {
+          name: 'Superman',
+          id: 3,
+          activityLevel: 6,
+        },
+        {
+          name: 'Batman',
+          id: 4,
+          activityLevel: 9,
+        },
+      ],
+    },
+    {
       username: 'admin',
-      password: 'admin',
       fullName: 'Jihee',
       city: 'Toronto',
       country: 'Canada',
       email: 'jihee@gmail.com',
       profileUrl: 'https://dummyimage.com/250',
-      role: 'user',
-      bio:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      role: 'admin',
+      bio: '',
       attendingEvents: [],
-      fandoms: []
-    }],
-  ]);
+      fandoms: [],
+    },
+  ];
 
   constructor(private http: HttpClient) {}
 
-  getPasswordByUsername(username: string) {
-    if(!this._usernamePassord.has(username)){
-      return null
+  loginUser(username: string, password: string) {
+    //API request to auth endpoint
+    if (
+      !this.usernameToPassword.has(username) ||
+      this.usernameToPassword.get(username) !== password
+    ) {
+      this.currentUser.next(null);
+      return null;
     }
-    return this._usernamePassord.get(username);
+
+    const user = this.users.find((user) => user.username === username);
+    this.currentUser.next(user);
+    return user;
   }
 
-  addNewUser(username: string, firstname:string, lastname:string, password:string, usertype: string){
-    this.users.set(username, 
-      {username: username,
-      password: password,
-      fullName: firstname + lastname,
-      city: '',
-      country: '',
-      email: '',
-      profileUrl: '',
-      role: usertype,
-      bio: '',
-      attendingEvents: [],
-      fandoms: []});
-      console.log(this.users.get(username));
-  }
+  createNewUser(
+    username: string,
+    firstname: string,
+    lastname: string,
+    password: string,
+    usertype: string
+  ) {}
 }

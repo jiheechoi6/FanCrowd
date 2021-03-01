@@ -9,7 +9,6 @@ export class UserService {
   users: User[] = [
     {
       username: 'chandra-panta',
-      password: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
       country: 'Canada',
@@ -59,7 +58,6 @@ export class UserService {
     },
     {
       username: 'raj-p',
-      password: 'user1',
       fullName: 'Raj Patel',
       city: 'Toronto',
       country: 'Canada',
@@ -73,7 +71,6 @@ export class UserService {
     },
     {
       username: 'jihee423',
-      password: 'user1',
       fullName: 'Jihee',
       city: 'Toronto',
       country: 'Canada',

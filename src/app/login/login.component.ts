@@ -12,25 +12,20 @@ export class LoginComponent implements OnInit {
   password = '';
   hidePassword = true;
   loginError = '';
+  isLoggingIn = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   onLogIn() {
-    // if (
-    //   this.authService.getPasswordByUsername(this.username) == this.password
-    // ) {
-    //   this.authService.currentLoggedInUser = this.username;
-    //   this.loginfailed = false;
-    //   this.router.navigate(['/events']);
-    // } else {
-    //   if (this.username == '' || this.password == '') {
-    //     this.errorMessage = 'Please enter your username and password';
-    //   } else {
-    //     this.errorMessage = 'Your username or password is wrong';
-    //   }
-    //   this.loginfailed = true;
-    // }
+    this.isLoggingIn = true;
+    const user = this.authService.loginUser(this.username, this.password);
+    this.isLoggingIn = false;
+    if (user) {
+      this.router.navigate(['/users', user.username]);
+    } else {
+      this.loginError = 'Username or password is wrong';
+    }
   }
 }
