@@ -8,39 +8,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.sass'],
 })
 export class SignupComponent implements OnInit {
-  firstname = '';
-  lastname = '';
+  isSigningUp = false;
+  hidePassword = true;
+  email = '';
+  fullName = '';
   username = '';
   password = '';
   passwordConfirm = '';
-  errorMessage = '';
-  signUpFailed = false;
+  signUpError = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   onSignUp() {
-    if (
-      this.username == '' ||
-      this.firstname == '' ||
-      this.lastname == '' ||
-      this.password == ''
-    ) {
-      this.errorMessage = 'Please fill out all the fields';
-      this.signUpFailed = true;
-    } else if (this.password != this.passwordConfirm) {
-      this.errorMessage = 'Please confirm your password correctly';
-      this.signUpFailed = true;
-    } else {
-      this.authService.createNewUser(
-        this.username,
-        this.firstname,
-        this.lastname,
-        this.password,
-        'user'
-      );
-      this.router.navigate(['/events']);
-    }
+    console.log(
+      this.username,
+      this.password,
+      this.passwordConfirm,
+      this.fullName
+    );
   }
 }

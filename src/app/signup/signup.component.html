@@ -1,13 +1,77 @@
-<div id='background'>
-    <div id='login_container'>
-        <h1 id='login_title'>Sign Up</h1>
-        <div><input [(ngModel)]="firstname" placeholder="First Name"></div>
-        <div><input [(ngModel)]="lastname" placeholder="Last Name"></div>
-        <div><input [(ngModel)]="username" placeholder="username"></div>
-        <div><input type="password" [(ngModel)]="password" placeholder="Password"></div>
-        <div><input type="password" [(ngModel)]="passwordConfirm" placeholder="Confirm Password"></div>
-        <div id='error'> {{errorMessage}} </div>
-        <button mat-raised-button color="primary" (click)="onSignUp()">Sign Up</button>
-    </div>
-</div>
-
+<section>
+    <mat-card class="signup-container">
+        <mat-card-title class="header">Sign Up</mat-card-title>
+        <form #signUpForm="ngForm" (ngSubmit)="onSignUp()">
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Username</mat-label>
+                    <input matInput [(ngModel)]="username" name="username" required pattern="[a-z0-9_]+"
+                        autocomplete="off" #usernameField="ngModel" />
+                    <mat-error *ngIf="usernameField.errors?.required">Username is a required field</mat-error>
+                    <mat-error *ngIf="usernameField.errors?.pattern">Usernames can only contain lowercase characters,
+                        digits, and
+                        underscores
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Password</mat-label>
+                    <input matInput [(ngModel)]="password" name="password" [type]="hidePassword ? 'password' : 'text'"
+                        required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$" autocomplete="off"
+                        #passwordField="ngModel" />
+                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="passwordField.errors?.required">Password is a required field</mat-error>
+                    <mat-error *ngIf="passwordField.errors?.pattern">Password should have minimum 8 characters, at least
+                        1 uppercase letter, 1 lowercase
+                        letter and 1 number</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput [(ngModel)]="passwordConfirm" name="confirmPassword"
+                        [type]="hidePassword ? 'password' : 'text'" required [pattern]="password" autocomplete="off"
+                        #confirmPasswordField="ngModel" />
+                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error *ngIf="confirmPasswordField.errors?.required">Confirm Password is a required field
+                    </mat-error>
+                    <mat-error *ngIf="confirmPasswordField.errors?.pattern">Password must match
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Full Name</mat-label>
+                    <input matInput [(ngModel)]="fullName" name="fullName" required pattern=".*\S+.*"
+                        autocomplete="off" />
+                    <mat-error>Full Name is a required field</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Email</mat-label>
+                    <input matInput [(ngModel)]="email" name="email" required
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" autocomplete="off"
+                        #emailField="ngModel" />
+                    <mat-error *ngIf="emailField.errors?.required">Email is a required field</mat-error>
+                    <mat-error *ngIf="emailField.errors?.pattern">Please enter a valid email</mat-error>
+                </mat-form-field>
+            </div>
+            <p *ngIf="signUpError" class="mat-body error-message">{{signUpError}}</p>
+            <div class="button-action-container">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!signUpForm.valid"
+                    [class.loading-animation]="isSigningUp">
+                    {{isSigningUp ? 'Signing Up': 'Sign Up'}}
+                </button>
+            </div>
+        </form>
+        <mat-card-footer class="log-in-footer mat-body">
+            <p>Have an account? <a [routerLink]="'/login'">Log in now!</a></p>
+        </mat-card-footer>
+    </mat-card>
+</section>

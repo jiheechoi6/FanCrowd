@@ -2,16 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup.component';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [SignupComponent],
   imports: [
     CommonModule,
-    FormsModule, 
-    ReactiveFormsModule,
-    MatButtonModule,
+    CoreModule,
     RouterModule.forChild([
       {
         path: '',
@@ -19,6 +16,5 @@ import { MatButtonModule } from '@angular/material/button';
       },
     ]),
   ],
-  exports: [SignupComponent],
 })
 export class SignupModule {}
