@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
+import { AuthService } from '../core/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.sass']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit{
 
   months = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   today:any = new Date();
@@ -20,7 +23,9 @@ export class CalendarComponent implements OnInit {
 
   fullDate = this.today.toDateString()
 
-  constructor() { }
+  constructor(
+    private authService: AuthService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     
@@ -46,6 +51,37 @@ export class CalendarComponent implements OnInit {
   nextMonth(){
     this.today.setMonth(this.today.getMonth()+1)
     this.updateDateValues()
+  }
+  
+  getEvents(i: number){
+    console.log(i);
+    console.log(this.displayMonth);
+    console.log(this.authService.getCurrentLoggedInUserEvents());
+
+  }
+
+  hasEvent(i: number){
+    let result = false;
+    this.authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
+      if(event.date.getFullYear() == this.displayYear &&
+          event.date.getMonth() == this.displayMonth &&
+          event.date.getDate() == i){
+        result = true;
+      }else{
+        result = false;
+      }
+    });
+    return result;
+  }
+
+  openDateEventDialog(i:number) {
+    let events = this.getEvents(i);
+    const dialogRef = this.dialog.open(DateEventDialogComponent, {
+      data: { events },
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+      width: '400px',
+    });
   }
 
   counter(i: number) {

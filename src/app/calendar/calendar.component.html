@@ -18,7 +18,10 @@
     </div>
     <div id='date'>
         <div id='not_this_month' *ngFor='let in of counter(displayFirstDay); let i = index'>{{displayPrevMonthLastDate-displayFirstDay+i+1}}</div>
-        <div *ngFor='let in of counter(displayLastDate) ;let i = index'>{{i+1}}</div>
+        <div *ngFor='let in of counter(displayLastDate) ;let i = index' (click)='openDateEventDialog(i+1)'>
+            {{i+1}} <br>
+            <span id='eventExists' *ngIf="hasEvent(i+1)">&#9679;</span>
+        </div>
         <div id='not_this_month' *ngFor='let in of counter(42-displayLastDate-displayFirstDay) ;let i = index'>{{i+1}}</div>
         
     </div>
