@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create/event-create.component';
-import Event from '../shared/models/event.model';
+import Event from '../shared/models/event';
 
 @Component({
   selector: 'app-events',
@@ -12,6 +12,7 @@ import Event from '../shared/models/event.model';
 })
 export class EventsComponent implements OnInit {
   events: Array<Event> = [];
+  allEvents: Array<Event> = [];
   pageSizeOptions = [5, 10, 20, 50];
   today = new Date();
   isAdmin = false;
@@ -24,11 +25,19 @@ export class EventsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.events = this.eventService.getEvents();
+    this.allEvents = this.eventService.getEvents();
+    this.events = this.allEvents.slice(0, 10);
     const username: string = this.activatedRoute.snapshot.params['username'];
     if (username && username.includes('admin')) {
       this.isAdmin = true;
     }
+  }
+
+  selectPage(event: any){
+    console.log("Event:", event);
+    let startIndex = event.pageSize * event.pageIndex;
+    let endIndex = startIndex + event.pageSize;
+    this.events = this.allEvents.slice(startIndex, endIndex);
   }
 
   openDialog(): void {

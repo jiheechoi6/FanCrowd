@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Event from 'src/app/shared/models/event.model';
+import Event from 'src/app/shared/models/event';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
@@ -10,7 +10,11 @@ export class EventService {
   events: Event[] = [
     {
       id: 1,
-      fandomType: 'books',
+      fandomType: {
+        id: 11,
+        category: "book",
+        name: "All" 
+      },
       name: 'Comic Con',
       description: `A comic book convention or comic con is an event with a 
         primary focus on comic books and comic book culture, in which comic book 
@@ -24,7 +28,11 @@ export class EventService {
     },
     {
       id: 2,
-      fandomType: 'technology',
+      fandomType: {
+        id: 30,
+        category: "technology",
+        name: "All" 
+      },
       name: 'World Expo',
       description: `Our once-in-a-lifetime celebration – the largest event ever staged in the 
         Arab world – is set to welcome 190 participating countries, and millions of visitors from 
@@ -41,7 +49,11 @@ export class EventService {
     },
     {
       id: 3,
-      fandomType: 'movies',
+      fandomType: {
+        id: 1,
+        category: "movie",
+        name: "Avengers" 
+      },
       name: 'Marvel Studios',
       description: `Marvel Studios, LLC is an American film and television studio that is a 
         subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios 
@@ -57,16 +69,16 @@ export class EventService {
 
   constructor(private http: HttpClient) {}
 
-  getEvents(): Event[] {
-    // Get events from server, code below requires server call
-
-    return this.events.sort((a,b) => this.sortFunction(a,b));
-  }
-
   sortFunction(a: Event, b: Event) : number{  
     var dateA = new Date(a.startDate).getTime();
     var dateB = new Date(b.startDate).getTime();
     return dateA > dateB ? 1 : -1;  
+  }
+
+  getEvents(): Event[] {
+    // Get events from server, code below requires server call
+
+    return this.events.sort((a,b) => this.sortFunction(a,b));
   }
 
   createEvent(event: Event): void {

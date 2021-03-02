@@ -1,6 +1,8 @@
-<mat-paginator [length]="events.length"
+<mat-paginator [length]="allEvents.length"
               [pageSize]="pageSizeOptions[1]"
-              [pageSizeOptions]="pageSizeOptions">
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="selectPage($event)"
+              color="accent">
 </mat-paginator>
 
 <div class="button-container">
@@ -23,10 +25,13 @@
                     <h4 class="date">{{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}</h4>
                 </div>
                 <div class="desc">{{event.description}}</div>
+                <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
+                <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span> </div>
+                <br>
                 <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
 
                 <div class="flex-container footer">
-                    <div class="flex-one postedBy"><u>Posted By</u>: {{event.postedBy}}</div>
+                    <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{event.postedBy}}</span></div>
                     <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button
                             color="warn">Delete</button></div>
                     <div class="more"><button mat-raised-button color="accent">See More</button></div>

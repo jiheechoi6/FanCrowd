@@ -1,6 +1,8 @@
+import Fandom from "./fandom";
+
 interface Event {
   id?: number;
-  fandomType?: string;
+  fandomType: Fandom;
   name: string;
   description: string;
   postedBy: string;
