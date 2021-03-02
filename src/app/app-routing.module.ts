@@ -38,11 +38,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./events/events.module').then((m) => m.EventsModule),
   },
-  {
-    path: 'events/:id',
-    loadChildren: () =>
-      import('./events/events.module').then((m) => m.EventsModule),
-  },
   { path: '**', redirectTo: 'login' },
 ];
 

@@ -5,11 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [NavbarComponent],
   imports: [CommonModule, MaterialModule, FormsModule, RouterModule],
-  exports: [MaterialModule, FormsModule, ReactiveFormsModule, NavbarComponent, MatPaginatorModule, MatSelectModule],
+  exports: [MaterialModule, FormsModule, ReactiveFormsModule, NavbarComponent, MatPaginatorModule],
 })
 export class CoreModule {}

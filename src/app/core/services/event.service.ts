@@ -159,7 +159,7 @@ export class EventService {
   sortFunction(a: Event, b: Event) : number{  
     var dateA = new Date(a.startDate).getTime();
     var dateB = new Date(b.startDate).getTime();
-    return dateB > dateA ? 1 : -1;  
+    return dateA > dateB ? 1 : -1;  
   }
 
   getEvents(): Event[] {
