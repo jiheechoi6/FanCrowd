@@ -57,7 +57,7 @@
         <div class="create" (click)="goToAllEvents()"><button mat-raised-button color="primary">Back</button></div>
     </div>
 
-    <mat-card class="event-card">
+    <mat-card *ngIf="this.event" class="event-card">
         <mat-card-content>
             <div class="event-container">
                 <div>
@@ -83,7 +83,7 @@
     </mat-card>
 
     <div class="button-container">
-        <div class="create" id="review" (click)="AddReview()"><button mat-raised-button color="primary">Add Review</button></div>
+        <div class="create" id="review"><button mat-raised-button color="primary">Add Review</button></div>
     </div>
 
     <mat-card class="review-card">
