@@ -1,6 +1,7 @@
 <mat-paginator [length]="this.allEvents.length"
               [pageSize]="this.pageSize"
               [pageSizeOptions]="this.pageSizeOptions"
+              [pageIndex]="this.pageIndex"
               (page)="selectPage($event)"
               color="accent">
 </mat-paginator>
@@ -43,6 +44,7 @@
 
 <mat-paginator [length]="this.allEvents.length"
               [pageSize]="this.pageSize"
+              [pageIndex]="this.pageIndex"
               [pageSizeOptions]="this.pageSizeOptions"
               (page)="selectPage($event)"
               color="accent">
