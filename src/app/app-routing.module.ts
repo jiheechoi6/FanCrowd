@@ -46,7 +46,14 @@ const routes: Routes = [
       import('./events/events.module').then((m) => m.EventsModule),
     canActivate: [AuthGuard],
   },
-  { path: '**', redirectTo: 'login' },
+  {
+    path: '404',
+    loadChildren: () =>
+      import('./page-not-found/page-not-found.module').then(
+        (m) => m.PageNotFoundModule
+      ),
+  },
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({
