@@ -1,51 +1,96 @@
-<mat-paginator [length]="this.allEvents.length"
-              [pageSize]="this.pageSize"
-              [pageSizeOptions]="this.pageSizeOptions"
-              [pageIndex]="this.pageIndex"
-              (page)="selectPage($event)"
-              color="accent">
-</mat-paginator>
+<div *ngIf="!isSpecificEvent">
+    <mat-paginator [length]="this.allEvents.length"
+                [pageSize]="this.pageSize"
+                [pageSizeOptions]="this.pageSizeOptions"
+                [pageIndex]="this.pageIndex"
+                (page)="selectPage($event)"
+                color="accent">
+    </mat-paginator>
 
-<div class="button-container">
-    <div class="create" (click)="openDialog()"><button mat-raised-button color="primary">Create Event</button></div>
+    <div class="button-container">
+        <div class="create" (click)="openDialog()"><button mat-raised-button color="primary">Create Event</button></div>
+    </div>
+
+    <div *ngIf="this.events.length === 0" class="empty">
+        <h1 class="center-pos"> Sorry, no events taking place </h1>
+    </div>
+
+    <div *ngFor="let event of events; let i = index">
+        <mat-card class="event-card">
+            <mat-card-content>
+                <div class="event-container">
+                    <div>
+                        <h2>{{event.name}}</h2>
+                    </div>
+                    <div class="flex-container header">
+                        <h4 class="flex-one">{{event.location}}</h4>
+                        <h4 class="date">{{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}</h4>
+                    </div>
+                    <div class="desc">{{event.description}}</div>
+                    <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
+                    <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span> </div>
+                    <br>
+                    <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
+
+                    <div class="flex-container footer">
+                        <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{event.postedBy}}</span></div>
+                        <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button
+                                color="warn">Delete</button></div>
+                        <div class="more" (click)="goToEvent(event.id)"><button mat-raised-button color="accent">See More</button></div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <mat-paginator [length]="this.allEvents.length"
+                [pageSize]="this.pageSize"
+                [pageIndex]="this.pageIndex"
+                [pageSizeOptions]="this.pageSizeOptions"
+                (page)="selectPage($event)"
+                color="accent">
+    </mat-paginator>
 </div>
 
-<div *ngIf="this.events.length === 0" class="empty">
-    <h1 class="center-pos"> Sorry, no events taking place </h1>
-</div>
+<div *ngIf="isSpecificEvent">
+    <div class="button-container">
+        <div class="create" (click)="goToAllEvents()"><button mat-raised-button color="primary">Back</button></div>
+    </div>
 
-<div *ngFor="let event of events; let i = index">
     <mat-card class="event-card">
         <mat-card-content>
             <div class="event-container">
                 <div>
-                    <h2>{{event.name}}</h2>
+                    <h2>{{this.event.name}}</h2>
                 </div>
                 <div class="flex-container header">
-                    <h4 class="flex-one">{{event.location}}</h4>
-                    <h4 class="date">{{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}</h4>
+                    <h4 class="flex-one">{{this.event.location}}</h4>
+                    <h4 class="date">{{this.event.startDate | date:'mediumDate'}} - {{this.event.endDate | date:'mediumDate'}}</h4>
                 </div>
-                <div class="desc">{{event.description}}</div>
-                <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
-                <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span> </div>
+                <div class="desc">{{this.event.description}}</div>
+                <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.category}}</span> </div>
+                <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.name}}</span> </div>
                 <br>
-                <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
+                <div><u>Total People Attending</u>: {{this.event.totalAttendance}} </div>
 
                 <div class="flex-container footer">
-                    <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{event.postedBy}}</span></div>
+                    <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{this.event.postedBy}}</span></div>
                     <div class="delete" *ngIf="this.isAdmin" (click)="delete(event.id)"><button mat-raised-button
                             color="warn">Delete</button></div>
-                    <div class="more"><button mat-raised-button color="accent">See More</button></div>
                 </div>
             </div>
         </mat-card-content>
     </mat-card>
-</div>
 
-<mat-paginator [length]="this.allEvents.length"
-              [pageSize]="this.pageSize"
-              [pageIndex]="this.pageIndex"
-              [pageSizeOptions]="this.pageSizeOptions"
-              (page)="selectPage($event)"
-              color="accent">
-</mat-paginator>
+    <div class="button-container">
+        <div class="create" id="review" (click)="AddReview()"><button mat-raised-button color="primary">Add Review</button></div>
+    </div>
+
+    <mat-card class="review-card">
+        <mat-card-content>
+            <div> 
+                Reviews HERE!!!!
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

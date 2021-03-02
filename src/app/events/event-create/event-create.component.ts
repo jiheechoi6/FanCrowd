@@ -27,6 +27,7 @@ export class EventCreateDialogComponent implements OnInit {
     const defaultEndDate = new Date();
     defaultEndDate.setDate(defaultStartDate.getDate() + 1);
     this.newEvent = {
+      id: 1000,
       name: '',
       fandomType: {
         category: '',

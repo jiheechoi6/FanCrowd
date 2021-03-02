@@ -159,13 +159,19 @@ export class EventService {
   sortFunction(a: Event, b: Event) : number{  
     var dateA = new Date(a.startDate).getTime();
     var dateB = new Date(b.startDate).getTime();
-    return dateA > dateB ? 1 : -1;  
+    return dateB > dateA ? 1 : -1;  
   }
 
   getEvents(): Event[] {
     // Get events from server, code below requires server call
 
     return this.events.sort((a,b) => this.sortFunction(a,b));
+  }
+
+  getEventsById(id: number): Event | null {
+    // Get event from server, code below requires server call
+
+    return this.events.find((event) => event.id === id) || null;
   }
 
   createEvent(event: Event): void {

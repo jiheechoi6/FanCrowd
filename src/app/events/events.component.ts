@@ -4,6 +4,7 @@ import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create/event-create.component';
 import Event from '../shared/models/event';
+import { Route } from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-events',
@@ -13,22 +14,32 @@ import Event from '../shared/models/event';
 export class EventsComponent implements OnInit {
   events: Array<Event> = [];
   allEvents: Array<Event> = [];
-  pageSizeOptions = [5, 10, 20, 50];
-  pageSize = this.pageSizeOptions[1];
-  pageIndex = 0;
-  today = new Date();
-  isAdmin = false;
+  event: Event | null = null;
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = this.pageSizeOptions[1];
+  pageIndex: number = 0;
+  today: Date = new Date();
+  isAdmin: boolean = false;
+  isSpecificEvent: boolean = false;
+  id: number = NaN;
 
   constructor(
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router
-  ) {}
+  ) {
+    this.id = parseInt(this.activatedRoute.snapshot.params['id']);
+    this.isSpecificEvent = !isNaN(this.id);
+  }
 
   ngOnInit(): void {
-    this.allEvents = this.eventService.getEvents();
-    this.events = this.allEvents.slice(0, 10);
+    if (!this.isSpecificEvent){
+      this.allEvents = this.eventService.getEvents();
+      this.events = this.allEvents.slice(0, 10);
+    } else {
+      this.event = this.eventService.getEventsById(this.id);
+    }
     const username: string = this.activatedRoute.snapshot.params['username'];
     if (username && username.includes('admin')) {
       this.isAdmin = true;
@@ -54,6 +65,14 @@ export class EventsComponent implements OnInit {
         this.events = this.eventService.getEvents();
       }
     });
+  }
+
+  goToEvent(eventId: number | undefined): void{
+    this.router.navigate(['events', eventId])
+  }
+
+  goToAllEvents(): void{
+    this.router.navigate(['events'])
   }
 
   setDateFromToday(offset: number): string {
