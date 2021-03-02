@@ -74,10 +74,11 @@ export class CalendarComponent implements OnInit{
     return result;
   }
 
-  openDateEventDialog(i:number) {
-    let events = this.getEvents(i);
+  openDateEventDialog(date:number) {
+    let year = this.displayYear
+    let month = this.displayMonth
     const dialogRef = this.dialog.open(DateEventDialogComponent, {
-      data: { events },
+      data: { year, month, date },
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
       width: '400px',

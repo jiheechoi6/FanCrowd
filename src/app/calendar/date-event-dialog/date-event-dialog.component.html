@@ -1,1 +1,4 @@
-<p>date-event-dialog works!</p>
+<div id='event-container' *ngFor="let event of eventLst">
+    <p id='event-name'>{{event.name}}</p>
+</div>
+<div *ngIf="hasNoEvent()">No events are scheduled for this date</div>
