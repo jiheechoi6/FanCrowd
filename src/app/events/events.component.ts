@@ -14,6 +14,7 @@ export class EventsComponent implements OnInit {
   events: Array<Event> = [];
   allEvents: Array<Event> = [];
   pageSizeOptions = [5, 10, 20, 50];
+  pageSize = this.pageSizeOptions[1];
   today = new Date();
   isAdmin = false;
 
@@ -34,7 +35,7 @@ export class EventsComponent implements OnInit {
   }
 
   selectPage(event: any){
-    console.log("Event:", event);
+    this.pageSize = event.pageSize;
     let startIndex = event.pageSize * event.pageIndex;
     let endIndex = startIndex + event.pageSize;
     this.events = this.allEvents.slice(startIndex, endIndex);
