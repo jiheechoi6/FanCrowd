@@ -5,7 +5,7 @@
             <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
             <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
-                routerLinkActive="active">Profile</span>
+                routerLinkActive="active"><i class="far fa-user"></i> {{user?.username}}</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/discussion-boards'" routerLinkActive="active">Discussion
                 Board</span>
