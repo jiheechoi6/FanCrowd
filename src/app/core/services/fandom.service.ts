@@ -6,7 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root',
 })
 export class FandomService {
-  category = ["movie", "book", "show", "anime", "game", "sport", "technology"];
+  category = ["Movies", "Books", "Shows", "Anime", "Games", "Sports", "Technology"];
   fandoms: Fandom[] = [
     {
         id: 1,
@@ -162,16 +162,22 @@ export class FandomService {
 
   constructor(private http: HttpClient) {}
 
+  sortFunction(a: Fandom, b: Fandom) : number{  
+    var dateA = new Date(a.name).getTime();
+    var dateB = new Date(b.name).getTime();
+    return dateA > dateB ? 1 : -1;  
+  }
+
   getCategories(): string[] {
     // Get categories from server, code below requires server call
 
-    return this.category;
+    return this.category.sort();
   }
 
   getFandoms(): Fandom[] {
     // Get fandoms from server, code below requires server call
 
-    return this.fandoms;
+    return this.fandoms.sort((a,b) => this.sortFunction(a,b));
   }
 
   getFandomsByCategories(category: string | undefined): string[] {
@@ -183,7 +189,7 @@ export class FandomService {
         }
     });
 
-    return fandomsByCategory;
+    return fandomsByCategory.sort();
   }
 
   createFandom(fandom: Fandom): void {

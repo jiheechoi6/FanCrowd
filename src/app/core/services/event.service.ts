@@ -12,7 +12,7 @@ export class EventService {
       id: 1,
       fandomType: {
         id: 11,
-        category: "book",
+        category: "Books",
         name: "All" 
       },
       name: 'Comic Con',
@@ -30,7 +30,7 @@ export class EventService {
       id: 2,
       fandomType: {
         id: 30,
-        category: "technology",
+        category: "Technology",
         name: "All" 
       },
       name: 'World Expo',
@@ -51,7 +51,7 @@ export class EventService {
       id: 3,
       fandomType: {
         id: 1,
-        category: "movie",
+        category: "Movies",
         name: "Avengers" 
       },
       name: 'Marvel Studios',
@@ -61,6 +61,93 @@ export class EventService {
         that appear in Marvel Comics publications.`,
       postedBy: 'admin',
       location: 'San Fransico, California, USA',
+      startDate: new Date(),
+      endDate: new Date(),
+      totalAttendance: 1,
+    },
+    {
+      id: 4,
+      fandomType: {
+        id: 21,
+        category: "Games",
+        name: "God of War" 
+      },
+      name: 'Sony Game Release',
+      description: `God of War is an action-adventure game franchise created by David Jaffe at 
+        Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and
+        has become a flagship title for the PlayStation brand, consisting of eight games across 
+        multiple platforms with a ninth currently in development.`,
+      postedBy: 'admin',
+      location: 'Los Angeles, California, USA',
+      startDate: new Date(),
+      endDate: new Date(),
+      totalAttendance: 1,
+    },
+    {
+      id: 5,
+      fandomType: {
+        id: 9,
+        category: "Books",
+        name: "Harry Potter" 
+      },
+      name: 'J.K Rowling Meet & Greet',
+      description: `Harry Potter is a series of seven fantasy novels written by British author, 
+        J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his 
+        friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School 
+        of Witchcraft and Wizardry.`,
+      postedBy: 'user1',
+      location: 'Vancouver, British Columbia, Canada',
+      startDate: new Date(),
+      endDate: new Date(),
+      totalAttendance: 3,
+    },
+    {
+      id: 6,
+      fandomType: {
+        id: 17,
+        category: "Anime",
+        name: "One Punch Man" 
+      },
+      name: 'Anime-Fest',
+      description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It 
+        tells the story of Saitama, a superhero who can defeat any opponent with a single punch 
+        but seeks to find a worthy opponent after growing bored by a lack of challenge due to his 
+        overwhelming strength.`,
+      postedBy: 'user2',
+      location: 'New York City, New York, USA',
+      startDate: new Date(),
+      endDate: new Date(),
+      totalAttendance: 2,
+    },
+    {
+      id: 7,
+      fandomType: {
+        id: 26,
+        category: "Sports",
+        name: "Soccer" 
+      },
+      name: 'FIFA World Cup Party',
+      description: `The FIFA World Cup, often simply called the World Cup, is an international 
+        association football competition contested by the senior men's national teams of the members 
+        of the Fédération Internationale de Football Association, the sport's global governing body.`,
+      postedBy: 'admin',
+      location: 'Westminister, London, United Kingdom',
+      startDate: new Date(),
+      endDate: new Date(),
+      totalAttendance: 0,
+    },
+    {
+      id: 8,
+      fandomType: {
+        id: 15,
+        category: "Shows",
+        name: "All" 
+      },
+      name: 'New HBO Show Press Release',
+      description: `Home Box Office is an American pay television network owned by WarnerMedia 
+        Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
+      postedBy: 'user1',
+      location: 'Seattle, Washington, USA',
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 1,
