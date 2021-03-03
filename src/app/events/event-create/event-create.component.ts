@@ -3,7 +3,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventService } from '../../core/services/event.service';
 import { FandomService } from '../../core/services/fandom.service';
 import Event from '../../shared/models/event';
-import Fandom from '../../shared/models/fandom';
 
 @Component({
   selector: 'event-create-dialog',
@@ -18,7 +17,7 @@ export class EventCreateDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EventCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {},
+    @Inject(MAT_DIALOG_DATA) public data: {username: string},
     private eventService: EventService,
     private fandomService: FandomService,
   ) {
@@ -37,8 +36,9 @@ export class EventCreateDialogComponent implements OnInit {
       startDate: defaultStartDate,
       endDate: defaultEndDate,
       location: '',
-      postedBy: 'user2',
+      postedBy: this.data.username,
       totalAttendance: 0,
+      reviews: []
     };
   }
 

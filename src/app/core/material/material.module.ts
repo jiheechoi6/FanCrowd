@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const MaterialModules = [
   MatButtonModule,
@@ -20,7 +21,8 @@ const MaterialModules = [
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSelectModule
+  MatSelectModule,
+  MatPaginatorModule
 ];
 
 @NgModule({

@@ -1,4 +1,5 @@
 import Fandom from "./fandom";
+import Review from "./review";
 
 interface Event {
   id?: number;
@@ -9,7 +10,8 @@ interface Event {
   location: string;
   startDate: Date;
   endDate: Date;
-  totalAttendance: number; // Not including the person that created the event
+  totalAttendance: number;
+  reviews: Review[];
 }
 
 export default Event;

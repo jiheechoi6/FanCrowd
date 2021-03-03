@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import Event from 'src/app/shared/models/event';
+import Review from 'src/app/shared/models/review';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/cdk/overlay/overlay-directives';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +27,30 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 2,
+      reviews: [{
+        id: 1,
+        title: "Great Event",
+        rating: 4,
+        content: `Something`,
+        postedBy: "user1",
+        postDate: this.today
+      },
+      {
+        id: 2,
+        title: "Amazing, Lot's of fun",
+        rating: 5,
+        content: `Something`,
+        postedBy: "user2",
+        postDate: this.today
+      },
+      {
+        id: 3,
+        title: "Best Time Ever!!!!!!",
+        rating: 5,
+        content: `Something`,
+        postedBy: "user3",
+        postDate: this.today
+      }]
     },
     {
       id: 2,
@@ -46,6 +72,22 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 0,
+      reviews: [{
+        id: 1,
+        title: "Cool tech!",
+        rating: 5,
+        content: `Something`,
+        postedBy: "user3",
+        postDate: this.today
+      },
+      {
+        id: 2,
+        title: "Nice things to see",
+        rating: 3,
+        content: `Something`,
+        postedBy: "user3",
+        postDate: this.today
+      }]
     },
     {
       id: 3,
@@ -64,6 +106,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 1,
+      reviews: []
     },
     {
       id: 4,
@@ -82,6 +125,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 1,
+      reviews: []
     },
     {
       id: 5,
@@ -100,6 +144,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 3,
+      reviews: []
     },
     {
       id: 6,
@@ -118,6 +163,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 2,
+      reviews: []
     },
     {
       id: 7,
@@ -135,6 +181,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 0,
+      reviews: []
     },
     {
       id: 8,
@@ -151,6 +198,7 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 1,
+      reviews: []
     },
   ];
 
@@ -172,6 +220,24 @@ export class EventService {
     // Get event from server, code below requires server call
 
     return this.events.find((event) => event.id === id) || null;
+  }
+
+  getReviewsByEventId(eventId: number): Review[] | null {
+    // Get reviews of a specific event from server, code below requires server call
+
+    return (this.events.find((event) => event.id === eventId))?.reviews || null;
+  }
+
+  addReviewToEvent(eventId: number, review: Review): void {
+    // Add review to a specific event on server, code below requires server call
+
+    let event = (this.events.find((event) => event.id === eventId));
+    console.log("Testing",eventId, this.events);
+    if (event){
+      event.reviews.push(review);
+    }
+
+    console.log("Test",event);
   }
 
   createEvent(event: Event): void {
