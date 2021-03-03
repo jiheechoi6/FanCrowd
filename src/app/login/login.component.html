@@ -20,6 +20,7 @@
                     <mat-error>Password is a required field</mat-error>
                 </mat-form-field>
             </div>
+            <a [routerLink]="'/forgot-password'">Forgot password?</a>
             <p *ngIf="loginError" class="mat-body error-message">{{loginError}}</p>
             <div class="button-action-container">
                 <button mat-raised-button color="primary" type="submit" [disabled]="!logInForm.valid"

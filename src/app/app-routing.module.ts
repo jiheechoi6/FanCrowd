@@ -27,6 +27,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'forgot-password',
+    loadChildren: () =>
+      import('./forgot-password/forgot-password.module').then(
+        (m) => m.ForgotPasswordModule
+      ),
+    canActivate: [LoggedInGuard],
+  },
+  {
     path: 'calendar',
     loadChildren: () =>
       import('./calendar/calendar.module').then((m) => m.CalendarModule),
