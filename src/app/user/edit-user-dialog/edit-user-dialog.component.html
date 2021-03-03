@@ -4,9 +4,13 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Username</mat-label>
-                <input matInput [(ngModel)]="user.username" name="username" required pattern=".*\S+.*"
-                    autocomplete="off" />
-                <mat-error>Username is a required field</mat-error>
+                <input matInput [(ngModel)]="user.username" name="username" required pattern="[a-z0-9_]+"
+                    autocomplete="off" #usernameField="ngModel" />
+                <mat-error *ngIf="usernameField.errors?.required">Username is a required field</mat-error>
+                <mat-error *ngIf="usernameField.errors?.pattern">Usernames can only contain lowercase characters,
+                    digits, and
+                    underscores
+                </mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -20,9 +24,11 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" [(ngModel)]="user.email" name="email" required pattern=".*\S+.*"
-                    autocomplete="off" />
-                <mat-error>Email is a required field</mat-error>
+                <input matInput [(ngModel)]="user.email" name="email" required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" autocomplete="off"
+                    #emailField="ngModel" />
+                <mat-error *ngIf="emailField.errors?.required">Email is a required field</mat-error>
+                <mat-error *ngIf="emailField.errors?.pattern">Please enter a valid email</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">
@@ -52,6 +58,6 @@
 </section>
 <div mat-dialog-actions align="end">
     <button mat-flat-button mat-dialog-close color="warn">Cancel</button>
-    <button mat-flat-button color="accent" (click)="editUserFrom.ngSubmit.emit()"
+    <button mat-flat-button color="primary" (click)="editUserFrom.ngSubmit.emit()"
         [disabled]="!editUserFrom.form.valid">Confirm</button>
 </div>

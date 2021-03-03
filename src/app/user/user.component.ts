@@ -53,7 +53,7 @@ export class UserComponent implements OnInit {
       data: { ...this.user },
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
-      width: '400px',
+      width: '450px',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
