@@ -13,7 +13,7 @@ export class AuthService {
         ["user2", "user2"],
         ["admin", "admin"]
     ]);
-  currentLoggedInUser:string = "";
+  currentLoggedInUser:string = "user1";
   users: Map<string, User> = 
     new Map([
     ['user1',
@@ -108,6 +108,10 @@ export class AuthService {
       return null
     }
     return this._usernamePassord.get(username);
+  }
+
+  getCurrentLoggedInUserEvents(){
+    return this.users.get(this.currentLoggedInUser)?.attendingEvents;
   }
 
   addNewUser(username: string, firstname:string, lastname:string, password:string, usertype: string){
