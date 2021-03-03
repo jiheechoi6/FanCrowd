@@ -171,4 +171,23 @@ export class AuthService {
     //Send password was recently changed email, once successfully changed
     this._emailService.sendPasswordChangedEmail(emailVerficationCodeSentTo);
   }
+
+  getCurrentLoggedInUserEvents() {
+    return [
+      { name: 'Get Together', date: new Date(), totalAttending: 10, id: 1 },
+      { name: 'Fandom Friday', date: new Date(), totalAttending: 10, id: 2 },
+      {
+        name: 'Harry Potter Convention',
+        date: new Date(),
+        totalAttending: 10,
+        id: 3,
+      },
+      {
+        name: 'Comic Convention',
+        date: new Date(),
+        totalAttending: 10,
+        id: 4,
+      },
+    ];
+  }
 }

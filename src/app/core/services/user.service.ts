@@ -110,7 +110,7 @@ export class UserService {
 
   getUserByUsername(username: string) {
     // Get user from server, code below requires server call
-    
+
     return this.users.find((user) => user.username === username) || null;
   }
 
@@ -123,6 +123,6 @@ export class UserService {
   }
 
   updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string) {
-      // Update user info on server, code below requires server call
+    // Update user info on server, code below requires server call
   }
 }
