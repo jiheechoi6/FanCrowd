@@ -5,6 +5,7 @@ interface DialogData {
   title: string;
   details: string;
   onConfirmCb: Function;
+  params? : any;
 }
 
 @Component({
@@ -20,7 +21,12 @@ export class DeleteDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onConfirm() {
-    this.data.onConfirmCb();
+    if (this.data.params){
+      this.data.onConfirmCb(this.data.params);
+    } else {
+      this.data.onConfirmCb();
+    }
+    
     this.dialogRef.close();
   }
 }
