@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../core/services/auth.service';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
-import User from '../shared/models/user';
+import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 
 @Component({
@@ -12,20 +14,24 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
   styleUrls: ['./user.component.sass'],
 })
 export class UserComponent implements OnInit {
-  user: User | null = null;
-  loggedInUser: User | null = null;
+  userSubscription!: Subscription;
+  user: UserDTO | null = null;
+  loggedInUser: UserDTO | null = null;
 
   constructor(
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
     const username = this.activatedRoute.snapshot.params['username'];
     this.user = this.userService.getUserByUsername(username);
-    this.loggedInUser = this.userService.getUserByUsername('chandra-panta');
+    this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
     if (!this.user) {
       this.router.navigate(['../']);
     }
@@ -33,6 +39,7 @@ export class UserComponent implements OnInit {
 
   deleteUser() {
     this.userService.deleteUserByUsername(this.user?.username || '');
+    this._authService.logOut();
     this.router.navigate(['../']);
   }
 
@@ -46,12 +53,13 @@ export class UserComponent implements OnInit {
       data: { ...this.user },
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
-      width: '400px',
+      width: '450px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((updatedUser: User) => {
+    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
+        this._authService.currentUser.next(updatedUser);
       }
     });
   }
@@ -73,7 +81,7 @@ export class UserComponent implements OnInit {
   openBanUserAccountDialog() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: 'Ban User Confirmation',
+        title: 'Ban UserDTO Confirmation',
         details: `Are you sure you want to ban ${this.user?.username}?`,
         onConfirmCb: this.banUser.bind(this),
       },

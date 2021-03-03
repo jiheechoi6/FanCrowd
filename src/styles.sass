@@ -11,8 +11,24 @@
     100%
         transform: rotate(0deg)
 
+@keyframes ellipsis
+    0%
+        content: ''
+    25%
+        content: '.'
+    50%
+        content: '..'
+    75%
+        content: '...'
+    100%
+        content: ''
+
 body
     margin: 0px
+
+a
+    text-decoration: none
+    color: #3d5af1
 
 .material-dialog-backdrop
     background-color: black
@@ -21,12 +37,47 @@ body
 .mat-form-field
     width: 100%
 
-*::-webkit-scrollbar 
-  width: 12px
+*::-webkit-scrollbar
+    width: 12px
 
-*::-webkit-scrollbar-track 
-  background: transparent
+*::-webkit-scrollbar-track
+    background: transparent
 
-*::-webkit-scrollbar-thumb 
-  background-color: #d4d4d4
-  border-radius: 20px
+*::-webkit-scrollbar-thumb
+    background-color: gray
+
+.form-group
+    margin-bottom: 10px !important
+
+.loading-animation
+    &::after
+        display: inline-block
+        animation: ellipsis steps(1,end) 2.7s infinite
+        content: ''
+
+.mat-card,
+.mat-dialog-container,
+.mat-stepper-horizontal
+    background-color: #CFEAEE
+
+.form-buttons-container-right
+    display: flex
+    justify-content: flex-end
+
+.form-buttons-container-center
+    display: flex
+    justify-content: center
+
+.form-buttons-container-space-between
+    display: flex
+    justify-content: space-between
+
+.align-center
+    text-align: center
+
+.snackbar
+    background-color: #CFEAEE
+    color: black
+
+    .mat-simple-snackbar-action
+        color: black

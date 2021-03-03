@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from 'src/app/core/services/user.service';
-import User from 'src/app/shared/models/user';
+import UserDTO from 'src/app/shared/models/user-dto';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -13,7 +13,7 @@ export class EditUserDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public user: User,
+    @Inject(MAT_DIALOG_DATA) public user: UserDTO,
     private userService: UserService
   ) {
     this.usernameBeforeUpdate = user.username;

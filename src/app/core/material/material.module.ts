@@ -8,6 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
@@ -21,6 +24,9 @@ const MaterialModules = [
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
+  MatIconModule,
+  MatStepperModule,
+  MatSnackBarModule,
   MatSelectModule,
   MatPaginatorModule
 ];

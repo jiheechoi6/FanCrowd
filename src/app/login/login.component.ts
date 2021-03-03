@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
 
@@ -12,27 +10,23 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   username = '';
   password = '';
-  loginfailed = false;
-  errorMessage = '';
+  hidePassword = true;
+  loginError = '';
+  isLoggingIn = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
   onLogIn() {
-    if (
-      this.authService.getPasswordByUsername(this.username) == this.password
-    ) {
-      this.authService.currentLoggedInUser = this.username;
-      this.loginfailed = false;
-      this.router.navigate(['/events']);
+    this.isLoggingIn = true;
+    const user = this.authService.loginUser(this.username, this.password);
+    this.isLoggingIn = false;
+    if (user) {
+      console.log(user, 'has logged in');
+      this.router.navigate(['/users', user.username]);
     } else {
-      if (this.username == '' || this.password == '') {
-        this.errorMessage = 'Please enter your username and password';
-      } else {
-        this.errorMessage = 'Your username or password is wrong';
-      }
-      this.loginfailed = true;
+      this.loginError = 'Username or password is wrong';
     }
   }
 }

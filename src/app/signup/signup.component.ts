@@ -1,38 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { Router } from '@angular/router';
+import NewUser from '../shared/models/new-user';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.sass']
+  styleUrls: ['./signup.component.sass'],
 })
 export class SignupComponent implements OnInit {
-  firstname = ""
-  lastname = ""
-  username = ""
-  password = ""
-  passwordConfirm = ""
-  errorMessage = ""
-  signUpFailed = false
+  isSigningUp = false;
+  hidePassword = true;
+  email = '';
+  fullName = '';
+  username = '';
+  password = '';
+  passwordConfirm = '';
+  signUpError = '';
 
-  constructor(
-    private authService:AuthService,
-    private router:Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  onSignUp(){
-    if(this.username=="" || this.firstname=="" || this.lastname=="" || this.password==""){
-      this.errorMessage = "Please fill out all the fields"
-      this.signUpFailed = true
-    }else if(this.password != this.passwordConfirm){
-      this.errorMessage = "Please confirm your password correctly"
-      this.signUpFailed = true
-    }else{
-      this.authService.addNewUser(this.username, this.firstname, this.lastname, this.password, 'user');
-      this.router.navigate(['/events']);
+  onSignUp() {
+    this.isSigningUp = true;
+    const newUser: NewUser = {
+      email: this.email,
+      fullName: this.fullName,
+      password: this.password,
+      username: this.username,
+    };
+    const user = this.authService.createNewUser(newUser);
+    this.isSigningUp = false;
+    if (user) {
+      this.router.navigate(['/users', user.username]);
+    } else {
+      this.signUpError = 'Username is already taken';
     }
   }
 }

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignupComponent } from './signup.component';
-import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [SignupComponent],
+  declarations: [PageNotFoundComponent],
   imports: [
     CommonModule,
     CoreModule,
     RouterModule.forChild([
       {
         path: '',
-        component: SignupComponent,
+        component: PageNotFoundComponent,
       },
     ]),
   ],
 })
-export class SignupModule {}
+export class PageNotFoundModule {}
