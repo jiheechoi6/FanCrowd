@@ -1,11 +1,16 @@
-<mat-toolbar color="secondary" class="navbar">
-    <section>CSC309</section>
-    <section>
-        <span class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
-        <span class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
-        <span class="nav-item" [routerLink]="['/users', user?.username || '']" routerLinkActive="active">Profile</span>
-        <span class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
-        <span class="nav-item" [routerLink]="'/discussion-boards'" routerLinkActive="active">Fandoms</span>
-        <span class="nav-item" [routerLink]="'/calendar'" routerLinkActive="active">Calendar</span>
-    </section>
-</mat-toolbar>
+<nav>
+    <mat-toolbar color="accent" class="navbar">
+        <section>CSC309</section>
+        <section>
+            <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
+            <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
+                routerLinkActive="active"><i class="far fa-user"></i> {{user?.username}}</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/discussion-boards'" routerLinkActive="active">Discussion
+                Board</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/calendar'" routerLinkActive="active">Calendar</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/login'" (click)="onLogOut()">Log Out</span>
+        </section>
+    </mat-toolbar>
+</nav>

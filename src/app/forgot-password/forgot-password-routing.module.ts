@@ -1,16 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarComponent } from './calendar.component';
-import { AuthGuard } from '../core/services/auth.guard';
+import { ForgotPasswordComponent } from './forgot-password.component';
 
-const routes: Routes = [
-  { path: '', component: CalendarComponent, canActivate: [AuthGuard] },
-];
+const routes: Routes = [{ path: '', component: ForgotPasswordComponent }];
 
 @NgModule({
   declarations: [],
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CalendarRoutingModule {}
+export class ForgotPasswordRouting {}

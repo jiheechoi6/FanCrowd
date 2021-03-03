@@ -202,7 +202,7 @@ export class EventService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   sortFunction(a: Event, b: Event) : number{  
     var dateA = new Date(a.startDate).getTime();

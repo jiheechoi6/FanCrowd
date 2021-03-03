@@ -42,6 +42,9 @@
     .fandom-container
         flex-grow: 1
         margin-top: 20px
+        display: flex
+        flex-direction: column
+        height: 260px
 
 .fandom-header
     display: flex
@@ -55,6 +58,9 @@
 
 .events-container
     width: 35%
+    display: flex
+    flex-direction: column
+    height: 610px
 
 .profile-action-button-container
     display: flex
@@ -64,9 +70,17 @@
         width: 100%
         margin-bottom: 15px
 
-.event-item-container,
-.fandom-item-container
-    background-color: #5c5b5b
+.events
+    overflow-y: auto
+    padding-right: 10px
+    padding-bottom: 10px
+
+.fandoms
+    overflow-y: auto
+    padding-right: 10px
+
+.event-item-container
+    background-color: #e2f3f5
     margin-top: 20px
     cursor: pointer
 
@@ -80,3 +94,7 @@
     .event-stats
         display: flex
         justify-content: space-between
+
+.fandom-item-container
+    background-color: #e2f3f5
+    margin-top: 20px

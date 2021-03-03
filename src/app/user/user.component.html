@@ -38,26 +38,29 @@
             </mat-card>
             <mat-card class="fandom-container">
                 <mat-card-title>Fandoms</mat-card-title>
-                <mat-card-content>
-                    <p class="fandom-header"><span>Name</span><span>Level</span></p>
-                    <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms"
-                        [routerLink]="[ '/discussion-boards', fandom.id ]">
-                        <p class="fandom-item"><span>{{fandom.name}}</span><span>{{fandom.activityLevel}}</span></p>
-                    </mat-card>
-                </mat-card-content>
+                <section class="fandoms">
+                    <mat-card-content>
+                        <p class="fandom-header"><span>Name</span><span>Level</span></p>
+                        <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms">
+                            <p class="fandom-item"><span>{{fandom.name}}</span><span>{{fandom.activityLevel}}</span></p>
+                        </mat-card>
+                    </mat-card-content>
+                </section>
             </mat-card>
         </section>
         <mat-card class="events-container">
             <mat-card-title>Events Attending</mat-card-title>
-            <mat-card class="event-item-container" *ngFor="let event of user?.attendingEvents"
-                [routerLink]="[ '/events', event.id ]">
-                <mat-card-content>
-                    <p class="event-header">
-                        <span>{{event.name | titlecase}}</span><span>{{event.date | date:'medium'}}</span>
-                    </p>
-                    <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
-                </mat-card-content>
-            </mat-card>
+            <section class="events">
+                <mat-card class="event-item-container" *ngFor="let event of user?.attendingEvents"
+                    [routerLink]="[ '/events', event.id ]">
+                    <mat-card-content>
+                        <p class="event-header">
+                            <span>{{event.name | titlecase}}</span><span>{{event.date | date:'medium'}}</span>
+                        </p>
+                        <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
+                    </mat-card-content>
+                </mat-card>
+            </section>
         </mat-card>
     </div>
 </section>
