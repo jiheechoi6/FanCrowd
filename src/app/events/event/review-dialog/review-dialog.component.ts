@@ -26,7 +26,11 @@ export class ReviewDialogComponent implements OnInit {
       title: '',
       rating: 0,
       content: '',
-      postedBy: 'user1',
+      postedBy: {
+        username: 'user1',
+        profileUrl: 'https://dummyimage.com/250',
+        role: 'user'
+      },
       postDate: defaultPostDate
     };
   }

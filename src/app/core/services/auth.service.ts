@@ -70,7 +70,7 @@ export class AuthService {
       fullName: 'Raj Patel',
       city: 'Toronto',
       country: 'Canada',
-      email: 'raj@gmail.com',
+      email: 'rap.patel@mail.utoronto.ca',
       profileUrl: 'https://dummyimage.com/250',
       role: 'user',
       bio:
@@ -134,6 +134,10 @@ export class AuthService {
     }
     this.currentUser.next(loggedInUser);
     return loggedInUser;
+  }
+
+  getCurrentUser(): BehaviorSubject<UserDTO | null>{
+    return this.currentUser;
   }
 
   createNewUser(newUser: NewUser) {

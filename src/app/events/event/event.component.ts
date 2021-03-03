@@ -6,6 +6,7 @@ import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import Event from '../../shared/models/event';
 import Review from '../../shared/models/review';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-event',
@@ -18,9 +19,10 @@ export class EventComponent implements OnInit {
   today: Date = new Date();
   isAdmin: boolean = false;
   id: number = NaN;
-  username: string = "";
+  user: any;
 
   constructor(
+    private authService: AuthService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -30,16 +32,16 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = this.authService.getCurrentUser().value;
+    if (this.user && this.user.role === 'admin') {
+      this.isAdmin = true;
+    }
+
     this.event = this.eventService.getEventsById(this.id);
     if (this.event){
         this.reviews = this.event.reviews;
     } else {
         this.reviews = [];
-    }
-
-    this.username = this.activatedRoute.snapshot.params['username'];
-    if (this.username && this.username.toLowerCase().includes('admin')) {
-      this.isAdmin = true;
     }
   }
 

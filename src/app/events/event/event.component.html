@@ -11,7 +11,7 @@
                 </div>
                 <div class="flex-container header">
                     <h4 class="flex-one">{{this.event.location}}</h4>
-                    <h4 class="date">{{this.event.startDate | date:'mediumDate'}} - {{this.event.endDate | date:'mediumDate'}}</h4>
+                    <h4 class="inline-view">{{this.event.startDate | date:'mediumDate'}} - {{this.event.endDate | date:'mediumDate'}}</h4>
                 </div>
                 <div class="desc">{{this.event.description}}</div>
                 <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.category}}</span> </div>
@@ -21,7 +21,7 @@
 
                 <div class="flex-container footer">
                     <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{this.event.postedBy}}</span></div>
-                    <div class="delete" *ngIf="this.isAdmin" (click)="openDeleteDialog(event.id)">
+                    <div class="delete" *ngIf="this.isAdmin || this.user.username === event.postedBy" (click)="openDeleteDialog(event.id)">
                         <button mat-raised-button color="warn">Delete</button>
                     </div>
                 </div>
@@ -38,10 +38,17 @@
     <div *ngFor="let review of reviews; let i = index">
         <mat-card class="review-card">
             <mat-card-content>
-                <div>{{review.title}}</div>
-                <div>{{review.content}}</div>
-                <div>{{review.postedBy}}</div>
-                <div>{{review.postDate | date: 'mediumDate'}}</div>
+                <div class="poster"> 
+                    <img src="{{review.postedBy.profileUrl}}" alt="Profile Picture" class="profile-img"> 
+                    <div>{{review.postedBy.username}}</div>
+                    <div>{{review.postDate | date: 'mediumDate'}}</div>
+                </div>
+                <div class=divider></div>
+                <div class="review-content">
+                    <h3 class="flex-one">{{review.title}}</h3>
+                    <div>{{review.rating}}</div>
+                    <div>{{review.content}}</div>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>

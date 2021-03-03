@@ -20,7 +20,7 @@
                     <input matInput [(ngModel)]="password" name="password" [type]="hidePassword ? 'password' : 'text'"
                         required pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$" autocomplete="off"
                         #passwordField="ngModel" />
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
                         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="passwordField.errors?.required">Password is a required field</mat-error>
@@ -35,7 +35,7 @@
                     <input matInput [(ngModel)]="passwordConfirm" name="confirmPassword"
                         [type]="hidePassword ? 'password' : 'text'" required [pattern]="password" autocomplete="off"
                         #confirmPasswordField="ngModel" />
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
                         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error *ngIf="confirmPasswordField.errors?.required">Confirm Password is a required field

@@ -32,7 +32,11 @@ export class EventService {
         title: "Great Event",
         rating: 4,
         content: `Something`,
-        postedBy: "user1",
+        postedBy: {
+          username: "user1",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -40,7 +44,11 @@ export class EventService {
         title: "Amazing, Lot's of fun",
         rating: 5,
         content: `Something`,
-        postedBy: "user2",
+        postedBy: {
+          username: "user2",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -48,7 +56,11 @@ export class EventService {
         title: "Best Time Ever!!!!!!",
         rating: 5,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "admin",
+          profileUrl: "https://dummyimage.com/250",
+          role: "admin"
+        },
         postDate: this.today
       }]
     },
@@ -77,7 +89,11 @@ export class EventService {
         title: "Cool tech!",
         rating: 5,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "user1",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -85,7 +101,11 @@ export class EventService {
         title: "Nice things to see",
         rating: 3,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "user2",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       }]
     },
