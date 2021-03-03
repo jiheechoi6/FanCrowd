@@ -3,6 +3,7 @@ import UserDTO from 'src/app/shared/models/user-dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
+import { EmailService } from './email.service';
 
 @Injectable({
   providedIn: 'root',
@@ -114,7 +115,7 @@ export class AuthService {
     },
   ];
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient, private _emailService: EmailService) {}
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
@@ -159,4 +160,15 @@ export class AuthService {
   }
 
   autoLogin() {}
+
+  resetPassword(
+    emailVerficationCodeSentTo: string,
+    newPassword: string,
+    verficationCode: number
+  ) {
+    //API request to reset password endpoint
+    //Only change password for user with email emailVerficationCodeSentTo and matching verficationCode
+    //Send password was recently changed email, once successfully changed
+    this._emailService.sendPasswordChangedEmail(emailVerficationCodeSentTo);
+  }
 }
