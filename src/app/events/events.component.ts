@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create/event-create.component';
-import Event from '../shared/models/event.model';
+import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
+import Event from '../shared/models/event';
 
 @Component({
   selector: 'app-events',
@@ -12,26 +13,48 @@ import Event from '../shared/models/event.model';
 })
 export class EventsComponent implements OnInit {
   events: Array<Event> = [];
-  today = new Date();
-  isAdmin = false;
+  allEvents: Array<Event> = [];
+  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSize: number = this.pageSizeOptions[1];
+  pageIndex: number = 0;
+  today: Date = new Date();
+  isAdmin: boolean = false;
+  isSpecificEvent: boolean = false;
+  id: number = NaN;
+  username: string = "";
 
   constructor(
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router
-  ) {}
+  ) {
+    this.id = parseInt(this.activatedRoute.snapshot.params['id']);
+    this.isSpecificEvent = !isNaN(this.id);
+  }
 
   ngOnInit(): void {
-    this.events = this.eventService.getEvents();
-    const username: string = this.activatedRoute.snapshot.params['username'];
-    if (username && username.includes('admin')) {
+    if (!this.isSpecificEvent){
+      this.allEvents = this.eventService.getEvents();
+      this.events = this.allEvents.slice(0, 10);
+    }
+    this.username = this.activatedRoute.snapshot.params['username'];
+    if (this.username && this.username.toLowerCase().includes('admin')) {
       this.isAdmin = true;
     }
   }
 
+  selectPage(event: any){
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    let startIndex = event.pageSize * event.pageIndex;
+    let endIndex = startIndex + event.pageSize;
+    this.events = this.allEvents.slice(startIndex, endIndex);
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
+      data: {username: this.username},
       width: '800px',
       maxHeight: '90vh',
     });
@@ -43,6 +66,25 @@ export class EventsComponent implements OnInit {
     });
   }
 
+  openDeleteDialog(id: number | undefined) {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Delete Event Confirmation',
+        details: 'Are you sure you want to delete the event?',
+        onConfirmCb: this.deleteEvent.bind(this),
+        params: id
+      },
+      width: '360px',
+      height: '180px',
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+    });
+  }
+
+  goToEvent(eventId: number | undefined): void{
+    this.router.navigate(['events', eventId])
+  }
+
   setDateFromToday(offset: number): string {
     let day = this.today.getDate() + offset;
     let month = this.today.getMonth() + 1;
@@ -51,10 +93,11 @@ export class EventsComponent implements OnInit {
     return day + '/' + month + '/' + year;
   }
 
-  delete(id: number | undefined) {
+  deleteEvent(id: number | undefined): void {
     if (id) {
       let index = this.events.findIndex((event) => event.id === id);
       this.eventService.deleteEvent(index);
+      this.events = this.eventService.getEvents();
     }
   }
 }

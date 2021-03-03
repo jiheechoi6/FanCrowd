@@ -109,12 +109,20 @@ export class UserService {
   constructor(private _http: HttpClient) {}
 
   getUserByUsername(username: string) {
+    // Get user from server, code below requires server call
+    
     return this.users.find((user) => user.username === username) || null;
   }
 
-  deleteUserByUsername(username: string) {}
+  deleteUserByUsername(username: string) {
+    // Delete user from server, code below requires server call
+  }
 
-  banUserByUsername(username: string) {}
+  banUserByUsername(username: string) {
+    // Delete user from server, code below requires server call
+  }
 
-  updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string) {}
+  updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string) {
+      // Update user info on server, code below requires server call
+  }
 }

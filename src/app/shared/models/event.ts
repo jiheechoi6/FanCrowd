@@ -1,13 +1,17 @@
+import Fandom from "./fandom";
+import Review from "./review";
+
 interface Event {
   id?: number;
-  fandomType?: string;
+  fandomType: Fandom;
   name: string;
   description: string;
   postedBy: string;
   location: string;
   startDate: Date;
   endDate: Date;
-  totalAttendance: number; // Not including the person that created the event
+  totalAttendance: number;
+  reviews: Review[];
 }
 
 export default Event;
