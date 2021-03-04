@@ -56,7 +56,7 @@
                     [routerLink]="[ '/events', event.id ]">
                     <mat-card-content>
                         <p class="event-header">
-                            <span>{{event.name | titlecase}}</span><span>{{event.date | date:'medium'}}</span>
+                            <span>{{event.name | titlecase}}</span><span>{{event.date | date:'mediumDate'}}</span>
                         </p>
                         <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
                     </mat-card-content>
