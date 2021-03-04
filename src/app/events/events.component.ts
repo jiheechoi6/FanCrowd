@@ -4,6 +4,7 @@ import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create/event-create.component';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
+import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
 
 @Component({
@@ -21,27 +22,26 @@ export class EventsComponent implements OnInit {
   isAdmin: boolean = false;
   isSpecificEvent: boolean = false;
   id: number = NaN;
-  username: string = "";
+  user: any;
 
   constructor(
+    private authService: AuthService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router
   ) {
     this.id = parseInt(this.activatedRoute.snapshot.params['id']);
-    this.isSpecificEvent = !isNaN(this.id);
   }
 
   ngOnInit(): void {
-    if (!this.isSpecificEvent){
-      this.allEvents = this.eventService.getEvents();
-      this.events = this.allEvents.slice(0, 10);
-    }
-    this.username = this.activatedRoute.snapshot.params['username'];
-    if (this.username && this.username.toLowerCase().includes('admin')) {
+    this.user = this.authService.getCurrentUser().value;
+    if (this.user && this.user.role === 'admin') {
       this.isAdmin = true;
     }
+
+    this.allEvents = this.eventService.getEvents();
+    this.events = this.allEvents.slice(0, 10);
   }
 
   selectPage(event: any){
@@ -54,7 +54,7 @@ export class EventsComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: {username: this.username},
+      data: {username: this.user.username},
       width: '800px',
       maxHeight: '90vh',
     });
