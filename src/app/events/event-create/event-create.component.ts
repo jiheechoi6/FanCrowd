@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import Category from 'src/app/shared/models/category';
+import Fandom from 'src/app/shared/models/fandom';
 import { EventService } from '../../core/services/event.service';
 import { FandomService } from '../../core/services/fandom.service';
 import Event from '../../shared/models/event';
@@ -12,8 +14,8 @@ import Event from '../../shared/models/event';
 export class EventCreateDialogComponent implements OnInit {
   newEvent: Event;
   minDate: Date;
-  categories: string[] = [];
-  fandomByCategory: string[] = [];
+  categories: Category[] = [];
+  fandomByCategory: Fandom[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<EventCreateDialogComponent>,

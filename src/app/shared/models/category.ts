@@ -1,9 +1,7 @@
-interface Fandom {
+interface Category {
     id?: number;
-    category?: string;
     name: string;
     backgroundUrl?: string;
 }
   
-export default Fandom;
-  
+export default Category;

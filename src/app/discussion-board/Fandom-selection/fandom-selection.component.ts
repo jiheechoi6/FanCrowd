@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService } from '../core/services/event.service';
-import { FandomService } from '../core/services/fandom.service';
-import Category from '../shared/models/category';
+import Category from 'src/app/shared/models/category';
+import Fandom from 'src/app/shared/models/fandom';
+import { EventService } from '../../core/services/event.service';
+import { FandomService } from '../../core/services/fandom.service';
 
 @Component({
-  selector: 'app-discussion-board',
-  templateUrl: './discussion-board.component.html',
-  styleUrls: ['./discussion-board.component.sass']
+  selector: 'app-fandom-selection',
+  templateUrl: './fandom-selection.component.html',
+  styleUrls: ['./fandom-selection.component.sass']
 })
-export class DiscussionBoardComponent implements OnInit {
-  categories: Array<Category> = [];
+export class FandomSelectionComponent implements OnInit {
+  category: string = '';
+  fandoms: Fandom[] = [];
 
   constructor( 
     private eventService: EventService,
@@ -20,10 +22,12 @@ export class DiscussionBoardComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router
   ) 
-  { }
+  { 
+    this.category = this.activatedRoute.snapshot.params['category'];
+  }
 
   ngOnInit(): void {
-    this.categories = this.fandomService.getCategories();
+    this.fandoms = this.fandomService.getFandomsByCategories(this.category);
   }
 
   openDialog(): void {
@@ -42,8 +46,12 @@ export class DiscussionBoardComponent implements OnInit {
     // TODO: Implement this
   }
 
-  goToCategory(category: string): void {
-    this.router.navigate(['discussion-boards', category]);
+  goToEventBrowser(): void {
+    this.router.navigate(['discussion-boards']);
+  }
+
+  goToFandomsEvents(fandom: Fandom): void{
+      // TODO
   }
 
 }
