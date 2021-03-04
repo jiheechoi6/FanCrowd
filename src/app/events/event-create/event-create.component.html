@@ -39,8 +39,8 @@
                 <mat-select id="category" name="category" (selectionChange)="categoryChange($event)" 
                     [(ngModel)]="newEvent.fandomType.category" required>
                     <mat-option>--Select Category--</mat-option>
-                    <mat-option *ngFor="let category of categories" [value]="category">
-                      {{category}}
+                    <mat-option *ngFor="let category of categories" [value]="category.name">
+                      {{category.name}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Please select a category</mat-error>
@@ -52,8 +52,8 @@
                 <mat-label>Fandom</mat-label>
                 <mat-select name="fandom" [(ngModel)]="newEvent.fandomType.name" required>
                     <mat-option>--Select Fandom--</mat-option>
-                    <mat-option *ngFor="let fandom of fandomByCategory" [value]="fandom">
-                      {{fandom}}
+                    <mat-option *ngFor="let fandom of fandomByCategory" [value]="fandom.name">
+                      {{fandom.name}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Please select a fandom</mat-error>

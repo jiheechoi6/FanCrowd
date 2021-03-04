@@ -2,9 +2,10 @@
     <app-spinner *ngIf="!user"></app-spinner>
     <div class="profile-info-container" *ngIf="user">
         <section class="profile-img-info-container">
-            <div class="circle">
+            <div class="profile-img-wrapper">
                 <img class="profile-img" src="{{user.profileUrl}}" alt="Profile Picture">
             </div>
+            
             <mat-card class="user-info">
                 <mat-card-content>
                     <p class="user-info-item"><span class="user-info-label">Username

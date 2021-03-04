@@ -4,15 +4,15 @@
         <span class="create" (click)="openDialog()"><button mat-raised-button color="primary">Add Fandom</button></span>
     </div>
 
-    <!-- <div class="category-container">
-        <div *ngFor="let category of categories; let i = index">
-            <mat-card class="category-card" (click)="goToCategory(category)">
+    <div class="fandom-container">
+        <div *ngFor="let fandom of fandoms; let i = index">
+            <mat-card style="background-image: url({{fandom.backgroundUrl}})" class="fandom-card" (click)="goToFandomsEvents(fandom)">
                 <mat-card-content>
-                    <div>
-                        <h1 class="center"><b>{{category}}</b></h1>
+                    <div class="text">
+                        <h1 class="center"><b>{{fandom.name}} </b></h1>
                     </div>
                 </mat-card-content>
             </mat-card>
         </div>
-    </div> -->
+    </div>
 </div>

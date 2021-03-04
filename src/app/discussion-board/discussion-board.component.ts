@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { FandomService } from '../core/services/fandom.service';
+import Category from '../shared/models/category';
 
 @Component({
   selector: 'app-discussion-board',
@@ -10,7 +11,7 @@ import { FandomService } from '../core/services/fandom.service';
   styleUrls: ['./discussion-board.component.sass']
 })
 export class DiscussionBoardComponent implements OnInit {
-  categories: Array<string> = [];
+  categories: Array<Category> = [];
 
   constructor( 
     private eventService: EventService,
