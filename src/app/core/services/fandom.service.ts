@@ -11,152 +11,182 @@ export class FandomService {
     {
         id: 1,
         category: this.category[0],
-        name: "Avengers" 
+        name: "Avengers",
+        backgroundUrl: ''
     },
     {
         id: 2,
         category: this.category[0],
-        name: "Harry Potter" 
+        name: "Harry Potter",
+        backgroundUrl: 'https://wallpapercave.com/wp/wp2763337.jpg'
     },
     {
         id: 3,
         category: this.category[0],
-        name: "Avengers: Age of Ultron" 
+        name: "Avengers: Age of Ultron",
+        backgroundUrl: ''
     },
     {
         id: 4,
         category: this.category[0],
-        name: "Maze Runner" 
+        name: "Maze Runner",
+        backgroundUrl: ''
     },
     {
         id: 5,
         category: this.category[0],
-        name: "Journey to the Mysterious Island" 
+        name: "Journey to the Mysterious Island",
+        backgroundUrl: ''
     },
     {
         id: 6,
         category: this.category[0],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 7,
         category: this.category[1],
-        name: "Divergent" 
+        name: "Divergent",
+        backgroundUrl: ''
     },
     {
         id: 8,
         category: this.category[1],
-        name: "The Chronicles of Narnia" 
+        name: "The Chronicles of Narnia",
+        backgroundUrl: ''
     },
     {
         id: 9,
         category: this.category[1],
-        name: "Harry Potter" 
+        name: "Harry Potter",
+        backgroundUrl: ''
     },
     {
         id: 10,
         category: this.category[1],
-        name: "The Big Bang Theory" 
+        name: "The Big Bang Theory",
+        backgroundUrl: ''
     },
     {
         id: 11,
         category: this.category[1],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 12,
         category: this.category[2],
-        name: "Game of Thrones" 
+        name: "Game of Thrones",
+        backgroundUrl: ''
     },
     {
         id: 13,
         category: this.category[2],
-        name: "The Queen's Gambit" 
+        name: "The Queen's Gambit",
+        backgroundUrl: ''
     },
     {
         id: 14,
         category: this.category[2],
-        name: "Harry Potter" 
+        name: "Harry Potter",
+        backgroundUrl: ''
     },
     {
         id: 15,
         category: this.category[2],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 16,
         category: this.category[3],
-        name: "Yu-Gi-Oh!" 
+        name: "Yu-Gi-Oh!",
+        backgroundUrl: ''
     },
     {
         id: 17,
         category: this.category[3],
-        name: "One Punch Man" 
+        name: "One Punch Man",
+        backgroundUrl: ''
     },
     {
         id: 18,
         category: this.category[3],
-        name: "Beyblade" 
+        name: "Beyblade",
+        backgroundUrl: ''
     },
     {
         id: 19,
         category: this.category[3],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 20,
         category: this.category[4],
-        name: "Call of Duty" 
+        name: "Call of Duty",
+        backgroundUrl: ''
     },
     {
         id: 21,
         category: this.category[4],
-        name: "God of War" 
+        name: "God of War",
+        backgroundUrl: ''
     },
     {
         id: 22,
         category: this.category[4],
-        name: "Assassin's Creed" 
+        name: "Assassin's Creed",
+        backgroundUrl: ''
     },
     {
         id: 23,
         category: this.category[4],
-        name: "NBA 2020" 
+        name: "NBA 2020",
+        backgroundUrl: ''
     },
     {
         id: 24,
         category: this.category[4],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 25,
         category: this.category[5],
-        name: "Basketball" 
+        name: "Basketball",
+        backgroundUrl: ''
     },
     {
         id: 26,
         category: this.category[5],
-        name: "Soccer" 
+        name: "Soccer",
+        backgroundUrl: ''
     },
     {
         id: 27,
         category: this.category[5],
-        name: "Golf" 
+        name: "Golf",
+        backgroundUrl: ''
     },
     {
         id: 28,
         category: this.category[5],
-        name: "Cricket" 
+        name: "Cricket",
+        backgroundUrl: ''
     },
     {
         id: 29,
         category: this.category[5],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     },
     {
         id: 30,
         category: this.category[6],
-        name: "All" 
+        name: "All",
+        backgroundUrl: ''
     }
   ];
 

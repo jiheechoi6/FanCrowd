@@ -13,7 +13,7 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',
-      profileUrl: 'https://dummyimage.com/250',
+      profileUrl: 'https://wallpapercave.com/wp/wp2763337.jpg',
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',

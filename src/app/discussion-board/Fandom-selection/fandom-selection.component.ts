@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventService } from '../core/services/event.service';
-import { FandomService } from '../core/services/fandom.service';
+import { EventService } from '../../core/services/event.service';
+import { FandomService } from '../../core/services/fandom.service';
 
 @Component({
-  selector: 'app-discussion-board',
-  templateUrl: './discussion-board.component.html',
-  styleUrls: ['./discussion-board.component.sass']
+  selector: 'app-fandom-selection',
+  templateUrl: './fandom-selection.component.html',
+  styleUrls: ['./fandom-selection.component.sass']
 })
-export class DiscussionBoardComponent implements OnInit {
+export class FandomSelectionComponent implements OnInit {
   categories: Array<string> = [];
 
   constructor( 
@@ -41,8 +41,8 @@ export class DiscussionBoardComponent implements OnInit {
     // TODO: Implement this
   }
 
-  goToCategory(category: string): void {
-    this.router.navigate(['discussion-boards', category]);
+  goToEventBrowser(): void {
+    this.router.navigate(['discussion-boards']);
   }
 
 }

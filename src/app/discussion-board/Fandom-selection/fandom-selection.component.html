@@ -1,9 +1,10 @@
 <div>
     <div class="button-container">
-        <div class="create" (click)="openDialog()"><button mat-raised-button color="primary">Add Category</button></div>
+        <span class="back" (click)="goToEventBrowser()"><button mat-raised-button color="primary">Back</button></span>
+        <span class="create" (click)="openDialog()"><button mat-raised-button color="primary">Add Fandom</button></span>
     </div>
 
-    <div class="category-container">
+    <!-- <div class="category-container">
         <div *ngFor="let category of categories; let i = index">
             <mat-card class="category-card" (click)="goToCategory(category)">
                 <mat-card-content>
@@ -13,5 +14,5 @@
                 </mat-card-content>
             </mat-card>
         </div>
-    </div>
+    </div> -->
 </div>

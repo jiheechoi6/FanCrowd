@@ -82,7 +82,7 @@ export class EventsComponent implements OnInit {
   }
 
   goToEvent(eventId: number | undefined): void{
-    this.router.navigate(['events', eventId])
+    this.router.navigate(['events', eventId]);
   }
 
   setDateFromToday(offset: number): string {
