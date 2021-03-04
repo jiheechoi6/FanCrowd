@@ -6,6 +6,9 @@ import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import Event from '../../shared/models/event';
 import Review from '../../shared/models/review';
+import { AuthService } from 'src/app/core/services/auth.service';
+import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
+import UserDTO from 'src/app/shared/models/user-dto';
 
 @Component({
   selector: 'app-event',
@@ -18,9 +21,10 @@ export class EventComponent implements OnInit {
   today: Date = new Date();
   isAdmin: boolean = false;
   id: number = NaN;
-  username: string = "";
+  user: UserDTO | null = null;
 
   constructor(
+    private authService: AuthService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -30,23 +34,30 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = this.authService.getCurrentUser().value;
+    if (this.user && this.user.role === 'admin') {
+      this.isAdmin = true;
+    }
+
+    this.user
+
     this.event = this.eventService.getEventsById(this.id);
     if (this.event){
         this.reviews = this.event.reviews;
     } else {
         this.reviews = [];
     }
-
-    this.username = this.activatedRoute.snapshot.params['username'];
-    if (this.username && this.username.toLowerCase().includes('admin')) {
-      this.isAdmin = true;
-    }
   }
 
   openAddDialog(): void{
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
         data: {
-            id: this.id
+            id: this.id,
+            user: {
+              username: this.user?.username,
+              profileUrl: this.user?.profileUrl,
+              role: this.user?.role
+            }
         },
         width: '800px',
         maxHeight: '90vh',
@@ -59,7 +70,7 @@ export class EventComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(id: number | undefined) {
+  openDeleteEventDialog(id: number | undefined) {
     this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
@@ -72,6 +83,25 @@ export class EventComponent implements OnInit {
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
     });
+  }
+
+  openDeleteReviewDialog(id: number | undefined) {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Delete Review Confirmation',
+        details: 'Are you sure you want to delete your review?',
+        onConfirmCb: this.deleteReview.bind(this),
+        params: id
+      },
+      width: '360px',
+      height: '180px',
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+    });
+  }
+
+  openEditDialog(id: number | undefined){
+    // Implement
   }
 
   goToAllEvents(): void{
@@ -96,6 +126,13 @@ export class EventComponent implements OnInit {
   }
 
   deleteReview(id: number | undefined): void {
-    // TODO: Implement this
+    let allEvents = this.eventService.getEvents();
+    let eventIindex = allEvents.findIndex((event) => event.id === this.id);
+
+    if (eventIindex >= 0){
+      let event = allEvents[eventIindex];
+      let reviewIndex = event.reviews.findIndex((review) => review.id === id);
+      this.eventService.deleteReview(eventIindex, reviewIndex);
+    }
   }
 }

@@ -32,7 +32,11 @@ export class EventService {
         title: "Great Event",
         rating: 4,
         content: `Something`,
-        postedBy: "user1",
+        postedBy: {
+          username: "user1",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -40,7 +44,11 @@ export class EventService {
         title: "Amazing, Lot's of fun",
         rating: 5,
         content: `Something`,
-        postedBy: "user2",
+        postedBy: {
+          username: "user2",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -48,7 +56,11 @@ export class EventService {
         title: "Best Time Ever!!!!!!",
         rating: 5,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "admin",
+          profileUrl: "https://dummyimage.com/250",
+          role: "admin"
+        },
         postDate: this.today
       }]
     },
@@ -77,7 +89,11 @@ export class EventService {
         title: "Cool tech!",
         rating: 5,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "user1",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       },
       {
@@ -85,7 +101,11 @@ export class EventService {
         title: "Nice things to see",
         rating: 3,
         content: `Something`,
-        postedBy: "user3",
+        postedBy: {
+          username: "user2",
+          profileUrl: "https://dummyimage.com/250",
+          role: "user"
+        },
         postDate: this.today
       }]
     },
@@ -222,24 +242,6 @@ export class EventService {
     return this.events.find((event) => event.id === id) || null;
   }
 
-  getReviewsByEventId(eventId: number): Review[] | null {
-    // Get reviews of a specific event from server, code below requires server call
-
-    return (this.events.find((event) => event.id === eventId))?.reviews || null;
-  }
-
-  addReviewToEvent(eventId: number, review: Review): void {
-    // Add review to a specific event on server, code below requires server call
-
-    let event = (this.events.find((event) => event.id === eventId));
-    console.log("Testing",eventId, this.events);
-    if (event){
-      event.reviews.push(review);
-    }
-
-    console.log("Test",event);
-  }
-
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
@@ -251,6 +253,33 @@ export class EventService {
     
     if (index >= 0) {
       this.events.splice(index, 1);
+      return true;
+    }
+
+    return false;
+  }
+
+  getReviewsByEventId(eventId: number): Review[] | null {
+    // Get reviews of a specific event from server, code below requires server call
+
+    return (this.events.find((event) => event.id === eventId))?.reviews || null;
+  }
+
+  addReviewToEvent(eventId: number, review: Review): void {
+    // Add review to a specific event on server, code below requires server call
+
+    let event = (this.events.find((event) => event.id === eventId));
+    if (event){
+      event.reviews.push(review);
+    }
+  }
+
+  deleteReview(eventIndex: number, reviewIndex: number): boolean {
+    // Delete review from server, code below requires server call
+    
+    if (eventIndex >= 0) {
+      let event = this.events[eventIndex];
+      event.reviews.splice(reviewIndex, 1);
       return true;
     }
 

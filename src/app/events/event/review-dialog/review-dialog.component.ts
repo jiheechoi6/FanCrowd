@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
 import { EventService } from '../../../core/services/event.service';
 import { FandomService } from '../../../core/services/fandom.service';
 import Review from '../../../shared/models/review';
@@ -16,7 +17,7 @@ export class ReviewDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {id: number},
+    @Inject(MAT_DIALOG_DATA) public data: {id: number, user: PartialUserDTO},
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
   ) {
@@ -26,7 +27,11 @@ export class ReviewDialogComponent implements OnInit {
       title: '',
       rating: 0,
       content: '',
-      postedBy: 'user1',
+      postedBy: {
+        username: this.data.user.username,
+        profileUrl: this.data.user.profileUrl,
+        role: this.data.user.role
+      },
       postDate: defaultPostDate
     };
   }

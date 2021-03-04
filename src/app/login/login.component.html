@@ -14,7 +14,7 @@
                     <mat-label>Password</mat-label>
                     <input matInput [(ngModel)]="password" name="password" [type]="hidePassword ? 'password' : 'text'"
                         required autocomplete="off" />
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
                         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error>Password is a required field</mat-error>
