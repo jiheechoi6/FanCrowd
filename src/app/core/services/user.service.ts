@@ -153,7 +153,11 @@ export class UserService {
     let currentUser = this.users.find((user) => user.username === username);
 
     if (currentUser){
-      currentUser?.attendingEvents.push(event);
+      let index = currentUser.attendingEvents.findIndex((userEvent) => userEvent.id === event.id);
+
+      if (index < 0){
+        currentUser.attendingEvents.push(event);
+      }
     }
   }
 

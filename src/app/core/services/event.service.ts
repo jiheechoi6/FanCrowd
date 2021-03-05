@@ -262,13 +262,17 @@ export class EventService {
     this.events.push(event);
   }
 
-  updateEventAttendance(id: number): void{
+  updateEventAttendance(id: number | undefined, isAttending: boolean): void{
     // Update event attendance on server, code below requires server call
 
     let event = this.events.find((event) => event.id === id);
-    
+
     if (event){
-      event.totalAttendance = event.totalAttendance + 1;
+      if (isAttending){
+        event.totalAttendance = event.totalAttendance + 1;
+      } else {
+        event.totalAttendance = event.totalAttendance - 1;
+      }
     }
   }
 

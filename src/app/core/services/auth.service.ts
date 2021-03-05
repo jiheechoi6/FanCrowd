@@ -15,6 +15,8 @@ export class AuthService {
     ['user2', 'user2'],
     ['admin', 'admin'],
   ]);
+
+  today = new Date();
   users: UserDTO[] = [
     {
       username: 'user1',
@@ -27,41 +29,55 @@ export class AuthService {
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [
-        { name: 'Get Together', date: new Date(), totalAttending: 10, id: 1 },
-        { name: 'Fandom Friday', date: new Date(), totalAttending: 10, id: 2 },
-        {
-          name: 'Harry Potter Convention',
-          date: new Date(),
-          totalAttending: 10,
-          id: 3,
+        { 
+          name: 'Comic Con', 
+          date: this.today, 
+          totalAttending: 2, 
+          id: 1 
+        },
+        { 
+          name: 'World Expo',
+          date: new Date(this.today.getTime() + 1),
+          totalAttending: 0,
+          id: 2,
         },
         {
-          name: 'Comic Convention',
-          date: new Date(),
-          totalAttending: 10,
-          id: 4,
+          name: 'Harry Potter',
+          date: new Date(this.today.getTime() + 9),
+          totalAttending: 3,
+          id: 5,
+        },
+        {
+          name: 'FIFA World Cup Party',
+          date: new Date(this.today.getTime() + 13),
+          totalAttending: 0,
+          id: 7,
         },
       ],
       fandoms: [
         {
-          name: 'Harry Potter',
+          // Movies Category
+          name: 'Avengers',
           id: 1,
           activityLevel: 5,
         },
         {
-          name: 'Spiderman',
+          // Movies Category
+          name: 'Harry Potter',
           id: 2,
           activityLevel: 2,
         },
         {
-          name: 'Superman',
-          id: 3,
+          // Books Category
+          name: 'Percy Jackson Series',
+          id: 10,
           activityLevel: 1,
         },
         {
-          name: 'Batman',
-          id: 4,
-          activityLevel: 10,
+          // Games Category
+          name: 'Call of Duty',
+          id: 20,
+          activityLevel: 4,
         },
       ],
     },
@@ -77,27 +93,30 @@ export class AuthService {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [
         {
-          name: 'Harry Potter Convention',
-          date: new Date(),
-          totalAttending: 10,
-          id: 3,
+          name: 'World Expo',
+          date: new Date(this.today.getTime() + 1),
+          totalAttending: 0,
+          id: 2,
         },
       ],
       fandoms: [
         {
+          // Movies Category
           name: 'Harry Potter',
-          id: 1,
+          id: 2,
           activityLevel: 2,
         },
         {
-          name: 'Superman',
-          id: 3,
-          activityLevel: 6,
+          // Sports Category
+          name: 'Basketball',
+          id: 25,
+          activityLevel: 3,
         },
         {
-          name: 'Batman',
-          id: 4,
-          activityLevel: 9,
+          // Shows Category
+          name: 'The Big Bang Theory',
+          id: 14,
+          activityLevel: 5,
         },
       ],
     },
