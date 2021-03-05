@@ -19,40 +19,42 @@ export class UserComponent implements OnInit {
   loggedInUser: UserDTO | null = null;
 
   constructor(
-    private userService: UserService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog,
+    private _userService: UserService,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router,
+    private _dialog: MatDialog,
     private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const username = this.activatedRoute.snapshot.params['username'];
-    this.user = this.userService.getUserByUsername(username);
-    this._authService.currentUser.subscribe(
-      (user) => (this.loggedInUser = user)
-    );
-    if (!this.user) {
-      this.router.navigate(['../']);
-    }
+    this._activatedRoute.params.subscribe((params) => {
+      const username = params['username'];
+      this.user = this._userService.getUserByUsername(username);
+      this._authService.currentUser.subscribe(
+        (user) => (this.loggedInUser = user)
+      );
+      if (!this.user) {
+        this._router.navigate(['../']);
+      }
+    });
   }
 
   deleteUser() {
-    this.userService.deleteUserByUsername(this.user?.username || '');
+    this._userService.deleteUserByUsername(this.user?.username || '');
     this._authService.logOut();
-    this.router.navigate(['../']);
+    this._router.navigate(['../']);
   }
 
   banUser() {
-    this.userService.banUserByUsername(this.user?.username || '');
-    this.router.navigate(['../']);
+    this._userService.banUserByUsername(this.user?.username || '');
+    this._router.navigate(['../']);
   }
 
   openEditAccountDialog() {
-    const dialogRef = this.dialog.open(EditUserDialogComponent, {
+    const dialogRef = this._dialog.open(EditUserDialogComponent, {
       data: { ...this.user },
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
+      backdropClass: 'material-_dialog-backdrop',
       width: '450px',
       disableClose: true,
     });
@@ -65,7 +67,7 @@ export class UserComponent implements OnInit {
   }
 
   openDeleteAccountDialog() {
-    this.dialog.open(DeleteDialogComponent, {
+    this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Account Confirmation',
         details: 'Are you sure you want to delete your account?',
@@ -74,12 +76,12 @@ export class UserComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
+      backdropClass: 'material-_dialog-backdrop',
     });
   }
 
   openBanUserAccountDialog() {
-    this.dialog.open(DeleteDialogComponent, {
+    this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Ban UserDTO Confirmation',
         details: `Are you sure you want to ban ${this.user?.username}?`,
@@ -88,7 +90,7 @@ export class UserComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
+      backdropClass: 'material-_dialog-backdrop',
     });
   }
 }
