@@ -204,8 +204,8 @@ export class EventComponent implements OnInit {
         this.eventService.deleteEvent(index);
 
         if (this.user && this.event){
-          this.userService.removeEventFromUserEvents(this.user.username, this.event.id);
-          this.authService.removeEventFromUserEvents(this.user.username, this.event.id);
+          this.userService.removeEventFromAllUsersEvents(this.event.id);
+          this.authService.removeEventFromAllUsersEvents(this.event.id);
         }
 
         this.router.navigate(['events']);

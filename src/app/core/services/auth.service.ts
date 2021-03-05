@@ -228,4 +228,19 @@ export class AuthService {
       }
     }
   }
+
+  removeEventFromAllUsersEvents(eventId: number | undefined): void {
+    // Update user info (remove event from events attending) on server, 
+    // code below requires server call
+
+    this.users.forEach((user) => {
+      if (user){
+        let eventIndex = user.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
+  
+        if (eventIndex >= 0){
+          user.attendingEvents.splice(eventIndex, 1);
+        }
+      }
+    });
+  }
 }
