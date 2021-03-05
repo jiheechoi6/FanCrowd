@@ -24,6 +24,8 @@
                     <div class="delete" *ngIf="this.isAdmin || this.user && this.user.username === event.postedBy" (click)="openDeleteEventDialog(event.id)">
                         <button mat-raised-button color="warn">Delete</button>
                     </div>
+                    <div class="more" *ngIf="!this.isAttending" (click)="addEventToProfile()"><button mat-raised-button color="accent">Attend</button></div>
+                    <div class="more" *ngIf="this.isAttending" (click)="removeEventFromProfile(event.id)"><button mat-raised-button color="accent">Unattend</button></div>
                 </div>
             </div>
         </mat-card-content>

@@ -10,6 +10,8 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
+import EventDTO from 'src/app/shared/models/event-dto';
+import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-event',
@@ -21,12 +23,14 @@ export class EventComponent implements OnInit {
   reviews: Review[] | null = [];
   today: Date = new Date();
   isAdmin: boolean = false;
+  isAttending: boolean = false;
   id: number = NaN;
   user: UserDTO | null = null;
   wroteReview: boolean = false;
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -37,11 +41,18 @@ export class EventComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser().value;
-    if (this.user && this.user.role === 'admin') {
-      this.isAdmin = true;
-    }
+    if (this.user ) {
+      if (this.user.role === 'admin'){
+        this.isAdmin = true;
+      }
 
-    this.user
+      let index = this.user.attendingEvents.findIndex((event) => event.id === this.id);
+      this.isAttending = false;
+
+      if (index >= 0){
+        this.isAttending = true;
+      }
+    }
 
     this.event = this.eventService.getEventsById(this.id);
     if (this.event){
@@ -113,7 +124,7 @@ export class EventComponent implements OnInit {
     if (this.reviews){
       let index = this.reviews?.findIndex((review) => review.id === id);
       let review = {...this.reviews[index]};
-      
+
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
         data: { eventId: this.id, review: review },
         autoFocus: false,
@@ -144,6 +155,32 @@ export class EventComponent implements OnInit {
 
   goToAllEvents(): void{
     this.router.navigate(['events']);
+  }
+
+  addEventToProfile() : void {
+    this.isAttending = true;
+    let eventDTO: EventDTO;
+
+    if (this.event){
+      eventDTO = {
+        name: this.event?.name,
+        date: this.event.startDate,
+        totalAttending: this.event.totalAttendance + 1,
+        id: this.event.id
+      };
+
+      if (this.user){
+        this.userService.updateUserEventsByUsername(this.user.username, eventDTO);
+      }
+    }
+  }
+
+  removeEventFromProfile(eventId: number | undefined) : void {
+    this.isAttending = false;
+    if (this.user && this.event){
+      this.userService.removeEventFromUserEvents(this.user.username, this.event.id);
+      this.event.totalAttendance = this.event.totalAttendance - 1;
+    }
   }
 
   setDateFromToday(offset: number): string {

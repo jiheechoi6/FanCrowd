@@ -9,6 +9,7 @@ import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular
 })
 export class EventService {
   today = new Date();
+  
   events: Event[] = [
     {
       id: 1,
@@ -259,6 +260,16 @@ export class EventService {
     // Add event to server, code below requires server call
 
     this.events.push(event);
+  }
+
+  updateEventAttendance(id: number): void{
+    // Update event attendance on server, code below requires server call
+
+    let event = this.events.find((event) => event.id === id);
+    
+    if (event){
+      event.totalAttendance = event.totalAttendance + 1;
+    }
   }
 
   deleteEvent(index: number): boolean {
