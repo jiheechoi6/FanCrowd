@@ -19,14 +19,11 @@ export class DateEventDialogComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.date)
-
     this.authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
       if(event.date.getFullYear() == this.date.year &&
           event.date.getMonth() == this.date.month &&
           event.date.getDate() == this.date.date){
         this.eventLst.push(event);
-        console.log(event)
       }
     });
   }

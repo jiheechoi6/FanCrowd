@@ -24,27 +24,34 @@
                     <div class="delete" *ngIf="this.isAdmin || this.user && this.user.username === event.postedBy" (click)="openDeleteEventDialog(event.id)">
                         <button mat-raised-button color="warn">Delete</button>
                     </div>
+                    <div class="more" *ngIf="!this.isAttending" (click)="addEventToProfile()"><button mat-raised-button color="accent">Attend</button></div>
+                    <div class="more" *ngIf="this.isAttending" (click)="removeEventFromProfile(event.id)"><button mat-raised-button color="accent">Unattend</button></div>
                 </div>
             </div>
         </mat-card-content>
     </mat-card>
 
-    <div class="button-container">
+    <div *ngIf="!this.wroteReview" class="button-container">
         <div class="button-div" id="review" (click)="openAddDialog()"><button mat-raised-button color="primary">Add Review</button></div>
     </div>
 
-    <div class="spacer"></div>
+    <div *ngIf="!this.wroteReview" class="spacer"></div>
 
     <div *ngFor="let review of reviews; let i = index">
         <mat-card class="review-card">
             <mat-card-content>
                 <div>
                     <div class="poster"> 
-                        <img src="{{review.postedBy.profileUrl}}" alt="Profile Picture" class="profile-img"> 
+                        <div class="profile-img-wrapper">
+                            <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture" class="profile-img">
+                        </div>
+        
                         <div>{{review.postedBy.username}}</div>
                         <div>{{review.postDate | date: 'mediumDate'}}</div>
                     </div>
+
                     <div class=divider></div>
+
                     <div class="review-content">
                         <h3 class="flex-one">{{review.title}}</h3>
                         <div>{{review.rating}}</div>

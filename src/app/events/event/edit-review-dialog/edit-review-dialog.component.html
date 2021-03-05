@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Edit Review</h1>
+
+<section mat-dialog-content>
+    <form (ngSubmit)="onUpdateReview()" #editReviewFrom="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Title</mat-label>
+                <input matInput [(ngModel)]="this.data.review.title" name="title" required pattern=".*\S+.*" autocomplete="off">
+                <mat-error>Title is a required field</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Rating</mat-label>
+                <mat-select id="rating" name="rating"
+                    [(ngModel)]="this.data.review.rating" required>
+                    <mat-option>--Select Rating--</mat-option>
+                    <mat-option *ngFor="let rating of ratings" [value]="rating">
+                      {{rating}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Please select a rating</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Review</mat-label>
+                <textarea class="description-field" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="3" cdkTextareaAutosize matInput [(ngModel)]="this.data.review.content"
+                    name="description" required pattern=".*\S+.*" autocomplete="off"></textarea>
+                <mat-error>Review is a required field</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
+
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="warn" type="button">Cancel</button>
+    <button mat-flat-button color="primary" (click)="editReviewFrom.ngSubmit.emit()"
+        [disabled]="!editReviewFrom.form.valid">Confirm</button>
+</div>
