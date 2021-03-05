@@ -30,7 +30,7 @@ export class UserService {
         { 
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
-          totalAttending: 0,
+          totalAttending: 2,
           id: 2,
         },
         {
@@ -42,7 +42,7 @@ export class UserService {
         {
           name: 'FIFA World Cup Party',
           date: new Date(this.today.getTime() + 13),
-          totalAttending: 0,
+          totalAttending: 1,
           id: 7,
         },
       ],
@@ -87,7 +87,7 @@ export class UserService {
         {
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
-          totalAttending: 0,
+          totalAttending: 2,
           id: 2,
         },
       ],

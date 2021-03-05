@@ -49,7 +49,7 @@ export class EventComponent implements OnInit {
 
       this.isAttending = false;
       let index = this.user.attendingEvents.findIndex((event) => event.id === this.id);
-      console.log("Index", index, this.user.attendingEvents);
+
       if (index >= 0){
         this.isAttending = true;
       }
@@ -172,6 +172,7 @@ export class EventComponent implements OnInit {
 
       if (this.user){
         this.userService.updateUserEventsByUsername(this.user.username, eventDTO);
+        this.authService.updateUserEventsByUsername(this.user.username, eventDTO);
         this.eventService.updateEventAttendance(this.event.id, this.isAttending);
         this.event = this.eventService.getEventsById(this.id);
       }
@@ -182,6 +183,7 @@ export class EventComponent implements OnInit {
     this.isAttending = false;
     if (this.user && this.event){
       this.userService.removeEventFromUserEvents(this.user.username, this.event.id);
+      this.authService.removeEventFromUserEvents(this.user.username, this.event.id);
       this.eventService.updateEventAttendance(this.event.id, this.isAttending);
       this.event = this.eventService.getEventsById(this.id);
     }

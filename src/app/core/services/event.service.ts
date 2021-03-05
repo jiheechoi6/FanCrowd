@@ -84,7 +84,7 @@ export class EventService {
       location: 'Dubai, UAE',
       startDate: new Date(this.today.getTime() + 1),
       endDate: new Date(this.today.getTime() + 2),
-      totalAttendance: 0,
+      totalAttendance: 2,
       reviews: [{
         id: 1,
         title: "Cool tech!",
@@ -214,7 +214,7 @@ export class EventService {
       location: 'Westminister, London, United Kingdom',
       startDate: new Date(this.today.getTime() + 13),
       endDate: new Date(this.today.getTime() + 14),
-      totalAttendance: 0,
+      totalAttendance: 1,
       reviews: []
     },
     {

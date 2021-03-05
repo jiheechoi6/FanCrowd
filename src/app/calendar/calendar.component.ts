@@ -55,9 +55,6 @@ export class CalendarComponent implements OnInit{
   }
   
   getEvents(i: number){
-    console.log(i);
-    console.log(this.displayMonth);
-    console.log(this.authService.getCurrentLoggedInUserEvents());
 
   }
 

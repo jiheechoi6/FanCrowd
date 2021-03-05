@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
     const user = this.authService.loginUser(this.username, this.password);
     this.isLoggingIn = false;
     if (user) {
-      console.log(user, 'has logged in');
       this.router.navigate(['/users', user.username]);
     } else {
       this.loginError = 'Username or password is wrong';

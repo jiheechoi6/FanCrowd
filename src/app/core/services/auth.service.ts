@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
 import { EmailService } from './email.service';
+import EventDTO from 'src/app/shared/models/event-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +39,7 @@ export class AuthService {
         { 
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
-          totalAttending: 0,
+          totalAttending: 2,
           id: 2,
         },
         {
@@ -50,7 +51,7 @@ export class AuthService {
         {
           name: 'FIFA World Cup Party',
           date: new Date(this.today.getTime() + 13),
-          totalAttending: 0,
+          totalAttending: 1,
           id: 7,
         },
       ],
@@ -95,7 +96,7 @@ export class AuthService {
         {
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
-          totalAttending: 0,
+          totalAttending: 2,
           id: 2,
         },
       ],
@@ -196,21 +197,35 @@ export class AuthService {
   }
 
   getCurrentLoggedInUserEvents() {
-    return [
-      { name: 'Get Together', date: new Date(), totalAttending: 10, id: 1 },
-      { name: 'Fandom Friday', date: new Date(), totalAttending: 10, id: 2 },
-      {
-        name: 'Harry Potter Convention',
-        date: new Date(),
-        totalAttending: 10,
-        id: 3,
-      },
-      {
-        name: 'Comic Convention',
-        date: new Date(),
-        totalAttending: 10,
-        id: 4,
-      },
-    ];
+    return this.currentUser.getValue()?.attendingEvents;
+  }
+
+  updateUserEventsByUsername(username: string, event: EventDTO): void {
+    // Update user info (Add event to events attending) on server, 
+    // code below requires server call
+
+    let user = this.currentUser.getValue()
+
+    if (user){
+      let index = user.attendingEvents.findIndex((userEvent) => userEvent.id === event.id);
+
+      if (index < 0){
+        user.attendingEvents.push(event);
+      }
+    }
+  }
+
+  removeEventFromUserEvents(username: string, eventId: number | undefined): void {
+    // Update user info (remove event from events attending) on server, 
+    // code below requires server call
+
+    let user = this.currentUser.getValue();
+    if (user){
+      let eventIndex = user.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
+
+      if (eventIndex >= 0){
+        user.attendingEvents.splice(eventIndex, 1);
+      }
+    }
   }
 }
