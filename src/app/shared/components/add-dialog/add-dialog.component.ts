@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FandomService } from 'src/app/core/services/fandom.service';
 import Category from '../../models/category';
 import Fandom from '../../models/fandom';
 
@@ -28,6 +29,7 @@ export class AddDialogComponent implements OnInit {
     object: any;
 
   constructor(
+    private fandomService: FandomService,
     public dialogRef: MatDialogRef<AddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
@@ -45,14 +47,14 @@ export class AddDialogComponent implements OnInit {
     if (this.data.isCategory){
         // Add a Category
         this.newCategory.name = this.object.name;
-        this.newCategory.backgroundUrl = this.object.backgroundUrl;
+        this.newCategory.backgroundUrl = this.object.backgroundUrl || 'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
 
         this.addCategory(this.newCategory);
     } else {
         // Add a Fandom
         this.newFandom.name = this.object.name;
         this.newFandom.category = this.object.category;
-        this.newFandom.backgroundUrl = this.object.backgroundUrl;
+        this.newFandom.backgroundUrl = this.object.backgroundUrl || 'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
 
         this.addFandom(this.newFandom);
     }
@@ -62,11 +64,11 @@ export class AddDialogComponent implements OnInit {
 
   addCategory(newCategory: Category): void {
     // Call fandomService and add caategory
-    console.log("Category Added", newCategory);
+    this.fandomService.addCategory(newCategory);
   }
 
   addFandom(newFandom: Fandom): void {
     // Call fandomService and add caategory
-    console.log("Fandom Added", newFandom);
+    this.fandomService.addFandom(newFandom);
   }
 }

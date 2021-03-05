@@ -26,16 +26,20 @@ export class DiscussionBoardComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialog.open(AddDialogComponent, {
+    const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Category',
         categoryName: '',
         isCategory: true
       },
-      width: '300px',
-      height: '280px',
+      width: '360px',
+      height: '300px',
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.categories = this.fandomService.getCategories();
     });
   }
 
