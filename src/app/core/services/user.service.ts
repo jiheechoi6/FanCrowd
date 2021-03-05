@@ -7,27 +7,28 @@ import EventDTO from 'src/app/shared/models/event-dto';
   providedIn: 'root',
 })
 export class UserService {
-    today = new Date();
+  today = new Date();
 
-    users: UserDTO[] = [
+  users: UserDTO[] = [
     {
       username: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',
-      profileUrl: 'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+      profileUrl:
+        'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [
-        { 
-          name: 'Comic Con', 
-          date: this.today, 
-          totalAttending: 2, 
-          id: 1 
+        {
+          name: 'Comic Con',
+          date: this.today,
+          totalAttending: 2,
+          id: 1,
         },
-        { 
+        {
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
           totalAttending: 2,
@@ -79,7 +80,8 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'raj@gmail.com',
-      profileUrl: 'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
+      profileUrl:
+        'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
@@ -118,7 +120,7 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'jihee@gmail.com',
-      profileUrl: 'https://dummyimage.com/250',
+      profileUrl: 'https://dummyimage.com/250.jpg',
       role: 'admin',
       bio: '',
       attendingEvents: [],
@@ -142,48 +144,60 @@ export class UserService {
     // Delete user from server, code below requires server call
   }
 
-  updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string): void {
+  updateUserByUsername(
+    updatedUser: UserDTO,
+    usernameBeforeUpdate: string
+  ): void {
     // Update user info on server, code below requires server call
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {
-    // Update user info (Add event to events attending) on server, 
+    // Update user info (Add event to events attending) on server,
     // code below requires server call
 
     let currentUser = this.users.find((user) => user.username === username);
 
-    if (currentUser){
-      let index = currentUser.attendingEvents.findIndex((userEvent) => userEvent.id === event.id);
+    if (currentUser) {
+      let index = currentUser.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === event.id
+      );
 
-      if (index < 0){
+      if (index < 0) {
         currentUser.attendingEvents.push(event);
       }
     }
   }
 
-  removeEventFromUserEvents(username: string, eventId: number | undefined): void {
-    // Update user info (remove event from events attending) on server, 
+  removeEventFromUserEvents(
+    username: string,
+    eventId: number | undefined
+  ): void {
+    // Update user info (remove event from events attending) on server,
     // code below requires server call
 
     let currentUser = this.users.find((user) => user.username === username);
-    if (currentUser){
-      let eventIndex = currentUser.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
+    if (currentUser) {
+      let eventIndex = currentUser.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === eventId
+      );
 
-      if (eventIndex >= 0){
+      if (eventIndex >= 0) {
         currentUser.attendingEvents.splice(eventIndex, 1);
       }
     }
   }
 
   removeEventFromAllUsersEvents(eventId: number | undefined): void {
-    // Update user info (remove event from events attending) on server, 
+    // Update user info (remove event from events attending) on server,
     // code below requires server call
 
     this.users.forEach((user) => {
-      if (user){
-        let eventIndex = user.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
-  
-        if (eventIndex >= 0){
+      if (user) {
+        let eventIndex = user.attendingEvents.findIndex(
+          (userEvent) => userEvent.id === eventId
+        );
+
+        if (eventIndex >= 0) {
           user.attendingEvents.splice(eventIndex, 1);
         }
       }

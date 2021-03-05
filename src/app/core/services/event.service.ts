@@ -9,14 +9,14 @@ import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular
 })
 export class EventService {
   today = new Date();
-  
+
   events: Event[] = [
     {
       id: 1,
       fandomType: {
         id: 11,
-        category: "Books",
-        name: "All" 
+        category: 'Books',
+        name: 'All',
       },
       name: 'Comic Con',
       description: `A comic book convention or comic con is an event with a 
@@ -28,49 +28,53 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 2,
-      reviews: [{
-        id: 1,
-        title: "Great Event",
-        rating: 4,
-        content: `Something`,
-        postedBy: {
-          username: "user1",
-          profileUrl: "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
-          role: "user"
+      reviews: [
+        {
+          id: 1,
+          title: 'Great Event',
+          rating: 4,
+          content: `Something`,
+          postedBy: {
+            username: 'user1',
+            profileUrl:
+              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+            role: 'user',
+          },
+          postDate: this.today,
         },
-        postDate: this.today
-      },
-      {
-        id: 2,
-        title: "Amazing, Lot's of fun",
-        rating: 5,
-        content: `Something`,
-        postedBy: {
-          username: "user2",
-          profileUrl: "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
-          role: "user"
+        {
+          id: 2,
+          title: "Amazing, Lot's of fun",
+          rating: 5,
+          content: `Something`,
+          postedBy: {
+            username: 'user2',
+            profileUrl:
+              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
+            role: 'user',
+          },
+          postDate: this.today,
         },
-        postDate: this.today
-      },
-      {
-        id: 3,
-        title: "Best Time Ever!!!!!!",
-        rating: 5,
-        content: `Something`,
-        postedBy: {
-          username: "admin",
-          profileUrl: "https://dummyimage.com/250",
-          role: "admin"
+        {
+          id: 3,
+          title: 'Best Time Ever!!!!!!',
+          rating: 5,
+          content: `Something`,
+          postedBy: {
+            username: 'admin',
+            profileUrl: 'https://dummyimage.com/250.jpg',
+            role: 'admin',
+          },
+          postDate: this.today,
         },
-        postDate: this.today
-      }]
+      ],
     },
     {
       id: 2,
       fandomType: {
         id: 30,
-        category: "Technology",
-        name: "All" 
+        category: 'Technology',
+        name: 'All',
       },
       name: 'World Expo',
       description: `Our once-in-a-lifetime celebration – the largest event ever staged in the 
@@ -85,37 +89,41 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 1),
       endDate: new Date(this.today.getTime() + 2),
       totalAttendance: 2,
-      reviews: [{
-        id: 1,
-        title: "Cool tech!",
-        rating: 5,
-        content: `Something`,
-        postedBy: {
-          username: "user1",
-          profileUrl: "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
-          role: "user"
+      reviews: [
+        {
+          id: 1,
+          title: 'Cool tech!',
+          rating: 5,
+          content: `Something`,
+          postedBy: {
+            username: 'user1',
+            profileUrl:
+              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+            role: 'user',
+          },
+          postDate: this.today,
         },
-        postDate: this.today
-      },
-      {
-        id: 2,
-        title: "Nice things to see",
-        rating: 3,
-        content: `Something`,
-        postedBy: {
-          username: "user2",
-          profileUrl: "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
-          role: "user"
+        {
+          id: 2,
+          title: 'Nice things to see',
+          rating: 3,
+          content: `Something`,
+          postedBy: {
+            username: 'user2',
+            profileUrl:
+              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
+            role: 'user',
+          },
+          postDate: this.today,
         },
-        postDate: this.today
-      }]
+      ],
     },
     {
       id: 3,
       fandomType: {
         id: 1,
-        category: "Movies",
-        name: "Avengers" 
+        category: 'Movies',
+        name: 'Avengers',
       },
       name: 'Marvel Studios',
       description: `Marvel Studios, LLC is an American film and television studio that is a 
@@ -127,14 +135,14 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 3),
       endDate: new Date(this.today.getTime() + 5),
       totalAttendance: 1,
-      reviews: []
+      reviews: [],
     },
     {
       id: 4,
       fandomType: {
         id: 21,
-        category: "Games",
-        name: "God of War" 
+        category: 'Games',
+        name: 'God of War',
       },
       name: 'Sony Game Release',
       description: `God of War is an action-adventure game franchise created by David Jaffe at 
@@ -149,24 +157,24 @@ export class EventService {
       reviews: [
         {
           id: 2,
-          title: "Great Release Party!!!",
+          title: 'Great Release Party!!!',
           rating: 5,
           content: `Something`,
           postedBy: {
-            username: "admin",
-            profileUrl: "https://dummyimage.com/250",
-            role: "admin"
+            username: 'admin',
+            profileUrl: 'https://dummyimage.com/250.jpg',
+            role: 'admin',
           },
-          postDate: this.today
-        }
-      ]
+          postDate: this.today,
+        },
+      ],
     },
     {
       id: 5,
       fandomType: {
         id: 9,
-        category: "Books",
-        name: "Harry Potter" 
+        category: 'Books',
+        name: 'Harry Potter',
       },
       name: 'J.K Rowling Meet & Greet',
       description: `Harry Potter is a series of seven fantasy novels written by British author, 
@@ -178,14 +186,14 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 9),
       endDate: new Date(this.today.getTime() + 10),
       totalAttendance: 3,
-      reviews: []
+      reviews: [],
     },
     {
       id: 6,
       fandomType: {
         id: 17,
-        category: "Anime",
-        name: "One Punch Man" 
+        category: 'Anime',
+        name: 'One Punch Man',
       },
       name: 'Anime-Fest',
       description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It 
@@ -197,14 +205,14 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 11),
       endDate: new Date(this.today.getTime() + 12),
       totalAttendance: 2,
-      reviews: []
+      reviews: [],
     },
     {
       id: 7,
       fandomType: {
         id: 26,
-        category: "Sports",
-        name: "Soccer" 
+        category: 'Sports',
+        name: 'Soccer',
       },
       name: 'FIFA World Cup Party',
       description: `The FIFA World Cup, often simply called the World Cup, is an international 
@@ -215,14 +223,14 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 13),
       endDate: new Date(this.today.getTime() + 14),
       totalAttendance: 1,
-      reviews: []
+      reviews: [],
     },
     {
       id: 8,
       fandomType: {
         id: 15,
-        category: "Shows",
-        name: "All" 
+        category: 'Shows',
+        name: 'All',
       },
       name: 'New HBO Show Press Release',
       description: `Home Box Office is an American pay television network owned by WarnerMedia 
@@ -232,22 +240,22 @@ export class EventService {
       startDate: new Date(this.today.getTime() + 15),
       endDate: new Date(this.today.getTime() + 20),
       totalAttendance: 1,
-      reviews: []
+      reviews: [],
     },
   ];
 
   constructor(private _http: HttpClient) {}
 
-  sortFunction(a: Event, b: Event) : number{  
+  sortFunction(a: Event, b: Event): number {
     var dateA = new Date(a.startDate).getTime();
     var dateB = new Date(b.startDate).getTime();
-    return dateA > dateB ? 1 : -1;  
+    return dateA > dateB ? 1 : -1;
   }
 
   getEvents(): Event[] {
     // Get events from server, code below requires server call
 
-    return this.events.sort((a,b) => this.sortFunction(a,b));
+    return this.events.sort((a, b) => this.sortFunction(a, b));
   }
 
   getEventsById(id: number): Event | null {
@@ -262,13 +270,13 @@ export class EventService {
     this.events.push(event);
   }
 
-  updateEventAttendance(id: number | undefined, isAttending: boolean): void{
+  updateEventAttendance(id: number | undefined, isAttending: boolean): void {
     // Update event attendance on server, code below requires server call
 
     let event = this.events.find((event) => event.id === id);
 
-    if (event){
-      if (isAttending){
+    if (event) {
+      if (isAttending) {
         event.totalAttendance = event.totalAttendance + 1;
       } else {
         event.totalAttendance = event.totalAttendance - 1;
@@ -278,7 +286,7 @@ export class EventService {
 
   deleteEvent(index: number): boolean {
     // Delete event from server, code below requires server call
-    
+
     if (index >= 0) {
       this.events.splice(index, 1);
       return true;
@@ -290,28 +298,30 @@ export class EventService {
   getReviewsByEventId(eventId: number): Review[] | null {
     // Get reviews of a specific event from server, code below requires server call
 
-    return (this.events.find((event) => event.id === eventId))?.reviews || null;
+    return this.events.find((event) => event.id === eventId)?.reviews || null;
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
     // Add review to a specific event on server, code below requires server call
 
-    let event = (this.events.find((event) => event.id === eventId));
+    let event = this.events.find((event) => event.id === eventId);
 
-    if (event){
+    if (event) {
       event.reviews.push(review);
     }
   }
 
-  updateReviewById(eventId: number | null, updatedReview: Review): void{
+  updateReviewById(eventId: number | null, updatedReview: Review): void {
     // Update review to a specific review on server, code below requires server call
 
-    let event = (this.events.find((event) => event.id === eventId));
+    let event = this.events.find((event) => event.id === eventId);
 
-    if (event){
-      let index = event.reviews.findIndex((review) => review.id === updatedReview.id);
+    if (event) {
+      let index = event.reviews.findIndex(
+        (review) => review.id === updatedReview.id
+      );
 
-      if (index >= 0){  
+      if (index >= 0) {
         event.reviews[index] = updatedReview;
       }
     }
@@ -319,7 +329,7 @@ export class EventService {
 
   deleteReview(eventIndex: number, reviewIndex: number): boolean {
     // Delete review from server, code below requires server call
-    
+
     if (eventIndex >= 0) {
       let event = this.events[eventIndex];
       event.reviews.splice(reviewIndex, 1);
