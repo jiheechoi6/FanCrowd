@@ -34,7 +34,7 @@ export class EventService {
         content: `Something`,
         postedBy: {
           username: "user1",
-          profileUrl: "https://dummyimage.com/250",
+          profileUrl: "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
           role: "user"
         },
         postDate: this.today
@@ -46,7 +46,7 @@ export class EventService {
         content: `Something`,
         postedBy: {
           username: "user2",
-          profileUrl: "https://dummyimage.com/250",
+          profileUrl: "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
           role: "user"
         },
         postDate: this.today
@@ -91,7 +91,7 @@ export class EventService {
         content: `Something`,
         postedBy: {
           username: "user1",
-          profileUrl: "https://dummyimage.com/250",
+          profileUrl: "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
           role: "user"
         },
         postDate: this.today
@@ -103,7 +103,7 @@ export class EventService {
         content: `Something`,
         postedBy: {
           username: "user2",
-          profileUrl: "https://dummyimage.com/250",
+          profileUrl: "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
           role: "user"
         },
         postDate: this.today
@@ -145,7 +145,20 @@ export class EventService {
       startDate: new Date(),
       endDate: new Date(),
       totalAttendance: 1,
-      reviews: []
+      reviews: [
+        {
+          id: 2,
+          title: "Great Release Party!!!",
+          rating: 5,
+          content: `Something`,
+          postedBy: {
+            username: "admin",
+            profileUrl: "https://dummyimage.com/250",
+            role: "admin"
+          },
+          postDate: this.today
+        }
+      ]
     },
     {
       id: 5,

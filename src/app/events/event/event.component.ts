@@ -17,11 +17,12 @@ import UserDTO from 'src/app/shared/models/user-dto';
 })
 export class EventComponent implements OnInit {
   event: Event | null = null;
-  reviews: Review[] = [];
+  reviews: Review[] | null = [];
   today: Date = new Date();
   isAdmin: boolean = false;
   id: number = NaN;
   user: UserDTO | null = null;
+  wroteReview: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -44,6 +45,7 @@ export class EventComponent implements OnInit {
     this.event = this.eventService.getEventsById(this.id);
     if (this.event){
         this.reviews = this.event.reviews;
+        this.alreadyWroteReview(this.reviews);
     } else {
         this.reviews = [];
     }
@@ -63,15 +65,16 @@ export class EventComponent implements OnInit {
         maxHeight: '90vh',
     });
 
-    dialogRef.afterClosed().subscribe((newReview: Event) => {
+    dialogRef.afterClosed().subscribe((newReview: Review) => {
       if (newReview) {
-        this.eventService.getReviewsByEventId(this.id);
+        this.reviews = this.eventService.getReviewsByEventId(this.id);
+        this.alreadyWroteReview(this.reviews);
       }
     });
   }
 
   openDeleteEventDialog(id: number | undefined) {
-    this.dialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
         details: 'Are you sure you want to delete the event?',
@@ -86,7 +89,7 @@ export class EventComponent implements OnInit {
   }
 
   openDeleteReviewDialog(id: number | undefined) {
-    this.dialog.open(DeleteDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Review Confirmation',
         details: 'Are you sure you want to delete your review?',
@@ -98,10 +101,26 @@ export class EventComponent implements OnInit {
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.reviews = this.eventService.getReviewsByEventId(this.id);
+      this.alreadyWroteReview(this.reviews);
+    });
   }
 
   openEditDialog(id: number | undefined){
     // Implement
+  }
+
+  alreadyWroteReview(reviews: Review[] | null): void {
+    this.wroteReview = false;
+    
+    if (reviews){
+      let reviewIndex = reviews.findIndex((review) => review.postedBy.username === this.user?.username);
+      if (reviewIndex >= 0){
+        this.wroteReview = true;
+      }
+    }
   }
 
   goToAllEvents(): void{
