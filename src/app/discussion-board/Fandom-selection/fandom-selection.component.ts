@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import Category from 'src/app/shared/models/category';
-import Fandom from 'src/app/shared/models/fandom';
-import { EventService } from '../../core/services/event.service';
 import { FandomService } from '../../core/services/fandom.service';
+import Fandom from 'src/app/shared/models/fandom';
 
 @Component({
   selector: 'app-fandom-selection',
@@ -16,7 +14,6 @@ export class FandomSelectionComponent implements OnInit {
   fandoms: Fandom[] = [];
 
   constructor( 
-    private eventService: EventService,
     private fandomService: FandomService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -50,8 +47,9 @@ export class FandomSelectionComponent implements OnInit {
     this.router.navigate(['discussion-boards']);
   }
 
-  goToFandomsEvents(fandom: Fandom): void{
+  goToEvents(fandom: Fandom): void{
       // TODO
+      this.router.navigate(['events', this.category, fandom.name]);
   }
 
 }

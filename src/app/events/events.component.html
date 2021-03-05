@@ -8,7 +8,9 @@
     </mat-paginator>
 
     <div class="button-container">
-        <div class="create" (click)="openDialog()"><button mat-raised-button color="primary">Create Event</button></div>
+        <div *ngIf="!this.isFromBrowser" class="create" (click)="openDialog()">
+            <button mat-raised-button color="primary">Create Event</button>
+        </div>
     </div>
 
     <div *ngIf="this.events.length === 0" class="empty">
@@ -24,7 +26,9 @@
                     </div>
                     <div class="flex-container header">
                         <h4 class="flex-one">{{event.location}}</h4>
-                        <h4 class="date">{{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}</h4>
+                        <h4 class="date">
+                            {{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}
+                        </h4>
                     </div>
                     <div class="desc">{{event.description}}</div>
                     <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
