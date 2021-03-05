@@ -34,7 +34,7 @@ export class UserService {
           id: 2,
         },
         {
-          name: 'Harry Potter',
+          name: 'J.K Rowling Meet & Greet',
           date: new Date(this.today.getTime() + 9),
           totalAttending: 3,
           id: 5,
