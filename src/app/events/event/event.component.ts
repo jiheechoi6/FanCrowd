@@ -9,6 +9,7 @@ import Review from '../../shared/models/review';
 import { AuthService } from 'src/app/core/services/auth.service';
 import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
 
 @Component({
   selector: 'app-event',
@@ -109,12 +110,30 @@ export class EventComponent implements OnInit {
   }
 
   openEditDialog(id: number | undefined){
-    // Implement
+    if (this.reviews){
+      let index = this.reviews?.findIndex((review) => review.id === id);
+      let review = {...this.reviews[index]};
+      
+      const dialogRef = this.dialog.open(EditReviewDialogComponent, {
+        data: { eventId: this.id, review: review },
+        autoFocus: false,
+        backdropClass: 'material-dialog-backdrop',
+        width: '450px',
+        disableClose: true,
+      });
+
+      dialogRef.afterClosed().subscribe((updatedReview: Review) => {
+        if (updatedReview) {
+          this.reviews = this.eventService.getReviewsByEventId(this.id);
+          this.alreadyWroteReview(this.reviews);
+        }
+      });
+    }
   }
 
   alreadyWroteReview(reviews: Review[] | null): void {
     this.wroteReview = false;
-    
+
     if (reviews){
       let reviewIndex = reviews.findIndex((review) => review.postedBy.username === this.user?.username);
       if (reviewIndex >= 0){
@@ -124,7 +143,7 @@ export class EventComponent implements OnInit {
   }
 
   goToAllEvents(): void{
-    this.router.navigate(['events'])
+    this.router.navigate(['events']);
   }
 
   setDateFromToday(offset: number): string {

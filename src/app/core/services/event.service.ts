@@ -81,8 +81,8 @@ export class EventService {
         and architecture to friendships and business opportunities.`,
       postedBy: 'user2',
       location: 'Dubai, UAE',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 1),
+      endDate: new Date(this.today.getTime() + 2),
       totalAttendance: 0,
       reviews: [{
         id: 1,
@@ -123,8 +123,8 @@ export class EventService {
         that appear in Marvel Comics publications.`,
       postedBy: 'admin',
       location: 'San Fransico, California, USA',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 3),
+      endDate: new Date(this.today.getTime() + 5),
       totalAttendance: 1,
       reviews: []
     },
@@ -142,8 +142,8 @@ export class EventService {
         multiple platforms with a ninth currently in development.`,
       postedBy: 'admin',
       location: 'Los Angeles, California, USA',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 6),
+      endDate: new Date(this.today.getTime() + 8),
       totalAttendance: 1,
       reviews: [
         {
@@ -174,8 +174,8 @@ export class EventService {
         of Witchcraft and Wizardry.`,
       postedBy: 'user1',
       location: 'Vancouver, British Columbia, Canada',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 9),
+      endDate: new Date(this.today.getTime() + 10),
       totalAttendance: 3,
       reviews: []
     },
@@ -193,8 +193,8 @@ export class EventService {
         overwhelming strength.`,
       postedBy: 'user2',
       location: 'New York City, New York, USA',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 11),
+      endDate: new Date(this.today.getTime() + 12),
       totalAttendance: 2,
       reviews: []
     },
@@ -211,8 +211,8 @@ export class EventService {
         of the Fédération Internationale de Football Association, the sport's global governing body.`,
       postedBy: 'admin',
       location: 'Westminister, London, United Kingdom',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 13),
+      endDate: new Date(this.today.getTime() + 14),
       totalAttendance: 0,
       reviews: []
     },
@@ -228,8 +228,8 @@ export class EventService {
         Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
       postedBy: 'user1',
       location: 'Seattle, Washington, USA',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(this.today.getTime() + 15),
+      endDate: new Date(this.today.getTime() + 20),
       totalAttendance: 1,
       reviews: []
     },
@@ -282,8 +282,23 @@ export class EventService {
     // Add review to a specific event on server, code below requires server call
 
     let event = (this.events.find((event) => event.id === eventId));
+
     if (event){
       event.reviews.push(review);
+    }
+  }
+
+  updateReviewById(eventId: number | null, updatedReview: Review): void{
+    // Update review to a specific review on server, code below requires server call
+
+    let event = (this.events.find((event) => event.id === eventId));
+
+    if (event){
+      let index = event.reviews.findIndex((review) => review.id === updatedReview.id);
+
+      if (index >= 0){  
+        event.reviews[index] = updatedReview;
+      }
     }
   }
 
