@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create/event-create.component';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from '../core/services/auth.service';
+import { UserService } from 'src/app/core/services/user.service';
 import Event from '../shared/models/event';
 
 @Component({
@@ -26,6 +27,7 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
@@ -97,6 +99,12 @@ export class EventsComponent implements OnInit {
     if (id) {
       let index = this.events.findIndex((event) => event.id === id);
       this.eventService.deleteEvent(index);
+
+      if (this.user){
+        this.userService.removeEventFromUserEvents(this.user.username, id);
+        this.authService.removeEventFromUserEvents(this.user.username, id);
+      }
+
       this.events = this.eventService.getEvents();
     }
   }

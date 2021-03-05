@@ -4,14 +4,13 @@ import { EventService } from '../../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
+import { UserService } from 'src/app/core/services/user.service';
 import Event from '../../shared/models/event';
 import Review from '../../shared/models/review';
-import { AuthService } from 'src/app/core/services/auth.service';
-import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
-import UserDTO from 'src/app/shared/models/user-dto';
-import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
 import EventDTO from 'src/app/shared/models/event-dto';
-import { UserService } from 'src/app/core/services/user.service';
+import UserDTO from 'src/app/shared/models/user-dto';
 
 @Component({
   selector: 'app-event',
@@ -201,7 +200,14 @@ export class EventComponent implements OnInit {
     if (id) {
         let allEvents = this.eventService.getEvents();
         let index = allEvents.findIndex((event) => event.id === id);
+
         this.eventService.deleteEvent(index);
+
+        if (this.user && this.event){
+          this.userService.removeEventFromUserEvents(this.user.username, this.event.id);
+          this.authService.removeEventFromUserEvents(this.user.username, this.event.id);
+        }
+
         this.router.navigate(['events']);
     }
   }
