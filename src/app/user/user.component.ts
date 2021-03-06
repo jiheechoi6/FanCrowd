@@ -54,7 +54,7 @@ export class UserComponent implements OnInit {
     const dialogRef = this._dialog.open(EditUserDialogComponent, {
       data: { ...this.user },
       autoFocus: false,
-      backdropClass: 'material-_dialog-backdrop',
+      backdropClass: 'material-dialog-backdrop',
       width: '450px',
       disableClose: true,
     });
@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-_dialog-backdrop',
+      backdropClass: 'material-dialog-backdrop',
     });
   }
 
@@ -90,7 +90,7 @@ export class UserComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-_dialog-backdrop',
+      backdropClass: 'material-dialog-backdrop',
     });
   }
 }

@@ -41,40 +41,43 @@ export class EventComponent implements OnInit {
   ngOnInit(): void {
     // TODO: We get user from the AUTH service but when attending we're adding to the USER service
     this.user = this.authService.getCurrentUser().value;
-    if (this.user ) {
-      if (this.user.role === 'admin'){
+    if (this.user) {
+      if (this.user.role === 'admin') {
         this.isAdmin = true;
       }
 
       this.isAttending = false;
-      let index = this.user.attendingEvents.findIndex((event) => event.id === this.id);
+      let index = this.user.attendingEvents.findIndex(
+        (event) => event.id === this.id
+      );
 
-      if (index >= 0){
+      if (index >= 0) {
         this.isAttending = true;
       }
     }
 
     this.event = this.eventService.getEventsById(this.id);
-    if (this.event){
-        this.reviews = this.event.reviews;
-        this.alreadyWroteReview(this.reviews);
+    if (this.event) {
+      this.reviews = this.event.reviews;
+      this.alreadyWroteReview(this.reviews);
     } else {
-        this.reviews = [];
+      this.reviews = [];
     }
   }
 
-  openAddDialog(): void{
+  openAddDialog(): void {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
-        data: {
-            id: this.id,
-            user: {
-              username: this.user?.username,
-              profileUrl: this.user?.profileUrl,
-              role: this.user?.role
-            }
+      data: {
+        id: this.id,
+        user: {
+          username: this.user?.username,
+          profileUrl: this.user?.profileUrl,
+          role: this.user?.role,
         },
-        width: '800px',
-        maxHeight: '90vh',
+      },
+      width: '800px',
+      maxHeight: '90vh',
+      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
@@ -91,7 +94,7 @@ export class EventComponent implements OnInit {
         title: 'Delete Event Confirmation',
         details: 'Are you sure you want to delete the event?',
         onConfirmCb: this.deleteEvent.bind(this),
-        params: id
+        params: id,
       },
       width: '360px',
       height: '180px',
@@ -106,7 +109,7 @@ export class EventComponent implements OnInit {
         title: 'Delete Review Confirmation',
         details: 'Are you sure you want to delete your review?',
         onConfirmCb: this.deleteReview.bind(this),
-        params: id
+        params: id,
       },
       width: '360px',
       height: '180px',
@@ -120,10 +123,10 @@ export class EventComponent implements OnInit {
     });
   }
 
-  openEditDialog(id: number | undefined){
-    if (this.reviews){
+  openEditDialog(id: number | undefined) {
+    if (this.reviews) {
       let index = this.reviews?.findIndex((review) => review.id === id);
-      let review = {...this.reviews[index]};
+      let review = { ...this.reviews[index] };
 
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
         data: { eventId: this.id, review: review },
@@ -145,44 +148,61 @@ export class EventComponent implements OnInit {
   alreadyWroteReview(reviews: Review[] | null): void {
     this.wroteReview = false;
 
-    if (reviews){
-      let reviewIndex = reviews.findIndex((review) => review.postedBy.username === this.user?.username);
-      if (reviewIndex >= 0){
+    if (reviews) {
+      let reviewIndex = reviews.findIndex(
+        (review) => review.postedBy.username === this.user?.username
+      );
+      if (reviewIndex >= 0) {
         this.wroteReview = true;
       }
     }
   }
 
-  goToAllEvents(): void{
+  goToAllEvents(): void {
     this.router.navigate(['events']);
   }
 
-  addEventToProfile() : void {
+  addEventToProfile(): void {
     this.isAttending = true;
     let eventDTO: EventDTO;
 
-    if (this.event){
+    if (this.event) {
       eventDTO = {
         name: this.event?.name,
         date: this.event.startDate,
         totalAttending: this.event.totalAttendance + 1,
-        id: this.event.id
+        id: this.event.id,
       };
 
-      if (this.user){
-        this.userService.updateUserEventsByUsername(this.user.username, eventDTO);
-        this.authService.updateUserEventsByUsername(this.user.username, eventDTO);
-        this.eventService.updateEventAttendance(this.event.id, this.isAttending);
+      if (this.user) {
+        this.userService.updateUserEventsByUsername(
+          this.user.username,
+          eventDTO
+        );
+        this.authService.updateUserEventsByUsername(
+          this.user.username,
+          eventDTO
+        );
+        this.eventService.updateEventAttendance(
+          this.event.id,
+          this.isAttending
+        );
         this.event = this.eventService.getEventsById(this.id);
       }
     }
   }
 
-  removeEventFromProfile(eventId: number | undefined) : void {
+  removeEventFromProfile(eventId: number | undefined): void {
     this.isAttending = false;
-    if (this.user && this.event){
-      this.userService.removeEventFromUserEvents(this.user.username, this.event.id);
-      this.authService.removeEventFromUserEvents(this.user.username, this.event.id);
+    if (this.user && this.event) {
+      this.userService.removeEventFromUserEvents(
+        this.user.username,
+        this.event.id
+      );
+      this.authService.removeEventFromUserEvents(
+        this.user.username,
+        this.event.id
+      );
       this.eventService.updateEventAttendance(this.event.id, this.isAttending);
       this.event = this.eventService.getEventsById(this.id);
     }
@@ -198,17 +218,17 @@ export class EventComponent implements OnInit {
 
   deleteEvent(id: number | undefined): void {
     if (id) {
-        let allEvents = this.eventService.getEvents();
-        let index = allEvents.findIndex((event) => event.id === id);
+      let allEvents = this.eventService.getEvents();
+      let index = allEvents.findIndex((event) => event.id === id);
 
-        this.eventService.deleteEvent(index);
+      this.eventService.deleteEvent(index);
 
-        if (this.user && this.event){
-          this.userService.removeEventFromAllUsersEvents(this.event.id);
-          this.authService.removeEventFromAllUsersEvents(this.event.id);
-        }
+      if (this.user && this.event) {
+        this.userService.removeEventFromAllUsersEvents(this.event.id);
+        this.authService.removeEventFromAllUsersEvents(this.event.id);
+      }
 
-        this.router.navigate(['events']);
+      this.router.navigate(['events']);
     }
   }
 
@@ -216,7 +236,7 @@ export class EventComponent implements OnInit {
     let allEvents = this.eventService.getEvents();
     let eventIindex = allEvents.findIndex((event) => event.id === this.id);
 
-    if (eventIindex >= 0){
+    if (eventIindex >= 0) {
       let event = allEvents[eventIindex];
       let reviewIndex = event.reviews.findIndex((review) => review.id === id);
       this.eventService.deleteReview(eventIindex, reviewIndex);

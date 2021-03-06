@@ -43,9 +43,15 @@
                 <mat-card-title>Fandoms</mat-card-title>
                 <section class="fandoms">
                     <mat-card-content>
-                        <p class="fandom-header"><span>Name</span><span>Level</span></p>
+                        <p class="fandom-header"><span>Name</span><span>Activity Level</span></p>
                         <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms">
-                            <p class="fandom-item"><span>{{fandom.name}}</span><span>{{fandom.activityLevel}}</span></p>
+                            <section class="fandom-item">
+                                <div class="fandom-info-container">
+                                    <span>{{fandom.name | titlecase}}</span>
+                                    <span class="category">{{fandom.category | titlecase}}</span>
+                                </div>
+                                <span>{{fandom.activityLevel}}</span>
+                            </section>
                         </mat-card>
                     </mat-card-content>
                 </section>

@@ -59,28 +59,30 @@ export class AuthService {
       ],
       fandoms: [
         {
-          // Movies Category
           name: 'Avengers',
           id: 1,
           activityLevel: 5,
+          category: 'movies',
         },
         {
-          // Movies Category
           name: 'Harry Potter',
           id: 2,
           activityLevel: 2,
+          category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson Series',
           id: 10,
           activityLevel: 1,
+          category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
           id: 20,
           activityLevel: 4,
+          category: 'games',
         },
       ],
     },
@@ -109,18 +111,21 @@ export class AuthService {
           name: 'Harry Potter',
           id: 2,
           activityLevel: 2,
+          category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
           id: 25,
           activityLevel: 3,
+          category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
           id: 14,
           activityLevel: 5,
+          category: 'shows',
         },
       ],
     },
