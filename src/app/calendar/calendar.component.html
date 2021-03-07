@@ -1,29 +1,23 @@
-<div id='container'>
-    <div id='month_area'>
-        <i class="fas fa-angle-left prev" (click)='prevMonth()'></i>
-        <div id='full_date'>
-            <h1>{{displayMonthString}}</h1>
-            <p>{{fullDate}}</p>
+<section class="container box-shadow">
+    <div class='month-container'>
+        <i class="fas fa-angle-left prev-month-arrow" (click)='prevMonth()'></i>
+        <h1 class="selected-month-year">{{selectedMonth}} {{selectedYear}}</h1>
+        <i class="fas fa-angle-right next-month-arrow" (click)='nextMonth()'></i>
+    </div>
+    <div class='days-of-week-container'>
+        <div class="day-of-week" *ngFor="let dayOfWeek of daysOfWeek">{{dayOfWeek}}</div>
+    </div>
+    <div class='days-container'>
+        <div class="prev-month-day day" *ngFor='let in of counter(firstDayOfMonth); let i = index'>
+            <span [class.has-events-on-day]="hasEvent(i + 1)">{{prevMonthLastDay - firstDayOfMonth + i + 1}}</span>
         </div>
-        <i class="fas fa-angle-right next" (click)='nextMonth()'></i>
-    </div>
-    <div id='days'>
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thur</div>
-        <div>Fri</div>
-        <div>Sat</div>
-    </div>
-    <div id='date'>
-        <div id='not_this_month' *ngFor='let in of counter(displayFirstDay); let i = index'>{{displayPrevMonthLastDate-displayFirstDay+i+1}}</div>
-        <div [ngClass]="{'today' : isToday(i+1)}" *ngFor='let in of counter(displayLastDate) ;let i = index' (click)='openDateEventDialog(i+1)'>
-            {{i+1}} <br>
-            <span id='eventExists' *ngIf="hasEvent(i+1)">&#9679;</span>
+        <div class="day day-of-selected-month" *ngFor='let in of counter(lastDateOfMonth); let i = index'
+            (click)='openDateEventDialog(i + 1)'>
+            <span [class.current-day]="isToday(i + 1)">{{i + 1}}</span>
         </div>
-        <div id='not_this_month' *ngFor='let in of counter(42-displayLastDate-displayFirstDay) ;let i = index'>{{i+1}}</div>
-        
+        <div class="next-month-day day"
+            *ngFor='let in of counter(42 - lastDateOfMonth - firstDayOfMonth); let i = index'>
+            <span [class.has-events-on-day]="hasEvent(i + 1)">{{i + 1}}</span>
+        </div>
     </div>
-
-</div>
+</section>
