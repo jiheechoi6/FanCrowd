@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER_FACTORY } from '@angular/cdk/overlay/overlay-directives';
 
 @Injectable({
   providedIn: 'root',
@@ -256,6 +255,19 @@ export class EventService {
     // Get events from server, code below requires server call
 
     return this.events.sort((a, b) => this.sortFunction(a, b));
+  }
+
+  getEventsByCategoryAndFandom(categoryName: string, fandomName: string): Event[] {
+    // Get events from server, code below requires server call
+    let filterdEvents: Event[] = [];
+    
+    this.events.forEach((event) => {
+      if (event.fandomType.category === categoryName && event.fandomType.name === fandomName){
+        filterdEvents.push(event);
+      }
+    });
+
+    return filterdEvents.sort((a,b) => this.sortFunction(a,b));
   }
 
   getEventsById(id: number): Event | null {

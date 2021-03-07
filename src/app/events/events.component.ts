@@ -21,8 +21,10 @@ export class EventsComponent implements OnInit {
   pageIndex: number = 0;
   today: Date = new Date();
   isAdmin: boolean = false;
-  isSpecificEvent: boolean = false;
+  isFromBrowser: boolean = false;
   id: number = NaN;
+  categoryName: string = '';
+  fandomName: string = '';
   user: any;
 
   constructor(
@@ -34,6 +36,8 @@ export class EventsComponent implements OnInit {
     private router: Router
   ) {
     this.id = parseInt(this.activatedRoute.snapshot.params['id']);
+    this.categoryName = this.activatedRoute.snapshot.params['category'];
+    this.fandomName = this.activatedRoute.snapshot.params['fandom'];
   }
 
   ngOnInit(): void {
@@ -42,8 +46,20 @@ export class EventsComponent implements OnInit {
       this.isAdmin = true;
     }
 
-    this.allEvents = this.eventService.getEvents();
-    this.events = this.allEvents.slice(0, 10);
+    this.isFromBrowser = false;
+    if (this.categoryName && this.fandomName){
+      if (this.categoryName.length >= 0 && this.fandomName.length >= 0){
+        this.isFromBrowser = true;
+      }
+    }
+
+    if (!this.isFromBrowser){
+      this.allEvents = this.eventService.getEvents();
+    } else {
+      this.allEvents = this.eventService.getEventsByCategoryAndFandom(this.categoryName, this.fandomName);
+    }
+    
+    this.events = this.allEvents.slice(0, this.pageSize);
   }
 
   selectPage(event: any) {

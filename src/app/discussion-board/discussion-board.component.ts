@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { FandomService } from '../core/services/fandom.service';
+import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import Category from '../shared/models/category';
 
 @Component({
@@ -13,10 +14,8 @@ import Category from '../shared/models/category';
 export class DiscussionBoardComponent implements OnInit {
   categories: Array<Category> = [];
 
-  constructor( 
-    private eventService: EventService,
+  constructor(
     private fandomService: FandomService,
-    private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router
   ) 
@@ -27,19 +26,21 @@ export class DiscussionBoardComponent implements OnInit {
   }
 
   openDialog(): void {
-    // const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-    //   data: {username: this.username},
-    //   width: '800px',
-    //   maxHeight: '90vh',
-    // });
+    const dialogRef = this.dialog.open(AddDialogComponent, {
+      data: {
+        title: 'Category',
+        categoryName: '',
+        isCategory: true
+      },
+      width: '360px',
+      height: '300px',
+      autoFocus: false,
+      backdropClass: 'material-dialog-backdrop',
+    });
 
-    // dialogRef.afterClosed().subscribe((newEvent: Event) => {
-    //   if (newEvent) {
-    //     this.events = this.eventService.getEvents();
-    //   }
-    // });
-
-    // TODO: Implement this
+    dialogRef.afterClosed().subscribe(() => {
+      this.categories = this.fandomService.getCategories();
+    });
   }
 
   goToCategory(category: string): void {

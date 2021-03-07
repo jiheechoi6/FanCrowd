@@ -1,27 +1,22 @@
-# Csc309Project
+# CSC309 Group Project - FanCrowd
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-## Development server
 
-If first time, after cloning the repository to your local machine, first run `npm install`, then run `npm install -g @angular/cli`. Lastly Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Running the App
 
-## Code scaffolding
+If first time, after cloning the repository to your local machine, first run `npm install`, then run `npm install -g @angular/cli`. Lastly open a new terminal in the directory and run `ng serve` for a dev server. Then navigate to `http://localhost:4200/` in your preferred choice of a browser.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+If you have already cloned the repository and run the first two commands, then open a new terminal in the directory on your local machine and run `ng serve`. Then navigate to `http://localhost:4200/` in your preferred choice of a browser.
 
-## Build
+## Login Credentials
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+We have 2 users and 1 admin. 
 
-## Running unit tests
+User 1; username: user1, password: user1
+User 2; username: user2, password: user2
+Admin; username: admin, password: admin
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Things to Keep in Mind
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+When a new event, Fandom category, or fandom is added the app uses an id of 1000. The id is hardcoded so if you add multiple of these objects when deleting or updating, the app will choose the first one in the list that matches the id of 1000. This will be addressed in phase 2 when we build the backend because in the database we will only allow unique ids.

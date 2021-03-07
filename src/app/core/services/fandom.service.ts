@@ -235,10 +235,49 @@ export class FandomService {
     return dateA > dateB ? 1 : -1;  
   }
 
+  addCategory(category: Category): void {
+    // Add fandom to server, code below requires server call
+
+    let exists = false;
+    let fandom = {
+        id: 1000,
+        category: category.name,
+        name: "All",
+        backgroundUrl: category.backgroundUrl
+    }
+
+    this.category.forEach((x) => {
+        if (x.name.toLowerCase() === category.name.toLowerCase()){
+            exists = true;
+        }
+    })
+
+    if (!exists){
+        this.category.push(category);
+        this.fandoms.push(fandom);
+    }
+  }
+
   getCategories(): Category[] {
     // Get categories from server, code below requires server call
 
     return this.category.sort((a,b) => this.sortFunction(a,b));
+  }
+
+  addFandom(fandom: Fandom): void {
+    // Add fandom to server, code below requires server call
+    let exists = false;
+    let fandoms = this.getFandomsByCategories(fandom.category);
+    console.log("Fandoms", fandoms);
+    fandoms.forEach((x) => {
+        if (x.name.toLowerCase() === fandom.name.toLowerCase()){
+            exists = true;
+        }
+    });
+
+    if (!exists){
+        this.fandoms.push(fandom);
+    }
   }
 
   getFandoms(): Fandom[] {
@@ -258,12 +297,6 @@ export class FandomService {
     });
 
     return fandomsByCategory.sort((a,b) => this.sortFunction(a,b));
-  }
-
-  createFandom(fandom: Fandom): void {
-    // Add fandom to server, code below requires server call
-
-    this.fandoms.push(fandom);
   }
 
   deleteFandom(index: number): boolean {

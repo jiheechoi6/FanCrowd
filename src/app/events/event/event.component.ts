@@ -7,6 +7,7 @@ import { DeleteDialogComponent } from '../../shared/components/delete-dialog/del
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
 import { UserService } from 'src/app/core/services/user.service';
+import { Location } from '@angular/common';
 import Event from '../../shared/models/event';
 import Review from '../../shared/models/review';
 import EventDTO from 'src/app/shared/models/event-dto';
@@ -32,6 +33,7 @@ export class EventComponent implements OnInit {
     private userService: UserService,
     private eventService: EventService,
     private activatedRoute: ActivatedRoute,
+    private location: Location,
     public dialog: MatDialog,
     private router: Router
   ) {
@@ -158,8 +160,8 @@ export class EventComponent implements OnInit {
     }
   }
 
-  goToAllEvents(): void {
-    this.router.navigate(['events']);
+  goBack(): void{
+    this.location.back();
   }
 
   addEventToProfile(): void {
