@@ -1,23 +1,7 @@
 <nav>
     <mat-toolbar color="accent" class="navbar">
         <section>FanCrowd</section>
-        <section>
-            <mat-form-field class="user-search" appearance="standard" floatLabel=never color="primary">
-                <mat-label>Search User</mat-label>
-                <input type="text"
-                    placeholder="type the name of the user"
-                    aria-label="userForSearch"
-                    matInput
-                    [formControl]="myControl"
-                    [matAutocomplete]="auto"
-                    highlight="">
-                <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                        {{option}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field>
-        </section>
+        <app-search-user *ngIf="user"></app-search-user>
         <section>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>

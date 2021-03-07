@@ -189,4 +189,13 @@ export class UserService {
       }
     });
   }
+  
+  getUsernameList(){
+    let lst:string[] = [];
+    this.users.forEach((user)=>{
+      lst.push(user.username);
+    });
+
+    return lst;
+  }
 }
