@@ -1,6 +1,8 @@
 <nav>
     <mat-toolbar color="accent" class="navbar">
-        <section>FanCrowd</section>
+        <section>
+            <i class="fas fa-users"></i> FanCrowd
+        </section>
         <section>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>

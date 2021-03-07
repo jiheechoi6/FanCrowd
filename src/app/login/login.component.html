@@ -1,7 +1,7 @@
 <section>
     <mat-card class="login-container box-shadow">
         <mat-card-title class="header">Log In</mat-card-title>
-        <form #logInForm="ngForm" (ngSubmit)="onLogIn()">
+        <form #logInForm="ngForm" (ngSubmit)="onLogIn()" (keydown.enter)="$event.preventDefault()">
             <div class="form-group">
                 <mat-form-field color="accent">
                     <mat-label>Username</mat-label>
@@ -22,14 +22,14 @@
             </div>
             <a [routerLink]="'/forgot-password'">Forgot password?</a>
             <p *ngIf="loginError" class="mat-body error-message">{{loginError}}</p>
-            <div class="button-action-container">
-                <button mat-raised-button color="primary" type="submit" [disabled]="logInForm.invalid || isLoggingIn"
+            <div class="form-buttons-container-right">
+                <button mat-flat-button color="primary" type="submit" [disabled]="logInForm.invalid || isLoggingIn"
                     [class.loading-animation]="isLoggingIn">
                     {{isLoggingIn ? 'Logging In': 'Log In'}}
                 </button>
             </div>
         </form>
-        <mat-card-footer class="sign-up-footer mat-body">
+        <mat-card-footer class="align-center mat-body">
             <p>Don't have an account? <a [routerLink]="'/signup'">Sign up now!</a></p>
         </mat-card-footer>
     </mat-card>

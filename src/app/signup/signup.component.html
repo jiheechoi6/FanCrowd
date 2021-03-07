@@ -63,14 +63,14 @@
                 </mat-form-field>
             </div>
             <p *ngIf="signUpError" class="mat-body error-message">{{signUpError}}</p>
-            <div class="button-action-container">
-                <button mat-raised-button color="primary" [disabled]="signUpForm.invalid || isSigningUp"
+            <div class="form-buttons-container-right">
+                <button mat-flat-button color="primary" [disabled]="signUpForm.invalid || isSigningUp"
                     [class.loading-animation]="isSigningUp">
                     {{isSigningUp ? 'Signing Up': 'Sign Up'}}
                 </button>
             </div>
         </form>
-        <mat-card-footer class="log-in-footer mat-body">
+        <mat-card-footer class="align-center mat-body">
             <p>Have an account? <a [routerLink]="'/login'">Log in now!</a></p>
         </mat-card-footer>
     </mat-card>
