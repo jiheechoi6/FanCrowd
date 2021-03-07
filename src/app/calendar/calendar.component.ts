@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
+import EventDTO from '../shared/models/event-dto';
 
 @Component({
   selector: 'app-calendar',
@@ -29,6 +30,7 @@ export class CalendarComponent implements OnInit {
   displayMonth = this.showdate.getMonth();
   selectedMonth = this.months[this.displayMonth];
   selectedYear = this.showdate.getFullYear();
+  userEvents: EventDTO[] = [];
 
   firstDayOfMonth = new Date(this.selectedYear, this.displayMonth, 1).getDay();
   lastDateOfMonth = new Date(
@@ -49,7 +51,7 @@ export class CalendarComponent implements OnInit {
 
   fullDate = this.showdate.toDateString();
 
-  constructor(private authService: AuthService, private dialog: MatDialog) {}
+  constructor(private _authService: AuthService, private _dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
@@ -95,7 +97,7 @@ export class CalendarComponent implements OnInit {
 
   hasEvent(i: number) {
     let result = false;
-    this.authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
+    this._authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
       if (
         event.date.getFullYear() == this.selectedYear &&
         event.date.getMonth() == this.displayMonth &&
@@ -112,10 +114,10 @@ export class CalendarComponent implements OnInit {
   openDateEventDialog(date: number) {
     let year = this.selectedYear;
     let month = this.displayMonth;
-    const dialogRef = this.dialog.open(DateEventDialogComponent, {
+    const dialogRef = this._dialog.open(DateEventDialogComponent, {
       data: { year, month, date },
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
+      backdropClass: 'material-_dialog-backdrop',
       width: '400px',
     });
   }
