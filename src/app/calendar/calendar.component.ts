@@ -25,7 +25,6 @@ export class CalendarComponent implements OnInit {
     'December',
   ];
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
-  today = new Date();
   showdate = new Date();
   displayMonth = this.showdate.getMonth();
   selectedMonth = this.months[this.displayMonth];
@@ -112,26 +111,28 @@ export class CalendarComponent implements OnInit {
   }
 
   openDateEventDialog(date: number) {
-    let year = this.selectedYear;
-    let month = this.displayMonth;
-    const dialogRef = this._dialog.open(DateEventDialogComponent, {
-      data: { year, month, date },
+    const selectedDate = new Date(this.selectedYear, this.displayMonth, date);
+    this._dialog.open(DateEventDialogComponent, {
+      data: {
+        events: [],
+        selectedDate,
+      },
       autoFocus: false,
-      backdropClass: 'material-_dialog-backdrop',
-      width: '400px',
+      backdropClass: 'material-dialog-backdrop',
+      width: '450px',
+      closeOnNavigation: true,
     });
   }
 
-  isToday(date: number) {
-    if (
-      this.selectedYear == this.today.getFullYear() &&
-      this.displayMonth == this.today.getMonth() &&
-      date == this.today.getDate()
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+  isCurrentDate(date: number) {
+    const todayDate = new Date();
+    const currentYear = todayDate.getFullYear();
+    const currentMonth = todayDate.getMonth();
+    return (
+      this.selectedYear === currentYear &&
+      this.displayMonth === currentMonth &&
+      date == todayDate.getDate()
+    );
   }
 
   counter(i: number) {

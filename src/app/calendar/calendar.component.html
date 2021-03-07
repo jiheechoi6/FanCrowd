@@ -8,16 +8,16 @@
         <div class="day-of-week" *ngFor="let dayOfWeek of daysOfWeek">{{dayOfWeek}}</div>
     </div>
     <div class='days-container'>
-        <div class="prev-month-day day" *ngFor='let in of counter(firstDayOfMonth); let i = index'>
-            <span [class.has-events-on-day]="hasEvent(i + 1)">{{prevMonthLastDay - firstDayOfMonth + i + 1}}</span>
+        <div class="prev-month-day day" *ngFor='let in of counter(firstDayOfMonth); let date = index'>
+            <span>{{prevMonthLastDay - firstDayOfMonth + date + 1}}</span>
         </div>
-        <div class="day day-of-selected-month" *ngFor='let in of counter(lastDateOfMonth); let i = index'
-            (click)='openDateEventDialog(i + 1)'>
-            <span [class.current-day]="isToday(i + 1)">{{i + 1}}</span>
+        <div class="day day-of-selected-month" *ngFor='let in of counter(lastDateOfMonth); let date = index'>
+            <span [class.current-day]="isCurrentDate(date + 1)"
+                (click)='openDateEventDialog(date + 1)'>{{date + 1}}</span>
         </div>
         <div class="next-month-day day"
-            *ngFor='let in of counter(42 - lastDateOfMonth - firstDayOfMonth); let i = index'>
-            <span [class.has-events-on-day]="hasEvent(i + 1)">{{i + 1}}</span>
+            *ngFor='let in of counter(42 - lastDateOfMonth - firstDayOfMonth); let date = index'>
+            <span>{{date + 1}}</span>
         </div>
     </div>
 </section>
