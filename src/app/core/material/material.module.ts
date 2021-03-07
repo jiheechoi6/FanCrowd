@@ -13,6 +13,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
 
 const MaterialModules = [
   MatButtonModule,
@@ -28,7 +29,8 @@ const MaterialModules = [
   MatStepperModule,
   MatSnackBarModule,
   MatSelectModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

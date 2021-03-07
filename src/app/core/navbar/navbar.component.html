@@ -2,6 +2,20 @@
     <mat-toolbar color="accent" class="navbar">
         <section>FanCrowd</section>
         <section>
+            <mat-form-field class="user-search">
+                <input type="text"
+                    placeholder="Pick one"
+                    aria-label="Number"
+                    matInput
+                    [matAutocomplete]="auto">
+            </mat-form-field>
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of options" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+        </section>
+        <section>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
             <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
             <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"

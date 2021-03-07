@@ -13,7 +13,7 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     MaterialModule,
     FormsModule,
     RouterModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     MaterialModule,

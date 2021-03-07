@@ -168,7 +168,7 @@ export class EventComponent implements OnInit {
         name: this.event?.name,
         date: this.event.startDate,
         totalAttending: this.event.totalAttendance + 1,
-        id: this.event.id
+        id: this.event.id!
       };
 
       if (this.user){
