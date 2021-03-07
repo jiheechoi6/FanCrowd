@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
@@ -26,30 +26,20 @@ export class CalendarComponent implements OnInit {
     'December',
   ];
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
-  showdate = new Date();
-  displayMonth = this.showdate.getMonth();
-  selectedMonth = this.months[this.displayMonth];
-  selectedYear = this.showdate.getFullYear();
   userEvents: EventDTO[] = [];
 
-  firstDayOfMonth = new Date(this.selectedYear, this.displayMonth, 1).getDay();
-  lastDateOfMonth = new Date(
-    this.selectedYear,
-    this.displayMonth + 1,
-    0
-  ).getDate();
-  displayLastDay = new Date(
-    this.selectedYear,
-    this.displayMonth,
-    this.lastDateOfMonth
-  );
-  prevMonthLastDay = new Date(
-    this.selectedYear,
-    this.displayMonth,
-    0
-  ).getDate();
+  shownDate = new Date();
+  shownMonth = this.shownDate.getMonth();
+  shownMonthAsText = this.months[this.shownMonth];
+  shownYear = this.shownDate.getFullYear();
 
-  fullDate = this.showdate.toDateString();
+  firstDayOfShownMonth = new Date(this.shownYear, this.shownMonth, 1).getDay();
+  lastDateOfShownMonth = new Date(
+    this.shownYear,
+    this.shownMonth + 1,
+    0
+  ).getDate();
+  prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
 
   constructor(
     private _authService: AuthService,
@@ -65,46 +55,40 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  updateDateValues() {
-    this.displayMonth = this.showdate.getMonth();
-    this.selectedMonth = this.months[this.displayMonth];
-    this.selectedYear = this.showdate.getFullYear();
+  changeShownCalendarDates() {
+    this.shownMonth = this.shownDate.getMonth();
+    this.shownMonthAsText = this.months[this.shownMonth];
+    this.shownYear = this.shownDate.getFullYear();
 
-    this.firstDayOfMonth = new Date(
-      this.selectedYear,
-      this.displayMonth,
+    this.firstDayOfShownMonth = new Date(
+      this.shownYear,
+      this.shownMonth,
       1
     ).getDay();
-    this.lastDateOfMonth = new Date(
-      this.selectedYear,
-      this.displayMonth + 1,
+    this.lastDateOfShownMonth = new Date(
+      this.shownYear,
+      this.shownMonth + 1,
       0
     ).getDate();
-    this.displayLastDay = new Date(
-      this.selectedYear,
-      this.displayMonth,
-      this.lastDateOfMonth
-    );
     this.prevMonthLastDay = new Date(
-      this.selectedYear,
-      this.displayMonth,
+      this.shownYear,
+      this.shownMonth,
       0
     ).getDate();
-    this.fullDate = this.showdate.toDateString();
   }
 
   prevMonth() {
-    this.showdate.setMonth(this.showdate.getMonth() - 1);
-    this.updateDateValues();
+    this.shownDate.setMonth(this.shownDate.getMonth() - 1);
+    this.changeShownCalendarDates();
   }
 
   nextMonth() {
-    this.showdate.setMonth(this.showdate.getMonth() + 1);
-    this.updateDateValues();
+    this.shownDate.setMonth(this.shownDate.getMonth() + 1);
+    this.changeShownCalendarDates();
   }
 
   getEventsForDate(month: number, date: number) {
-    const selectedDate = this.getDateFromSelectedYearMonthDate(
+    const selectedDate = this.getDateFromshownYearMonthDate(
       month,
       date
     ).toDateString();
@@ -115,11 +99,11 @@ export class CalendarComponent implements OnInit {
   }
 
   openDateEventDialog(date: number) {
-    const selectedDate = this.getDateFromSelectedYearMonthDate(
-      this.displayMonth,
+    const selectedDate = this.getDateFromshownYearMonthDate(
+      this.shownMonth,
       date
     );
-    const eventsForDate = this.getEventsForDate(this.displayMonth, date);
+    const eventsForDate = this.getEventsForDate(this.shownMonth, date);
     this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,
@@ -134,8 +118,8 @@ export class CalendarComponent implements OnInit {
 
   isCurrentDate(date: number) {
     const todayDate = new Date().toDateString();
-    const selectedDate = this.getDateFromSelectedYearMonthDate(
-      this.displayMonth,
+    const selectedDate = this.getDateFromshownYearMonthDate(
+      this.shownMonth,
       date
     ).toDateString();
     return todayDate === selectedDate;
@@ -145,7 +129,7 @@ export class CalendarComponent implements OnInit {
     return new Array(i);
   }
 
-  private getDateFromSelectedYearMonthDate(month: number, date: number) {
-    return new Date(this.selectedYear, month, date);
+  private getDateFromshownYearMonthDate(month: number, date: number) {
+    return new Date(this.shownYear, month, date);
   }
 }
