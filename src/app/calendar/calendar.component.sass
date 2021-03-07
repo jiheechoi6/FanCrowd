@@ -46,7 +46,6 @@
         .day
             width: 1/7*100%
             height: 75px
-            justify-content: center
             font-size: 15px
             display: flex
             flex-direction: column
@@ -54,20 +53,27 @@
 
         .day-of-selected-month
             font-weight: 600
+            display: flex
+            align-items: center
+            flex-direction: column
 
-            span
+            .calendar-day
                 &:hover
-                    transform: scale(1.4)
+                    transform: scale(1.3)
                     cursor: pointer
 
         .current-day
+            color: red
+
+        .num-events
             display: flex
             justify-content: center
             align-items: center
             color: white
-            border-radius: 50%
-            background-color: #14c0e7
-            padding: 10px
-            height: 15px
-            width: 15px
-            text-align: center
+            border-radius: 10px
+            background-color: #040618
+            padding: 7px
+            height: 4px
+            width: 10px
+            margin: 5px 0 0
+            font-size: 12px

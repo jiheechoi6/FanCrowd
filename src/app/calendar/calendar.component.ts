@@ -3,6 +3,7 @@ import { AuthService } from '../core/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
 import EventDTO from '../shared/models/event-dto';
+import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-calendar',
@@ -50,9 +51,19 @@ export class CalendarComponent implements OnInit {
 
   fullDate = this.showdate.toDateString();
 
-  constructor(private _authService: AuthService, private _dialog: MatDialog) {}
+  constructor(
+    private _authService: AuthService,
+    private _dialog: MatDialog,
+    private _userService: UserService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this._authService.currentUser.subscribe((user) => {
+      this.userEvents = this._userService.getUserEventsByUsername(
+        user?.username || ''
+      );
+    });
+  }
 
   updateDateValues() {
     this.displayMonth = this.showdate.getMonth();
@@ -92,29 +103,26 @@ export class CalendarComponent implements OnInit {
     this.updateDateValues();
   }
 
-  getEvents(i: number) {}
-
-  hasEvent(i: number) {
-    let result = false;
-    this._authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
-      if (
-        event.date.getFullYear() == this.selectedYear &&
-        event.date.getMonth() == this.displayMonth &&
-        event.date.getDate() == i
-      ) {
-        result = true;
-      } else {
-        result = false;
-      }
-    });
-    return result;
+  getEventsForDate(month: number, date: number) {
+    const selectedDate = this.getDateFromSelectedYearMonthDate(
+      month,
+      date
+    ).toDateString();
+    const eventsForDate = this.userEvents.filter(
+      (event) => event.date.toDateString() === selectedDate
+    );
+    return eventsForDate;
   }
 
   openDateEventDialog(date: number) {
-    const selectedDate = new Date(this.selectedYear, this.displayMonth, date);
+    const selectedDate = this.getDateFromSelectedYearMonthDate(
+      this.displayMonth,
+      date
+    );
+    const eventsForDate = this.getEventsForDate(this.displayMonth, date);
     this._dialog.open(DateEventDialogComponent, {
       data: {
-        events: [],
+        events: eventsForDate,
         selectedDate,
       },
       autoFocus: false,
@@ -125,17 +133,19 @@ export class CalendarComponent implements OnInit {
   }
 
   isCurrentDate(date: number) {
-    const todayDate = new Date();
-    const currentYear = todayDate.getFullYear();
-    const currentMonth = todayDate.getMonth();
-    return (
-      this.selectedYear === currentYear &&
-      this.displayMonth === currentMonth &&
-      date == todayDate.getDate()
-    );
+    const todayDate = new Date().toDateString();
+    const selectedDate = this.getDateFromSelectedYearMonthDate(
+      this.displayMonth,
+      date
+    ).toDateString();
+    return todayDate === selectedDate;
   }
 
   counter(i: number) {
     return new Array(i);
+  }
+
+  private getDateFromSelectedYearMonthDate(month: number, date: number) {
+    return new Date(this.selectedYear, month, date);
   }
 }

@@ -141,6 +141,14 @@ export class UserService {
     return this.users.find((user) => user.username === username) || null;
   }
 
+  getUserEventsByUsername(username: string) {
+    // Get User's events from server, code below requires server call
+    return (
+      this.users.find((user) => user.username === username)?.attendingEvents ||
+      []
+    );
+  }
+
   deleteUserByUsername(username: string): void {
     // Delete user from server, code below requires server call
   }
