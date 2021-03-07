@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
 import EventDTO from '../shared/models/event-dto';
 import { UserService } from '../core/services/user.service';
@@ -10,7 +10,7 @@ import { UserService } from '../core/services/user.service';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.sass'],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   months = [
     'January',
     'Febuary',
@@ -26,13 +26,10 @@ export class CalendarComponent implements OnInit {
     'December',
   ];
   daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
-  userEvents: EventDTO[] = [];
-
   shownDate = new Date();
   shownMonth = this.shownDate.getMonth();
   shownMonthAsText = this.months[this.shownMonth];
   shownYear = this.shownDate.getFullYear();
-
   firstDayOfShownMonth = new Date(this.shownYear, this.shownMonth, 1).getDay();
   lastDateOfShownMonth = new Date(
     this.shownYear,
@@ -40,6 +37,8 @@ export class CalendarComponent implements OnInit {
     0
   ).getDate();
   prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
+  userEvents: EventDTO[] = [];
+  private _eventDialogRef: MatDialogRef<DateEventDialogComponent> | null = null;
 
   constructor(
     private _authService: AuthService,
@@ -53,6 +52,12 @@ export class CalendarComponent implements OnInit {
         user?.username || ''
       );
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this._eventDialogRef) {
+      this._eventDialogRef.close();
+    }
   }
 
   changeShownCalendarDates() {
@@ -104,7 +109,7 @@ export class CalendarComponent implements OnInit {
       date
     );
     const eventsForDate = this.getEventsForDate(this.shownMonth, date);
-    this._dialog.open(DateEventDialogComponent, {
+    this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,
         selectedDate,
@@ -112,7 +117,6 @@ export class CalendarComponent implements OnInit {
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
       width: '450px',
-      closeOnNavigation: true,
     });
   }
 
