@@ -3,9 +3,11 @@
     <div class="profile-info-container" *ngIf="user">
         <section class="profile-img-info-container">
             <div class="profile-img-wrapper">
-                <img class="profile-img" src="{{user.profileUrl}}" alt="Profile Picture">
+                <img class="profile-img" src="{{user.profileUrl}}"
+                    onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'"
+                    alt="Profile Picture">
             </div>
-            
+
             <mat-card class="user-info">
                 <mat-card-content>
                     <p class="user-info-item"><span class="user-info-label">Username
@@ -41,9 +43,15 @@
                 <mat-card-title>Fandoms</mat-card-title>
                 <section class="fandoms">
                     <mat-card-content>
-                        <p class="fandom-header"><span>Name</span><span>Level</span></p>
+                        <p class="fandom-header"><span>Name</span><span>Activity Level</span></p>
                         <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms">
-                            <p class="fandom-item"><span>{{fandom.name}}</span><span>{{fandom.activityLevel}}</span></p>
+                            <section class="fandom-item">
+                                <div class="fandom-info-container">
+                                    <span>{{fandom.name | titlecase}}</span>
+                                    <span class="category">{{fandom.category | titlecase}}</span>
+                                </div>
+                                <span>{{fandom.activityLevel}}</span>
+                            </section>
                         </mat-card>
                     </mat-card-content>
                 </section>
@@ -52,15 +60,7 @@
         <mat-card class="events-container">
             <mat-card-title>Events Attending</mat-card-title>
             <section class="events">
-                <mat-card class="event-item-container" *ngFor="let event of user?.attendingEvents"
-                    [routerLink]="[ '/events', event.id ]">
-                    <mat-card-content>
-                        <p class="event-header">
-                            <span>{{event.name | titlecase}}</span><span>{{event.date | date:'mediumDate'}}</span>
-                        </p>
-                        <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
-                    </mat-card-content>
-                </mat-card>
+                <app-events-summary-card [events]="user?.attendingEvents || []"></app-events-summary-card>
             </section>
         </mat-card>
     </div>

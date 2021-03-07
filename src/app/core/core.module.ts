@@ -21,6 +21,7 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     ReactiveFormsModule,
     NavbarComponent,
     PageFooterComponent,
+    RouterModule,
   ],
 })
 export class CoreModule {}

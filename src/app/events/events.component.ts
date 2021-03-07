@@ -62,7 +62,7 @@ export class EventsComponent implements OnInit {
     this.events = this.allEvents.slice(0, this.pageSize);
   }
 
-  selectPage(event: any){
+  selectPage(event: any) {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
     let startIndex = event.pageSize * event.pageIndex;
@@ -72,9 +72,10 @@ export class EventsComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: {username: this.user.username},
+      data: { username: this.user.username },
       width: '800px',
       maxHeight: '90vh',
+      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
@@ -90,7 +91,7 @@ export class EventsComponent implements OnInit {
         title: 'Delete Event Confirmation',
         details: 'Are you sure you want to delete the event?',
         onConfirmCb: this.deleteEvent.bind(this),
-        params: id
+        params: id,
       },
       width: '360px',
       height: '180px',
@@ -99,7 +100,7 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  goToEvent(eventId: number | undefined): void{
+  goToEvent(eventId: number | undefined): void {
     this.router.navigate(['events', eventId]);
   }
 
@@ -116,7 +117,7 @@ export class EventsComponent implements OnInit {
       let index = this.events.findIndex((event) => event.id === id);
       this.eventService.deleteEvent(index);
 
-      if (this.user){
+      if (this.user) {
         this.userService.removeEventFromAllUsersEvents(id);
         this.authService.removeEventFromAllUsersEvents(id);
       }

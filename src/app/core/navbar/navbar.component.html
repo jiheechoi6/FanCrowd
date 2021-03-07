@@ -7,7 +7,8 @@
             <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
                 routerLinkActive="active"><i class="far fa-user"></i> {{user?.username}}</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
-            <span *ngIf="user" class="nav-item" [routerLink]="'/discussion-boards'" routerLinkActive="active">Browser</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/discussion-boards'"
+                routerLinkActive="active">Browser</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/calendar'" routerLinkActive="active">Calendar</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/login'" (click)="onLogOut()">Log Out</span>
         </section>

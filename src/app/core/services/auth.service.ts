@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
 import { EmailService } from './email.service';
 import EventDTO from 'src/app/shared/models/event-dto';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -25,18 +26,19 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',
-      profileUrl: 'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+      profileUrl:
+        'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       attendingEvents: [
-        { 
-          name: 'Comic Con', 
-          date: this.today, 
-          totalAttending: 2, 
-          id: 1 
+        {
+          name: 'Comic Con',
+          date: this.today,
+          totalAttending: 2,
+          id: 1,
         },
-        { 
+        {
           name: 'World Expo',
           date: new Date(this.today.getTime() + 1),
           totalAttending: 2,
@@ -57,28 +59,30 @@ export class AuthService {
       ],
       fandoms: [
         {
-          // Movies Category
           name: 'Avengers',
           id: 1,
           activityLevel: 5,
+          category: 'movies',
         },
         {
-          // Movies Category
           name: 'Harry Potter',
           id: 2,
           activityLevel: 2,
+          category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson Series',
           id: 10,
           activityLevel: 1,
+          category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
           id: 20,
           activityLevel: 4,
+          category: 'games',
         },
       ],
     },
@@ -88,7 +92,8 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'raj@gmail.com',
-      profileUrl: 'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
+      profileUrl:
+        'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
       role: 'user',
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
@@ -106,18 +111,21 @@ export class AuthService {
           name: 'Harry Potter',
           id: 2,
           activityLevel: 2,
+          category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
           id: 25,
           activityLevel: 3,
+          category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
           id: 14,
           activityLevel: 5,
+          category: 'shows',
         },
       ],
     },
@@ -127,7 +135,7 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'jihee@gmail.com',
-      profileUrl: 'https://dummyimage.com/250',
+      profileUrl: 'https://dummyimage.com/250.jpg',
       role: 'admin',
       bio: '',
       attendingEvents: [],
@@ -135,7 +143,11 @@ export class AuthService {
     },
   ];
 
-  constructor(private _http: HttpClient, private _emailService: EmailService) {}
+  constructor(
+    private _http: HttpClient,
+    private _emailService: EmailService,
+    private _userService: UserService
+  ) {}
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
@@ -156,15 +168,17 @@ export class AuthService {
     return loggedInUser;
   }
 
-  getCurrentUser(): BehaviorSubject<UserDTO | null>{
+  getCurrentUser(): BehaviorSubject<UserDTO | null> {
     return this.currentUser;
   }
 
   createNewUser(newUser: NewUser) {
     //API request to users endpoint to create new user
     this.usernameToPassword.set(newUser.username, newUser.password);
-    const newUserDTO = {
-      ...newUser,
+    const newUserDTO: UserDTO = {
+      username: newUser.username,
+      fullName: newUser.fullName,
+      email: newUser.email,
       bio:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
       city: 'Toronto',
@@ -172,9 +186,10 @@ export class AuthService {
       role: 'user',
       fandoms: [],
       attendingEvents: [],
-      profileUrl: 'https://dummyimage.com/250',
+      profileUrl: 'https://dummyimage.com/250.jpg',
     };
     this.users.push(newUserDTO);
+    this._userService.users.push(newUserDTO);
     this.currentUser.next(newUserDTO);
     return newUserDTO;
   }
@@ -201,43 +216,52 @@ export class AuthService {
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {
-    // Update user info (Add event to events attending) on server, 
+    // Update user info (Add event to events attending) on server,
     // code below requires server call
 
-    let user = this.currentUser.getValue()
+    let user = this.currentUser.getValue();
 
-    if (user){
-      let index = user.attendingEvents.findIndex((userEvent) => userEvent.id === event.id);
+    if (user) {
+      let index = user.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === event.id
+      );
 
-      if (index < 0){
+      if (index < 0) {
         user.attendingEvents.push(event);
       }
     }
   }
 
-  removeEventFromUserEvents(username: string, eventId: number | undefined): void {
-    // Update user info (remove event from events attending) on server, 
+  removeEventFromUserEvents(
+    username: string,
+    eventId: number | undefined
+  ): void {
+    // Update user info (remove event from events attending) on server,
     // code below requires server call
 
     let user = this.currentUser.getValue();
-    if (user){
-      let eventIndex = user.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
+    if (user) {
+      let eventIndex = user.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === eventId
+      );
 
-      if (eventIndex >= 0){
+      if (eventIndex >= 0) {
         user.attendingEvents.splice(eventIndex, 1);
       }
     }
   }
 
   removeEventFromAllUsersEvents(eventId: number | undefined): void {
-    // Update user info (remove event from events attending) on server, 
+    // Update user info (remove event from events attending) on server,
     // code below requires server call
 
     this.users.forEach((user) => {
-      if (user){
-        let eventIndex = user.attendingEvents.findIndex((userEvent) => userEvent.id === eventId);
-  
-        if (eventIndex >= 0){
+      if (user) {
+        let eventIndex = user.attendingEvents.findIndex(
+          (userEvent) => userEvent.id === eventId
+        );
+
+        if (eventIndex >= 0) {
           user.attendingEvents.splice(eventIndex, 1);
         }
       }

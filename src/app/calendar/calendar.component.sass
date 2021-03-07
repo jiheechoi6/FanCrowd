@@ -1,66 +1,86 @@
-#container
-    box-sizing: border-box
-    width: 800px
-    height: 650px
-    background: lightgrey
+.container
+    display: flex
+    justify-content: center
+    margin: 20px 0
     align-items: center
-    margin: auto
-    border-radius: 5px
-    margin-top: 25px
-    box-shadow: 0px 1px 2px grey
 
-    #month_area
+.calendar-container
+    background: #CFEAEE
+    border-radius: 5px
+    margin: 40px
+    padding: 25px
+    width: 75%
+
+    .month-container
         height: 90px
         padding: 10px
         display: flex
-        background: grey
-        justify-content: space-between
+        justify-content: center
         align-items: center
 
-        h1 
-            text-align: center
-            text-transform: uppercase
-        p
-            text-align: center
-            letter-spacing: 1px
-    
+        .selected-month-year
+            margin: 0 15px
 
-    #days
+        .next-month-arrow,
+        .prev-month-arrow
+            cursor: pointer
+            font-size: 18px
+            &:hover
+                transform: scale(1.4)
+
+    .days-of-week-container
         display: flex
         align-items: center
-        width: 100%
+        margin-bottom: 10px
+        justify-content: space-between
 
-        div
+        .day-of-week
             width: 1/7*100%
             text-align: center
-            font-size: 80%
-    
-    #date
+            font-size: 15px
+
+    .days-container
         display: flex
         flex-wrap: wrap
         width: 100%
+        justify-content: space-between
 
-        #not_this_month
-            opacity: 0.3
-        
-        div
-            box-sizing: border-box
+        .prev-month-day,
+        .next-month-day
+            color: #999
+            font-weight: 400
+
+        .day
             width: 1/7*100%
-            height: 85px
+            height: 75px
+            font-size: 15px
+            display: flex
+            flex-direction: column
+            align-items: center
+
+        .day-of-selected-month
+            font-weight: 600
+            display: flex
+            align-items: center
+            flex-direction: column
+
+            .calendar-day
+                &:hover
+                    transform: scale(1.3)
+                    cursor: pointer
+
+        .current-day
+            color: red
+
+        .num-events
+            display: flex
             justify-content: center
-            text-align: center
-            font-size: 80%
-            border: 1px black
-
-        span
-            color: purple
-        
-        div:hover
-            background: rgb(182, 196, 206)
-            border: 0.1px solid rgb(148, 204, 242)
-        
-        .today
-            background: rgb(180, 157, 202)
-            border: 1px solid rgb(164, 133, 194)
-            border-radius: 2px
-
+            align-items: center
+            color: white
+            border-radius: 10px
+            background-color: #040618
+            padding: 7px
+            height: 4px
+            width: 10px
+            margin: 5px 0 0
+            font-size: 12px

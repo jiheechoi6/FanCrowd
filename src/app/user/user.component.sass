@@ -60,10 +60,6 @@
     padding: 0px 16px
     margin-top: 15px !important
 
-.fandom-item
-    display: flex
-    justify-content: space-between
-
 .events-container
     width: 35%
     display: flex
@@ -87,22 +83,18 @@
     overflow-y: auto
     padding-right: 10px
 
-.event-item-container
-    background-color: #e2f3f5
-    margin-top: 20px
-    cursor: pointer
-
-    &:hover
-        animation: shake 950ms infinite
-
-    &:focus
-        outline: none
-
-    .event-header,
-    .event-stats
-        display: flex
-        justify-content: space-between
-
 .fandom-item-container
     background-color: #e2f3f5
     margin-top: 20px
+
+    .fandom-item
+        display: flex
+        justify-content: space-between
+
+    .fandom-info-container
+        display: flex
+        flex-direction: column
+
+        .category
+            color: gray
+            margin-left: 5px
