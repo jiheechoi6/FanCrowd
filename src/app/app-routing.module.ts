@@ -22,17 +22,17 @@ const routes: Routes = [
     canActivate: [LoggedInGuard],
   },
   {
-    path: 'users/:username',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'forgot-password',
     loadChildren: () =>
       import('./forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordModule
       ),
     canActivate: [LoggedInGuard],
+  },
+  {
+    path: 'users/:username',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'calendar',
