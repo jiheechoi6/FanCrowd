@@ -79,7 +79,6 @@ export class EventComponent implements OnInit {
       },
       width: '800px',
       maxHeight: '90vh',
-      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
@@ -101,7 +100,6 @@ export class EventComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
     });
   }
 
@@ -116,7 +114,6 @@ export class EventComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -133,7 +130,6 @@ export class EventComponent implements OnInit {
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
         data: { eventId: this.id, review: review },
         autoFocus: false,
-        backdropClass: 'material-dialog-backdrop',
         width: '450px',
         disableClose: true,
       });
@@ -160,7 +156,7 @@ export class EventComponent implements OnInit {
     }
   }
 
-  goBack(): void{
+  goBack(): void {
     this.location.back();
   }
 

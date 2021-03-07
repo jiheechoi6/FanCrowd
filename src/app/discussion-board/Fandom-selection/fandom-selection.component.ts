@@ -8,19 +8,18 @@ import { AddDialogComponent } from 'src/app/shared/components/add-dialog/add-dia
 @Component({
   selector: 'app-fandom-selection',
   templateUrl: './fandom-selection.component.html',
-  styleUrls: ['./fandom-selection.component.sass']
+  styleUrls: ['./fandom-selection.component.sass'],
 })
 export class FandomSelectionComponent implements OnInit {
   category: string = '';
   fandoms: Fandom[] = [];
 
-  constructor( 
+  constructor(
     private fandomService: FandomService,
     private activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
     private router: Router
-  ) 
-  { 
+  ) {
     this.category = this.activatedRoute.snapshot.params['category'];
   }
 
@@ -29,16 +28,15 @@ export class FandomSelectionComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef =  this.dialog.open(AddDialogComponent, {
+    const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Fandom in ' + this.category,
         categoryName: this.category,
-        isCategory: false
+        isCategory: false,
       },
       width: '360px',
       height: '300px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -50,9 +48,8 @@ export class FandomSelectionComponent implements OnInit {
     this.router.navigate(['discussion-boards']);
   }
 
-  goToEvents(fandom: Fandom): void{
-      // TODO
-      this.router.navigate(['events', this.category, fandom.name]);
+  goToEvents(fandom: Fandom): void {
+    // TODO
+    this.router.navigate(['events', this.category, fandom.name]);
   }
-
 }

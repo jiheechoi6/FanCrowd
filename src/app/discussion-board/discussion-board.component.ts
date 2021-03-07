@@ -9,7 +9,7 @@ import Category from '../shared/models/category';
 @Component({
   selector: 'app-discussion-board',
   templateUrl: './discussion-board.component.html',
-  styleUrls: ['./discussion-board.component.sass']
+  styleUrls: ['./discussion-board.component.sass'],
 })
 export class DiscussionBoardComponent implements OnInit {
   categories: Array<Category> = [];
@@ -18,8 +18,7 @@ export class DiscussionBoardComponent implements OnInit {
     private fandomService: FandomService,
     public dialog: MatDialog,
     private router: Router
-  ) 
-  { }
+  ) {}
 
   ngOnInit(): void {
     this.categories = this.fandomService.getCategories();
@@ -30,12 +29,11 @@ export class DiscussionBoardComponent implements OnInit {
       data: {
         title: 'Category',
         categoryName: '',
-        isCategory: true
+        isCategory: true,
       },
       width: '360px',
       height: '300px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -46,5 +44,4 @@ export class DiscussionBoardComponent implements OnInit {
   goToCategory(category: string): void {
     this.router.navigate(['discussion-boards', category]);
   }
-
 }

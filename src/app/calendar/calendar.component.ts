@@ -115,7 +115,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         selectedDate,
       },
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
       width: '450px',
     });
   }

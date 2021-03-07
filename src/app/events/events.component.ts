@@ -47,18 +47,21 @@ export class EventsComponent implements OnInit {
     }
 
     this.isFromBrowser = false;
-    if (this.categoryName && this.fandomName){
-      if (this.categoryName.length >= 0 && this.fandomName.length >= 0){
+    if (this.categoryName && this.fandomName) {
+      if (this.categoryName.length >= 0 && this.fandomName.length >= 0) {
         this.isFromBrowser = true;
       }
     }
 
-    if (!this.isFromBrowser){
+    if (!this.isFromBrowser) {
       this.allEvents = this.eventService.getEvents();
     } else {
-      this.allEvents = this.eventService.getEventsByCategoryAndFandom(this.categoryName, this.fandomName);
+      this.allEvents = this.eventService.getEventsByCategoryAndFandom(
+        this.categoryName,
+        this.fandomName
+      );
     }
-    
+
     this.events = this.allEvents.slice(0, this.pageSize);
   }
 
@@ -75,7 +78,6 @@ export class EventsComponent implements OnInit {
       data: { username: this.user.username },
       width: '800px',
       maxHeight: '90vh',
-      backdropClass: 'material-dialog-backdrop',
     });
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
@@ -96,7 +98,6 @@ export class EventsComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
-      backdropClass: 'material-dialog-backdrop',
     });
   }
 
