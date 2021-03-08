@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
-import { EventCreateDialogComponent } from './event-create/event-create.component';
+import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from '../core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';

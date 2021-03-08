@@ -65,7 +65,7 @@
                 <mat-select name="fandom" [(ngModel)]="newEvent.fandomType.name" required
                     [disabled]="!newEvent.fandomType.category">
                     <mat-option>--Select Fandom--</mat-option>
-                    <mat-option *ngFor="let fandom of fandomByCategory" [value]="fandom.name">
+                    <mat-option *ngFor="let fandom of fandomForCategory" [value]="fandom.name">
                         {{fandom.name}}
                     </mat-option>
                 </mat-select>

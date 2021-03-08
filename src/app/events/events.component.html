@@ -1,8 +1,4 @@
 <div>
-    <mat-paginator [length]="this.allEvents.length" [pageSize]="this.pageSize" [pageSizeOptions]="this.pageSizeOptions"
-        [pageIndex]="this.pageIndex" (page)="selectPage($event)" color="accent">
-    </mat-paginator>
-
     <div class="button-container">
         <div *ngIf="!this.isFromBrowser" class="create" (click)="openDialog()">
             <button mat-flat-button color="primary">Create Event</button>

@@ -9,14 +9,14 @@ import Event from '../../shared/models/event';
 
 @Component({
   selector: 'event-create-dialog',
-  templateUrl: './event-create.component.html',
-  styleUrls: ['./event-create.component.sass'],
+  templateUrl: './event-create-dialog.component.html',
+  styleUrls: ['./event-create-dialog.component.sass'],
 })
 export class EventCreateDialogComponent implements OnInit {
   newEvent: Event;
   minDate: Date;
   categories: Category[] = [];
-  fandomByCategory: Fandom[] = [];
+  fandomForCategory: Fandom[] = [];
   eventDateRange: Date[];
 
   dateRangeErrorMatcher = {
@@ -69,7 +69,7 @@ export class EventCreateDialogComponent implements OnInit {
   }
 
   categoryChange(event: any) {
-    this.fandomByCategory = this.fandomService.getFandomsByCategories(
+    this.fandomForCategory = this.fandomService.getFandomsByCategories(
       event.value
     );
   }
