@@ -1,11 +1,12 @@
 <div>
     <div class="button-container">
-        <div class="create" (click)="openDialog()"><button mat-raised-button color="primary">Add Category</button></div>
+        <div class="create" (click)="openDialog()"><button mat-flat-button color="primary">Add Category</button></div>
     </div>
 
     <div class="category-container">
         <div *ngFor="let category of categories; let i = index">
-            <mat-card style="background-image: url({{category.backgroundUrl}})" class="category-card" (click)="goToCategory(category.name)">
+            <mat-card style="background-image: url({{category.backgroundUrl}})" class="category-card"
+                (click)="goToCategory(category.name)">
                 <mat-card-content>
                     <div>
                         <h1 class="center"><b>{{category.name}}</b></h1>

@@ -20,13 +20,13 @@
                         </span><span>{{user?.country}}</span></p>
                     <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span></p>
                     <div class="profile-action-button-container">
-                        <button mat-raised-button color="primary" *ngIf="loggedInUser?.username === user?.username"
+                        <button mat-flat-button color="primary" *ngIf="loggedInUser?.username === user?.username"
                             (click)="openEditAccountDialog()"><i class="fas fa-edit"></i> Edit
                             Info</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.username === user?.username"
+                        <button mat-flat-button color="warn" *ngIf="loggedInUser?.username === user?.username"
                             (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
                             Account</button>
-                        <button mat-raised-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
+                        <button mat-flat-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
                             (click)="openBanUserAccountDialog()"><i class="fas fa-ban"></i> Ban User</button>
                     </div>
                 </mat-card-content>

@@ -1,15 +1,11 @@
 <div>
-    <mat-paginator [length]="this.allEvents.length"
-                [pageSize]="this.pageSize"
-                [pageSizeOptions]="this.pageSizeOptions"
-                [pageIndex]="this.pageIndex"
-                (page)="selectPage($event)"
-                color="accent">
+    <mat-paginator [length]="this.allEvents.length" [pageSize]="this.pageSize" [pageSizeOptions]="this.pageSizeOptions"
+        [pageIndex]="this.pageIndex" (page)="selectPage($event)" color="accent">
     </mat-paginator>
 
     <div class="button-container">
         <div *ngIf="!this.isFromBrowser" class="create" (click)="openDialog()">
-            <button mat-raised-button color="primary">Create Event</button>
+            <button mat-flat-button color="primary">Create Event</button>
         </div>
     </div>
 
@@ -31,27 +27,28 @@
                         </h4>
                     </div>
                     <div class="desc">{{event.description}}</div>
-                    <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
-                    <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span> </div>
+                    <div>Fandom Category: <span *ngIf="event.fandomType"
+                            class="highlight">{{event.fandomType.category}}</span> </div>
+                    <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span>
+                    </div>
                     <br>
                     <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
 
                     <div class="flex-container footer">
-                        <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{event.postedBy}}</span></div>
-                        <div class="delete" *ngIf="this.isAdmin || this.user.username === event.postedBy" (click)="openDeleteDialog(event.id)"><button mat-raised-button
-                                color="warn">Delete</button></div>
-                        <div class="more" (click)="goToEvent(event.id)"><button mat-raised-button color="accent">See More</button></div>
+                        <div class="flex-one postedBy"><u>Posted By</u>: <span
+                                class="user-highlight">{{event.postedBy}}</span></div>
+                        <div class="delete" *ngIf="this.isAdmin || this.user.username === event.postedBy"
+                            (click)="openDeleteDialog(event.id)"><button mat-flat-button color="warn">Delete</button>
+                        </div>
+                        <div class="more" (click)="goToEvent(event.id)"><button mat-flat-button color="accent">See
+                                More</button></div>
                     </div>
                 </div>
             </mat-card-content>
         </mat-card>
     </div>
 
-    <mat-paginator [length]="this.allEvents.length"
-                [pageSize]="this.pageSize"
-                [pageIndex]="this.pageIndex"
-                [pageSizeOptions]="this.pageSizeOptions"
-                (page)="selectPage($event)"
-                color="accent">
+    <mat-paginator [length]="this.allEvents.length" [pageSize]="this.pageSize" [pageIndex]="this.pageIndex"
+        [pageSizeOptions]="this.pageSizeOptions" (page)="selectPage($event)" color="accent">
     </mat-paginator>
 </div>

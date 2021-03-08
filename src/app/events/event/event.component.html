@@ -1,6 +1,6 @@
 <div>
     <div class="button-container">
-        <div class="button-div" (click)="goBack()"><button mat-raised-button color="primary">Back</button></div>
+        <div class="button-div" (click)="goBack()"><button mat-flat-button color="primary">Back</button></div>
     </div>
 
     <mat-card *ngIf="this.event" class="event-card">
@@ -11,28 +11,36 @@
                 </div>
                 <div class="flex-container header">
                     <h4 class="flex-one">{{this.event.location}}</h4>
-                    <h4 class="inline-view">{{this.event.startDate | date:'mediumDate'}} - {{this.event.endDate | date:'mediumDate'}}</h4>
+                    <h4 class="inline-view">{{this.event.startDate | date:'mediumDate'}} -
+                        {{this.event.endDate | date:'mediumDate'}}</h4>
                 </div>
                 <div class="desc">{{this.event.description}}</div>
-                <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.category}}</span> </div>
-                <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.name}}</span> </div>
+                <div>Fandom Category: <span *ngIf="event.fandomType"
+                        class="highlight">{{this.event.fandomType.category}}</span> </div>
+                <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{this.event.fandomType.name}}</span>
+                </div>
                 <br>
                 <div><u>Total People Attending</u>: {{this.event.totalAttendance}} </div>
 
                 <div class="flex-container footer">
-                    <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{this.event.postedBy}}</span></div>
-                    <div class="delete" *ngIf="this.isAdmin || this.user && this.user.username === event.postedBy" (click)="openDeleteEventDialog(event.id)">
-                        <button mat-raised-button color="warn">Delete</button>
+                    <div class="flex-one postedBy"><u>Posted By</u>: <span
+                            class="user-highlight">{{this.event.postedBy}}</span></div>
+                    <div class="delete" *ngIf="this.isAdmin || this.user && this.user.username === event.postedBy"
+                        (click)="openDeleteEventDialog(event.id)">
+                        <button mat-flat-button color="warn">Delete</button>
                     </div>
-                    <div class="more" *ngIf="!this.isAttending" (click)="addEventToProfile()"><button mat-raised-button color="accent">Attend</button></div>
-                    <div class="more" *ngIf="this.isAttending" (click)="removeEventFromProfile(event.id)"><button mat-raised-button color="accent">Unattend</button></div>
+                    <div class="more" *ngIf="!this.isAttending" (click)="addEventToProfile()"><button mat-flat-button
+                            color="accent">Attend</button></div>
+                    <div class="more" *ngIf="this.isAttending" (click)="removeEventFromProfile(event.id)"><button
+                            mat-flat-button color="accent">Unattend</button></div>
                 </div>
             </div>
         </mat-card-content>
     </mat-card>
 
     <div *ngIf="!this.wroteReview" class="button-container">
-        <div class="button-div" id="review" (click)="openAddDialog()"><button mat-raised-button color="primary">Add Review</button></div>
+        <div class="button-div" id="review" (click)="openAddDialog()"><button mat-flat-button color="primary">Add
+                Review</button></div>
     </div>
 
     <div *ngIf="!this.wroteReview" class="spacer"></div>
@@ -41,11 +49,12 @@
         <mat-card class="review-card">
             <mat-card-content>
                 <div>
-                    <div class="poster"> 
+                    <div class="poster">
                         <div class="profile-img-wrapper">
-                            <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture" class="profile-img">
+                            <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture"
+                                class="profile-img">
                         </div>
-        
+
                         <div>{{review.postedBy.username}}</div>
                         <div>{{review.postDate | date: 'mediumDate'}}</div>
                     </div>
@@ -58,10 +67,14 @@
                         <div>{{review.content}}</div>
 
                         <div class="flex-container footer">
-                            <div class="delete" *ngIf="this.isAdmin || this.user && this.user.username === review.postedBy.username" (click)="openDeleteReviewDialog(review.id)">
-                                <button mat-raised-button color="warn">Delete</button>
+                            <div class="delete"
+                                *ngIf="this.isAdmin || this.user && this.user.username === review.postedBy.username"
+                                (click)="openDeleteReviewDialog(review.id)">
+                                <button mat-flat-button color="warn">Delete</button>
                             </div>
-                            <div class="edit" *ngIf="this.user && this.user.username === review.postedBy.username" (click)="openEditDialog(review.id)"><button mat-raised-button color="accent">Edit</button></div>
+                            <div class="edit" *ngIf="this.user && this.user.username === review.postedBy.username"
+                                (click)="openEditDialog(review.id)"><button mat-flat-button color="accent">Edit</button>
+                            </div>
                         </div>
                     </div>
                 </div>

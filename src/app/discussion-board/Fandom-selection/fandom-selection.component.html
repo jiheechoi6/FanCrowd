@@ -1,12 +1,13 @@
 <div>
     <div class="button-container">
-        <span class="back" (click)="goToEventBrowser()"><button mat-raised-button color="primary">Back</button></span>
-        <span class="create" (click)="openDialog()"><button mat-raised-button color="primary">Add Fandom</button></span>
+        <span class="back" (click)="goToEventBrowser()"><button mat-flat-button color="primary">Back</button></span>
+        <span class="create" (click)="openDialog()"><button mat-flat-button color="primary">Add Fandom</button></span>
     </div>
 
     <div class="fandom-container">
         <div *ngFor="let fandom of fandoms; let i = index">
-            <mat-card style="background-image: url({{fandom.backgroundUrl}})" class="fandom-card" (click)="goToEvents(fandom)">
+            <mat-card style="background-image: url({{fandom.backgroundUrl}})" class="fandom-card"
+                (click)="goToEvents(fandom)">
                 <mat-card-content>
                     <div class="text">
                         <h1 class="center"><b>{{fandom.name}} </b></h1>
