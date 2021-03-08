@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { PageFooterComponent } from './page-footer/page-footer.component';
+import { OwlDateTimePickerModule } from './owl-datetime-picker/owl-datetime-picker.module';
 
 @NgModule({
   declarations: [NavbarComponent, PageFooterComponent],
@@ -14,6 +15,7 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
+    OwlDateTimePickerModule,
   ],
   exports: [
     MaterialModule,
@@ -22,6 +24,7 @@ import { PageFooterComponent } from './page-footer/page-footer.component';
     NavbarComponent,
     PageFooterComponent,
     RouterModule,
+    OwlDateTimePickerModule,
   ],
 })
 export class CoreModule {}
