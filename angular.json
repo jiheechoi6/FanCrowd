@@ -28,6 +28,7 @@
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "./node_modules/ng-pick-datetime/assets/style/picker.min.css",
               "src/theme.scss",
               "src/styles.sass",
               "./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
@@ -89,7 +90,12 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/theme.scss", "src/styles.sass"],
+            "styles": [
+              "./node_modules/ng-pick-datetime/assets/style/picker.min.css",
+              "src/theme.scss",
+              "src/styles.sass",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+            ],
             "scripts": []
           }
         },

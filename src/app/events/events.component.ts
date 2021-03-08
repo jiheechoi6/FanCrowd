@@ -77,7 +77,6 @@ export class EventsComponent implements OnInit {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
       data: { username: this.user.username },
       width: '800px',
-      maxHeight: '90vh',
     });
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
