@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.sass'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserDTO | null = null;
   loggedInUser: UserDTO | null = null;
@@ -30,13 +30,18 @@ export class UserComponent implements OnInit {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
       this.user = this._userService.getUserByUsername(username);
-      this._authService.currentUser.subscribe(
-        (user) => (this.loggedInUser = user)
-      );
       if (!this.user) {
         this._router.navigate(['../']);
       }
     });
+
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
   }
 
   deleteUser() {
