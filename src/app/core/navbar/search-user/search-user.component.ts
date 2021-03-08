@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,8 +13,8 @@ import { Observable } from 'rxjs';
 export class SearchUserComponent implements OnInit {
 
   myControl = new FormControl();
-  userList:string[] = ['one', 'two', 'three'];
-  filteredOptions: Observable<string[]> | undefined;
+  userList:Map<string, string> = new Map();
+  filteredOptions: Observable<Map<string, string>> | undefined;
   userToSearch:string = "";
   
   constructor(
@@ -23,11 +23,11 @@ export class SearchUserComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.userList = this.userService.getUsernameList();
+    this.userList = this.userService.getUsernameNameMap();
     this.filteredOptions = this.myControl.valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filter(value))
+        map(value => this._filterName(value))
       );
   }
 
@@ -36,10 +36,16 @@ export class SearchUserComponent implements OnInit {
     this.router.navigate(['/users', this.userToSearch]);
   }
 
-  private _filter(value: string): string[] {
+  private _filterName(value: string): Map<string, string> {
     const filterValue = value.toLowerCase();
+    let filteredMap = new Map<string, string>();
 
-    return this.userList.filter(option => option.toLowerCase().includes(filterValue));
+    for(let [key, value] of this.userList){
+      if(key.toLowerCase().includes(filterValue) || value.toLowerCase().includes(filterValue)){
+        filteredMap.set(key, value);
+      }
+    }
+    return filteredMap;
   }
 
 }

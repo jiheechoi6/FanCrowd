@@ -190,12 +190,12 @@ export class UserService {
     });
   }
   
-  getUsernameList(){
-    let lst:string[] = [];
+  getUsernameNameMap(){
+    let usermap:Map<string, string> = new Map();
     this.users.forEach((user)=>{
-      lst.push(user.username);
+      usermap.set(user.fullName, user.username);
     });
 
-    return lst;
+    return usermap;
   }
 }
