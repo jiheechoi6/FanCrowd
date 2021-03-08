@@ -9,12 +9,14 @@
                 <mat-error>Name is a required field</mat-error>
             </mat-form-field>
         </div>
+
         <div class="form-group">
             <mat-form-field color="accent">
-                <mat-label>Location</mat-label>
-                <input matInput [(ngModel)]="newEvent.location" name="location" required pattern=".*\S+.*"
-                    autocomplete="off">
-                <mat-error>Location is a required field</mat-error>
+                <mat-label>Description</mat-label>
+                <textarea class="description-field" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="3" cdkTextareaAutosize matInput [(ngModel)]="newEvent.description"
+                    name="description" required pattern=".*\S+.*" autocomplete="off"></textarea>
+                <mat-error>Description is a required field</mat-error>
             </mat-form-field>
         </div>
 
@@ -23,7 +25,7 @@
                 <mat-label>Date & Time Range</mat-label>
                 <input matInput name="eventDateRange" [min]="minDate" [(ngModel)]="eventDateRange"
                     [owlDateTime]="eventDateTime" [selectMode]="'range'" [rangeSeparator]="'-'" required
-                    #dateRange="ngModel" [errorStateMatcher]="dateRangeErrorMatcher" autocomplete="off">
+                    [errorStateMatcher]="dateRangeErrorMatcher" autocomplete="off">
                 <owl-date-time #eventDateTime [hour12Timer]="true" [panelClass]="'owl-date-picker-custom-container'">
                 </owl-date-time>
                 <mat-icon matSuffix>
@@ -31,6 +33,15 @@
                             class="fas fa-calendar-alt"></i></span>
                 </mat-icon>
                 <mat-error>Please select a range where the start date is before end date</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Location</mat-label>
+                <input matInput [(ngModel)]="newEvent.location" name="location" required pattern=".*\S+.*"
+                    autocomplete="off">
+                <mat-error>Location is a required field</mat-error>
             </mat-form-field>
         </div>
 
@@ -44,30 +55,21 @@
                         {{category.name}}
                     </mat-option>
                 </mat-select>
-                <mat-error>Please select a category</mat-error>
+                <mat-error>Fandom Category is a required field</mat-error>
             </mat-form-field>
         </div>
 
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Fandom</mat-label>
-                <mat-select name="fandom" [(ngModel)]="newEvent.fandomType.name" required>
+                <mat-select name="fandom" [(ngModel)]="newEvent.fandomType.name" required
+                    [disabled]="!newEvent.fandomType.category">
                     <mat-option>--Select Fandom--</mat-option>
                     <mat-option *ngFor="let fandom of fandomByCategory" [value]="fandom.name">
                         {{fandom.name}}
                     </mat-option>
                 </mat-select>
-                <mat-error>Please select a fandom</mat-error>
-            </mat-form-field>
-        </div>
-
-        <div class="form-group">
-            <mat-form-field color="accent">
-                <mat-label>Description</mat-label>
-                <textarea class="description-field" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
-                    cdkAutosizeMaxRows="3" cdkTextareaAutosize matInput [(ngModel)]="newEvent.description"
-                    name="description" required pattern=".*\S+.*" autocomplete="off"></textarea>
-                <mat-error>Description is a required field</mat-error>
+                <mat-error>Fandom is a required field</mat-error>
             </mat-form-field>
         </div>
     </form>
