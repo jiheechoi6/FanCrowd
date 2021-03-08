@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroupDirective } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import Category from 'src/app/shared/models/category';
 import Fandom from 'src/app/shared/models/fandom';
@@ -16,31 +17,50 @@ export class EventCreateDialogComponent implements OnInit {
   minDate: Date;
   categories: Category[] = [];
   fandomByCategory: Fandom[] = [];
+  eventDateRange: Date[];
+
+  dateRangeErrorMatcher = {
+    isErrorState: (control: FormControl, form: FormGroupDirective): boolean => {
+      if (control.value) {
+        const startDate: Date = control.value[0];
+        const endDate: Date = control.value[1];
+        const dateRangeInvalid =
+          !startDate ||
+          !endDate ||
+          control.errors?.owlDateTimeParse ||
+          endDate < startDate;
+        return dateRangeInvalid && control.touched;
+      }
+      return false;
+    },
+  };
 
   constructor(
     public dialogRef: MatDialogRef<EventCreateDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {username: string},
+    @Inject(MAT_DIALOG_DATA) public data: { username: string },
     private eventService: EventService,
-    private fandomService: FandomService,
+    private fandomService: FandomService
   ) {
     this.minDate = new Date();
     const defaultStartDate = new Date();
     const defaultEndDate = new Date();
     defaultEndDate.setDate(defaultStartDate.getDate() + 1);
+
+    this.eventDateRange = [defaultStartDate, defaultEndDate];
     this.newEvent = {
       id: 1000,
       name: '',
       fandomType: {
         category: '',
-        name: ''
+        name: '',
       },
       description: '',
-      startDate: defaultStartDate,
-      endDate: defaultEndDate,
+      startDate: this.eventDateRange[0],
+      endDate: this.eventDateRange[1],
       location: '',
       postedBy: this.data.username,
       totalAttendance: 0,
-      reviews: []
+      reviews: [],
     };
   }
 
@@ -48,11 +68,15 @@ export class EventCreateDialogComponent implements OnInit {
     this.categories = this.fandomService.getCategories();
   }
 
-  categoryChange(event: any){
-    this.fandomByCategory = this.fandomService.getFandomsByCategories(event.value);
+  categoryChange(event: any) {
+    this.fandomByCategory = this.fandomService.getFandomsByCategories(
+      event.value
+    );
   }
 
   createEvent() {
+    this.newEvent.startDate = this.eventDateRange[0];
+    this.newEvent.endDate = this.eventDateRange[1];
     this.eventService.createEvent(this.newEvent);
     this.dialogRef.close(this.newEvent);
   }
