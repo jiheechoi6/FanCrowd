@@ -22,6 +22,7 @@ import { SearchUserComponent } from './navbar/search-user/search-user.component'
     ReactiveFormsModule,
     NavbarComponent,
     PageFooterComponent,
+    RouterModule,
   ],
 })
 export class CoreModule {}

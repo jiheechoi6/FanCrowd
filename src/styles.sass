@@ -42,6 +42,10 @@ a
     text-decoration: none
     color: #3d5af1
 
+button
+    &:disabled
+        cursor: not-allowed !important
+
 .material-dialog-backdrop
     background-color: black
     opacity: 0.7 !important
@@ -93,3 +97,9 @@ a
 
     .mat-simple-snackbar-action
         color: black
+
+.box-shadow
+    box-shadow: 0px 10px 10px grey !important
+
+.mat-dialog-container
+    will-change: transform, opacity

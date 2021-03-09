@@ -18,7 +18,7 @@ export class SignupComponent implements OnInit {
   passwordConfirm = '';
   signUpError = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private _authService: AuthService, private _router: Router) {}
 
   ngOnInit(): void {}
 
@@ -30,10 +30,10 @@ export class SignupComponent implements OnInit {
       password: this.password,
       username: this.username,
     };
-    const user = this.authService.createNewUser(newUser);
+    const user = this._authService.createNewUser(newUser);
     this.isSigningUp = false;
     if (user) {
-      this.router.navigate(['/users', user.username]);
+      this._router.navigate(['/users', user.username]);
     } else {
       this.signUpError = 'Username is already taken';
     }

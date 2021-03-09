@@ -1,4 +1,11 @@
-<div id='event-container' *ngFor="let event of eventLst">
-    <p id='event-name'>{{event.name}}</p>
-</div>
-<div *ngIf="hasNoEvent()">No events are scheduled for this date</div>
+<section class="container">
+    <h3 class="mat-headline selected-date">{{data.selectedDate | date:'fullDate'}}</h3>
+    <p class="mat-subheading-1" *ngIf="!data.events.length">Nothing scheduled!</p>
+    <div class="events">
+        <app-events-summary-card [events]="data.events"></app-events-summary-card>
+    </div>
+</section>
+
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close color="primary">Close</button>
+</mat-dialog-actions>

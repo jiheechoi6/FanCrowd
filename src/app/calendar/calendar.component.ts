@@ -1,100 +1,139 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
+import EventDTO from '../shared/models/event-dto';
+import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.sass']
+  styleUrls: ['./calendar.component.sass'],
 })
-export class CalendarComponent implements OnInit{
-
-  months = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  today:any = new Date();
-  showdate:any = new Date();
-  displayMonth:number = this.showdate.getMonth()
-  displayMonthString:string = this.months[this.displayMonth]
-  displayYear:number = this.showdate.getFullYear()
-  
-  displayFirstDay = new Date(this.displayYear, this.displayMonth, 1).getDay()
-  displayLastDate = new Date(this.displayYear, this.displayMonth+1, 0).getDate()
-  displayLastDay = new Date(this.displayYear, this.displayMonth, this.displayLastDate)
-  displayPrevMonthLastDate = new Date(this.displayYear, this.displayMonth, 0).getDate()
-
-  fullDate = this.showdate.toDateString()
+export class CalendarComponent implements OnInit, OnDestroy {
+  months = [
+    'January',
+    'Febuary',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+  shownDate = new Date();
+  shownMonth = this.shownDate.getMonth();
+  shownMonthAsText = this.months[this.shownMonth];
+  shownYear = this.shownDate.getFullYear();
+  firstDayOfShownMonth = new Date(this.shownYear, this.shownMonth, 1).getDay();
+  lastDateOfShownMonth = new Date(
+    this.shownYear,
+    this.shownMonth + 1,
+    0
+  ).getDate();
+  prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
+  userEvents: EventDTO[] = [];
+  private _eventDialogRef: MatDialogRef<DateEventDialogComponent> | null = null;
 
   constructor(
-    private authService: AuthService,
-    private dialog: MatDialog) { }
+    private _authService: AuthService,
+    private _dialog: MatDialog,
+    private _userService: UserService
+  ) {}
 
   ngOnInit(): void {
-    
-  }
-
-  updateDateValues(){
-    this.displayMonth= this.showdate.getMonth()
-    this.displayMonthString = this.months[this.displayMonth]
-    this.displayYear = this.showdate.getFullYear()
-    
-    this.displayFirstDay = new Date(this.displayYear, this.displayMonth, 1).getDay()
-    this.displayLastDate = new Date(this.displayYear, this.displayMonth+1, 0).getDate()
-    this.displayLastDay = new Date(this.displayYear, this.displayMonth, this.displayLastDate)
-    this.displayPrevMonthLastDate = new Date(this.displayYear, this.displayMonth, 0).getDate()
-    this.fullDate = this.showdate.toDateString()
-  }
-
-  prevMonth(){
-    this.showdate.setMonth(this.showdate.getMonth()-1)
-    this.updateDateValues()
-  }
-
-  nextMonth(){
-    this.showdate.setMonth(this.showdate.getMonth()+1)
-    this.updateDateValues()
-  }
-  
-  getEvents(i: number){
-
-  }
-
-  hasEvent(i: number){
-    let result = false;
-    this.authService.getCurrentLoggedInUserEvents()?.forEach((event) => {
-      if(event.date.getFullYear() == this.displayYear &&
-          event.date.getMonth() == this.displayMonth &&
-          event.date.getDate() == i){
-        result = true;
-      }else{
-        result = false;
-      }
+    this._authService.currentUser.subscribe((user) => {
+      this.userEvents = this._userService.getUserEventsByUsername(
+        user?.username || ''
+      );
     });
-    return result;
   }
 
-  openDateEventDialog(date:number) {
-    let year = this.displayYear
-    let month = this.displayMonth
-    const dialogRef = this.dialog.open(DateEventDialogComponent, {
-      data: { year, month, date },
+  ngOnDestroy(): void {
+    if (this._eventDialogRef) {
+      this._eventDialogRef.close();
+    }
+  }
+
+  changeShownCalendarDates() {
+    this.shownMonth = this.shownDate.getMonth();
+    this.shownMonthAsText = this.months[this.shownMonth];
+    this.shownYear = this.shownDate.getFullYear();
+
+    this.firstDayOfShownMonth = new Date(
+      this.shownYear,
+      this.shownMonth,
+      1
+    ).getDay();
+    this.lastDateOfShownMonth = new Date(
+      this.shownYear,
+      this.shownMonth + 1,
+      0
+    ).getDate();
+    this.prevMonthLastDay = new Date(
+      this.shownYear,
+      this.shownMonth,
+      0
+    ).getDate();
+  }
+
+  prevMonth() {
+    this.shownDate.setMonth(this.shownDate.getMonth() - 1);
+    this.changeShownCalendarDates();
+  }
+
+  nextMonth() {
+    this.shownDate.setMonth(this.shownDate.getMonth() + 1);
+    this.changeShownCalendarDates();
+  }
+
+  getEventsForDate(month: number, date: number) {
+    const selectedDate = this.getDateFromshownYearMonthDate(
+      month,
+      date
+    ).toDateString();
+    const eventsForDate = this.userEvents.filter(
+      (event) => event.date.toDateString() === selectedDate
+    );
+    return eventsForDate;
+  }
+
+  openDateEventDialog(date: number) {
+    const selectedDate = this.getDateFromshownYearMonthDate(
+      this.shownMonth,
+      date
+    );
+    const eventsForDate = this.getEventsForDate(this.shownMonth, date);
+    this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
+      data: {
+        events: eventsForDate,
+        selectedDate,
+      },
       autoFocus: false,
       backdropClass: 'material-dialog-backdrop',
-      width: '400px',
+      width: '450px',
     });
   }
 
-  isToday(date:number){
-    if(this.displayYear ==this.today.getFullYear() &&
-      this.displayMonth == this.today.getMonth() &&
-      date == this.today.getDate()){
-        return true;
-      }else{
-        return false;
-      }
+  isCurrentDate(date: number) {
+    const todayDate = new Date().toDateString();
+    const selectedDate = this.getDateFromshownYearMonthDate(
+      this.shownMonth,
+      date
+    ).toDateString();
+    return todayDate === selectedDate;
   }
 
   counter(i: number) {
     return new Array(i);
   }
 
+  private getDateFromshownYearMonthDate(month: number, date: number) {
+    return new Date(this.shownYear, month, date);
+  }
 }
