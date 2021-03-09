@@ -39,7 +39,7 @@
                 </p>
                 <p>
                     Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.category?.toLowerCase(), event.fandomType.name]">{{event.fandomType.name | titlecase}}</a>
+                        [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                 </p>
                 <div class="buttons-container-right">
                     <button class="delete-event-button"

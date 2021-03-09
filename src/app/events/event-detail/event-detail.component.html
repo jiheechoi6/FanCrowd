@@ -29,7 +29,7 @@
                     </p>
                     <p>
                         Fandom: <a
-                            [routerLink]="['/fandoms', event.fandomType.category?.toLowerCase(), event.fandomType.name || '']">{{event.fandomType.name | titlecase}}</a>
+                            [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                     </p>
                     <div class="buttons-container-space-between">
                         <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button

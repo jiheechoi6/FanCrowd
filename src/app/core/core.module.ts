@@ -6,9 +6,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { PageFooterComponent } from './page-footer/page-footer.component';
 import { OwlDateTimePickerModule } from './owl-datetime-picker/owl-datetime-picker.module';
+import { SpacesToHyphenPipe } from './pipes/spaces-to-hyphen.pipe';
 
 @NgModule({
-  declarations: [NavbarComponent, PageFooterComponent],
+  declarations: [NavbarComponent, PageFooterComponent, SpacesToHyphenPipe],
   imports: [
     CommonModule,
     MaterialModule,
@@ -25,6 +26,7 @@ import { OwlDateTimePickerModule } from './owl-datetime-picker/owl-datetime-pick
     PageFooterComponent,
     RouterModule,
     OwlDateTimePickerModule,
+    SpacesToHyphenPipe,
   ],
 })
 export class CoreModule {}
