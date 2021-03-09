@@ -1,0 +1,23 @@
+<section>
+    <mat-form-field class="user-search" appearance="standard" floatLabel=never color="primary">
+        <mat-label>Search User</mat-label>
+        <input type="text" 
+            placeholder="Type the username or name to search"
+            aria-label="userForSearch"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+            highlight=""
+            [(ngModel)]="userToSearch"
+            >
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngIf="(filteredOptions | async | keyvalue)?.length==0" color="warn">
+                no users with this username
+            </mat-option>
+            <mat-option *ngFor="let option of filteredOptions | async | keyvalue" [value]="option.value">
+                {{option.key}} <span id="username">({{option.value}})</span>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <button mat-button (click)="searchUser()"><i class="fa fa-search"></i></button>
+</section>

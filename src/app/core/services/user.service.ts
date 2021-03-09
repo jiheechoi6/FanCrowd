@@ -216,4 +216,13 @@ export class UserService {
       }
     });
   }
+  
+  getUsernameNameMap(){
+    let usermap:Map<string, string> = new Map();
+    this.users.forEach((user)=>{
+      usermap.set(user.fullName, user.username);
+    });
+
+    return usermap;
+  }
 }

@@ -5,15 +5,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { PageFooterComponent } from './page-footer/page-footer.component';
+import { SearchUserComponent } from './navbar/search-user/search-user.component';
 
 @NgModule({
-  declarations: [NavbarComponent, PageFooterComponent],
+  declarations: [NavbarComponent, PageFooterComponent, SearchUserComponent],
   imports: [
     CommonModule,
     MaterialModule,
     FormsModule,
     RouterModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     MaterialModule,
