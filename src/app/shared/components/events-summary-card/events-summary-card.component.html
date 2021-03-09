@@ -3,6 +3,7 @@
         <p class="event-header">
             <span>{{event.name | titlecase}}</span><span>{{event.date | date: 'MMM d y, h:mm a'}}</span>
         </p>
-        <p class="event-stats">Total Attending <span>{{event.totalAttending}}</span></p>
+        <p class="num-people-attending">{{event.totalAttending}} {{event.totalAttending === 1 ? 'Person' : 'People'}}
+            Attending</p>
     </mat-card-content>
 </mat-card>

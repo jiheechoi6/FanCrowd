@@ -16,7 +16,8 @@
                         {{event.endDate | date: 'MMM d y, h:mm a'}}</span>
                     <div class="location-num-people-attending">
                         <span>{{event.location}}</span>
-                        <span class="num-people-attending">{{event.totalAttendance}} People Attending</span>
+                        <span class="num-people-attending">{{event.totalAttendance}}
+                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending</span>
                     </div>
                 </div>
                 <article>
