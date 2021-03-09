@@ -58,8 +58,9 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Bio</mat-label>
-                <textarea class="bio-field" matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*" rows="7"
-                    required autocomplete="off"></textarea>
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*" required
+                    autocomplete="off"></textarea>
                 <mat-error>Bio is a required field</mat-error>
             </mat-form-field>
         </div>
