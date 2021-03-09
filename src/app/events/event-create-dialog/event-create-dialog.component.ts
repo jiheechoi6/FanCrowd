@@ -59,6 +59,7 @@ export class EventCreateDialogComponent implements OnInit {
       );
     } else {
       const defaultStartDate = new Date();
+      defaultStartDate.setHours(new Date().getHours() + 1);
       const defaultEndDate = new Date();
       defaultEndDate.setDate(defaultStartDate.getDate() + 1);
       this.eventDateRange = [defaultStartDate, defaultEndDate];
@@ -98,14 +99,13 @@ export class EventCreateDialogComponent implements OnInit {
 
   createEvent() {
     this.setStartDateAndEndDate();
-    // this._eventService.createEvent(this.event);
-    // this.dialogRef.close(this.event);
+    this._eventService.createEvent(this.event);
+    this.dialogRef.close(this.event);
   }
 
   updateEvent() {
-    console.log('in update');
-    // this.setStartDateAndEndDate();
-    // this._eventService.updateEventById(this.event.id, this.event);
-    // this.dialogRef.close(this.event);
+    this.setStartDateAndEndDate();
+    this._eventService.updateEventById(this.event.id, this.event);
+    this.dialogRef.close(this.event);
   }
 }
