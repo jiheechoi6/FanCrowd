@@ -13,7 +13,7 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Description</mat-label>
-                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10"
                     cdkTextareaAutosize matInput [(ngModel)]="event.description" name="description" required
                     pattern=".*\S+.*" autocomplete="off"></textarea>
                 <mat-error>Description is a required field</mat-error>

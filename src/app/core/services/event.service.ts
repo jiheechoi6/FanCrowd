@@ -18,10 +18,7 @@ export class EventService {
         name: 'Harry Potter',
       },
       name: 'Comic Con',
-      description: `A comic book convention or comic con is an event with a 
-        primary focus on comic books and comic book culture, in which comic book 
-        fans gather to meet creators, experts, and each other. Commonly, comic conventions 
-        are multi-day events hosted at convention centers, hotels, or college campuses.`,
+      description: `A comic book convention or comic con is an event with a primary focus on comic books and comic book culture, in which comic book fans gather to meet creators, experts, and each other. Commonly, comic conventions are multi-day events hosted at convention centers, hotels, or college campuses.`,
       postedBy: 'user1',
       location: 'Toronto, Ontario, Canada',
       startDate: new Date(2021, 10, 12),
@@ -54,18 +51,6 @@ export class EventService {
           },
           postDate: new Date(2021, 1, 15),
         },
-        {
-          id: 3,
-          title: 'Best Time Ever!!!!!!',
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'admin',
-            profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'admin',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
       ],
     },
     {
@@ -76,13 +61,7 @@ export class EventService {
         name: 'Apple',
       },
       name: 'World Expo',
-      description: `Our once-in-a-lifetime celebration – the largest event ever staged in the 
-        Arab world – is set to welcome 190 participating countries, and millions of visitors from 
-        across the globe. Here they will experience warm Emirati hospitality at its finest, as 
-        well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart 
-        of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will 
-        benefit generations to come, both locally and globally, spanning everything from innovations 
-        and architecture to friendships and business opportunities.`,
+      description: `Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.`,
       postedBy: 'user2',
       location: 'Dubai, UAE',
       startDate: new Date(2021, 5, 12),
@@ -125,11 +104,8 @@ export class EventService {
         name: 'Avengers',
       },
       name: 'Marvel Studios',
-      description: `Marvel Studios, LLC is an American film and television studio that is a 
-        subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios 
-        is known for the production of the Marvel Cinematic Universe films, based on characters 
-        that appear in Marvel Comics publications.`,
-      postedBy: 'admin',
+      description: `Marvel Studios, LLC is an American film and television studio that is a subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios is known for the production of the Marvel Cinematic Universe films, based on characters that appear in Marvel Comics publications.`,
+      postedBy: 'user2',
       location: 'San Fransico, California, USA',
       startDate: new Date(2021, 6, 12),
       endDate: new Date(2021, 7, 14),
@@ -144,11 +120,8 @@ export class EventService {
         name: 'God of War',
       },
       name: 'Sony Game Release',
-      description: `God of War is an action-adventure game franchise created by David Jaffe at 
-        Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and
-        has become a flagship title for the PlayStation brand, consisting of eight games across 
-        multiple platforms with a ninth currently in development.`,
-      postedBy: 'admin',
+      description: `God of War is an action-adventure game franchise created by David Jaffe at Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and has become a flagship title for the PlayStation brand, consisting of eight games across multiple platforms with a ninth currently in development.`,
+      postedBy: 'user2',
       location: 'Los Angeles, California, USA',
       startDate: new Date(2021, 4, 8),
       endDate: new Date(2021, 4, 11),
@@ -160,9 +133,9 @@ export class EventService {
           rating: 5,
           content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
-            username: 'admin',
+            username: 'user2',
             profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'admin',
+            role: 'user',
           },
           postDate: new Date(2021, 1, 15),
         },
@@ -176,10 +149,7 @@ export class EventService {
         name: 'Harry Potter',
       },
       name: 'J.K Rowling Meet & Greet',
-      description: `Harry Potter is a series of seven fantasy novels written by British author, 
-        J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his 
-        friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School 
-        of Witchcraft and Wizardry.`,
+      description: `Harry Potter is a series of seven fantasy novels written by British author, J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.`,
       postedBy: 'user1',
       location: 'Vancouver, British Columbia, Canada',
       startDate: new Date(2021, 9, 12),
@@ -195,10 +165,7 @@ export class EventService {
         name: 'One Punch Man',
       },
       name: 'Anime-Fest',
-      description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It 
-        tells the story of Saitama, a superhero who can defeat any opponent with a single punch 
-        but seeks to find a worthy opponent after growing bored by a lack of challenge due to his 
-        overwhelming strength.`,
+      description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It tells the story of Saitama, a superhero who can defeat any opponent with a single punch but seeks to find a worthy opponent after growing bored by a lack of challenge due to his overwhelming strength.`,
       postedBy: 'user2',
       location: 'New York City, New York, USA',
       startDate: new Date(2021, 7, 30),
@@ -214,10 +181,8 @@ export class EventService {
         name: 'Soccer',
       },
       name: 'FIFA World Cup Party',
-      description: `The FIFA World Cup, often simply called the World Cup, is an international 
-        association football competition contested by the senior men's national teams of the members 
-        of the Fédération Internationale de Football Association, the sport's global governing body.`,
-      postedBy: 'admin',
+      description: `The FIFA World Cup, often simply called the World Cup, is an international association football competition contested by the senior men's national teams of the members of the Fédération Internationale de Football Association, the sport's global governing body.`,
+      postedBy: 'user2',
       location: 'Westminister, London, United Kingdom',
       startDate: new Date(2021, 11, 3),
       endDate: new Date(2021, 11, 8),
@@ -232,8 +197,7 @@ export class EventService {
         name: 'Game of Thrones',
       },
       name: 'New HBO Show Press Release',
-      description: `Home Box Office is an American pay television network owned by WarnerMedia 
-        Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
+      description: `Home Box Office is an American pay television network owned by WarnerMedia Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
       postedBy: 'user1',
       location: 'Seattle, Washington, USA',
       startDate: new Date(2021, 12, 10),
