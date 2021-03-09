@@ -236,8 +236,4 @@ export class EventDetailComponent implements OnInit {
       this.eventService.deleteReview(eventIindex, reviewIndex);
     }
   }
-
-  counter(i: number) {
-    return new Array(i);
-  }
 }

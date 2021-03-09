@@ -78,10 +78,7 @@
                                 class="username">{{review.postedBy.username | titlecase}}</a>
                         </div>
                         <div class="rating-date-posted">
-                            <span>
-                                <i class="fas fa-star review-star-filled" *ngFor="let in of counter(review.rating)"></i>
-                                <i class="far fa-star" *ngFor="let in of counter(5 - review.rating)"></i>
-                            </span>
+                            <app-review-stars [outOf]="5" [rating]="review.rating"></app-review-stars>
                             <span>{{review.postDate | date: 'MMM d y, h:mm a'}}</span>
                         </div>
                         <p>{{review.content}}</p>
