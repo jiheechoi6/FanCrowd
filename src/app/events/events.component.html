@@ -35,7 +35,7 @@
                 <div class="buttons-container-right">
                     <button class="delete-event-button"
                         *ngIf="user?.role === 'admin' || user?.username === event.postedBy"
-                        (click)="openDeleteDialog(event.id)" mat-flat-button color="warn">Delete</button>
+                        (click)="openDeleteEventDialog(event.id)" mat-flat-button color="warn">Delete</button>
                     <button [routerLink]="['/events', event.id]" mat-flat-button color="accent">More
                         Details</button>
                 </div>

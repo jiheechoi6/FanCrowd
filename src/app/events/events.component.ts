@@ -57,7 +57,7 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  openDeleteDialog(id: number | undefined) {
+  openDeleteEventDialog(id: number | undefined) {
     this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
