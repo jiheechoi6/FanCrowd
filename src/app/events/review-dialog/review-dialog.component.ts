@@ -2,9 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
-import { EventService } from '../../../core/services/event.service';
-import { FandomService } from '../../../core/services/fandom.service';
-import Review from '../../../shared/models/review';
+import { EventService } from '../../core/services/event.service';
+import { FandomService } from '../../core/services/fandom.service';
+import Review from '../../shared/models/review';
 
 @Component({
   selector: 'add-review-dialog',
@@ -17,9 +17,9 @@ export class ReviewDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ReviewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {id: number, user: PartialUserDTO},
+    @Inject(MAT_DIALOG_DATA) public data: { id: number; user: PartialUserDTO },
     private activatedRoute: ActivatedRoute,
-    private eventService: EventService,
+    private eventService: EventService
   ) {
     const defaultPostDate = new Date();
     this.newReview = {
@@ -30,17 +30,16 @@ export class ReviewDialogComponent implements OnInit {
       postedBy: {
         username: this.data.user.username,
         profileUrl: this.data.user.profileUrl,
-        role: this.data.user.role
+        role: this.data.user.role,
       },
-      postDate: defaultPostDate
+      postDate: defaultPostDate,
     };
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   addReview() {
-    this.eventService.addReviewToEvent(this.data.id, this.newReview)
+    this.eventService.addReviewToEvent(this.data.id, this.newReview);
     this.dialogRef.close(this.newReview);
   }
 }
