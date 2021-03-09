@@ -206,14 +206,6 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  setDateFromToday(offset: number): string {
-    let day = this.today.getDate() + offset;
-    let month = this.today.getMonth() + 1;
-    let year = this.today.getFullYear();
-
-    return day + '/' + month + '/' + year;
-  }
-
   deleteEvent(id: number | undefined): void {
     if (id) {
       let allEvents = this.eventService.getEvents();

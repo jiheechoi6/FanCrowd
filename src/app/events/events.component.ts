@@ -43,7 +43,7 @@ export class EventsComponent implements OnInit {
     this.events = this.allEvents.slice(startIndex, endIndex);
   }
 
-  openDialog(): void {
+  openCreateEventDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
       data: { username: this.user?.username },
       width: '800px',
@@ -61,7 +61,7 @@ export class EventsComponent implements OnInit {
     this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
-        details: 'Are you sure you want to delete the event?',
+        details: 'Are you sure you want to delete this event?',
         onConfirmCb: this.deleteEvent.bind(this),
         params: id,
       },
@@ -69,14 +69,6 @@ export class EventsComponent implements OnInit {
       height: '180px',
       autoFocus: false,
     });
-  }
-
-  setDateFromToday(offset: number): string {
-    let day = this.today.getDate() + offset;
-    let month = this.today.getMonth() + 1;
-    let year = this.today.getFullYear();
-
-    return day + '/' + month + '/' + year;
   }
 
   deleteEvent(id: number | undefined): void {
