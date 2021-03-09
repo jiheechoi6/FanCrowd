@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
+import { ReviewDialogComponent } from '../create-review-dialog/create-review-dialog.component';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EditReviewDialogComponent } from '../edit-review-dialog/edit-review-dialog.component';

@@ -47,8 +47,8 @@
                                     Delete <i class="fas fa-trash-alt"></i>
                                 </span>
                             </button>
-                            <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                (click)="addEventToProfile()" mat-flat-button color="primary">
+                            <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy" mat-flat-button
+                                color="primary">
                                 <span>
                                     Edit <i class="fas fa-edit"></i>
                                 </span>

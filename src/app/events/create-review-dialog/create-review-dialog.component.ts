@@ -3,13 +3,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
 import { EventService } from '../../core/services/event.service';
-import { FandomService } from '../../core/services/fandom.service';
 import Review from '../../shared/models/review';
 
 @Component({
   selector: 'add-review-dialog',
-  templateUrl: './review-dialog.component.html',
-  styleUrls: ['./review-dialog.component.sass'],
+  templateUrl: './create-review-dialog.component.html',
+  styleUrls: ['./create-review-dialog.component.sass'],
 })
 export class ReviewDialogComponent implements OnInit {
   newReview: Review;
