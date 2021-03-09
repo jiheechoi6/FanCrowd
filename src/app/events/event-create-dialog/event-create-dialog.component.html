@@ -78,5 +78,9 @@
 <mat-dialog-actions align="end">
     <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
     <button mat-flat-button color="primary" (click)="createEventForm.ngSubmit.emit()"
-        [disabled]="!createEventForm.form.valid">Create</button>
+        [disabled]="!createEventForm.form.valid">
+        <span>
+            Create <i class="fas fa-check"></i>
+        </span>
+    </button>
 </mat-dialog-actions>

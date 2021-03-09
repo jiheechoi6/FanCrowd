@@ -1,7 +1,11 @@
 <section class="outer-container">
     <div class="inner-container">
         <div class="buttons-container-right">
-            <button mat-raised-button color="primary" (click)="openCreateEventDialog()">Create Event</button>
+            <button mat-raised-button color="primary" (click)="openCreateEventDialog()">
+                <span>
+                    Create Event <i class="fas fa-plus"></i>
+                </span>
+            </button>
         </div>
 
         <div *ngIf="!events.length" class="empty">
@@ -13,11 +17,12 @@
             <mat-card-content>
                 <div class="location-date-range">
                     <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
-                        {{event.endDate | date: 'MMM d y, h:mm a'}}</span>
+                        {{event.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
                     <div class="location-num-people-attending">
-                        <span>{{event.location}}</span>
+                        <span>{{event.location}} <i class="fas fa-map-marked-alt"></i></span>
                         <span class="num-people-attending">{{event.totalAttendance}}
-                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending</span>
+                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                class="fas fa-user-friends"></i></span>
                     </div>
                 </div>
                 <article>
@@ -35,9 +40,16 @@
                 <div class="buttons-container-right">
                     <button class="delete-event-button"
                         *ngIf="user?.role === 'admin' || user?.username === event.postedBy"
-                        (click)="openDeleteEventDialog(event.id)" mat-flat-button color="warn">Delete</button>
-                    <button [routerLink]="['/events', event.id]" mat-flat-button color="accent">More
-                        Details</button>
+                        (click)="openDeleteEventDialog(event.id)" mat-flat-button color="warn">
+                        <span>
+                            Delete <i class="fas fa-trash-alt"></i>
+                        </span>
+                    </button>
+                    <button [routerLink]="['/events', event.id]" mat-flat-button color="primary">
+                        <span>
+                            More Details <i class="fas fa-info-circle"></i>
+                        </span>
+                    </button>
                 </div>
             </mat-card-content>
         </mat-card>

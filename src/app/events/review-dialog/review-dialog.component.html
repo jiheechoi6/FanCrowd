@@ -5,7 +5,8 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Title</mat-label>
-                <input matInput [(ngModel)]="newReview.title" name="title" required pattern=".*\S+.*" autocomplete="off">
+                <input matInput [(ngModel)]="newReview.title" name="title" required pattern=".*\S+.*"
+                    autocomplete="off">
                 <mat-error>Title is a required field</mat-error>
             </mat-form-field>
         </div>
@@ -13,11 +14,10 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Rating</mat-label>
-                <mat-select id="rating" name="rating"
-                    [(ngModel)]="newReview.rating" required>
+                <mat-select id="rating" name="rating" [(ngModel)]="newReview.rating" required>
                     <mat-option>--Select Rating--</mat-option>
                     <mat-option *ngFor="let rating of ratings" [value]="rating">
-                      {{rating}}
+                        {{rating}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Please select a rating</mat-error>
@@ -39,5 +39,9 @@
 <mat-dialog-actions align="end">
     <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
     <button mat-flat-button color="primary" (click)="addReviewForm.ngSubmit.emit()"
-        [disabled]="!addReviewForm.form.valid">Add</button>
+        [disabled]="!addReviewForm.form.valid">
+        <span>
+            Add <i class="fas fa-plus"></i>
+        </span>
+    </button>
 </mat-dialog-actions>

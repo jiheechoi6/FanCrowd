@@ -25,7 +25,9 @@
             <div class="buttons-container-right">
                 <button mat-flat-button color="primary" type="submit" [disabled]="logInForm.invalid || isLoggingIn"
                     [class.loading-animation]="isLoggingIn">
-                    {{isLoggingIn ? 'Logging In': 'Log In'}}
+                    <span>
+                        {{isLoggingIn ? 'Logging In': 'Log In'}} <i class="fas fa-sign-in-alt"></i>
+                    </span>
                 </button>
             </div>
         </form>

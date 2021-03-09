@@ -7,44 +7,54 @@
         </div>
 
         <mat-card class="event-card rounded-corners" *ngIf="event">
-            <mat-card-title>{{event.name}}</mat-card-title>
+            <mat-card-title>{{event?.name}}</mat-card-title>
             <mat-card-content>
                 <div class="location-date-range">
-                    <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
-                        {{event.endDate | date: 'MMM d y, h:mm a'}}</span>
+                    <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
+                        {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
                     <div class="location-num-people-attending">
-                        <span>{{event.location}}</span>
-                        <span class="num-people-attending">{{event.totalAttendance}}
-                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending</span>
+                        <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
+                        <span class="num-people-attending">{{event?.totalAttendance}}
+                            {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                class="fas fa-user-friends"></i></span>
                     </div>
                 </div>
                 <article>
                     <header class="about-title">About</header>
-                    <p>{{ (event.description.length > 200) ? (event.description | slice : 0 : 200) + '...': (event.description) }}
+                    <p>{{ (event.description.length > 200) ? (event?.description | slice : 0 : 200) + '...': (event?.description) }}
                     </p>
                 </article>
                 <p class="created-by">Created By: <a
-                        [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
+                        [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
                 </p>
                 <p>
                     Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.name]">{{event.fandomType.name | titlecase}}</a>
+                        [routerLink]="['/fandoms', event.fandomType.name || '']">{{event.fandomType.name | titlecase}}</a>
                 </p>
                 <div class="buttons-container-right">
                     <button class="delete-event-button"
-                        *ngIf="user?.role === 'admin' || user?.username === event.postedBy"
-                        (click)="openDeleteEventDialog(event.id)" mat-flat-button color="warn">Delete</button>
+                        *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                        (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                        <span>
+                            Delete <i class="fas fa-trash-alt"></i>
+                        </span>
+                    </button>
                     <div class="more" *ngIf="!isAttending" (click)="addEventToProfile()"><button mat-flat-button
-                            color="accent">Attend</button></div>
-                    <div class="more" *ngIf="isAttending" (click)="removeEventFromProfile(event.id)"><button
-                            mat-flat-button color="accent">Unattend</button></div>
+                            color="primary">Attend</button></div>
+                    <div class="more" *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)"><button
+                            mat-flat-button color="primary">Unattend</button></div>
                 </div>
             </mat-card-content>
         </mat-card>
 
         <div *ngIf="!wroteReview" class="button-container">
-            <div class="button-div" id="review" (click)="openAddDialog()"><button mat-flat-button color="primary">Add
-                    Review</button></div>
+            <div class="button-div" id="review" (click)="openAddDialog()">
+                <button mat-flat-button color="primary">
+                    <span>
+                        Add Review <i class="fas fa-plus"></i>
+                    </span>
+                </button>
+            </div>
         </div>
 
         <div *ngIf="!wroteReview" class="spacer"></div>
@@ -74,11 +84,18 @@
                                 <div class="delete"
                                     *ngIf="isAdmin || user && user.username === review.postedBy.username"
                                     (click)="openDeleteReviewDialog(review.id)">
-                                    <button mat-flat-button color="warn">Delete</button>
+                                    <button mat-flat-button color="warn">
+                                        <span>
+                                            Delete <i class="fas fa-trash-alt"></i>
+                                        </span>
+                                    </button>
                                 </div>
                                 <div class="edit" *ngIf="user && user.username === review.postedBy.username"
-                                    (click)="openEditDialog(review.id)"><button mat-flat-button
-                                        color="accent">Edit</button>
+                                    (click)="openEditDialog(review.id)"><button mat-flat-button color="accent">
+                                        <span>
+                                            Edit <i class="fas fa-edit"></i>
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

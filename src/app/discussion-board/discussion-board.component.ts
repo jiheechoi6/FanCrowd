@@ -42,6 +42,6 @@ export class DiscussionBoardComponent implements OnInit {
   }
 
   goToCategory(category: string): void {
-    this.router.navigate(['discussion-boards', category]);
+    this.router.navigate(['fandoms', category]);
   }
 }

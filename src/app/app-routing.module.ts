@@ -41,7 +41,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'discussion-boards',
+    path: 'fandoms',
     loadChildren: () =>
       import('./discussion-board/discussion-board.module').then(
         (m) => m.DiscussionBoardModule
@@ -52,7 +52,7 @@ const routes: Routes = [
     path: 'events',
     loadChildren: () =>
       import('./events/events.module').then((m) => m.EventsModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: '404',

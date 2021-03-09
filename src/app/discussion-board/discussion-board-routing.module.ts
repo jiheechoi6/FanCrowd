@@ -6,9 +6,9 @@ import { FandomSelectionComponent } from './fandom-selection/fandom-selection.co
 import { EventsComponent } from '../events/events.component';
 
 const routes: Routes = [
-  { path: '', component: DiscussionBoardComponent }, 
+  { path: '', component: DiscussionBoardComponent },
   { path: ':category', component: FandomSelectionComponent },
-  { path: ':category/:fandom', component: EventsComponent }
+  { path: ':category/:fandom', component: EventsComponent },
 ];
 
 @NgModule({

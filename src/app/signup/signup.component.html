@@ -66,7 +66,9 @@
             <div class="buttons-container-right">
                 <button mat-flat-button color="primary" [disabled]="signUpForm.invalid || isSigningUp"
                     [class.loading-animation]="isSigningUp">
-                    {{isSigningUp ? 'Signing Up': 'Sign Up'}}
+                    <span>
+                        {{isSigningUp ? 'Signing Up': 'Sign Up'}} <i class="fas fa-user-plus"></i>
+                    </span>
                 </button>
             </div>
         </form>

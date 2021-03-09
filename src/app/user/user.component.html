@@ -21,13 +21,23 @@
                     <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span></p>
                     <div class="profile-action-button-container">
                         <button mat-flat-button color="primary" *ngIf="loggedInUser?.username === user?.username"
-                            (click)="openEditAccountDialog()"><i class="fas fa-edit"></i> Edit
-                            Info</button>
+                            (click)="openEditAccountDialog()">
+                            <span>
+                                Edit Info <i class="fas fa-user-edit"></i>
+                            </span>
+                        </button>
                         <button mat-flat-button color="warn" *ngIf="loggedInUser?.username === user?.username"
-                            (click)="openDeleteAccountDialog()"><i class="fas fa-user-times"></i> Delete
-                            Account</button>
+                            (click)="openDeleteAccountDialog()">
+                            <span>
+                                Delete Account <i class="fas fa-user-times"></i>
+                            </span>
+                        </button>
                         <button mat-flat-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
-                            (click)="openBanUserAccountDialog()"><i class="fas fa-ban"></i> Ban User</button>
+                            (click)="openBanUserAccountDialog()">
+                            <span>
+                                Ban User <i class="fas fa-ban"></i>
+                            </span>
+                        </button>
                     </div>
                 </mat-card-content>
             </mat-card>

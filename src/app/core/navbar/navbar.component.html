@@ -4,15 +4,19 @@
             <i class="fas fa-users"></i> FanCrowd
         </section>
         <section>
-            <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
-            <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
+            <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login <i
+                    class="fas fa-sign-in-alt"></i></span>
+            <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup <i
+                    class="fas fa-user-plus"></i></span>
             <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
-                routerLinkActive="active"><i class="far fa-user"></i> {{user?.username | titlecase}}</span>
+                routerLinkActive="active"><i class="fas fa-user"></i> {{user?.username | titlecase}}</span>
             <span *ngIf="user" class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
-            <span *ngIf="user" class="nav-item" [routerLink]="'/discussion-boards'"
-                routerLinkActive="active">Browser</span>
-            <span *ngIf="user" class="nav-item" [routerLink]="'/calendar'" routerLinkActive="active">Calendar</span>
-            <span *ngIf="user" class="nav-item" [routerLink]="'/login'" (click)="onLogOut()">Log Out</span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/fandoms'" routerLinkActive="active">Fandoms <i
+                    class="fas fa-comments"></i></span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/calendar'" routerLinkActive="active">Calendar <i
+                    class="far fa-calendar-alt"></i></span>
+            <span *ngIf="user" class="nav-item" [routerLink]="'/login'" (click)="onLogOut()">Log Out <i
+                    class="fas fa-sign-out-alt"></i></span>
         </section>
     </mat-toolbar>
 </nav>

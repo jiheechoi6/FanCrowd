@@ -45,7 +45,7 @@ export class FandomSelectionComponent implements OnInit {
   }
 
   goToEventBrowser(): void {
-    this.router.navigate(['discussion-boards']);
+    this.router.navigate(['fandoms']);
   }
 
   goToEvents(fandom: Fandom): void {
