@@ -79,6 +79,8 @@ export class EventDetailComponent implements OnInit {
       },
       width: '800px',
       maxHeight: '90vh',
+      disableClose: true,
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
@@ -100,6 +102,7 @@ export class EventDetailComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
+      disableClose: true,
     });
   }
 
@@ -114,6 +117,7 @@ export class EventDetailComponent implements OnInit {
       width: '360px',
       height: '180px',
       autoFocus: false,
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(() => {

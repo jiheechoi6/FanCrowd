@@ -32,7 +32,7 @@ export class EventService {
           id: 1,
           title: 'Great Event',
           rating: 4,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user1',
             profileUrl:
@@ -45,7 +45,7 @@ export class EventService {
           id: 2,
           title: "Amazing, Lot's of fun",
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user2',
             profileUrl:
@@ -58,7 +58,7 @@ export class EventService {
           id: 3,
           title: 'Best Time Ever!!!!!!',
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'admin',
             profileUrl: 'https://dummyimage.com/250.jpg',
@@ -93,7 +93,7 @@ export class EventService {
           id: 1,
           title: 'Cool tech!',
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user1',
             profileUrl:
@@ -106,7 +106,7 @@ export class EventService {
           id: 2,
           title: 'Nice things to see',
           rating: 3,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user2',
             profileUrl:
@@ -158,7 +158,7 @@ export class EventService {
           id: 2,
           title: 'Great Release Party!!!',
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'admin',
             profileUrl: 'https://dummyimage.com/250.jpg',
@@ -257,17 +257,23 @@ export class EventService {
     return this.events.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsByCategoryAndFandom(categoryName: string, fandomName: string): Event[] {
+  getEventsByCategoryAndFandom(
+    categoryName: string,
+    fandomName: string
+  ): Event[] {
     // Get events from server, code below requires server call
     let filterdEvents: Event[] = [];
-    
+
     this.events.forEach((event) => {
-      if (event.fandomType.category === categoryName && event.fandomType.name === fandomName){
+      if (
+        event.fandomType.category === categoryName &&
+        event.fandomType.name === fandomName
+      ) {
         filterdEvents.push(event);
       }
     });
 
-    return filterdEvents.sort((a,b) => this.sortFunction(a,b));
+    return filterdEvents.sort((a, b) => this.sortFunction(a, b));
   }
 
   getEventsById(id: number): Event | null {

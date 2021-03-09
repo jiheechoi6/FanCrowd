@@ -80,6 +80,7 @@ export class UserComponent implements OnInit, OnDestroy {
       width: '360px',
       height: '180px',
       autoFocus: false,
+      disableClose: true,
     });
   }
 

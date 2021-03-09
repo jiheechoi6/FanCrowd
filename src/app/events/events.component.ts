@@ -48,6 +48,7 @@ export class EventsComponent implements OnInit {
       data: { username: this.user?.username },
       width: '800px',
       autoFocus: false,
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
