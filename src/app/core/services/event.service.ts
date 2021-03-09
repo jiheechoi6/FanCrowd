@@ -325,6 +325,8 @@ export class EventService {
     //Update event in db, code below requires server call
 
     if (!eventId) return;
-    console.log('here in event service', eventId);
+
+    const eventIndex = this.events.findIndex((event) => event.id === eventId);
+    this.events[eventIndex] = updatedEvent;
   }
 }
