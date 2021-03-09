@@ -38,6 +38,7 @@ export class ReviewDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   addReview() {
+    this.newReview.postDate = new Date();
     this.eventService.addReviewToEvent(this.data.id, this.newReview);
     this.dialogRef.close(this.newReview);
   }

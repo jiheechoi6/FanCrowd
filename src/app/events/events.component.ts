@@ -85,4 +85,21 @@ export class EventsComponent implements OnInit {
       this.events = this._eventService.getEvents();
     }
   }
+
+  openEditEventDialog(event: Event) {
+    const dialogRef = this.dialog.open(EventCreateDialogComponent, {
+      data: { eventBeingUpdated: { ...event } },
+      width: '800px',
+      autoFocus: false,
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
+      if (updatedEvent) {
+        console.log('here in dialog close', updatedEvent);
+        this._eventService.updateEventById(updatedEvent.id, updatedEvent);
+        this.events = this._eventService.getEvents();
+      }
+    });
+  }
 }

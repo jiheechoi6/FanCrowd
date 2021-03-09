@@ -15,7 +15,7 @@ export class EventService {
       fandomType: {
         id: 11,
         category: 'Books',
-        name: 'All',
+        name: 'Harry Potter',
       },
       name: 'Comic Con',
       description: `A comic book convention or comic con is an event with a 
@@ -24,8 +24,8 @@ export class EventService {
         are multi-day events hosted at convention centers, hotels, or college campuses.`,
       postedBy: 'user1',
       location: 'Toronto, Ontario, Canada',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(2021, 10, 12),
+      endDate: new Date(2021, 10, 14),
       totalAttendance: 2,
       reviews: [
         {
@@ -39,7 +39,7 @@ export class EventService {
               'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
         {
           id: 2,
@@ -52,7 +52,7 @@ export class EventService {
               'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
         {
           id: 3,
@@ -64,7 +64,7 @@ export class EventService {
             profileUrl: 'https://dummyimage.com/250.jpg',
             role: 'admin',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -73,7 +73,7 @@ export class EventService {
       fandomType: {
         id: 30,
         category: 'Technology',
-        name: 'All',
+        name: 'Apple',
       },
       name: 'World Expo',
       description: `Our once-in-a-lifetime celebration – the largest event ever staged in the 
@@ -85,8 +85,8 @@ export class EventService {
         and architecture to friendships and business opportunities.`,
       postedBy: 'user2',
       location: 'Dubai, UAE',
-      startDate: new Date(this.today.getTime() + 1),
-      endDate: new Date(this.today.getTime() + 2),
+      startDate: new Date(2021, 5, 12),
+      endDate: new Date(2021, 5, 14),
       totalAttendance: 2,
       reviews: [
         {
@@ -100,7 +100,7 @@ export class EventService {
               'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
         {
           id: 2,
@@ -113,7 +113,7 @@ export class EventService {
               'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -131,8 +131,8 @@ export class EventService {
         that appear in Marvel Comics publications.`,
       postedBy: 'admin',
       location: 'San Fransico, California, USA',
-      startDate: new Date(this.today.getTime() + 3),
-      endDate: new Date(this.today.getTime() + 5),
+      startDate: new Date(2021, 6, 12),
+      endDate: new Date(2021, 7, 14),
       totalAttendance: 1,
       reviews: [],
     },
@@ -150,8 +150,8 @@ export class EventService {
         multiple platforms with a ninth currently in development.`,
       postedBy: 'admin',
       location: 'Los Angeles, California, USA',
-      startDate: new Date(this.today.getTime() + 6),
-      endDate: new Date(this.today.getTime() + 8),
+      startDate: new Date(2021, 4, 8),
+      endDate: new Date(2021, 4, 11),
       totalAttendance: 1,
       reviews: [
         {
@@ -164,7 +164,7 @@ export class EventService {
             profileUrl: 'https://dummyimage.com/250.jpg',
             role: 'admin',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -182,8 +182,8 @@ export class EventService {
         of Witchcraft and Wizardry.`,
       postedBy: 'user1',
       location: 'Vancouver, British Columbia, Canada',
-      startDate: new Date(this.today.getTime() + 9),
-      endDate: new Date(this.today.getTime() + 10),
+      startDate: new Date(2021, 9, 12),
+      endDate: new Date(2021, 9, 15),
       totalAttendance: 3,
       reviews: [],
     },
@@ -201,8 +201,8 @@ export class EventService {
         overwhelming strength.`,
       postedBy: 'user2',
       location: 'New York City, New York, USA',
-      startDate: new Date(this.today.getTime() + 11),
-      endDate: new Date(this.today.getTime() + 12),
+      startDate: new Date(2021, 7, 30),
+      endDate: new Date(2021, 8, 1),
       totalAttendance: 2,
       reviews: [],
     },
@@ -219,8 +219,8 @@ export class EventService {
         of the Fédération Internationale de Football Association, the sport's global governing body.`,
       postedBy: 'admin',
       location: 'Westminister, London, United Kingdom',
-      startDate: new Date(this.today.getTime() + 13),
-      endDate: new Date(this.today.getTime() + 14),
+      startDate: new Date(2021, 11, 3),
+      endDate: new Date(2021, 11, 8),
       totalAttendance: 1,
       reviews: [],
     },
@@ -229,15 +229,15 @@ export class EventService {
       fandomType: {
         id: 15,
         category: 'Shows',
-        name: 'All',
+        name: 'Game of Thrones',
       },
       name: 'New HBO Show Press Release',
       description: `Home Box Office is an American pay television network owned by WarnerMedia 
         Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
       postedBy: 'user1',
       location: 'Seattle, Washington, USA',
-      startDate: new Date(this.today.getTime() + 15),
-      endDate: new Date(this.today.getTime() + 20),
+      startDate: new Date(2021, 12, 10),
+      endDate: new Date(2021, 12, 13),
       totalAttendance: 1,
       reviews: [],
     },
@@ -355,5 +355,12 @@ export class EventService {
     }
 
     return false;
+  }
+
+  updateEventById(eventId: number | undefined, updatedEvent: Event) {
+    //Update event in db, code below requires server call
+
+    if (!eventId) return;
+    console.log('here in event service', eventId);
   }
 }

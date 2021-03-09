@@ -39,7 +39,7 @@
                 </p>
                 <p>
                     Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.name]">{{event.fandomType.name | titlecase}}</a>
+                        [routerLink]="['/fandoms', event.fandomType.category?.toLowerCase(), event.fandomType.name]">{{event.fandomType.name | titlecase}}</a>
                 </p>
                 <div class="buttons-container-right">
                     <button class="delete-event-button"
@@ -50,7 +50,7 @@
                         </span>
                     </button>
                     <button *ngIf="user?.role === 'admin' || user?.username === event.postedBy" mat-flat-button
-                        color="primary">
+                        color="primary" (click)="openEditEventDialog(event)">
                         <span>
                             Edit <i class="fas fa-edit"></i>
                         </span>

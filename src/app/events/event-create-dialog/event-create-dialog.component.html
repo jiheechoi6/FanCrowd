@@ -1,11 +1,11 @@
-<h1 mat-dialog-title>Create Event</h1>
+<h1 mat-dialog-title>{{isEditingEvent ? 'Edit Event': 'Create Event'}}</h1>
 
 <section mat-dialog-content class="mat-typography">
     <form (ngSubmit)="createEvent()" #createEventForm="ngForm">
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="newEvent.name" name="name" required pattern=".*\S+.*" autocomplete="off">
+                <input matInput [(ngModel)]="event.name" name="name" required pattern=".*\S+.*" autocomplete="off">
                 <mat-error>Name is a required field</mat-error>
             </mat-form-field>
         </div>
@@ -14,7 +14,7 @@
             <mat-form-field color="accent">
                 <mat-label>Description</mat-label>
                 <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-                    cdkTextareaAutosize matInput [(ngModel)]="newEvent.description" name="description" required
+                    cdkTextareaAutosize matInput [(ngModel)]="event.description" name="description" required
                     pattern=".*\S+.*" autocomplete="off"></textarea>
                 <mat-error>Description is a required field</mat-error>
             </mat-form-field>
@@ -39,7 +39,7 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Location</mat-label>
-                <input matInput [(ngModel)]="newEvent.location" name="location" required pattern=".*\S+.*"
+                <input matInput [(ngModel)]="event.location" name="location" required pattern=".*\S+.*"
                     autocomplete="off">
                 <mat-error>Location is a required field</mat-error>
             </mat-form-field>
@@ -49,7 +49,7 @@
             <mat-form-field color="accent">
                 <mat-label>Fandom Category</mat-label>
                 <mat-select id="category" name="category" (selectionChange)="categoryChange($event)"
-                    [(ngModel)]="newEvent.fandomType.category" required>
+                    [(ngModel)]="event.fandomType.category" required>
                     <mat-option>--Select Category--</mat-option>
                     <mat-option *ngFor="let category of categories" [value]="category.name">
                         {{category.name}}
@@ -62,8 +62,8 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Fandom</mat-label>
-                <mat-select name="fandom" [(ngModel)]="newEvent.fandomType.name" required
-                    [disabled]="!newEvent.fandomType.category">
+                <mat-select name="fandom" [(ngModel)]="event.fandomType.name" required
+                    [disabled]="!event.fandomType.category">
                     <mat-option>--Select Fandom--</mat-option>
                     <mat-option *ngFor="let fandom of fandomForCategory" [value]="fandom.name">
                         {{fandom.name}}
@@ -77,10 +77,16 @@
 
 <mat-dialog-actions align="end">
     <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
-    <button mat-flat-button color="primary" (click)="createEventForm.ngSubmit.emit()"
+    <button mat-flat-button color="primary" *ngIf="!isEditingEvent" (click)="createEventForm.ngSubmit.emit()"
         [disabled]="!createEventForm.form.valid">
         <span>
             Create <i class="fas fa-check"></i>
+        </span>
+    </button>
+    <button mat-flat-button color="primary" *ngIf="isEditingEvent" (click)="updateEvent()"
+        [disabled]="!createEventForm.form.valid">
+        <span>
+            Confirm <i class="fas fa-check"></i>
         </span>
     </button>
 </mat-dialog-actions>
