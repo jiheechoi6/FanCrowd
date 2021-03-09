@@ -59,8 +59,9 @@
             </mat-card>
 
             <section class="reviews-container">
-                <div *ngIf="!wroteReview" class="buttons-container-right add-review-btn-container">
-                    <button mat-raised-button color="primary" (click)="openAddReviewDialog()">
+                <div class="title-create-button">
+                    <header class="review-title">Reviews</header>
+                    <button *ngIf="!wroteReview" mat-raised-button color="primary" (click)="openAddReviewDialog()">
                         <span>
                             Add Review <i class="fas fa-plus"></i>
                         </span>
