@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+import { ReviewDialogComponent } from '../event/review-dialog/review-dialog.component';
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { EditReviewDialogComponent } from './edit-review-dialog/edit-review-dialog.component';
+import { EditReviewDialogComponent } from '../event/edit-review-dialog/edit-review-dialog.component';
 import { UserService } from 'src/app/core/services/user.service';
 import { Location } from '@angular/common';
 import Event from '../../shared/models/event';
@@ -15,10 +15,10 @@ import UserDTO from 'src/app/shared/models/user-dto';
 
 @Component({
   selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.sass'],
+  templateUrl: './event-detail.component.html',
+  styleUrls: ['./event-detail.component.sass'],
 })
-export class EventComponent implements OnInit {
+export class EventDetailComponent implements OnInit {
   event: Event | null = null;
   reviews: Review[] | null = [];
   today: Date = new Date();

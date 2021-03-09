@@ -7,6 +7,7 @@ import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete
 import { AuthService } from '../core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 import Event from '../shared/models/event';
+import UserDTO from '../shared/models/user-dto';
 
 @Component({
   selector: 'app-events',
@@ -16,16 +17,12 @@ import Event from '../shared/models/event';
 export class EventsComponent implements OnInit {
   events: Array<Event> = [];
   allEvents: Array<Event> = [];
-  pageSizeOptions: number[] = [5, 10, 20, 50];
+  pageSizeOptions: number[] = [5, 10, 20];
   pageSize: number = this.pageSizeOptions[1];
   pageIndex: number = 0;
   today: Date = new Date();
-  isAdmin: boolean = false;
-  isFromBrowser: boolean = false;
   id: number = NaN;
-  categoryName: string = '';
-  fandomName: string = '';
-  user: any;
+  user: UserDTO | null = null;
 
   constructor(
     private authService: AuthService,
@@ -36,32 +33,11 @@ export class EventsComponent implements OnInit {
     private router: Router
   ) {
     this.id = parseInt(this.activatedRoute.snapshot.params['id']);
-    this.categoryName = this.activatedRoute.snapshot.params['category'];
-    this.fandomName = this.activatedRoute.snapshot.params['fandom'];
   }
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser().value;
-    if (this.user && this.user.role === 'admin') {
-      this.isAdmin = true;
-    }
-
-    this.isFromBrowser = false;
-    if (this.categoryName && this.fandomName) {
-      if (this.categoryName.length >= 0 && this.fandomName.length >= 0) {
-        this.isFromBrowser = true;
-      }
-    }
-
-    if (!this.isFromBrowser) {
-      this.allEvents = this.eventService.getEvents();
-    } else {
-      this.allEvents = this.eventService.getEventsByCategoryAndFandom(
-        this.categoryName,
-        this.fandomName
-      );
-    }
-
+    this.allEvents = this.eventService.getEvents();
     this.events = this.allEvents.slice(0, this.pageSize);
   }
 
@@ -75,7 +51,7 @@ export class EventsComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: { username: this.user.username },
+      data: { username: this.user?.username },
       width: '800px',
       autoFocus: false,
     });
@@ -99,10 +75,6 @@ export class EventsComponent implements OnInit {
       height: '180px',
       autoFocus: false,
     });
-  }
-
-  goToEvent(eventId: number | undefined): void {
-    this.router.navigate(['events', eventId]);
   }
 
   setDateFromToday(offset: number): string {

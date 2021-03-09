@@ -12,7 +12,8 @@
                 <div class="flex-container header">
                     <h4 class="flex-one">{{this.event.location}}</h4>
                     <h4 class="inline-view">{{this.event.startDate | date:'mediumDate'}} -
-                        {{this.event.endDate | date:'mediumDate'}}</h4>
+                        {{this.event.endDate | date:'mediumDate'}}
+                    </h4>
                 </div>
                 <div class="desc">{{this.event.description}}</div>
                 <div>Fandom Category: <span *ngIf="event.fandomType"
