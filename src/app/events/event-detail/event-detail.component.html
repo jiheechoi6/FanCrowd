@@ -31,18 +31,29 @@
                         Fandom: <a
                             [routerLink]="['/fandoms', event.fandomType.name || '']">{{event.fandomType.name | titlecase}}</a>
                     </p>
-                    <div class="buttons-container-right">
-                        <button class="delete-event-button"
-                            *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                            (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
-                            <span>
-                                Delete <i class="fas fa-trash-alt"></i>
-                            </span>
+                    <div class="buttons-container-space-between">
+                        <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
+                            color="primary">
+                            Unattend
                         </button>
-                        <div class="more" *ngIf="!isAttending" (click)="addEventToProfile()"><button mat-flat-button
-                                color="primary">Attend</button></div>
-                        <div class="more" *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)"><button
-                                mat-flat-button color="primary">Unattend</button></div>
+                        <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
+                            Attend
+                        </button>
+                        <div>
+                            <button class="delete-event-button"
+                                *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                                <span>
+                                    Delete <i class="fas fa-trash-alt"></i>
+                                </span>
+                            </button>
+                            <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                (click)="addEventToProfile()" mat-flat-button color="primary">
+                                <span>
+                                    Edit <i class="fas fa-edit"></i>
+                                </span>
+                            </button>
+                        </div>
                     </div>
                 </mat-card-content>
             </mat-card>
