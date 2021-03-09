@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
@@ -21,23 +20,18 @@ export class EventsComponent implements OnInit {
   pageSize: number = this.pageSizeOptions[1];
   pageIndex: number = 0;
   today: Date = new Date();
-  id: number = NaN;
   user: UserDTO | null = null;
 
   constructor(
-    private authService: AuthService,
-    private userService: UserService,
-    private eventService: EventService,
-    private activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
-    private router: Router
-  ) {
-    this.id = parseInt(this.activatedRoute.snapshot.params['id']);
-  }
+    private _authService: AuthService,
+    private _userService: UserService,
+    private _eventService: EventService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.user = this.authService.getCurrentUser().value;
-    this.allEvents = this.eventService.getEvents();
+    this.user = this._authService.getCurrentUser().value;
+    this.allEvents = this._eventService.getEvents();
     this.events = this.allEvents.slice(0, this.pageSize);
   }
 
@@ -58,7 +52,7 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this.events = this.eventService.getEvents();
+        this.events = this._eventService.getEvents();
       }
     });
   }
@@ -88,14 +82,14 @@ export class EventsComponent implements OnInit {
   deleteEvent(id: number | undefined): void {
     if (id) {
       let index = this.events.findIndex((event) => event.id === id);
-      this.eventService.deleteEvent(index);
+      this._eventService.deleteEvent(index);
 
       if (this.user) {
-        this.userService.removeEventFromAllUsersEvents(id);
-        this.authService.removeEventFromAllUsersEvents(id);
+        this._userService.removeEventFromAllUsersEvents(id);
+        this._authService.removeEventFromAllUsersEvents(id);
       }
 
-      this.events = this.eventService.getEvents();
+      this.events = this._eventService.getEvents();
     }
   }
 }

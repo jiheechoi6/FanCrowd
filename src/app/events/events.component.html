@@ -1,13 +1,13 @@
-<section>
-    <div class="buttons-container-right">
-        <button mat-raised-button color="primary" (click)="openDialog()">Create Event</button>
-    </div>
+<section class="outer-container">
+    <div class="inner-container">
+        <div class="buttons-container-right">
+            <button mat-raised-button color="primary" (click)="openDialog()">Create Event</button>
+        </div>
 
-    <div *ngIf="!events.length" class="empty">
-        <h1 class="center-pos">It seems there are no events. Create one using the button above!</h1>
-    </div>
+        <div *ngIf="!events.length" class="empty">
+            <h1 class="center-pos">It seems there are no events. Create one using the button above!</h1>
+        </div>
 
-    <section class="events-container" *ngIf="events.length">
         <mat-card class="event-card rounded-corners" *ngFor="let event of events">
             <mat-card-title>{{event.name}}</mat-card-title>
             <mat-card-content>
@@ -40,9 +40,9 @@
                 </div>
             </mat-card-content>
         </mat-card>
-    </section>
 
-    <mat-paginator [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
-    </mat-paginator>
+        <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+            [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
+        </mat-paginator>
+    </div>
 </section>

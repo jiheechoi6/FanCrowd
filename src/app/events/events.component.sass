@@ -1,31 +1,40 @@
-.events-container
+.outer-container
     display: flex
     flex-direction: column
     align-items: center
     margin-top: 30px
 
-    .event-card
-        padding: 20px
-        width: 80%
-        margin-bottom: 30px
+    .inner-container
+        width: 85%
+        display: flex
+        flex-direction: column
 
-        .location-date-range
-            display: flex
-            justify-content: space-between
-            font-weight: bold
-            margin-bottom: 25px
+        .event-card
+            padding: 20px
+            margin: 20px 0
 
-            .location-num-people-attending
+            .location-date-range
                 display: flex
-                flex-direction: column
-                align-items: flex-end
+                justify-content: space-between
+                font-weight: bold
+                margin-bottom: 25px
 
-                .num-people-attending
-                    font-weight: normal
+                .location-num-people-attending
+                    display: flex
+                    flex-direction: column
+                    align-items: flex-end
 
-        .about-title
-            font-weight: bold
-            margin-bottom: 7px
+                    .num-people-attending
+                        font-weight: normal
 
-        .delete-event-button
-            margin-right: 16px
+            .about-title
+                font-weight: bold
+                margin-bottom: 7px
+
+            .delete-event-button
+                margin-right: 16px
+
+        .paginator
+            display: flex
+            justify-content: center
+            margin-bottom: 10px
