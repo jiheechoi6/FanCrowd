@@ -1,107 +1,97 @@
 <section class="outer-container">
     <div class="inner-container">
-        <div>
+        <div class="go-back-button-container">
             <button [routerLink]="'../'" mat-raised-button color="primary">
                 <span><i class="fas fa-hand-point-left"></i> Go Back</span>
             </button>
         </div>
 
-        <mat-card class="event-card rounded-corners" *ngIf="event">
-            <mat-card-title>{{event?.name}}</mat-card-title>
-            <mat-card-content>
-                <div class="location-date-range">
-                    <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
-                        {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
-                    <div class="location-num-people-attending">
-                        <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
-                        <span class="num-people-attending">{{event?.totalAttendance}}
-                            {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
-                                class="fas fa-user-friends"></i></span>
-                    </div>
-                </div>
-                <article>
-                    <header class="about-title">About</header>
-                    <p>{{ (event.description.length > 200) ? (event?.description | slice : 0 : 200) + '...': (event?.description) }}
-                    </p>
-                </article>
-                <p class="created-by">Created By: <a
-                        [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
-                </p>
-                <p>
-                    Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.name || '']">{{event.fandomType.name | titlecase}}</a>
-                </p>
-                <div class="buttons-container-right">
-                    <button class="delete-event-button"
-                        *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                        (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
-                        <span>
-                            Delete <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </button>
-                    <div class="more" *ngIf="!isAttending" (click)="addEventToProfile()"><button mat-flat-button
-                            color="primary">Attend</button></div>
-                    <div class="more" *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)"><button
-                            mat-flat-button color="primary">Unattend</button></div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
-        <div *ngIf="!wroteReview" class="button-container">
-            <div class="button-div" id="review" (click)="openAddDialog()">
-                <button mat-flat-button color="primary">
-                    <span>
-                        Add Review <i class="fas fa-plus"></i>
-                    </span>
-                </button>
-            </div>
-        </div>
-
-        <div *ngIf="!wroteReview" class="spacer"></div>
-
-        <div *ngFor="let review of reviews">
-            <mat-card class="review-card">
+        <section class="event-details-reviews">
+            <mat-card class="event-card rounded-corners" *ngIf="event">
+                <mat-card-title>{{event?.name}}</mat-card-title>
                 <mat-card-content>
-                    <div>
-                        <div class="poster">
-                            <div class="profile-img-wrapper">
-                                <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture"
-                                    class="profile-img">
-                            </div>
-
-                            <div>{{review.postedBy.username}}</div>
-                            <div>{{review.postDate | date: 'mediumDate'}}</div>
+                    <div class="location-date-range">
+                        <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
+                            {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                        <div class="location-num-people-attending">
+                            <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
+                            <span class="num-people-attending">{{event?.totalAttendance}}
+                                {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                    class="fas fa-user-friends"></i></span>
                         </div>
-
-                        <div class=divider></div>
-
-                        <div class="review-content">
-                            <h3 class="flex-one">{{review.title}}</h3>
-                            <div>{{review.rating}}</div>
-                            <div>{{review.content}}</div>
-
-                            <div class="flex-container footer">
-                                <div class="delete"
-                                    *ngIf="isAdmin || user && user.username === review.postedBy.username"
-                                    (click)="openDeleteReviewDialog(review.id)">
-                                    <button mat-flat-button color="warn">
-                                        <span>
-                                            Delete <i class="fas fa-trash-alt"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                                <div class="edit" *ngIf="user && user.username === review.postedBy.username"
-                                    (click)="openEditDialog(review.id)"><button mat-flat-button color="accent">
-                                        <span>
-                                            Edit <i class="fas fa-edit"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <article>
+                        <header class="about-title">About</header>
+                        <p>{{ event?.description }}</p>
+                    </article>
+                    <p class="created-by">Created By: <a
+                            [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
+                    </p>
+                    <p>
+                        Fandom: <a
+                            [routerLink]="['/fandoms', event.fandomType.name || '']">{{event.fandomType.name | titlecase}}</a>
+                    </p>
+                    <div class="buttons-container-right">
+                        <button class="delete-event-button"
+                            *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                            (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                            <span>
+                                Delete <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </button>
+                        <div class="more" *ngIf="!isAttending" (click)="addEventToProfile()"><button mat-flat-button
+                                color="primary">Attend</button></div>
+                        <div class="more" *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)"><button
+                                mat-flat-button color="primary">Unattend</button></div>
                     </div>
                 </mat-card-content>
             </mat-card>
-        </div>
+
+            <section class="reviews-container">
+                <div *ngIf="!wroteReview" class="buttons-container-right add-review-btn-container">
+                    <button mat-raised-button color="primary" (click)="openAddReviewDialog()">
+                        <span>
+                            Add Review <i class="fas fa-plus"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <mat-card class="review-card rounded-corners" *ngFor="let review of reviews">
+                    <mat-card-content>
+                        <div class="username-container">
+                            <div class="profile-img-wrapper">
+                                <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture">
+                            </div>
+                            <a [routerLink]="['/users', review.postedBy.username]"
+                                class="username">{{review.postedBy.username | titlecase}}</a>
+                        </div>
+                        <div class="rating-date-posted">
+                            <span>
+                                <i class="fas fa-star review-star-filled" *ngFor="let in of counter(review.rating)"></i>
+                                <i class="far fa-star" *ngFor="let in of counter(5 - review.rating)"></i>
+                            </span>
+                            <span>{{review.postDate | date: 'MMM d y, h:mm a'}}</span>
+                        </div>
+                        <p>{{review.content}}</p>
+                        <div class="buttons-container-right">
+                            <button mat-flat-button color="warn" class="delete-button"
+                                *ngIf="user?.role === 'admin' || user?.username === review.postedBy.username"
+                                (click)="openDeleteReviewDialog(review.id)">
+                                <span>
+                                    Delete <i class="fas fa-trash-alt"></i>
+                                </span>
+                            </button>
+                            <button *ngIf="user?.username === review.postedBy.username" mat-flat-button color="primary"
+                                (click)="openEditDialog(review.id)">
+                                <span>
+                                    Edit <i class="fas fa-edit"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </section>
+        </section>
+
     </div>
 </section>

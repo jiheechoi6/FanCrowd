@@ -67,7 +67,7 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  openAddDialog(): void {
+  openAddReviewDialog(): void {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       data: {
         id: this.id,
@@ -231,5 +231,9 @@ export class EventDetailComponent implements OnInit {
       let reviewIndex = event.reviews.findIndex((review) => review.id === id);
       this.eventService.deleteReview(eventIindex, reviewIndex);
     }
+  }
+
+  counter(i: number) {
+    return new Array(i);
   }
 }
