@@ -13,7 +13,11 @@
         </div>
 
         <mat-card class="event-card rounded-corners" *ngFor="let event of events">
-            <mat-card-title>{{event.name}}</mat-card-title>
+            <mat-card-title>
+                <a [routerLink]="['/events', event.id]">
+                    {{event.name}}
+                </a>
+            </mat-card-title>
             <mat-card-content>
                 <div class="location-date-range">
                     <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
@@ -45,9 +49,10 @@
                             Delete <i class="fas fa-trash-alt"></i>
                         </span>
                     </button>
-                    <button [routerLink]="['/events', event.id]" mat-flat-button color="primary">
+                    <button *ngIf="user?.role === 'admin' || user?.username === event.postedBy" mat-flat-button
+                        color="primary">
                         <span>
-                            More Details <i class="fas fa-info-circle"></i>
+                            Edit <i class="fas fa-edit"></i>
                         </span>
                     </button>
                 </div>
