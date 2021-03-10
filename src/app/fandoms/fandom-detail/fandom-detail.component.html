@@ -5,20 +5,21 @@
             <h1>Unfortunately, there are no {{fandomName | hyphenToSpaces | titlecase}} fandom</h1>
         </div>
 
+        <header class="fandom-name" *ngIf="fandom">{{fandomName | hyphenToSpaces | titlecase}}</header>
         <div class="buttons-container-space-between join-create-post-buttons-container" *ngIf="fandom">
             <button mat-raised-button color="primary" (click)="joinFandom()" *ngIf="!hasUserJoinedFandom">
                 <span>
-                    Join {{fandom.name | titlecase}} Fandom
+                    Join Fandom
                 </span>
             </button>
             <button mat-raised-button color="primary" (click)="removeFromFandom()" *ngIf="hasUserJoinedFandom">
                 <span>
-                    Unjoin {{fandom.name | titlecase}} Fandom
+                    Unjoin Fandom
                 </span>
             </button>
             <button mat-raised-button color="primary" (click)="openCreatePostDialog()" *ngIf="hasUserJoinedFandom">
                 <span>
-                    Create Post
+                    Create Post <i class="fas fa-plus"></i>
                 </span>
             </button>
         </div>

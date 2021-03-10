@@ -59,7 +59,7 @@ export class FandomDetailComponent implements OnInit {
 
       this.hasUserJoinedFandom = this._userService.hasUserJoinedFandom(
         this.loggedInUser?.username || '',
-        this.fandom?.name || ''
+        this.fandomName || ''
       );
     });
   }

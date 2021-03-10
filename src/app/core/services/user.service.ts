@@ -247,7 +247,7 @@ export class UserService {
       if (this.users[i].username === username) {
         for (let k = 0; k < this.users[i].fandoms.length; k++) {
           this.users[i].fandoms = this.users[i].fandoms.filter(
-            (fandom) => fandom.id === fandomId
+            (fandom) => fandom.id !== fandomId
           );
         }
       }
