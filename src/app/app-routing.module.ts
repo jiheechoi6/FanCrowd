@@ -43,9 +43,7 @@ const routes: Routes = [
   {
     path: 'fandoms',
     loadChildren: () =>
-      import('./discussion-board/discussion-board.module').then(
-        (m) => m.DiscussionBoardModule
-      ),
+      import('./fandoms/fandoms.module').then((m) => m.FandomsModule),
     canActivate: [AuthGuard],
   },
   {

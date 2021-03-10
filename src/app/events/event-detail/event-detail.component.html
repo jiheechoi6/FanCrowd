@@ -60,6 +60,7 @@
                             <span class="number">{{avgRating}}</span>
                             <app-review-stars [outOf]="5" [rating]="avgRating"></app-review-stars>
                             <span>Average Rating</span>
+                            <span class="total-reviews"><i class="fas fa-user"></i> {{reviews.length}} total</span>
                         </div>
                         <div class="rating-progress-bars">
                             <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"

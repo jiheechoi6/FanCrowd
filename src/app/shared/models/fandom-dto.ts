@@ -1,8 +1,8 @@
-interface DiscussionBoardDTO {
+interface FandomDTO {
   name: string;
   activityLevel: number;
   id: number;
   category: string;
 }
 
-export default DiscussionBoardDTO;
+export default FandomDTO;

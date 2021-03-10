@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EventService } from '../core/services/event.service';
+import { Router } from '@angular/router';
 import { FandomService } from '../core/services/fandom.service';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import Category from '../shared/models/category';
 
 @Component({
-  selector: 'app-discussion-board',
-  templateUrl: './discussion-board.component.html',
-  styleUrls: ['./discussion-board.component.sass'],
+  selector: 'app-fandoms',
+  templateUrl: './fandoms.component.html',
+  styleUrls: ['./fandoms.component.sass'],
 })
-export class DiscussionBoardComponent implements OnInit {
+export class FandomsComponent implements OnInit {
   categories: Array<Category> = [];
 
   constructor(
