@@ -276,7 +276,10 @@ export class FandomService {
 
     let fandomsByCategory: Fandom[] = [];
     this.fandoms.forEach((fandom: Fandom) => {
-      if (category !== undefined && fandom.category === category) {
+      if (
+        category !== undefined &&
+        fandom.category?.toLowerCase() === category
+      ) {
         fandomsByCategory.push(fandom);
       }
     });

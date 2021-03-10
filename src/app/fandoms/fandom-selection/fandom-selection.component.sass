@@ -1,30 +1,44 @@
-.create
-    margin: 0px 0px 0px 8px
-
-.button-container
-    margin: 32px 0px 8px 24px
-
-.fandom-card
-    width: 320px
-    height: 176px
-    margin: 24px
-    border-radius: 6px
-    background-repeat: no-repeat
-    background-size: cover
-    -webkit-text-stroke: 0.2px black
-
-    &:hover
-        animation: shake 1000ms 0s
-        opacity: 70%
-
-.fandom-container
+.outer-container
     display: flex
-    flex-wrap: wrap
-    flex-direction: row
-    margin-left: auto
-    margin-right: auto
+    flex-direction: column
+    align-items: center
+    margin-top: 40px
 
-.center
-    text-align: center
-    margin-top: 72px
-    color: white
+    .inner-container
+        width: 90%
+        display: flex
+        flex-direction: column
+
+        .add-fandom-button-container
+            margin-right: 30px
+
+        .fandoms
+            display: flex
+            flex-wrap: wrap
+            margin: 25px 0
+
+            .fandom-card
+                cursor: pointer
+                width: 25%
+                flex-grow: 1
+                margin: 0 30px 30px 0
+                height: 176px
+                background-repeat: no-repeat
+                background-size: cover
+                background-position: center
+
+                &:hover
+                    animation: shake 950ms infinite
+                    opacity: 65%
+
+                .card-body
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    height: 100%
+
+                    .name
+                        color: white
+                        font-weight: bold
+                        letter-spacing: 2px
+                        font-size: 30px

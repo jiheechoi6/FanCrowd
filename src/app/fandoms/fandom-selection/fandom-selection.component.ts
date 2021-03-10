@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FandomService } from '../../core/services/fandom.service';
 import Fandom from 'src/app/shared/models/fandom';
 import { AddDialogComponent } from 'src/app/shared/components/add-dialog/add-dialog.component';
@@ -17,8 +17,7 @@ export class FandomSelectionComponent implements OnInit {
   constructor(
     private _fandomService: FandomService,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
-    private _router: Router
+    public dialog: MatDialog
   ) {
     this._activatedRoute.params.subscribe((params) => {
       this.category = params['category'];
@@ -29,7 +28,7 @@ export class FandomSelectionComponent implements OnInit {
     this.fandoms = this._fandomService.getFandomsByCategories(this.category);
   }
 
-  openDialog(): void {
+  openCreateFandomDialog(): void {
     const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Fandom in ' + this.category,
@@ -44,14 +43,5 @@ export class FandomSelectionComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.fandoms = this._fandomService.getFandomsByCategories(this.category);
     });
-  }
-
-  goToEventBrowser(): void {
-    this._router.navigate(['fandoms']);
-  }
-
-  goToEvents(fandom: Fandom): void {
-    // TODO
-    this._router.navigate(['events', this.category, fandom.name]);
   }
 }
