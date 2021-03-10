@@ -9,6 +9,8 @@ interface FandomPost {
   numDislikes: number;
   content: string;
   comments: FandomPostComment[];
+  id?: number;
+  fandomId: number;
 }
 
 export default FandomPost;

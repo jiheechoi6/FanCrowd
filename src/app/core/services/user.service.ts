@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import UserDTO from 'src/app/shared/models/user-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Fandom from 'src/app/shared/models/fandom';
+import FandomDTO from 'src/app/shared/models/fandom-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -213,5 +215,59 @@ export class UserService {
         }
       }
     });
+  }
+
+  addFandomToUser(username: string, fandom: Fandom | null) {
+    //Add a fandom with id fandomId to Users fandoms, code below requires server call
+
+    if (!fandom) return;
+
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        this.users[i].fandoms.push(this.convertFandomToFandomDTO(fandom));
+      }
+    }
+  }
+
+  convertFandomToFandomDTO(fandom: Fandom) {
+    const fandomDTO: FandomDTO = {
+      activityLevel: 0,
+      category: fandom.category,
+      id: fandom.id,
+      name: fandom.name,
+    };
+
+    return fandomDTO;
+  }
+
+  removeFandomFromUser(username: string, fandomId: number | undefined) {
+    //Remove a fandom with id fandomId from Users fandoms, code below requires server call
+
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        for (let k = 0; k < this.users[i].fandoms.length; k++) {
+          this.users[i].fandoms = this.users[i].fandoms.filter(
+            (fandom) => fandom.id === fandomId
+          );
+        }
+      }
+    }
+  }
+
+  hasUserJoinedFandom(username: string, fandomName: string) {
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        for (let k = 0; k < this.users[i].fandoms.length; k++) {
+          if (
+            this.users[i].fandoms[k].name.toLowerCase().split(' ').join('-') ===
+            fandomName
+          ) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
   }
 }

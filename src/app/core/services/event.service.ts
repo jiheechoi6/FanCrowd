@@ -231,8 +231,10 @@ export class EventService {
 
     this.events.forEach((event) => {
       if (
-        event.fandomType.category?.toLowerCase() === categoryName &&
-        event.fandomType.name?.toLowerCase() === fandomName
+        event.fandomType.category?.toLowerCase() ===
+          categoryName.toLowerCase() &&
+        event.fandomType.name?.toLowerCase().split(' ').join('-') ===
+          fandomName.toLowerCase()
       ) {
         filterdEvents.push(event);
       }

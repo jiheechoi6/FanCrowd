@@ -10,6 +10,15 @@
         display: flex
         flex-direction: column
 
+        .no-fandom-message
+            display: flex
+            justify-content: center
+            align-items: center
+            height: 80vh
+
+            h1
+                font-size: 20px
+
         .join-create-post-buttons-container
             margin-bottom: 30px
 
@@ -20,7 +29,17 @@
             .posts
                 width: 63%
 
+                .no-posts-message
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    height: 100%
+
+                    h1
+                        font-size: 20px
+
                 .post
+                    margin-bottom: 40px
 
                     .username-container
                         display: flex
@@ -58,6 +77,17 @@
 
             .events
                 width: 30%
+                align-self: flex-start
+
+                .no-events-message
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    height: 410px
+
+                    h1
+                        font-size: 20px
+                        text-align: center
 
                 .event-items
                     height: 410px

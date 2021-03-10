@@ -7,9 +7,15 @@ import { RouterModule } from '@angular/router';
 import { PageFooterComponent } from './page-footer/page-footer.component';
 import { OwlDateTimePickerModule } from './owl-datetime-picker/owl-datetime-picker.module';
 import { SpacesToHyphenPipe } from './pipes/spaces-to-hyphen.pipe';
+import { HyphenToSpacesPipe } from './pipes/hyphen-to-spaces.pipe';
 
 @NgModule({
-  declarations: [NavbarComponent, PageFooterComponent, SpacesToHyphenPipe],
+  declarations: [
+    NavbarComponent,
+    PageFooterComponent,
+    SpacesToHyphenPipe,
+    HyphenToSpacesPipe,
+  ],
   imports: [
     CommonModule,
     MaterialModule,
@@ -27,6 +33,7 @@ import { SpacesToHyphenPipe } from './pipes/spaces-to-hyphen.pipe';
     RouterModule,
     OwlDateTimePickerModule,
     SpacesToHyphenPipe,
+    HyphenToSpacesPipe,
   ],
 })
 export class CoreModule {}

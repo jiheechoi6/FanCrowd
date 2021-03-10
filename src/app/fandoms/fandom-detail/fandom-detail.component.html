@@ -1,23 +1,36 @@
 <section class="outer-container">
     <div class="inner-container">
 
-        <div class="buttons-container-space-between join-create-post-buttons-container">
-            <button mat-raised-button color="primary" (click)="joinFandom()">
+        <div class="no-fandom-message" *ngIf="!fandom">
+            <h1>Unfortunately, there are no {{fandomName | hyphenToSpaces | titlecase}} fandom</h1>
+        </div>
+
+        <div class="buttons-container-space-between join-create-post-buttons-container" *ngIf="fandom">
+            <button mat-raised-button color="primary" (click)="joinFandom()" *ngIf="!hasUserJoinedFandom">
                 <span>
-                    Join Fandom
+                    Join {{fandom.name | titlecase}} Fandom
                 </span>
             </button>
-            <button mat-raised-button color="primary" (click)="createFandomPost()">
+            <button mat-raised-button color="primary" (click)="removeFromFandom()" *ngIf="hasUserJoinedFandom">
+                <span>
+                    Unjoin {{fandom.name | titlecase}} Fandom
+                </span>
+            </button>
+            <button mat-raised-button color="primary" (click)="openCreatePostDialog()" *ngIf="hasUserJoinedFandom">
                 <span>
                     Create Post
                 </span>
             </button>
         </div>
 
-        <section class="posts-events">
+        <section class="posts-events" *ngIf="fandom">
+            <div class="posts">
 
-            <div class="posts" *ngFor="let post of postsForEvent">
-                <mat-card class="rounded-corners box-shadow post">
+                <div *ngIf="!postsForFandom.length" class="no-posts-message">
+                    <h1>It seems there are no posts yet. Join the fandom to create one!</h1>
+                </div>
+
+                <mat-card class="rounded-corners box-shadow post" *ngFor="let post of postsForFandom">
                     <mat-card-content>
                         <header class="username-container">
                             <div class="profile-img-wrapper">
@@ -33,13 +46,15 @@
                         </div>
                         <p>{{post.content}}</p>
                         <div class="buttons-container-right">
-                            <button mat-icon-button color="primary" class="like-post-button-container">
+                            <button mat-icon-button color="primary" class="like-post-button-container"
+                                (click)="updatePostLikes(post)">
                                 <span>
                                     <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
                                     <span>{{post.numLikes}}</span>
                                 </span>
                             </button>
-                            <button mat-icon-button color="warn" class="dislike-post-button-container">
+                            <button mat-icon-button color="warn" class="dislike-post-button-container"
+                                (click)="updatePostDislikes(post)">
                                 <span>
                                     <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
                                     <span>{{post.numDislikes}}</span>
@@ -52,7 +67,12 @@
 
             <mat-card class="events rounded-corners box-shadow">
                 <mat-card-title>Upcoming Events</mat-card-title>
-                <mat-card-content class="event-items">
+
+                <mat-card-content class="no-events-message" *ngIf="!eventsForFandom.length">
+                    <h1>Unfortunately, there are no events planned for the fandom</h1>
+                </mat-card-content>
+
+                <mat-card-content class="event-items" *ngIf="eventsForFandom.length">
                     <app-events-summary-card class="event-summary" [events]="eventsForFandom"></app-events-summary-card>
                 </mat-card-content>
             </mat-card>

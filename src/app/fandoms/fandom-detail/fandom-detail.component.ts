@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EventService } from 'src/app/core/services/event.service';
+import { FandomService } from 'src/app/core/services/fandom.service';
+import { UserService } from 'src/app/core/services/user.service';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Fandom from 'src/app/shared/models/fandom';
 import FandomPost from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
 
@@ -15,43 +19,43 @@ export class FandomDetailComponent implements OnInit {
   eventsForFandom: EventDTO[] = [];
   fandomCategory: string = '';
   fandomName: string = '';
-  postsForEvent: FandomPost[] = [
-    {
-      comments: [],
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(),
-      numDislikes: 10,
-      numLikes: 30,
-      postedBy: {
-        username: 'user1',
-        profileUrl:
-          'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-        role: 'user',
-      },
-      title: 'Lorem ipsum dolor sit amet',
-    },
-  ];
+  postsForFandom: FandomPost[] = [];
   loggedInUser: UserDTO | null = null;
+  fandom: Fandom | null = null;
+  hasUserJoinedFandom = false;
 
   constructor(
     private _authService: AuthService,
     private _eventService: EventService,
-    private _activatedRoute: ActivatedRoute
+    private _activatedRoute: ActivatedRoute,
+    private _fandomService: FandomService,
+    private _dialog: MatDialog,
+    private _userService: UserService
   ) {}
 
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
-      this.fandomCategory = params['category'].toLowerCase();
-      this.fandomName = params['fandom'].toLowerCase();
+      this.fandomCategory = params['category'];
+      this.fandomName = params['fandom'];
+
+      this.fandom = this._fandomService.getFandomByName(this.fandomName);
 
       const events = this._eventService.getEventsByCategoryAndFandom(
-        'books',
-        'harry potter'
+        this.fandomCategory,
+        this.fandomName
       );
 
       this.eventsForFandom = this._eventService.convertEventsToEventDTOs(
         events
+      );
+
+      this.postsForFandom = this._fandomService.getPostsForFandom(
+        this.fandomName
+      );
+
+      this.hasUserJoinedFandom = this._userService.hasUserJoinedFandom(
+        this.loggedInUser?.username || '',
+        this.fandom?.name || ''
       );
     });
 
@@ -60,7 +64,44 @@ export class FandomDetailComponent implements OnInit {
     );
   }
 
-  joinFandom() {}
+  joinFandom() {
+    this._userService.addFandomToUser(
+      this.loggedInUser?.username || '',
+      this.fandom
+    );
 
-  createFandomPost() {}
+    this.hasUserJoinedFandom = true;
+  }
+
+  removeFromFandom() {
+    this._userService.removeFandomFromUser(
+      this.loggedInUser?.username || '',
+      this.fandom?.id
+    );
+
+    this.hasUserJoinedFandom = false;
+  }
+
+  openCreatePostDialog() {
+    // const dialogRef = this._dialog.open(, {
+    //   autoFocus: false,
+    //   width: '450px',
+    //   disableClose: true,
+    // });
+    // dialogRef.afterClosed().subscribe((newPost: FandomPost) => {
+    //   if (newPost) {
+    //     this.postsForFandom = this._fandomService.createPostForFandom(newPost);
+    //   }
+    // });
+  }
+
+  updatePostLikes(post: FandomPost) {
+    post.numLikes += 1;
+    this._fandomService.updatePostForFandom(post.id, post);
+  }
+
+  updatePostDislikes(post: FandomPost) {
+    post.numDislikes -= post.numDislikes === 0 ? 0 : 1;
+    this._fandomService.updatePostForFandom(post.id, post);
+  }
 }
