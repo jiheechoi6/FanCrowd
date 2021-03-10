@@ -7,56 +7,79 @@
         </div>
 
         <section class="event-details-reviews">
-            <mat-card class="event-card rounded-corners" *ngIf="event">
-                <mat-card-title>{{event?.name}}</mat-card-title>
-                <mat-card-content>
-                    <div class="location-date-range">
-                        <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
-                            {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
-                        <div class="location-num-people-attending">
-                            <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
-                            <span class="num-people-attending">{{event?.totalAttendance}}
-                                {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
-                                    class="fas fa-user-friends"></i></span>
+            <section class="event-detail-review-summary">
+                <mat-card class="event-card rounded-corners" *ngIf="event">
+                    <mat-card-title>{{event?.name}}</mat-card-title>
+                    <mat-card-content>
+                        <div class="location-date-range">
+                            <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
+                                {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                            <div class="location-num-people-attending">
+                                <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
+                                <span class="num-people-attending">{{event?.totalAttendance}}
+                                    {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                        class="fas fa-user-friends"></i></span>
+                            </div>
                         </div>
-                    </div>
-                    <article>
-                        <header class="about-title">About</header>
-                        <p>{{ event?.description }}</p>
-                    </article>
-                    <p class="created-by">Created By: <a
-                            [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
-                    </p>
-                    <p>
-                        Fandom: <a
-                            [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
-                    </p>
-                    <div class="buttons-container-space-between">
-                        <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
-                            color="primary">
-                            Unattend
-                        </button>
-                        <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
-                            Attend
-                        </button>
-                        <div>
-                            <button class="delete-event-button"
-                                *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
-                                <span>
-                                    Delete <i class="fas fa-trash-alt"></i>
-                                </span>
+                        <article>
+                            <header class="about-title">About</header>
+                            <p>{{ event?.description }}</p>
+                        </article>
+                        <p class="created-by">Created By: <a
+                                [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
+                        </p>
+                        <p>
+                            Fandom: <a
+                                [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                        </p>
+                        <div class="buttons-container-space-between">
+                            <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
+                                color="primary">
+                                Unattend
                             </button>
-                            <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy" mat-flat-button
-                                color="primary" (click)="openEditEventDialog()">
-                                <span>
-                                    Edit <i class="fas fa-edit"></i>
-                                </span>
+                            <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
+                                Attend
                             </button>
+                            <div>
+                                <button class="delete-event-button"
+                                    *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                    (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                                    <span>
+                                        Delete <i class="fas fa-trash-alt"></i>
+                                    </span>
+                                </button>
+                                <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                    mat-flat-button color="primary" (click)="openEditEventDialog()">
+                                    <span>
+                                        Edit <i class="fas fa-edit"></i>
+                                    </span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card>
+                    <mat-card-content class="rating-summary">
+                        <div class="avg-rating">
+                            <span class="number">3</span>
+                            <app-review-stars [outOf]="5" [rating]="3"></app-review-stars>
+                            <span>Average Rating</span>
+                        </div>
+                        <div class="rating-progress-bars">
+                            <mat-progress-bar class="progress-bar" *ngFor="let rating of [0, 1, 2, 3, 4]"
+                                color="primary" mode="determinate" value="45"></mat-progress-bar>
+                        </div>
+                        <div class="rating-group-by-summary">
+                            <div *ngFor="let rating of [5, 4, 3, 2, 1]">
+                                <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="rating">
+                                </app-review-stars>
+                                80 %
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </section>
 
             <section class="reviews-container">
                 <div class="title-create-button">

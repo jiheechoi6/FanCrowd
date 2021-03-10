@@ -16,33 +16,68 @@
             display: flex
             margin-bottom: 40px
 
-            .event-card
-                padding: 20px
-                align-self: flex-start
+            .event-detail-review-summary
                 width: 50%
+                align-self: flex-start
 
-                .location-date-range
-                    display: flex
-                    flex-direction: column
-                    font-weight: bold
+                .event-card
+                    padding: 20px
                     margin-bottom: 25px
 
-                    .location-num-people-attending
+                    .location-date-range
                         display: flex
                         flex-direction: column
-                        margin-top: 5px
+                        font-weight: bold
+                        margin-bottom: 25px
 
-                        .num-people-attending
-                            font-weight: normal
+                        .location-num-people-attending
+                            display: flex
+                            flex-direction: column
                             margin-top: 5px
-                            align-self: flex-end
 
-                .about-title
-                    font-weight: bold
-                    margin-bottom: 7px
+                            .num-people-attending
+                                font-weight: normal
+                                margin-top: 5px
+                                align-self: flex-end
 
-                .delete-event-button
-                    margin-right: 16px
+                    .about-title
+                        font-weight: bold
+                        margin-bottom: 7px
+
+                    .delete-event-button
+                        margin-right: 16px
+
+                .rating-summary
+                    display: flex
+                    justify-content: space-between
+                    align-items: flex-start
+
+                    .avg-rating
+                        display: flex
+                        flex-direction: column
+                        align-items: center
+                        font-weight: bold
+                        letter-spacing: 1px
+                        align-self: center
+
+                        .number
+                            font-size: 30px
+                            margin-bottom: 10px
+
+                    .rating-progress-bars
+                        width: 45%
+
+                        .progress-bar
+                            border-radius: 5px
+                            margin-bottom: 10px
+                            height: 12px
+
+                    .rating-group-by-summary
+                        display: flex
+                        flex-direction: column
+
+                        .rating-summary-group
+                            margin-bottom: 1px
 
             .reviews-container
                 margin-left: 40px
