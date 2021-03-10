@@ -84,7 +84,7 @@ export class FandomService {
     {
       id: 7,
       category: this.category[1].name,
-      name: 'Divergent Series',
+      name: 'Divergent',
       backgroundUrl: 'https://wallpapercave.com/wp/wp1826730.jpg',
     },
     {

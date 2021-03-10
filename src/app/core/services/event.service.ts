@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
+import EventDTO from 'src/app/shared/models/event-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -230,8 +231,8 @@ export class EventService {
 
     this.events.forEach((event) => {
       if (
-        event.fandomType.category === categoryName &&
-        event.fandomType.name === fandomName
+        event.fandomType.category?.toLowerCase() === categoryName &&
+        event.fandomType.name?.toLowerCase() === fandomName
       ) {
         filterdEvents.push(event);
       }
@@ -240,7 +241,7 @@ export class EventService {
     return filterdEvents.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsById(id: number): Event | null {
+  getEventById(id: number): Event | null {
     // Get event from server, code below requires server call
 
     return this.events.find((event) => event.id === id) || null;
@@ -328,5 +329,16 @@ export class EventService {
 
     const eventIndex = this.events.findIndex((event) => event.id === eventId);
     this.events[eventIndex] = updatedEvent;
+  }
+
+  convertEventsToEventDTOs(events: Event[]): EventDTO[] {
+    const eventsAsEventDTO: EventDTO[] = events.map((event) => ({
+      name: event.name,
+      id: event.id,
+      date: event.startDate,
+      totalAttending: event.totalAttendance,
+    }));
+
+    return eventsAsEventDTO;
   }
 }

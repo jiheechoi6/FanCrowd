@@ -55,7 +55,7 @@ export class EventDetailComponent implements OnInit {
       }
     }
 
-    this.event = this._eventService.getEventsById(this.id);
+    this.event = this._eventService.getEventById(this.id);
     if (this.event) {
       this.reviews = this.event.reviews;
       this.alreadyWroteReview(this.reviews);
@@ -191,7 +191,7 @@ export class EventDetailComponent implements OnInit {
           this.event.id,
           this.isAttending
         );
-        this.event = this._eventService.getEventsById(this.id);
+        this.event = this._eventService.getEventById(this.id);
       }
     }
   }
@@ -208,7 +208,7 @@ export class EventDetailComponent implements OnInit {
         this.event.id
       );
       this._eventService.updateEventAttendance(this.event.id, this.isAttending);
-      this.event = this._eventService.getEventsById(this.id);
+      this.event = this._eventService.getEventById(this.id);
     }
   }
 

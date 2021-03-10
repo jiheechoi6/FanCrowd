@@ -1,1 +1,33 @@
-<p>fandom-detail works!</p>
+<section class="outer-container">
+    <div class="inner-container">
+
+        <div class="buttons-container-space-between join-create-post-buttons-container">
+            <button mat-raised-button color="primary" (click)="joinFandom()">
+                <span>
+                    Join Fandom
+                </span>
+            </button>
+            <button mat-raised-button color="primary" (click)="createFandomPost()">
+                <span>
+                    Create Post
+                </span>
+            </button>
+        </div>
+
+        <section class="posts-events">
+            <div class="posts">
+                <mat-card>
+                    <mat-card-content>
+
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <mat-card class="events">
+                <mat-card-title>Upcoming Events</mat-card-title>
+                <mat-card-content class="event-items">
+                    <app-events-summary-card class="event-summary" [events]="eventsForFandom"></app-events-summary-card>
+                </mat-card-content>
+            </mat-card>
+        </section>
+    </div>
+</section>
