@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { map, startWith, filter } from 'rxjs/operators';
+import { map, startWith} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,8 +15,10 @@ export class SearchUserComponent implements OnInit {
   myControl = new FormControl();
   userList:Map<string, string> = new Map();
   filteredOptions: Observable<Map<string, string>> | undefined;
+  userProfilePhotos:String[] = [];
   userToSearch:string = "";
-  
+  profilePhotos:String[] = [];
+
   constructor(
     private userService: UserService,
     private router: Router
@@ -29,6 +31,8 @@ export class SearchUserComponent implements OnInit {
         startWith(''),
         map(value => this._filterName(value))
       );
+
+    this.userProfilePhotos = this.userService.getUserProfilePhotos();
   }
 
   searchUser(){
@@ -47,5 +51,4 @@ export class SearchUserComponent implements OnInit {
     }
     return filteredMap;
   }
-
 }
