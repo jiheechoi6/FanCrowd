@@ -8,44 +8,47 @@
             </button>
         </div>
 
-        <div *ngIf="!events.length" class="empty">
-            <h1 class="center-pos">It seems there are no events. Create one using the button above!</h1>
+        <div *ngIf="!events.length" class="no-events-message">
+            <h1>It seems there are no events. Create one using the button above!</h1>
         </div>
 
-        <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
-            <mat-card-title>
-                <a [routerLink]="['/events', event.id]">
-                    {{event.name}}
-                </a>
-            </mat-card-title>
-            <mat-card-content>
-                <div class="location-date-range">
-                    <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
-                        {{event.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
-                    <div class="location-num-people-attending">
-                        <span>{{event.location}} <i class="fas fa-map-marked-alt"></i></span>
-                        <span class="num-people-attending">{{event.totalAttendance}}
-                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
-                                class="fas fa-user-friends"></i></span>
+        <section *ngIf="events.length">
+            <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
+                <mat-card-title>
+                    <a [routerLink]="['/events', event.id]">
+                        {{event.name}}
+                    </a>
+                </mat-card-title>
+                <mat-card-content>
+                    <div class="location-date-range">
+                        <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
+                            {{event.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                        <div class="location-num-people-attending">
+                            <span>{{event.location}} <i class="fas fa-map-marked-alt"></i></span>
+                            <span class="num-people-attending">{{event.totalAttendance}}
+                                {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                    class="fas fa-user-friends"></i></span>
+                        </div>
                     </div>
-                </div>
-                <article>
-                    <header class="about-title">About</header>
-                    <p>{{ (event.description.length > 200) ? (event.description | slice : 0 : 200) + '...': (event.description) }}
+                    <article>
+                        <header class="about-title">About</header>
+                        <p>{{ (event.description.length > 200) ? (event.description | slice : 0 : 200) + '...': (event.description) }}
+                        </p>
+                    </article>
+                    <p class="created-by">Created By: <a
+                            [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
                     </p>
-                </article>
-                <p class="created-by">Created By: <a
-                        [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
-                </p>
-                <p>
-                    Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
-                </p>
-            </mat-card-content>
-        </mat-card>
+                    <p>
+                        Fandom: <a
+                            [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                    </p>
+                </mat-card-content>
+            </mat-card>
 
-        <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-            [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
-        </mat-paginator>
+            <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+                [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
+            </mat-paginator>
+        </section>
+
     </div>
 </section>
