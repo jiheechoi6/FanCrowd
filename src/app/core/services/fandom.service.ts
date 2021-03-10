@@ -3,6 +3,7 @@ import Fandom from 'src/app/shared/models/fandom';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Category from 'src/app/shared/models/category';
 import FandomPost from 'src/app/shared/models/fandom-post';
+import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 
 @Injectable({
   providedIn: 'root',
@@ -449,5 +450,50 @@ export class FandomService {
           fandom.name.toLowerCase().split(' ').join('-') === fandomName
       ) || null
     );
+  }
+
+  getFandomPostById(postId: number) {
+    //Get a post with id postId from db, code below requires server call
+
+    return this.fandomPosts.find((post) => post.id === postId);
+  }
+
+  addCommentToPost(postId: number, comment: FandomPostComment) {
+    const fandomPost = this.getFandomPostById(postId);
+
+    comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
+    fandomPost?.comments.push(comment);
+
+    return comment;
+  }
+
+  editPostComment(
+    postId: number,
+    commentId: number,
+    updatedComment: FandomPostComment
+  ) {
+    const fandomPost = this.getFandomPostById(postId);
+
+    if (fandomPost) {
+      for (let i = 0; i < fandomPost.comments.length; i++) {
+        if (fandomPost.comments[i].id === commentId) {
+          fandomPost.comments[i] = updatedComment;
+        }
+      }
+    }
+
+    return fandomPost;
+  }
+
+  removeCommentFromPost(postId: number, commentId: number) {
+    const fandomPost = this.getFandomPostById(postId);
+
+    if (fandomPost) {
+      fandomPost.comments = fandomPost.comments.filter(
+        (comment) => comment.id !== commentId
+      );
+    }
+
+    return fandomPost;
   }
 }

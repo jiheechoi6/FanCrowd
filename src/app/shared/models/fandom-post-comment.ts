@@ -6,7 +6,7 @@ interface FandomPostComment {
   numDislikes: number;
   postedBy: PartialUserDTO;
   datePosted: Date;
-  commentId?: number;
+  id?: number;
   content: string;
 }
 
