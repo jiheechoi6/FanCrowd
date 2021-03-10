@@ -6,6 +6,7 @@ import { FandomService } from 'src/app/core/services/fandom.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 import FandomPost from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 
 @Component({
   selector: 'app-post-detail',
@@ -78,7 +79,22 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  openEditPostDialog() {}
+  openEditPostDialog() {
+    const dialogRef = this._dialog.open(CreatePostDialogComponent, {
+      data: {
+        postBeingUpdated: { ...this.post },
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedPost: FandomPost) => {
+      if (updatedPost) {
+        this.post = updatedPost;
+      }
+    });
+  }
 
   openCreateCommentDialog() {}
 

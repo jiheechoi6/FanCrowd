@@ -554,7 +554,7 @@ export class FandomService {
   updatePostForFandom(postId: number | undefined, updatedPost: FandomPost) {
     //Update post with id postId in db, code below requires server call
 
-    if (!postId) return this.fandomPosts;
+    if (typeof postId === 'undefined') return this.fandomPosts;
 
     for (let i = 0; i < this.fandomPosts.length; i++) {
       if (this.fandomPosts[i].id === postId) {

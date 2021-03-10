@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Create Post</h1>
+<h1 mat-dialog-title>{{isEditing ? 'Edit Post': 'Create Post'}}</h1>
 <section mat-dialog-content>
     <form (ngSubmit)="onCreatePost()" #createPostForm="ngForm">
         <div class="form-group">
@@ -29,7 +29,7 @@
     <button mat-flat-button color="primary" (click)="createPostForm.ngSubmit.emit()"
         [disabled]="!createPostForm.form.valid" *ngIf="!isEditing">
         <span>
-            Confirm <i class="fas fa-check"></i>
+            Create <i class="fas fa-plus"></i>
         </span>
     </button>
     <button mat-flat-button color="primary" (click)="onEditPost()" [disabled]="!createPostForm.form.valid"
