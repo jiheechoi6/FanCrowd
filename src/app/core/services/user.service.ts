@@ -225,4 +225,12 @@ export class UserService {
 
     return usermap;
   }
+
+  getUserProfilePhotos(){
+    let photos:String[] = [];
+    this.users.forEach((user)=>{
+      photos.push(user.profileUrl);
+    })
+    return photos;
+  }
 }
