@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { FandomService } from '../core/services/fandom.service';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import Category from '../shared/models/category';
@@ -14,16 +13,15 @@ export class FandomsComponent implements OnInit {
   categories: Array<Category> = [];
 
   constructor(
-    private fandomService: FandomService,
-    public dialog: MatDialog,
-    private router: Router
+    private _fandomService: FandomService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.categories = this.fandomService.getCategories();
+    this.categories = this._fandomService.getCategories();
   }
 
-  openDialog(): void {
+  openCreateCategoryDialog(): void {
     const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Category',
@@ -33,14 +31,11 @@ export class FandomsComponent implements OnInit {
       width: '360px',
       height: '300px',
       autoFocus: false,
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categories = this.fandomService.getCategories();
+      this.categories = this._fandomService.getCategories();
     });
-  }
-
-  goToCategory(category: string): void {
-    this.router.navigate(['fandoms', category]);
   }
 }
