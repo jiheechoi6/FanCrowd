@@ -18,7 +18,6 @@ export class AuthService {
     ['admin', 'admin'],
   ]);
 
-  today = new Date();
   users: UserDTO[] = [
     {
       username: 'user1',
@@ -34,25 +33,25 @@ export class AuthService {
       attendingEvents: [
         {
           name: 'Comic Con',
-          date: this.today,
+          date: new Date(2021, 10, 12),
           totalAttending: 2,
           id: 1,
         },
         {
           name: 'World Expo',
-          date: new Date(this.today.getTime() + 1),
+          date: new Date(2021, 5, 12),
           totalAttending: 2,
           id: 2,
         },
         {
           name: 'J.K Rowling Meet & Greet',
-          date: new Date(this.today.getTime() + 9),
+          date: new Date(2021, 9, 12),
           totalAttending: 3,
           id: 5,
         },
         {
           name: 'FIFA World Cup Party',
-          date: new Date(this.today.getTime() + 13),
+          date: new Date(2021, 11, 3),
           totalAttending: 1,
           id: 7,
         },
@@ -72,7 +71,7 @@ export class AuthService {
         },
         {
           // Books Category
-          name: 'Percy Jackson Series',
+          name: 'Percy Jackson',
           id: 10,
           activityLevel: 1,
           category: 'books',
@@ -100,7 +99,7 @@ export class AuthService {
       attendingEvents: [
         {
           name: 'World Expo',
-          date: new Date(this.today.getTime() + 1),
+          date: new Date(2021, 5, 12),
           totalAttending: 2,
           id: 2,
         },
@@ -147,7 +146,9 @@ export class AuthService {
     private _http: HttpClient,
     private _emailService: EmailService,
     private _userService: UserService
-  ) {}
+  ) {
+    this.currentUser.next(this.users[0]);
+  }
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint

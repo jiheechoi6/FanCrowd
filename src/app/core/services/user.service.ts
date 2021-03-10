@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import UserDTO from 'src/app/shared/models/user-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Fandom from 'src/app/shared/models/fandom';
+import FandomDTO from 'src/app/shared/models/fandom-dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  today = new Date();
-
   users: UserDTO[] = [
     {
       username: 'user1',
@@ -24,25 +24,25 @@ export class UserService {
       attendingEvents: [
         {
           name: 'Comic Con',
-          date: this.today,
+          date: new Date(2021, 10, 12),
           totalAttending: 2,
           id: 1,
         },
         {
           name: 'World Expo',
-          date: new Date(this.today.getTime() + 1),
+          date: new Date(2021, 5, 12),
           totalAttending: 2,
           id: 2,
         },
         {
           name: 'J.K Rowling Meet & Greet',
-          date: new Date(this.today.getTime() + 9),
+          date: new Date(2021, 9, 12),
           totalAttending: 3,
           id: 5,
         },
         {
           name: 'FIFA World Cup Party',
-          date: new Date(this.today.getTime() + 13),
+          date: new Date(2021, 11, 3),
           totalAttending: 1,
           id: 7,
         },
@@ -62,7 +62,7 @@ export class UserService {
         },
         {
           // Books Category
-          name: 'Percy Jackson Series',
+          name: 'Percy Jackson',
           id: 10,
           activityLevel: 1,
           category: 'books',
@@ -90,7 +90,7 @@ export class UserService {
       attendingEvents: [
         {
           name: 'World Expo',
-          date: new Date(this.today.getTime() + 1),
+          date: new Date(2021, 5, 12),
           totalAttending: 2,
           id: 2,
         },
@@ -216,21 +216,75 @@ export class UserService {
       }
     });
   }
-  
-  getUsernameNameMap(){
-    let usermap:Map<string, string> = new Map();
-    this.users.forEach((user)=>{
+
+  getUsernameNameMap() {
+    let usermap: Map<string, string> = new Map();
+    this.users.forEach((user) => {
       usermap.set(user.fullName, user.username);
     });
 
     return usermap;
   }
 
-  getUserProfilePhotos(){
-    let photos:Map<string, string> = new Map<string, string>();
-    this.users.forEach((user)=>{
+  getUserProfilePhotos() {
+    let photos: Map<string, string> = new Map<string, string>();
+    this.users.forEach((user) => {
       photos.set(user.username, user.profileUrl);
-    })
+    });
     return photos;
+  }
+
+  addFandomToUser(username: string, fandom: Fandom | null) {
+    //Add a fandom with id fandomId to Users fandoms, code below requires server call
+
+    if (!fandom) return;
+
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        this.users[i].fandoms.push(this.convertFandomToFandomDTO(fandom));
+      }
+    }
+  }
+
+  convertFandomToFandomDTO(fandom: Fandom) {
+    const fandomDTO: FandomDTO = {
+      activityLevel: 0,
+      category: fandom.category,
+      id: fandom.id,
+      name: fandom.name,
+    };
+
+    return fandomDTO;
+  }
+
+  removeFandomFromUser(username: string, fandomId: number | undefined) {
+    //Remove a fandom with id fandomId from Users fandoms, code below requires server call
+
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        for (let k = 0; k < this.users[i].fandoms.length; k++) {
+          this.users[i].fandoms = this.users[i].fandoms.filter(
+            (fandom) => fandom.id !== fandomId
+          );
+        }
+      }
+    }
+  }
+
+  hasUserJoinedFandom(username: string, fandomName: string) {
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].username === username) {
+        for (let k = 0; k < this.users[i].fandoms.length; k++) {
+          if (
+            this.users[i].fandoms[k].name.toLowerCase().split(' ').join('-') ===
+            fandomName
+          ) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
   }
 }

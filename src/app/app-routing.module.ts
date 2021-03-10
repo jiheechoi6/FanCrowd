@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './core/services/auth.guard';
-import { LoggedInGuard } from './core/services/logged-in.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { LoggedInGuard } from './core/guards/logged-in.guard';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -22,11 +22,6 @@ const routes: Routes = [
     canActivate: [LoggedInGuard],
   },
   {
-    path: 'users/:username',
-    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'forgot-password',
     loadChildren: () =>
       import('./forgot-password/forgot-password.module').then(
@@ -35,17 +30,20 @@ const routes: Routes = [
     canActivate: [LoggedInGuard],
   },
   {
+    path: 'users/:username',
+    loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'calendar',
     loadChildren: () =>
       import('./calendar/calendar.module').then((m) => m.CalendarModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'discussion-boards',
+    path: 'fandoms',
     loadChildren: () =>
-      import('./discussion-board/discussion-board.module').then(
-        (m) => m.DiscussionBoardModule
-      ),
+      import('./fandoms/fandoms.module').then((m) => m.FandomsModule),
     canActivate: [AuthGuard],
   },
   {

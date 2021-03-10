@@ -1,57 +1,54 @@
-<div>
-    <mat-paginator [length]="this.allEvents.length"
-                [pageSize]="this.pageSize"
-                [pageSizeOptions]="this.pageSizeOptions"
-                [pageIndex]="this.pageIndex"
-                (page)="selectPage($event)"
-                color="accent">
-    </mat-paginator>
-
-    <div class="button-container">
-        <div *ngIf="!this.isFromBrowser" class="create" (click)="openDialog()">
-            <button mat-raised-button color="primary">Create Event</button>
+<section class="outer-container">
+    <div class="inner-container">
+        <div class="buttons-container-right">
+            <button mat-raised-button color="primary" (click)="openCreateEventDialog()">
+                <span>
+                    Create Event <i class="fas fa-plus"></i>
+                </span>
+            </button>
         </div>
-    </div>
 
-    <div *ngIf="this.events.length === 0" class="empty">
-        <h1 class="center-pos"> Sorry, no events taking place </h1>
-    </div>
+        <div *ngIf="!events.length" class="no-events-message">
+            <h1>It seems there are no events. Create one using the button above!</h1>
+        </div>
 
-    <div *ngFor="let event of events; let i = index">
-        <mat-card class="event-card">
-            <mat-card-content>
-                <div class="event-container">
-                    <div>
-                        <h2>{{event.name}}</h2>
+        <section *ngIf="events.length">
+            <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
+                <mat-card-title>
+                    <a [routerLink]="['/events', event.id]">
+                        {{event.name}}
+                    </a>
+                </mat-card-title>
+                <mat-card-content>
+                    <div class="location-date-range">
+                        <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
+                            {{event.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                        <div class="location-num-people-attending">
+                            <span>{{event.location}} <i class="fas fa-map-marked-alt"></i></span>
+                            <span class="num-people-attending">{{event.totalAttendance}}
+                                {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                    class="fas fa-user-friends"></i></span>
+                        </div>
                     </div>
-                    <div class="flex-container header">
-                        <h4 class="flex-one">{{event.location}}</h4>
-                        <h4 class="date">
-                            {{event.startDate | date:'mediumDate'}} - {{event.endDate | date:'mediumDate'}}
-                        </h4>
-                    </div>
-                    <div class="desc">{{event.description}}</div>
-                    <div>Fandom Category: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.category}}</span> </div>
-                    <div>Fandom: <span *ngIf="event.fandomType" class="highlight">{{event.fandomType.name}}</span> </div>
-                    <br>
-                    <div><u>Total People Attending</u>: {{event.totalAttendance}} </div>
+                    <article>
+                        <header class="about-title">About</header>
+                        <p>{{ (event.description.length > 200) ? (event.description | slice : 0 : 200) + '...': (event.description) }}
+                        </p>
+                    </article>
+                    <p class="created-by">Created By: <a
+                            [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
+                    </p>
+                    <p>
+                        Fandom: <a
+                            [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                    </p>
+                </mat-card-content>
+            </mat-card>
 
-                    <div class="flex-container footer">
-                        <div class="flex-one postedBy"><u>Posted By</u>: <span class="user-highlight">{{event.postedBy}}</span></div>
-                        <div class="delete" *ngIf="this.isAdmin || this.user.username === event.postedBy" (click)="openDeleteDialog(event.id)"><button mat-raised-button
-                                color="warn">Delete</button></div>
-                        <div class="more" (click)="goToEvent(event.id)"><button mat-raised-button color="accent">See More</button></div>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
+            <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+                [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
+            </mat-paginator>
+        </section>
+
     </div>
-
-    <mat-paginator [length]="this.allEvents.length"
-                [pageSize]="this.pageSize"
-                [pageIndex]="this.pageIndex"
-                [pageSizeOptions]="this.pageSizeOptions"
-                (page)="selectPage($event)"
-                color="accent">
-    </mat-paginator>
-</div>
+</section>

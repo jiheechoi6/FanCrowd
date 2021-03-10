@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
+import EventDTO from 'src/app/shared/models/event-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -15,56 +16,41 @@ export class EventService {
       fandomType: {
         id: 11,
         category: 'Books',
-        name: 'All',
+        name: 'Harry Potter',
       },
       name: 'Comic Con',
-      description: `A comic book convention or comic con is an event with a 
-        primary focus on comic books and comic book culture, in which comic book 
-        fans gather to meet creators, experts, and each other. Commonly, comic conventions 
-        are multi-day events hosted at convention centers, hotels, or college campuses.`,
+      description: `A comic book convention or comic con is an event with a primary focus on comic books and comic book culture, in which comic book fans gather to meet creators, experts, and each other. Commonly, comic conventions are multi-day events hosted at convention centers, hotels, or college campuses.`,
       postedBy: 'user1',
       location: 'Toronto, Ontario, Canada',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date(2021, 10, 12),
+      endDate: new Date(2021, 10, 14),
       totalAttendance: 2,
       reviews: [
         {
           id: 1,
           title: 'Great Event',
           rating: 4,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user1',
             profileUrl:
               'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
         {
           id: 2,
           title: "Amazing, Lot's of fun",
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user2',
             profileUrl:
               'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
             role: 'user',
           },
-          postDate: this.today,
-        },
-        {
-          id: 3,
-          title: 'Best Time Ever!!!!!!',
-          rating: 5,
-          content: `Something`,
-          postedBy: {
-            username: 'admin',
-            profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'admin',
-          },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -73,47 +59,41 @@ export class EventService {
       fandomType: {
         id: 30,
         category: 'Technology',
-        name: 'All',
+        name: 'Apple',
       },
       name: 'World Expo',
-      description: `Our once-in-a-lifetime celebration – the largest event ever staged in the 
-        Arab world – is set to welcome 190 participating countries, and millions of visitors from 
-        across the globe. Here they will experience warm Emirati hospitality at its finest, as 
-        well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart 
-        of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will 
-        benefit generations to come, both locally and globally, spanning everything from innovations 
-        and architecture to friendships and business opportunities.`,
+      description: `Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.`,
       postedBy: 'user2',
       location: 'Dubai, UAE',
-      startDate: new Date(this.today.getTime() + 1),
-      endDate: new Date(this.today.getTime() + 2),
+      startDate: new Date(2021, 5, 12),
+      endDate: new Date(2021, 5, 14),
       totalAttendance: 2,
       reviews: [
         {
           id: 1,
           title: 'Cool tech!',
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user1',
             profileUrl:
               'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
         {
           id: 2,
           title: 'Nice things to see',
           rating: 3,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
             username: 'user2',
             profileUrl:
               'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
             role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -125,14 +105,11 @@ export class EventService {
         name: 'Avengers',
       },
       name: 'Marvel Studios',
-      description: `Marvel Studios, LLC is an American film and television studio that is a 
-        subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios 
-        is known for the production of the Marvel Cinematic Universe films, based on characters 
-        that appear in Marvel Comics publications.`,
-      postedBy: 'admin',
+      description: `Marvel Studios, LLC is an American film and television studio that is a subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios is known for the production of the Marvel Cinematic Universe films, based on characters that appear in Marvel Comics publications.`,
+      postedBy: 'user2',
       location: 'San Fransico, California, USA',
-      startDate: new Date(this.today.getTime() + 3),
-      endDate: new Date(this.today.getTime() + 5),
+      startDate: new Date(2021, 6, 12),
+      endDate: new Date(2021, 7, 14),
       totalAttendance: 1,
       reviews: [],
     },
@@ -144,27 +121,24 @@ export class EventService {
         name: 'God of War',
       },
       name: 'Sony Game Release',
-      description: `God of War is an action-adventure game franchise created by David Jaffe at 
-        Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and
-        has become a flagship title for the PlayStation brand, consisting of eight games across 
-        multiple platforms with a ninth currently in development.`,
-      postedBy: 'admin',
+      description: `God of War is an action-adventure game franchise created by David Jaffe at Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and has become a flagship title for the PlayStation brand, consisting of eight games across multiple platforms with a ninth currently in development.`,
+      postedBy: 'user2',
       location: 'Los Angeles, California, USA',
-      startDate: new Date(this.today.getTime() + 6),
-      endDate: new Date(this.today.getTime() + 8),
+      startDate: new Date(2021, 4, 8),
+      endDate: new Date(2021, 4, 11),
       totalAttendance: 1,
       reviews: [
         {
           id: 2,
           title: 'Great Release Party!!!',
           rating: 5,
-          content: `Something`,
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
           postedBy: {
-            username: 'admin',
+            username: 'user2',
             profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'admin',
+            role: 'user',
           },
-          postDate: this.today,
+          postDate: new Date(2021, 1, 15),
         },
       ],
     },
@@ -176,14 +150,11 @@ export class EventService {
         name: 'Harry Potter',
       },
       name: 'J.K Rowling Meet & Greet',
-      description: `Harry Potter is a series of seven fantasy novels written by British author, 
-        J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his 
-        friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School 
-        of Witchcraft and Wizardry.`,
+      description: `Harry Potter is a series of seven fantasy novels written by British author, J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.`,
       postedBy: 'user1',
       location: 'Vancouver, British Columbia, Canada',
-      startDate: new Date(this.today.getTime() + 9),
-      endDate: new Date(this.today.getTime() + 10),
+      startDate: new Date(2021, 9, 12),
+      endDate: new Date(2021, 9, 15),
       totalAttendance: 3,
       reviews: [],
     },
@@ -195,14 +166,11 @@ export class EventService {
         name: 'One Punch Man',
       },
       name: 'Anime-Fest',
-      description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It 
-        tells the story of Saitama, a superhero who can defeat any opponent with a single punch 
-        but seeks to find a worthy opponent after growing bored by a lack of challenge due to his 
-        overwhelming strength.`,
+      description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It tells the story of Saitama, a superhero who can defeat any opponent with a single punch but seeks to find a worthy opponent after growing bored by a lack of challenge due to his overwhelming strength.`,
       postedBy: 'user2',
       location: 'New York City, New York, USA',
-      startDate: new Date(this.today.getTime() + 11),
-      endDate: new Date(this.today.getTime() + 12),
+      startDate: new Date(2021, 7, 30),
+      endDate: new Date(2021, 8, 1),
       totalAttendance: 2,
       reviews: [],
     },
@@ -214,13 +182,11 @@ export class EventService {
         name: 'Soccer',
       },
       name: 'FIFA World Cup Party',
-      description: `The FIFA World Cup, often simply called the World Cup, is an international 
-        association football competition contested by the senior men's national teams of the members 
-        of the Fédération Internationale de Football Association, the sport's global governing body.`,
-      postedBy: 'admin',
+      description: `The FIFA World Cup, often simply called the World Cup, is an international association football competition contested by the senior men's national teams of the members of the Fédération Internationale de Football Association, the sport's global governing body.`,
+      postedBy: 'user2',
       location: 'Westminister, London, United Kingdom',
-      startDate: new Date(this.today.getTime() + 13),
-      endDate: new Date(this.today.getTime() + 14),
+      startDate: new Date(2021, 11, 3),
+      endDate: new Date(2021, 11, 8),
       totalAttendance: 1,
       reviews: [],
     },
@@ -229,15 +195,14 @@ export class EventService {
       fandomType: {
         id: 15,
         category: 'Shows',
-        name: 'All',
+        name: 'Game of Thrones',
       },
       name: 'New HBO Show Press Release',
-      description: `Home Box Office is an American pay television network owned by WarnerMedia 
-        Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
+      description: `Home Box Office is an American pay television network owned by WarnerMedia Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
       postedBy: 'user1',
       location: 'Seattle, Washington, USA',
-      startDate: new Date(this.today.getTime() + 15),
-      endDate: new Date(this.today.getTime() + 20),
+      startDate: new Date(2021, 12, 10),
+      endDate: new Date(2021, 12, 13),
       totalAttendance: 1,
       reviews: [],
     },
@@ -257,20 +222,28 @@ export class EventService {
     return this.events.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsByCategoryAndFandom(categoryName: string, fandomName: string): Event[] {
+  getEventsByCategoryAndFandom(
+    categoryName: string,
+    fandomName: string
+  ): Event[] {
     // Get events from server, code below requires server call
     let filterdEvents: Event[] = [];
-    
+
     this.events.forEach((event) => {
-      if (event.fandomType.category === categoryName && event.fandomType.name === fandomName){
+      if (
+        event.fandomType.category?.toLowerCase() ===
+          categoryName.toLowerCase() &&
+        event.fandomType.name?.toLowerCase().split(' ').join('-') ===
+          fandomName.toLowerCase()
+      ) {
         filterdEvents.push(event);
       }
     });
 
-    return filterdEvents.sort((a,b) => this.sortFunction(a,b));
+    return filterdEvents.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsById(id: number): Event | null {
+  getEventById(id: number): Event | null {
     // Get event from server, code below requires server call
 
     return this.events.find((event) => event.id === id) || null;
@@ -279,6 +252,7 @@ export class EventService {
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
+    event.id = Math.floor(Math.random() * (10000 - 12) + 12);
     this.events.push(event);
   }
 
@@ -307,10 +281,10 @@ export class EventService {
     return false;
   }
 
-  getReviewsByEventId(eventId: number): Review[] | null {
+  getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
 
-    return this.events.find((event) => event.id === eventId)?.reviews || null;
+    return this.events.find((event) => event.id === eventId)?.reviews || [];
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
@@ -349,5 +323,25 @@ export class EventService {
     }
 
     return false;
+  }
+
+  updateEventById(eventId: number | undefined, updatedEvent: Event) {
+    //Update event in db, code below requires server call
+
+    if (!eventId) return;
+
+    const eventIndex = this.events.findIndex((event) => event.id === eventId);
+    this.events[eventIndex] = updatedEvent;
+  }
+
+  convertEventsToEventDTOs(events: Event[]): EventDTO[] {
+    const eventsAsEventDTO: EventDTO[] = events.map((event) => ({
+      name: event.name,
+      id: event.id,
+      date: event.startDate,
+      totalAttending: event.totalAttendance,
+    }));
+
+    return eventsAsEventDTO;
   }
 }

@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { EventsComponent } from './events.component';
-import { EventComponent } from './event/event.component';
+import { EventDetailComponent } from './event-detail/event-detail.component';
 
 const routes: Routes = [
-  { path: '', component: EventsComponent }, 
-  { path: ":id", component: EventComponent },
-  { path: ':category/:fandom', component: EventsComponent }
+  { path: '', component: EventsComponent },
+  { path: ':id', component: EventDetailComponent },
 ];
 
 @NgModule({

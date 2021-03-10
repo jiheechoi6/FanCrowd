@@ -1,0 +1,128 @@
+<section class="outer-container">
+    <div class="inner-container">
+
+        <section class="event-details-reviews">
+            <section class="event-detail-review-summary">
+                <mat-card class="event-card rounded-corners box-shadow" *ngIf="event">
+                    <mat-card-title>{{event?.name}}</mat-card-title>
+                    <mat-card-content>
+                        <div class="location-date-range">
+                            <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
+                                {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                            <div class="location-num-people-attending">
+                                <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
+                                <span class="num-people-attending">{{event?.totalAttendance}}
+                                    {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                        class="fas fa-user-friends"></i></span>
+                            </div>
+                        </div>
+                        <article>
+                            <header class="about-title">About</header>
+                            <p>{{ event?.description }}</p>
+                        </article>
+                        <p class="created-by">Created By: <a
+                                [routerLink]="['/users', event?.postedBy]">{{event?.postedBy | titlecase}}</a>
+                        </p>
+                        <p>
+                            Fandom: <a
+                                [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                        </p>
+                        <div class="buttons-container-space-between">
+                            <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
+                                color="primary">
+                                Unattend
+                            </button>
+                            <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
+                                Attend
+                            </button>
+                            <div>
+                                <button class="delete-event-button"
+                                    *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                    (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                                    <span>
+                                        Delete <i class="fas fa-trash-alt"></i>
+                                    </span>
+                                </button>
+                                <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
+                                    mat-flat-button color="primary" (click)="openEditEventDialog()">
+                                    <span>
+                                        Edit <i class="fas fa-edit"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="rounded-corners box-shadow">
+                    <mat-card-content class="rating-summary">
+                        <div class="avg-rating">
+                            <span class="number">{{avgRating}}</span>
+                            <app-review-stars [outOf]="5" [rating]="avgRating"></app-review-stars>
+                            <span>Average Rating</span>
+                            <span class="total-reviews"><i class="fas fa-user"></i> {{reviews.length}} total</span>
+                        </div>
+                        <div class="rating-progress-bars">
+                            <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"
+                                color="accent" mode="determinate"
+                                [value]="reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100">
+                            </mat-progress-bar>
+                        </div>
+                        <div class="rating-group-by-summary">
+                            <div *ngFor="let ratingGroup of groupedReviews | keyvalue">
+                                <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="+ratingGroup.key">
+                                </app-review-stars>
+                                {{reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100}} %
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </section>
+
+            <section class="reviews-container">
+                <div class="title-create-button">
+                    <header class="review-title">Reviews</header>
+                    <button *ngIf="!wroteReview" mat-raised-button color="primary" (click)="openAddReviewDialog()">
+                        <span>
+                            Add Review <i class="fas fa-plus"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <mat-card class="review-card rounded-corners box-shadow" *ngFor="let review of reviews">
+                    <mat-card-content>
+                        <div class="username-container">
+                            <div class="profile-img-wrapper">
+                                <img class="profile-img" src="{{review.postedBy.profileUrl}}" alt="Profile Picture">
+                            </div>
+                            <a [routerLink]="['/users', review.postedBy.username]"
+                                class="username">{{review.postedBy.username | titlecase}}</a>
+                        </div>
+                        <div class="rating-date-posted">
+                            <app-review-stars [outOf]="5" [rating]="review.rating"></app-review-stars>
+                            <span>{{review.postDate | date: 'MMM d y, h:mm a'}}</span>
+                        </div>
+                        <span class="review-title">{{review.title}}</span>
+                        <p>{{review.content}}</p>
+                        <div class="buttons-container-right">
+                            <button mat-flat-button color="warn" class="delete-button"
+                                *ngIf="user?.role === 'admin' || user?.username === review.postedBy.username"
+                                (click)="openDeleteReviewDialog(review.id)">
+                                <span>
+                                    Delete <i class="fas fa-trash-alt"></i>
+                                </span>
+                            </button>
+                            <button *ngIf="user?.username === review.postedBy.username" mat-flat-button color="primary"
+                                (click)="openEditDialog(review.id)">
+                                <span>
+                                    Edit <i class="fas fa-edit"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </section>
+        </section>
+
+    </div>
+</section>
