@@ -16,7 +16,7 @@
             </mat-option>
             <mat-option *ngFor="let option of filteredOptions | async | keyvalue; let i=index" [value]="option.value">
                 <span>
-                    <img class="image-wrapper" width="30" height="30" src={{userProfilePhotos[i]}}
+                    <img class="image-wrapper" width="30" height="30" src={{userProfilePhotos.get(option.value)}}
                     onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'">
                 </span>
                 {{option.key}} <span id="username">({{option.value}})</span>

@@ -15,7 +15,7 @@ export class SearchUserComponent implements OnInit {
   myControl = new FormControl();
   userList:Map<string, string> = new Map();
   filteredOptions: Observable<Map<string, string>> | undefined;
-  userProfilePhotos:String[] = [];
+  userProfilePhotos:Map<String, String> = new Map<String, String>();
   userToSearch:string = "";
   profilePhotos:String[] = [];
 
