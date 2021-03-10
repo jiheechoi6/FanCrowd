@@ -37,7 +37,9 @@ export class EventDetailComponent implements OnInit {
     public dialog: MatDialog,
     private _router: Router
   ) {
-    this.id = parseInt(this._activatedRoute.snapshot.params['id']);
+    this._activatedRoute.params.subscribe((params) => {
+      this.id = +params['id'];
+    });
   }
 
   ngOnInit(): void {

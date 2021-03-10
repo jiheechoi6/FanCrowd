@@ -15,16 +15,18 @@ export class FandomSelectionComponent implements OnInit {
   fandoms: Fandom[] = [];
 
   constructor(
-    private fandomService: FandomService,
-    private activatedRoute: ActivatedRoute,
+    private _fandomService: FandomService,
+    private _activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private router: Router
+    private _router: Router
   ) {
-    this.category = this.activatedRoute.snapshot.params['category'];
+    this._activatedRoute.params.subscribe((params) => {
+      this.category = params['category'];
+    });
   }
 
   ngOnInit(): void {
-    this.fandoms = this.fandomService.getFandomsByCategories(this.category);
+    this.fandoms = this._fandomService.getFandomsByCategories(this.category);
   }
 
   openDialog(): void {
@@ -40,16 +42,16 @@ export class FandomSelectionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.fandoms = this.fandomService.getFandomsByCategories(this.category);
+      this.fandoms = this._fandomService.getFandomsByCategories(this.category);
     });
   }
 
   goToEventBrowser(): void {
-    this.router.navigate(['fandoms']);
+    this._router.navigate(['fandoms']);
   }
 
   goToEvents(fandom: Fandom): void {
     // TODO
-    this.router.navigate(['events', this.category, fandom.name]);
+    this._router.navigate(['events', this.category, fandom.name]);
   }
 }
