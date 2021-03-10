@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../core/services/auth.service';
 import { FandomService } from '../core/services/fandom.service';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import Category from '../shared/models/category';
@@ -11,14 +12,19 @@ import Category from '../shared/models/category';
 })
 export class FandomsComponent implements OnInit {
   categories: Array<Category> = [];
+  isAdmin = false;
 
   constructor(
     private _fandomService: FandomService,
+    private _authService: AuthService,
     public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.categories = this._fandomService.getCategories();
+    this._authService.currentUser.subscribe(
+      (user) => (this.isAdmin = user?.role === 'admin')
+    );
   }
 
   openCreateCategoryDialog(): void {

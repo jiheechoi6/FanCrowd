@@ -1,6 +1,6 @@
 <section class="outer-container">
     <div class="inner-container">
-        <div class="buttons-container-right add-category-button-container">
+        <div *ngIf="isAdmin" class="buttons-container-right add-category-button-container">
             <button (click)="openCreateCategoryDialog()" mat-raised-button color="primary">
                 <span>
                     Add Category <i class="fas fa-plus"></i>
