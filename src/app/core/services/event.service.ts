@@ -252,6 +252,7 @@ export class EventService {
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
+    event.id = Math.floor(Math.random() * (10000 - 12) + 12);
     this.events.push(event);
   }
 

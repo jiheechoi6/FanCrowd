@@ -324,12 +324,6 @@ export class FandomService {
     // Add fandom to server, code below requires server call
 
     let exists = false;
-    let fandom = {
-      id: 1000,
-      category: category.name,
-      name: 'All',
-      backgroundUrl: category.backgroundUrl,
-    };
 
     this.category.forEach((x) => {
       if (x.name.toLowerCase() === category.name.toLowerCase()) {
@@ -339,7 +333,6 @@ export class FandomService {
 
     if (!exists) {
       this.category.push(category);
-      this.fandoms.push(fandom);
     }
   }
 
@@ -378,7 +371,7 @@ export class FandomService {
     this.fandoms.forEach((fandom: Fandom) => {
       if (
         category !== undefined &&
-        fandom.category?.toLowerCase() === category
+        fandom.category?.toLowerCase() === category.toLowerCase()
       ) {
         fandomsByCategory.push(fandom);
       }
@@ -437,7 +430,7 @@ export class FandomService {
   createPostForFandom(post: FandomPost) {
     //Add post to a fandom, code below requires server call
 
-    post.id = Math.random() * (10000 - 12) + 12;
+    post.id = Math.floor(Math.random() * (10000 - 12) + 12);
     this.fandomPosts.push(post);
 
     return post;

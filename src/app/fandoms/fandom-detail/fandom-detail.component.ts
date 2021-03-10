@@ -109,11 +109,13 @@ export class FandomDetailComponent implements OnInit {
 
   updatePostLikes(post: FandomPost) {
     post.numLikes += 1;
+    post.numDislikes -= post.numDislikes === 0 ? 0 : 1;
     this._fandomService.updatePostForFandom(post.id, post);
   }
 
   updatePostDislikes(post: FandomPost) {
-    post.numDislikes -= post.numDislikes === 0 ? 0 : 1;
+    post.numDislikes += 1;
+    post.numLikes -= post.numLikes === 0 ? 0 : 1;
     this._fandomService.updatePostForFandom(post.id, post);
   }
 }
