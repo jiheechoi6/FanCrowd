@@ -229,6 +229,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor sit amet',
       fandomId: 17,
+      id: 0,
     },
     {
       comments: [],
@@ -245,6 +246,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor',
       fandomId: 17,
+      id: 1,
     },
     {
       comments: [],
@@ -261,6 +263,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor sit amet',
       fandomId: 11,
+      id: 2,
     },
     {
       comments: [],
@@ -277,6 +280,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor sit amet',
       fandomId: 12,
+      id: 3,
     },
     {
       comments: [],
@@ -293,6 +297,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor sit amet',
       fandomId: 14,
+      id: 4,
     },
     {
       comments: [],
@@ -309,6 +314,7 @@ export class FandomService {
       },
       title: 'Lorem ipsum dolor sit amet',
       fandomId: 16,
+      id: 5,
     },
   ];
 
