@@ -227,9 +227,9 @@ export class UserService {
   }
 
   getUserProfilePhotos(){
-    let photos:String[] = [];
+    let photos:Map<string, string> = new Map<string, string>();
     this.users.forEach((user)=>{
-      photos.push(user.profileUrl);
+      photos.set(user.username, user.profileUrl);
     })
     return photos;
   }
