@@ -440,7 +440,7 @@ export class FandomService {
     post.id = Math.random() * (10000 - 12) + 12;
     this.fandomPosts.push(post);
 
-    return this.fandomPosts;
+    return post;
   }
 
   getFandomByName(fandomName: string) {

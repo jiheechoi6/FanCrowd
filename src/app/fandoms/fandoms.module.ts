@@ -7,6 +7,7 @@ import { FandomsRoutingModule } from './fandoms-routing.module';
 import { FandomSelectionComponent } from './fandom-selection/fandom-selection.component';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import { FandomDetailComponent } from './fandom-detail/fandom-detail.component';
+import { CreatePostDialogComponent } from './create-post-dialog/create-post-dialog.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { FandomDetailComponent } from './fandom-detail/fandom-detail.component';
     FandomSelectionComponent,
     AddDialogComponent,
     FandomDetailComponent,
+    CreatePostDialogComponent,
   ],
   imports: [CommonModule, CoreModule, SharedModule, FandomsRoutingModule],
 })

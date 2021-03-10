@@ -9,6 +9,7 @@ import EventDTO from 'src/app/shared/models/event-dto';
 import Fandom from 'src/app/shared/models/fandom';
 import FandomPost from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 
 @Component({
   selector: 'app-fandom-detail',
@@ -83,16 +84,27 @@ export class FandomDetailComponent implements OnInit {
   }
 
   openCreatePostDialog() {
-    // const dialogRef = this._dialog.open(, {
-    //   autoFocus: false,
-    //   width: '450px',
-    //   disableClose: true,
-    // });
-    // dialogRef.afterClosed().subscribe((newPost: FandomPost) => {
-    //   if (newPost) {
-    //     this.postsForFandom = this._fandomService.createPostForFandom(newPost);
-    //   }
-    // });
+    const dialogRef = this._dialog.open(CreatePostDialogComponent, {
+      data: {
+        userCreatingEvent: {
+          role: this.loggedInUser?.role,
+          username: this.loggedInUser?.username,
+          profileUrl: this.loggedInUser?.profileUrl,
+        },
+        fandomId: this.fandom?.id,
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((newPost: FandomPost) => {
+      if (newPost) {
+        this.postsForFandom = this._fandomService.getPostsForFandom(
+          this.fandomName
+        );
+      }
+    });
   }
 
   updatePostLikes(post: FandomPost) {
