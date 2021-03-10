@@ -250,9 +250,12 @@ export class EventDetailComponent implements OnInit {
 
   calculateAvgRating() {
     const totalRatings =
-      this.reviews?.reduce((total, review) => total + review.rating, 0) || 0;
+      this.reviews.reduce((total, review) => total + review.rating, 0) || 0;
 
-    this.avgRating = Math.round(totalRatings / this.reviews.length);
+    this.avgRating =
+      this.reviews.length === 0
+        ? 0
+        : Math.round(totalRatings / this.reviews.length);
   }
 
   groupReviewsByRating() {
