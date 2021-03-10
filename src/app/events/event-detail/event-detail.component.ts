@@ -85,12 +85,14 @@ export class EventDetailComponent implements OnInit {
       if (newReview) {
         this.reviews = this._eventService.getReviewsByEventId(this.id);
         this.alreadyWroteReview(this.reviews);
+        this.calculateAvgRating();
+        this.groupReviewsByRating();
       }
     });
   }
 
   openDeleteEventDialog(id: number | undefined) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+    this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
         details: 'Are you sure you want to delete the event?',
@@ -121,6 +123,8 @@ export class EventDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.reviews = this._eventService.getReviewsByEventId(this.id);
       this.alreadyWroteReview(this.reviews);
+      this.calculateAvgRating();
+      this.groupReviewsByRating();
     });
   }
 
@@ -140,6 +144,8 @@ export class EventDetailComponent implements OnInit {
         if (updatedReview) {
           this.reviews = this._eventService.getReviewsByEventId(this.id);
           this.alreadyWroteReview(this.reviews);
+          this.calculateAvgRating();
+          this.groupReviewsByRating();
         }
       });
     }
@@ -241,7 +247,6 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
       if (updatedEvent) {
-        console.log('here in dialog close', updatedEvent);
         this._eventService.updateEventById(updatedEvent.id, updatedEvent);
         this.event = updatedEvent;
       }
@@ -255,7 +260,7 @@ export class EventDetailComponent implements OnInit {
     this.avgRating =
       this.reviews.length === 0
         ? 0
-        : Math.round(totalRatings / this.reviews.length);
+        : Math.floor(totalRatings / this.reviews.length);
   }
 
   groupReviewsByRating() {
@@ -264,13 +269,13 @@ export class EventDetailComponent implements OnInit {
         (rv[review['rating']] = rv[review['rating']] || []).push(review);
         return rv;
       },
-      {}
-    );
-
-    for (let i = 1; i <= 5; i++) {
-      if (!this.groupedReviews[i]) {
-        this.groupedReviews[i] = [];
+      {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
       }
-    }
+    );
   }
 }

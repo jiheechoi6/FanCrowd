@@ -102,6 +102,7 @@
                             <app-review-stars [outOf]="5" [rating]="review.rating"></app-review-stars>
                             <span>{{review.postDate | date: 'MMM d y, h:mm a'}}</span>
                         </div>
+                        <span class="review-title">{{review.title}}</span>
                         <p>{{review.content}}</p>
                         <div class="buttons-container-right">
                             <button mat-flat-button color="warn" class="delete-button"
