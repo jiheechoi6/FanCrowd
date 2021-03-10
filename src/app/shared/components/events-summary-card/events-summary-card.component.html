@@ -2,9 +2,11 @@
     [routerLink]="[ '/events', event.id ]">
     <mat-card-content>
         <p class="event-header">
-            <span>{{event.name | titlecase}}</span><span>{{event.date | date: 'MMM d y, h:mm a'}}</span>
+            <span class="event-name">{{event.name | titlecase}}</span>
+            <span class="event-start-date">{{event.date | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
         </p>
         <p class="num-people-attending">{{event.totalAttending}} {{event.totalAttending === 1 ? 'Person' : 'People'}}
-            Attending</p>
+            Attending <i class="fas fa-user-friends"></i>
+        </p>
     </mat-card-content>
 </mat-card>

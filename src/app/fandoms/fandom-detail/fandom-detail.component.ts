@@ -37,12 +37,6 @@ export class FandomDetailComponent implements OnInit {
       this.eventsForFandom = this._eventService.convertEventsToEventDTOs(
         events
       );
-
-      this.eventsForFandom = [
-        ...this.eventsForFandom,
-        ...this.eventsForFandom,
-        ...this.eventsForFandom,
-      ];
     });
 
     this._authService.currentUser.subscribe(
