@@ -11,7 +11,7 @@
 
         <section class="fandom-categories">
             <mat-card *ngFor="let category of categories" style="background-image: url({{category.backgroundUrl}})"
-                class="category-card rounded-corners" [routerLink]="['/fandoms', category.name | lowercase]">
+                class="category-card rounded-corners box-shadow" [routerLink]="['/fandoms', category.name | lowercase]">
                 <mat-card-content class="card-body">
                     <h1 class="name">{{category.name}}</h1>
                 </mat-card-content>

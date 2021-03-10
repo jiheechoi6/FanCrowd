@@ -8,7 +8,7 @@
                     alt="Profile Picture">
             </div>
 
-            <mat-card class="user-info">
+            <mat-card class="user-info rounded-corners box-shadow">
                 <mat-card-content>
                     <p class="user-info-item"><span class="user-info-label">Username
                         </span><span>{{user?.username}}</span></p>
@@ -43,13 +43,13 @@
             </mat-card>
         </section>
         <section class="bio-fandom-container">
-            <mat-card class="bio">
+            <mat-card class="bio rounded-corners box-shadow">
                 <mat-card-title>Bio</mat-card-title>
                 <mat-card-content>
                     <p>{{user?.bio}}</p>
                 </mat-card-content>
             </mat-card>
-            <mat-card class="fandom-container">
+            <mat-card class="fandom-container rounded-corners box-shadow">
                 <mat-card-title>Fandoms</mat-card-title>
                 <section class="fandoms">
                     <mat-card-content>
@@ -67,7 +67,7 @@
                 </section>
             </mat-card>
         </section>
-        <mat-card class="events-container">
+        <mat-card class="events-container rounded-corners box-shadow">
             <mat-card-title>Events Attending</mat-card-title>
             <section class="events">
                 <app-events-summary-card [events]="user?.attendingEvents || []"></app-events-summary-card>

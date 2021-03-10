@@ -12,7 +12,7 @@
             <h1 class="center-pos">It seems there are no events. Create one using the button above!</h1>
         </div>
 
-        <mat-card class="event-card rounded-corners" *ngFor="let event of events">
+        <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
             <mat-card-title>
                 <a [routerLink]="['/events', event.id]">
                     {{event.name}}

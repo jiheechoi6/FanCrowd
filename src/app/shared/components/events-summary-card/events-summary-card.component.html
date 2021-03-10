@@ -1,4 +1,5 @@
-<mat-card class="event-item-container" *ngFor="let event of events" [routerLink]="[ '/events', event.id ]">
+<mat-card class="event-item-container rounded-corners" *ngFor="let event of events"
+    [routerLink]="[ '/events', event.id ]">
     <mat-card-content>
         <p class="event-header">
             <span>{{event.name | titlecase}}</span><span>{{event.date | date: 'MMM d y, h:mm a'}}</span>
