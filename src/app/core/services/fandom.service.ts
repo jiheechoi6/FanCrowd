@@ -427,7 +427,7 @@ export class FandomService {
   deletePostFromFandom(postId: number | undefined) {
     //Remove post with id postId in db, code below requires server call
 
-    if (!postId) return this.fandomPosts;
+    if (typeof postId === 'undefined') return this.fandomPosts;
 
     this.fandomPosts = this.fandomPosts.filter((post) => post.id !== postId);
 
@@ -455,7 +455,7 @@ export class FandomService {
   getFandomPostById(postId: number) {
     //Get a post with id postId from db, code below requires server call
 
-    return this.fandomPosts.find((post) => post.id === postId);
+    return this.fandomPosts.find((post) => post.id === postId) || null;
   }
 
   addCommentToPost(postId: number, comment: FandomPostComment) {
@@ -485,7 +485,8 @@ export class FandomService {
     return fandomPost;
   }
 
-  removeCommentFromPost(postId: number, commentId: number) {
+  removeCommentFromPost(postId: number | undefined, commentId: number) {
+    if (!postId) return null;
     const fandomPost = this.getFandomPostById(postId);
 
     if (fandomPost) {

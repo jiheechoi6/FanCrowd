@@ -35,16 +35,14 @@
                             <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
                                 Attend
                             </button>
-                            <div>
-                                <button class="delete-event-button"
-                                    *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                    (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                            <div *ngIf="user?.role === 'admin' || user?.username === event?.postedBy">
+                                <button class="delete-event-button" (click)="openDeleteEventDialog(event?.id)"
+                                    mat-flat-button color="warn">
                                     <span>
                                         Delete <i class="fas fa-trash-alt"></i>
                                     </span>
                                 </button>
-                                <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                    mat-flat-button color="primary" (click)="openEditEventDialog()">
+                                <button mat-flat-button color="primary" (click)="openEditEventDialog()">
                                     <span>
                                         Edit <i class="fas fa-edit"></i>
                                     </span>
