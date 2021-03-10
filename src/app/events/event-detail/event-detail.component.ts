@@ -20,13 +20,14 @@ import { EventCreateDialogComponent } from '../event-create-dialog/event-create-
 })
 export class EventDetailComponent implements OnInit {
   event: Event | null = null;
-  reviews: Review[] | null = [];
+  reviews: Review[] = [];
   today: Date = new Date();
-  isAdmin: boolean = false;
   isAttending: boolean = false;
   id: number = NaN;
   user: UserDTO | null = null;
   wroteReview: boolean = false;
+  avgRating = 0;
+  groupedReviews: { [key: number]: Review[] } = {};
 
   constructor(
     private _authService: AuthService,
@@ -40,13 +41,8 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO: We get user from the AUTH service but when attending we're adding to the USER service
     this.user = this._authService.getCurrentUser().value;
     if (this.user) {
-      if (this.user.role === 'admin') {
-        this.isAdmin = true;
-      }
-
       this.isAttending = false;
       let index = this.user.attendingEvents.findIndex(
         (event) => event.id === this.id
@@ -64,6 +60,9 @@ export class EventDetailComponent implements OnInit {
     } else {
       this.reviews = [];
     }
+
+    this.calculateAvgRating();
+    this.groupReviewsByRating();
   }
 
   openAddReviewDialog(): void {
@@ -247,5 +246,28 @@ export class EventDetailComponent implements OnInit {
         this.event = updatedEvent;
       }
     });
+  }
+
+  calculateAvgRating() {
+    const totalRatings =
+      this.reviews?.reduce((total, review) => total + review.rating, 0) || 0;
+
+    this.avgRating = Math.round(totalRatings / this.reviews.length);
+  }
+
+  groupReviewsByRating() {
+    this.groupedReviews = this.reviews.reduce(
+      (rv: { [key: number]: Review[] }, review) => {
+        (rv[review['rating']] = rv[review['rating']] || []).push(review);
+        return rv;
+      },
+      {}
+    );
+
+    for (let i = 1; i <= 5; i++) {
+      if (!this.groupedReviews[i]) {
+        this.groupedReviews[i] = [];
+      }
+    }
   }
 }

@@ -62,19 +62,21 @@
                 <mat-card>
                     <mat-card-content class="rating-summary">
                         <div class="avg-rating">
-                            <span class="number">3</span>
-                            <app-review-stars [outOf]="5" [rating]="3"></app-review-stars>
+                            <span class="number">{{avgRating}}</span>
+                            <app-review-stars [outOf]="5" [rating]="avgRating"></app-review-stars>
                             <span>Average Rating</span>
                         </div>
                         <div class="rating-progress-bars">
-                            <mat-progress-bar class="progress-bar" *ngFor="let rating of [0, 1, 2, 3, 4]"
-                                color="primary" mode="determinate" value="45"></mat-progress-bar>
+                            <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"
+                                color="accent" mode="determinate"
+                                [value]="(ratingGroup.value.length / reviews.length) * 100">
+                            </mat-progress-bar>
                         </div>
                         <div class="rating-group-by-summary">
-                            <div *ngFor="let rating of [5, 4, 3, 2, 1]">
-                                <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="rating">
+                            <div *ngFor="let ratingGroup of groupedReviews | keyvalue">
+                                <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="+ratingGroup.key">
                                 </app-review-stars>
-                                80 %
+                                {{(ratingGroup.value.length / reviews.length) * 100}} %
                             </div>
                         </div>
                     </mat-card-content>

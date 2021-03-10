@@ -277,10 +277,10 @@ export class EventService {
     return false;
   }
 
-  getReviewsByEventId(eventId: number): Review[] | null {
+  getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
 
-    return this.events.find((event) => event.id === eventId)?.reviews || null;
+    return this.events.find((event) => event.id === eventId)?.reviews || [];
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
