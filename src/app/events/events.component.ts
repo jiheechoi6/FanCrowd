@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
-import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from '../core/services/auth.service';
-import { UserService } from 'src/app/core/services/user.service';
 import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
 
@@ -24,7 +22,6 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private _authService: AuthService,
-    private _userService: UserService,
     private _eventService: EventService,
     public dialog: MatDialog
   ) {}
@@ -53,51 +50,6 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this.events = this._eventService.getEvents();
-      }
-    });
-  }
-
-  openDeleteEventDialog(id: number | undefined) {
-    this.dialog.open(DeleteDialogComponent, {
-      data: {
-        title: 'Delete Event Confirmation',
-        details: 'Are you sure you want to delete this event?',
-        onConfirmCb: this.deleteEvent.bind(this),
-        params: id,
-      },
-      width: '360px',
-      height: '180px',
-      autoFocus: false,
-    });
-  }
-
-  deleteEvent(id: number | undefined): void {
-    if (id) {
-      let index = this.events.findIndex((event) => event.id === id);
-      this._eventService.deleteEvent(index);
-
-      if (this.user) {
-        this._userService.removeEventFromAllUsersEvents(id);
-        this._authService.removeEventFromAllUsersEvents(id);
-      }
-
-      this.events = this._eventService.getEvents();
-    }
-  }
-
-  openEditEventDialog(event: Event) {
-    const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: { eventBeingUpdated: { ...event } },
-      width: '800px',
-      autoFocus: false,
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
-      if (updatedEvent) {
-        console.log('here in dialog close', updatedEvent);
-        this._eventService.updateEventById(updatedEvent.id, updatedEvent);
         this.events = this._eventService.getEvents();
       }
     });

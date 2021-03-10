@@ -41,21 +41,6 @@
                     Fandom: <a
                         [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                 </p>
-                <div class="buttons-container-right">
-                    <button class="delete-event-button"
-                        *ngIf="user?.role === 'admin' || user?.username === event.postedBy"
-                        (click)="openDeleteEventDialog(event.id)" mat-flat-button color="warn">
-                        <span>
-                            Delete <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </button>
-                    <button *ngIf="user?.role === 'admin' || user?.username === event.postedBy" mat-flat-button
-                        color="primary" (click)="openEditEventDialog(event)">
-                        <span>
-                            Edit <i class="fas fa-edit"></i>
-                        </span>
-                    </button>
-                </div>
             </mat-card-content>
         </mat-card>
 
