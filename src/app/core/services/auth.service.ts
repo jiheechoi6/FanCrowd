@@ -71,7 +71,7 @@ export class AuthService {
         },
         {
           // Books Category
-          name: 'Percy Jackson Series',
+          name: 'Percy Jackson',
           id: 10,
           activityLevel: 1,
           category: 'books',

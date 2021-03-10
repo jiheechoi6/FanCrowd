@@ -54,7 +54,9 @@
                 <section class="fandoms">
                     <mat-card-content>
                         <p class="fandom-header"><span>Name</span><span>Activity Level</span></p>
-                        <mat-card class="fandom-item-container" *ngFor="let fandom of user?.fandoms">
+                        <mat-card class="fandom-item-container"
+                            [routerLink]="['/fandoms', fandom.category | lowercase, fandom.name | spacesToHyphen | lowercase]"
+                            *ngFor="let fandom of user?.fandoms">
                             <section class="fandom-item">
                                 <div class="fandom-info-container">
                                     <span>{{fandom.name | titlecase}}</span>
