@@ -2,8 +2,8 @@
         <mat-toolbar color="accent" class="navbar">
                 <section>
                         <i class="fas fa-users"></i> FanCrowd
-                        <app-search-user *ngIf="user"></app-search-user>
                 </section>
+                <app-search-user *ngIf="user"></app-search-user>
                 <section>
                         <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login <i
                                         class="fas fa-sign-in-alt"></i></span>
