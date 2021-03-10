@@ -1,5 +1,5 @@
 import FandomPostComment from './fandom-post-comment';
-import PartialUserDTO from './partialUserDTO';
+import PartialUserDTO from './partial-user-dto';
 
 interface FandomPost {
   postedBy: PartialUserDTO;

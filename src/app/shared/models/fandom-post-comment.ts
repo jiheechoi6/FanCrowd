@@ -1,4 +1,4 @@
-import PartialUserDTO from './partialUserDTO';
+import PartialUserDTO from './partial-user-dto';
 
 interface FandomPostComment {
   title: string;

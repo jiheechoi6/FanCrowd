@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import FandomPost from 'src/app/shared/models/fandom-post';
-import PartialUserDTO from 'src/app/shared/models/partialUserDTO';
+import PartialUserDTO from 'src/app/shared/models/partial-user-dto';
 
 interface DialogData {
   postBeingUpdated?: FandomPost;
