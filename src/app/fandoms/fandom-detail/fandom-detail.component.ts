@@ -15,7 +15,23 @@ export class FandomDetailComponent implements OnInit {
   eventsForFandom: EventDTO[] = [];
   fandomCategory: string = '';
   fandomName: string = '';
-  postsForEvent: FandomPost[] = [];
+  postsForEvent: FandomPost[] = [
+    {
+      comments: [],
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      datePosted: new Date(),
+      numDislikes: 10,
+      numLikes: 30,
+      postedBy: {
+        username: 'user1',
+        profileUrl:
+          'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+        role: 'user',
+      },
+      title: 'Lorem ipsum dolor sit amet',
+    },
+  ];
   loggedInUser: UserDTO | null = null;
 
   constructor(
