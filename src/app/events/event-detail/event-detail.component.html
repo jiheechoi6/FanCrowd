@@ -63,14 +63,15 @@
                         <div class="rating-progress-bars">
                             <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"
                                 color="accent" mode="determinate"
-                                [value]="reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100">
+                                [value]="roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)">
                             </mat-progress-bar>
                         </div>
                         <div class="rating-group-by-summary">
                             <div *ngFor="let ratingGroup of groupedReviews | keyvalue">
                                 <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="+ratingGroup.key">
                                 </app-review-stars>
-                                {{reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100}} %
+                                {{roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)}}
+                                %
                             </div>
                         </div>
                     </mat-card-content>

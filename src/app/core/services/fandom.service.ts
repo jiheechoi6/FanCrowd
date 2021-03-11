@@ -245,7 +245,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 1,
         },
       ],
       content:
@@ -278,7 +278,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 2,
         },
         {
           content:
@@ -293,7 +293,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 3,
         },
       ],
       content:
@@ -326,7 +326,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 4,
         },
         {
           content:
@@ -341,7 +341,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 5,
         },
       ],
       content:
@@ -374,7 +374,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 6,
         },
       ],
       content:
@@ -407,7 +407,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 7,
         },
       ],
       content:
@@ -440,7 +440,7 @@ export class FandomService {
             role: 'user',
           },
           title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
+          id: 8,
         },
       ],
       content:
@@ -494,7 +494,7 @@ export class FandomService {
     // Add fandom to server, code below requires server call
     let exists = false;
     let fandoms = this.getFandomsByCategories(fandom.category);
-    console.log('Fandoms', fandoms);
+
     fandoms.forEach((x) => {
       if (x.name.toLowerCase() === fandom.name.toLowerCase()) {
         exists = true;
@@ -605,15 +605,16 @@ export class FandomService {
     comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
     fandomPost?.comments.push(comment);
 
-    console.log(fandomPost);
     return comment;
   }
 
   editPostComment(
-    postId: number,
+    postId: number | undefined,
     commentId: number | undefined,
     updatedComment: FandomPostComment
   ) {
+    if (typeof postId === 'undefined') return null;
+
     const fandomPost = this.getFandomPostById(postId);
 
     if (typeof commentId === 'undefined') return fandomPost;
@@ -630,7 +631,8 @@ export class FandomService {
   }
 
   removeCommentFromPost(postId: number | undefined, commentId: number) {
-    if (!postId) return null;
+    if (typeof postId === 'undefined') return null;
+
     const fandomPost = this.getFandomPostById(postId);
 
     if (fandomPost) {

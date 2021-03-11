@@ -50,7 +50,6 @@ export class PostDetailComponent implements OnInit {
   updatePostLikes() {
     if (this.post) {
       this.post.numLikes += 1;
-      this.post.numDislikes -= this.post.numDislikes === 0 ? 0 : 1;
       this._fandomService.updatePostForFandom(this.post.id, this.post);
     }
   }
@@ -58,8 +57,29 @@ export class PostDetailComponent implements OnInit {
   updatePostDislikes() {
     if (this.post) {
       this.post.numDislikes += 1;
-      this.post.numLikes -= this.post.numLikes === 0 ? 0 : 1;
       this._fandomService.updatePostForFandom(this.post.id, this.post);
+    }
+  }
+
+  updateCommentLikes(comment: FandomPostComment) {
+    if (this.post) {
+      comment.numLikes += 1;
+      this.post = this._fandomService.editPostComment(
+        this.post.id,
+        comment.id,
+        comment
+      );
+    }
+  }
+
+  updateCommentDislikes(comment: FandomPostComment) {
+    if (this.post) {
+      comment.numDislikes += 1;
+      this.post = this._fandomService.editPostComment(
+        this.post.id,
+        comment.id,
+        comment
+      );
     }
   }
 
@@ -127,13 +147,13 @@ export class PostDetailComponent implements OnInit {
     );
   }
 
-  openDeleteCommentDialog(commentId: number) {
+  openDeleteCommentDialog(commentId: number | undefined) {
     this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Comment Confirmation',
         details: 'Are you sure you want to delete your comment?',
         onConfirmCb: this.deleteComment.bind(this),
-        params: commentId,
+        params: [commentId],
       },
       autoFocus: false,
       width: '450px',
