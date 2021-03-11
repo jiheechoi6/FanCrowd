@@ -283,7 +283,7 @@ export class EventService {
 
   getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
-
+    
     return this.events.find((event) => event.id === eventId)?.reviews || [];
   }
 

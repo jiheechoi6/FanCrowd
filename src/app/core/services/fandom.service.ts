@@ -203,14 +203,14 @@ export class FandomService {
       category: this.category[6].name,
       name: 'Apple',
       backgroundUrl:
-        'https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8Y3JpY2tldHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+        'https://wallpapercave.com/wp/8duz5Ir.jpg',
     },
     {
       id: 30,
       category: this.category[6].name,
       name: 'OnePlus',
       backgroundUrl:
-        'https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8Y3JpY2tldHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+        'https://m-cdn.phonearena.com/images/hub/54-two_500/OnePlus-8T-release-date-price-features-and-news.jpg',
     },
   ];
 
