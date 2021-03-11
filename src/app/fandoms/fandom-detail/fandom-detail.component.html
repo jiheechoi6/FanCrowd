@@ -45,7 +45,8 @@
                             <span class="post-date">{{post.datePosted | date: 'MMM d y, h:mm a'}} <i
                                     class="fas fa-clock"></i></span>
                         </div>
-                        <p>{{post.content}}</p>
+                        <p>{{(post.content.length > 120) ? (post.content | slice : 0 : 120) + '...': (post.content)}}
+                        </p>
                         <div class="buttons-container-right">
                             <button mat-icon-button color="primary" class="like-post-button-container"
                                 (click)="updatePostLikes(post)">

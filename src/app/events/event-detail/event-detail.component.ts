@@ -99,7 +99,7 @@ export class EventDetailComponent implements OnInit {
         title: 'Delete Event Confirmation',
         details: 'Are you sure you want to delete the event?',
         onConfirmCb: this.deleteEvent.bind(this),
-        params: id,
+        params: [id],
       },
       width: '360px',
       height: '180px',
@@ -175,7 +175,7 @@ export class EventDetailComponent implements OnInit {
         name: this.event?.name,
         date: this.event.startDate,
         totalAttending: this.event.totalAttendance + 1,
-        id: this.event.id!
+        id: this.event.id!,
       };
 
       if (this.user) {
@@ -263,6 +263,10 @@ export class EventDetailComponent implements OnInit {
       this.reviews.length === 0
         ? 0
         : Math.floor(totalRatings / this.reviews.length);
+  }
+
+  roundPercent(percent: number) {
+    return Math.floor(percent);
   }
 
   groupReviewsByRating() {

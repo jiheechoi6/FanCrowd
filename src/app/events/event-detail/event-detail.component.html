@@ -35,16 +35,14 @@
                             <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
                                 Attend
                             </button>
-                            <div>
-                                <button class="delete-event-button"
-                                    *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                    (click)="openDeleteEventDialog(event?.id)" mat-flat-button color="warn">
+                            <div *ngIf="user?.role === 'admin' || user?.username === event?.postedBy">
+                                <button class="delete-event-button" (click)="openDeleteEventDialog(event?.id)"
+                                    mat-flat-button color="warn">
                                     <span>
                                         Delete <i class="fas fa-trash-alt"></i>
                                     </span>
                                 </button>
-                                <button *ngIf="user?.role === 'admin' || user?.username === event?.postedBy"
-                                    mat-flat-button color="primary" (click)="openEditEventDialog()">
+                                <button mat-flat-button color="primary" (click)="openEditEventDialog()">
                                     <span>
                                         Edit <i class="fas fa-edit"></i>
                                     </span>
@@ -65,14 +63,15 @@
                         <div class="rating-progress-bars">
                             <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"
                                 color="accent" mode="determinate"
-                                [value]="reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100">
+                                [value]="roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)">
                             </mat-progress-bar>
                         </div>
                         <div class="rating-group-by-summary">
                             <div *ngFor="let ratingGroup of groupedReviews | keyvalue">
                                 <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="+ratingGroup.key">
                                 </app-review-stars>
-                                {{reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100}} %
+                                {{roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)}}
+                                %
                             </div>
                         </div>
                     </mat-card-content>
