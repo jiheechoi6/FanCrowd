@@ -1,6 +1,6 @@
 # CSC309 Group Project - FanCrowd
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5. This project uses 2 external libraries called _Font Awesome_ and _ng-pick-datetime_.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5. This project uses 2 external libraries called _Font Awesome_ and _ng-pick-datetime_. We have used HTML, SASS, JavaScript, and TypeScript to develop this project.
 
 
 ## Running the App
@@ -73,6 +73,6 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 ## Things to Keep in Mind
 
-When a new event, Fandom category, or fandom is added the app uses an id of 1000. The id is hardcoded so if you add multiple of these objects when deleting or updating, the app will choose the first one in the list that matches the id of 1000. This will be addressed in phase 2 when we build the backend because in the database we will only allow unique ids.
+When a new event, Fandom category, or fandom is added the app uses a hardcoded id value of 1000. The id is hardcoded so if you add multiple of these objects when deleting or updating, the app will choose the first one in the list that matches the id of 1000, even though you meant to delete the second or third item you created. This will be addressed in phase 2 with the help of the backend because in the database we will only allow unique ids.
 
-Also please don't pay too much attention to the images or the content of the features. Some categories for example: Apple fandom in the Technology category has an image of a sports item, this is incorrect but it will be addressed in our final submission.
+Also please don't pay too much attention to the images or the content of the features, this is hardcoded so some of it may not make sense.
