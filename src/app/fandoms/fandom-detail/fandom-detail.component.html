@@ -37,29 +37,36 @@
                             <div class="profile-img-wrapper">
                                 <img class="profile-img" [src]="post.postedBy.profileUrl" alt="Profile Picture">
                             </div>
-                            <a [routerLink]="['/users', post.postedBy.username]"
-                                class="username">{{post.postedBy.username | titlecase}}</a>
+                            <span [routerLink]="['/users', post.postedBy.username]"
+                                class="username">{{post.postedBy.username | titlecase}}</span>
                         </header>
                         <div class="title-post-date">
-                            <a class="post-title" [routerLink]="['posts', post.id]">{{post.title}}</a>
+                            <span class="post-title">{{post.title}}</span>
                             <span class="post-date">{{post.datePosted | date: 'MMM d y, h:mm a'}} <i
                                     class="fas fa-clock"></i></span>
                         </div>
                         <p>{{(post.content.length > 120) ? (post.content | slice : 0 : 120) + '...': (post.content)}}
                         </p>
-                        <div class="buttons-container-right">
-                            <button mat-icon-button color="primary" class="like-post-button-container"
-                                (click)="updatePostLikes(post)">
+                        <div class="buttons-container-space-between">
+                            <div>
+                                <button mat-icon-button color="primary" class="like-post-button-container"
+                                    (click)="updatePostLikes(post)">
+                                    <span>
+                                        <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
+                                        <span>{{post.numLikes}}</span>
+                                    </span>
+                                </button>
+                                <button mat-icon-button color="warn" class="dislike-post-button-container"
+                                    (click)="updatePostDislikes(post)">
+                                    <span>
+                                        <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
+                                        <span>{{post.numDislikes}}</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <button mat-flat-button color="accent" [routerLink]="['posts', post.id]">
                                 <span>
-                                    <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numLikes}}</span>
-                                </span>
-                            </button>
-                            <button mat-icon-button color="warn" class="dislike-post-button-container"
-                                (click)="updatePostDislikes(post)">
-                                <span>
-                                    <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numDislikes}}</span>
+                                    Read More <i class="fas fa-hand-point-right"></i>
                                 </span>
                             </button>
                         </div>

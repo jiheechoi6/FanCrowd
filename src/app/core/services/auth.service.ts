@@ -146,7 +146,9 @@ export class AuthService {
     private _http: HttpClient,
     private _emailService: EmailService,
     private _userService: UserService
-  ) {}
+  ) {
+    this.currentUser.next(this.users[0]);
+  }
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint

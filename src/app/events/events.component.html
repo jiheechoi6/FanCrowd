@@ -15,9 +15,7 @@
         <section *ngIf="events.length">
             <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
                 <mat-card-title>
-                    <a [routerLink]="['/events', event.id]">
-                        {{event.name}}
-                    </a>
+                    <span>{{event.name}}</span>
                 </mat-card-title>
                 <mat-card-content>
                     <div class="location-date-range">
@@ -42,6 +40,13 @@
                         Fandom: <a
                             [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                     </p>
+                    <div class="buttons-container-right">
+                        <button mat-flat-button color="accent" [routerLink]="['/events', event.id]">
+                            <span>
+                                Details <i class="fas fa-info-circle"></i>
+                            </span>
+                        </button>
+                    </div>
                 </mat-card-content>
             </mat-card>
 
