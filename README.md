@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Running the App
 
-Clone the repository to your local machine, and make sure your on the `dev` branch (This is crucial!) then follow the next 4 steps:
+Clone the repository to your local machine, and make sure you're on the `dev` branch (This is crucial!) then follow the next 4 steps:
 
 **1.)** Open a new terminal in the `team09` directory and run `npm install`\
 **2.)** Run `npm install ng-pick-datetime --save`\
