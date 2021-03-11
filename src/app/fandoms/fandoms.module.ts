@@ -9,6 +9,7 @@ import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.c
 import { FandomDetailComponent } from './fandom-detail/fandom-detail.component';
 import { CreatePostDialogComponent } from './create-post-dialog/create-post-dialog.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
+import { AddCommentDialogComponent } from './add-comment-dialog/add-comment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
     FandomDetailComponent,
     CreatePostDialogComponent,
     PostDetailComponent,
+    AddCommentDialogComponent,
   ],
   imports: [CommonModule, CoreModule, SharedModule, FandomsRoutingModule],
 })

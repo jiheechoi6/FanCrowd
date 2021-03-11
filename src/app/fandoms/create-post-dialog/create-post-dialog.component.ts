@@ -13,7 +13,6 @@ interface DialogData {
 @Component({
   selector: 'app-create-post-dialog',
   templateUrl: './create-post-dialog.component.html',
-  styleUrls: ['./create-post-dialog.component.sass'],
 })
 export class CreatePostDialogComponent implements OnInit {
   post: FandomPost;

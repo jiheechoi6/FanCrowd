@@ -5,7 +5,9 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 import FandomPost from 'src/app/shared/models/fandom-post';
+import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { AddCommentDialogComponent } from '../add-comment-dialog/add-comment-dialog.component';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 
 @Component({
@@ -96,7 +98,27 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  openCreateCommentDialog() {}
+  openCreateCommentDialog() {
+    const dialogRef = this._dialog.open(AddCommentDialogComponent, {
+      data: {
+        userCreatingComment: {
+          role: this.loggedInUser?.role,
+          username: this.loggedInUser?.username,
+          profileUrl: this.loggedInUser?.profileUrl,
+        },
+        postId: this.post?.id,
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((newComment: FandomPostComment) => {
+      if (newComment && this.postId) {
+        this.post = this._fandomService.getFandomPostById(this.postId);
+      }
+    });
+  }
 
   deleteComment(commentId: number) {
     this.post = this._fandomService.removeCommentFromPost(
@@ -105,12 +127,13 @@ export class PostDetailComponent implements OnInit {
     );
   }
 
-  openDeleteCommentDialog() {
+  openDeleteCommentDialog(commentId: number) {
     this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Comment Confirmation',
         details: 'Are you sure you want to delete your comment?',
         onConfirmCb: this.deleteComment.bind(this),
+        params: commentId,
       },
       autoFocus: false,
       width: '450px',
@@ -118,5 +141,23 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  openEditCommentDialog() {}
+  openEditCommentDialog(comment: FandomPostComment) {
+    const dialogRef = this._dialog.open(AddCommentDialogComponent, {
+      data: {
+        commentBeingEdited: {
+          ...comment,
+        },
+        postId: this.post?.id,
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedComment: FandomPostComment) => {
+      if (updatedComment && this.postId) {
+        this.post = this._fandomService.getFandomPostById(this.postId);
+      }
+    });
+  }
 }

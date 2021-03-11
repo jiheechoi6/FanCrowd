@@ -605,15 +605,18 @@ export class FandomService {
     comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
     fandomPost?.comments.push(comment);
 
+    console.log(fandomPost);
     return comment;
   }
 
   editPostComment(
     postId: number,
-    commentId: number,
+    commentId: number | undefined,
     updatedComment: FandomPostComment
   ) {
     const fandomPost = this.getFandomPostById(postId);
+
+    if (typeof commentId === 'undefined') return fandomPost;
 
     if (fandomPost) {
       for (let i = 0; i < fandomPost.comments.length; i++) {
