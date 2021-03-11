@@ -28,11 +28,10 @@
             "aot": true,
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "./node_modules/ng-pick-datetime/assets/style/picker.min.css",
+              "./node_modules/@shtian/ng-pick-datetime/assets/style/picker.min.css",
               "src/theme.scss",
               "src/styles.sass",
-              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "./node_modules/animate.css/animate.css"
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": []
           },
@@ -92,7 +91,7 @@
             "karmaConfig": "karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-              "./node_modules/ng-pick-datetime/assets/style/picker.min.css",
+              "./node_modules/@shtian/ng-pick-datetime/assets/style/picker.min.css",
               "src/theme.scss",
               "src/styles.sass",
               "./node_modules/@fortawesome/fontawesome-free/css/all.min.css"

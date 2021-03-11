@@ -3,7 +3,7 @@ import {
   OwlDateTimeIntl,
   OwlDateTimeModule,
   OwlNativeDateTimeModule,
-} from 'ng-pick-datetime';
+} from '@shtian/ng-pick-datetime';
 
 @Injectable()
 class DefaultIntl extends OwlDateTimeIntl {
