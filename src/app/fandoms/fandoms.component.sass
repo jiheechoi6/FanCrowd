@@ -1,50 +1,33 @@
-.outer-container
+.add-category-button-container
+    margin-right: 30px
+
+.fandom-categories
     display: flex
-    flex-direction: column
-    align-items: center
-    margin-top: 40px
+    flex-wrap: wrap
 
-    .inner-container
-        width: 90%
-        display: flex
-        flex-direction: column
+    .category-card
+        cursor: pointer
+        width: 25%
+        flex-grow: 1
+        margin: 0 30px 30px 0
+        height: 180px
+        background-repeat: no-repeat
+        background-size: cover
+        background-position: center
+        outline: none
 
-        .page-title
-            font-weight: bold
-            font-size: 30px
-            letter-spacing: 1.5px
+        &:hover
+            animation: shake 950ms infinite
+            opacity: 65%
 
-        .add-category-button-container
-            margin-right: 30px
-
-        .fandom-categories
+        .card-body
             display: flex
-            flex-wrap: wrap
-            margin: 20px 0
+            justify-content: center
+            align-items: center
+            height: 100%
 
-            .category-card
-                cursor: pointer
-                width: 25%
-                flex-grow: 1
-                margin: 0 30px 30px 0
-                height: 176px
-                background-repeat: no-repeat
-                background-size: cover
-                background-position: center
-                outline: none
-
-                &:hover
-                    animation: shake 950ms infinite
-                    opacity: 65%
-
-                .card-body
-                    display: flex
-                    justify-content: center
-                    align-items: center
-                    height: 100%
-
-                    .name
-                        color: white
-                        font-weight: bold
-                        letter-spacing: 2px
-                        font-size: 30px
+            .name
+                color: white
+                font-weight: bold
+                letter-spacing: 2px
+                font-size: 30px

@@ -1,56 +1,43 @@
-.outer-container
+.no-fandoms-message
+    min-height: 80vh
     display: flex
-    flex-direction: column
+    justify-content: center
     align-items: center
-    margin-top: 40px
 
-    .inner-container
-        width: 90%
-        display: flex
-        flex-direction: column
+.add-fandom-button-container
+    margin-right: 30px
 
-        .page-title
-            font-weight: bold
-            font-size: 30px
-            letter-spacing: 1.5px
+    header
+        margin-bottom: 0
 
-        .no-fandoms-message
-            min-height: 80vh
+.fandoms
+    display: flex
+    flex-wrap: wrap
+    margin: 25px 0
+
+    .fandom-card
+        cursor: pointer
+        width: 25%
+        flex-grow: 1
+        margin: 0 30px 30px 0
+        height: 176px
+        background-repeat: no-repeat
+        background-size: cover
+        background-position: center
+        outline: none
+
+        &:hover
+            animation: shake 950ms infinite
+            opacity: 65%
+
+        .card-body
             display: flex
             justify-content: center
             align-items: center
+            height: 100%
 
-        .add-fandom-button-container
-            margin-right: 30px
-
-        .fandoms
-            display: flex
-            flex-wrap: wrap
-            margin: 25px 0
-
-            .fandom-card
-                cursor: pointer
-                width: 25%
-                flex-grow: 1
-                margin: 0 30px 30px 0
-                height: 176px
-                background-repeat: no-repeat
-                background-size: cover
-                background-position: center
-                outline: none
-
-                &:hover
-                    animation: shake 950ms infinite
-                    opacity: 65%
-
-                .card-body
-                    display: flex
-                    justify-content: center
-                    align-items: center
-                    height: 100%
-
-                    .name
-                        color: white
-                        font-weight: bold
-                        letter-spacing: 2px
-                        font-size: 30px
+            .name
+                color: white
+                font-weight: bold
+                letter-spacing: 2px
+                font-size: 30px

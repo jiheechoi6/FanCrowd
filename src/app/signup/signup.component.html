@@ -1,4 +1,4 @@
-<section>
+<app-layout>
     <mat-card class="signup-container box-shadow rounded-corners">
         <mat-card-title class="header">Sign Up</mat-card-title>
         <form #signUpForm="ngForm" (ngSubmit)="onSignUp()" (keydown.enter)="$event.preventDefault()">
@@ -76,4 +76,4 @@
             <p>Have an account? <a [routerLink]="'/login'">Log in now!</a></p>
         </mat-card-footer>
     </mat-card>
-</section>
+</app-layout>

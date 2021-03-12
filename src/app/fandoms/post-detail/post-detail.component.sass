@@ -1,55 +1,43 @@
-.outer-container
-    display: flex
-    flex-direction: column
-    align-items: center
-    margin: 40px 0
-    min-height: 100vh
+.post,
+.comment
+    margin-bottom: 40px
 
-    .inner-container
-        width: 85%
+    .username-container
         display: flex
-        flex-direction: column
+        align-items: center
 
-        .post,
-        .comment
-            margin-bottom: 40px
+        .username
+            font-weight: bold
+            margin-left: 10px
 
-            .username-container
-                display: flex
-                align-items: center
+        .profile-img-wrapper
+            overflow: hidden
+            width: 30px
+            height: 30px
+            border-radius: 50%
 
-                .username
-                    font-weight: bold
-                    margin-left: 10px
+            .profile-img
+                width: auto
+                height: 100%
 
-                .profile-img-wrapper
-                    overflow: hidden
-                    width: 30px
-                    height: 30px
-                    border-radius: 50%
+    .title-post-date
+        display: flex
+        justify-content: space-between
+        margin: 10px 0
 
-                    .profile-img
-                        width: auto
-                        height: 100%
+        .post-title
+            font-weight: bold
+            letter-spacing: 1.1px
 
-            .title-post-date
-                display: flex
-                justify-content: space-between
-                margin: 10px 0
+    .like-post-button-container,
+    .dislike-post-button-container
+        font-size: 17px
 
-                .post-title
-                    font-weight: bold
-                    letter-spacing: 1.1px
+    .like-post-button-container
+        margin-right: 10px
 
-            .like-post-button-container,
-            .dislike-post-button-container
-                font-size: 17px
+    .delete-post-button
+        margin-right: 10px
 
-            .like-post-button-container
-                margin-right: 10px
-
-            .delete-post-button
-                margin-right: 10px
-
-        .add-comment-button-container
-            margin-bottom: 30px
+.add-comment-button-container
+    margin-bottom: 30px

@@ -11,6 +11,7 @@ import { SearchUserComponent } from './navbar/search-user/search-user.component'
 import { OwlDateTimePickerModule } from './owl-datetime-picker/owl-datetime-picker.module';
 import { SpacesToHyphenPipe } from './pipes/spaces-to-hyphen.pipe';
 import { HyphenToSpacesPipe } from './pipes/hyphen-to-spaces.pipe';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HyphenToSpacesPipe } from './pipes/hyphen-to-spaces.pipe';
     SpacesToHyphenPipe,
     HyphenToSpacesPipe,
     SearchUserComponent,
+    LayoutComponent,
   ],
   imports: [
     CommonModule,
@@ -40,6 +42,7 @@ import { HyphenToSpacesPipe } from './pipes/hyphen-to-spaces.pipe';
     SpacesToHyphenPipe,
     HyphenToSpacesPipe,
     BreadcrumbModule,
+    LayoutComponent,
   ],
 })
 export class CoreModule {}
