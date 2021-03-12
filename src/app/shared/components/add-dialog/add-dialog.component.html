@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New {{data.title}}</h1>
+<h1 mat-dialog-title>Add New {{data.title | titlecase}}</h1>
 
 <section mat-dialog-content class="mat-typography">
     <form (ngSubmit)="onConfirm()" #addForm="ngForm">
