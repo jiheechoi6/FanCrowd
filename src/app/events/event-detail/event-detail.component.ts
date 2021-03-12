@@ -12,6 +12,7 @@ import Review from '../../shared/models/review';
 import EventDTO from 'src/app/shared/models/event-dto';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-event',
@@ -35,7 +36,8 @@ export class EventDetailComponent implements OnInit {
     private _eventService: EventService,
     private _activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    private _router: Router
+    private _router: Router,
+    private _breadcrumbService: BreadcrumbService
   ) {
     this._activatedRoute.params.subscribe((params) => {
       this.id = +params['id'];
@@ -57,6 +59,7 @@ export class EventDetailComponent implements OnInit {
 
     this.event = this._eventService.getEventById(this.id);
     if (this.event) {
+      this._breadcrumbService.set('@eventName', this.event.name);
       this.reviews = this.event.reviews;
       this.alreadyWroteReview(this.reviews);
     } else {

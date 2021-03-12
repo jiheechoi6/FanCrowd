@@ -1,6 +1,12 @@
 <section class="outer-container">
     <div class="inner-container">
 
+        <xng-breadcrumb class="breadcrumb" [separator]="breadcrumbSeparator">
+            <ng-container *xngBreadcrumbItem="let breadcrumb">
+                <ng-container>{{ breadcrumb | titlecase }}</ng-container>
+            </ng-container>
+        </xng-breadcrumb>
+
         <div class="flex-row-container-space-between add-fandom-button-container">
             <header class="page-title">{{category | titlecase}}</header>
             <button (click)="openCreateFandomDialog()" mat-raised-button color="primary">
@@ -25,3 +31,7 @@
         </section>
     </div>
 </section>
+
+<ng-template #breadcrumbSeparator>
+    <i class="fas fa-caret-right"></i>
+</ng-template>

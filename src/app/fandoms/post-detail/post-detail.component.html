@@ -1,6 +1,12 @@
 <section class="outer-container">
     <div class="inner-container" *ngIf="post">
 
+        <xng-breadcrumb class="breadcrumb" [separator]="breadcrumbSeparator">
+            <ng-container *xngBreadcrumbItem="let breadcrumb">
+                <ng-container>{{ breadcrumb | hyphenToSpaces | titlecase }}</ng-container>
+            </ng-container>
+        </xng-breadcrumb>
+
         <mat-card class="rounded-corners box-shadow post">
             <mat-card-content>
                 <header class="username-container">
@@ -113,3 +119,7 @@
 
     </div>
 </section>
+
+<ng-template #breadcrumbSeparator>
+    <i class="fas fa-caret-right"></i>
+</ng-template>

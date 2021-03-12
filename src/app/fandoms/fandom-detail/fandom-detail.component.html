@@ -1,6 +1,12 @@
 <section class="outer-container">
     <div class="inner-container">
 
+        <xng-breadcrumb class="breadcrumb" [separator]="breadcrumbSeparator">
+            <ng-container *xngBreadcrumbItem="let breadcrumb">
+                <ng-container>{{ breadcrumb | hyphenToSpaces | titlecase }}</ng-container>
+            </ng-container>
+        </xng-breadcrumb>
+
         <div class="no-fandom-message" *ngIf="!fandom">
             <h1>Unfortunately, there are no {{fandomName | hyphenToSpaces | titlecase}} fandom</h1>
         </div>
@@ -89,3 +95,7 @@
         </section>
     </div>
 </section>
+
+<ng-template #breadcrumbSeparator>
+    <i class="fas fa-caret-right"></i>
+</ng-template>

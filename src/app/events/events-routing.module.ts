@@ -5,8 +5,24 @@ import { EventsComponent } from './events.component';
 import { EventDetailComponent } from './event-detail/event-detail.component';
 
 const routes: Routes = [
-  { path: '', component: EventsComponent },
-  { path: ':id', component: EventDetailComponent },
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        component: EventsComponent,
+      },
+      {
+        path: ':id',
+        component: EventDetailComponent,
+        data: {
+          breadcrumb: {
+            alias: 'eventName',
+          },
+        },
+      },
+    ],
+  },
 ];
 
 @NgModule({

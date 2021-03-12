@@ -7,6 +7,7 @@ import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/d
 import FandomPost from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 import UserDTO from 'src/app/shared/models/user-dto';
+import { BreadcrumbService } from 'xng-breadcrumb';
 import { AddCommentDialogComponent } from '../add-comment-dialog/add-comment-dialog.component';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 
@@ -27,7 +28,8 @@ export class PostDetailComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
     private _router: Router,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _breadcrumbService: BreadcrumbService
   ) {}
 
   ngOnInit(): void {
@@ -38,8 +40,14 @@ export class PostDetailComponent implements OnInit {
       this.post = this._fandomService.getFandomPostById(this.postId);
 
       if (!this.post) {
-        this._router.navigate(['../']);
+        this._router.navigate([
+          'fandoms',
+          this.fandomCategory,
+          this.fandomName,
+        ]);
       }
+
+      this._breadcrumbService.set('@postName', this.post?.title || '');
     });
 
     this._authService.currentUser.subscribe(

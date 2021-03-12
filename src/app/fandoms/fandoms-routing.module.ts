@@ -7,10 +7,36 @@ import { FandomDetailComponent } from './fandom-detail/fandom-detail.component';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 
 const routes: Routes = [
-  { path: '', component: FandomsComponent },
-  { path: ':category', component: FandomSelectionComponent },
-  { path: ':category/:fandom', component: FandomDetailComponent },
-  { path: ':category/:fandom/posts/:postId', component: PostDetailComponent },
+  {
+    path: '',
+    data: {
+      breadcrumb: 'Fandoms',
+    },
+    children: [
+      { path: '', component: FandomsComponent },
+      {
+        path: ':category',
+        children: [
+          { path: '', component: FandomSelectionComponent },
+          {
+            path: ':fandom',
+            children: [
+              { path: '', component: FandomDetailComponent },
+              {
+                path: 'posts/:postId',
+                component: PostDetailComponent,
+                data: {
+                  breadcrumb: {
+                    alias: 'postName',
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 @NgModule({
