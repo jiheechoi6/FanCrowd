@@ -42,7 +42,7 @@
                             [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                     </p>
                     <div class="flex-row-container-right">
-                        <button mat-flat-button color="accent" [routerLink]="['/events', event.id]">
+                        <button mat-flat-button color="primary" [routerLink]="['/events', event.id]">
                             <span>
                                 Details <i class="fas fa-info-circle"></i>
                             </span>
