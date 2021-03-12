@@ -1,6 +1,8 @@
 <section class="outer-container">
     <div class="inner-container">
-        <div class="buttons-container-right add-fandom-button-container">
+
+        <div class="flex-row-container-space-between add-fandom-button-container">
+            <header class="page-title">{{category | titlecase}}</header>
             <button (click)="openCreateFandomDialog()" mat-raised-button color="primary">
                 <span>
                     Create Fandom <i class="fas fa-plus"></i>

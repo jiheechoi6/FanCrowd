@@ -63,7 +63,7 @@
                 </mat-form-field>
             </div>
             <p *ngIf="signUpError" class="mat-body error-message">{{signUpError}}</p>
-            <div class="buttons-container-right">
+            <div class="flex-row-container-right">
                 <button mat-flat-button color="primary" [disabled]="signUpForm.invalid || isSigningUp"
                     [class.loading-animation]="isSigningUp">
                     <span>

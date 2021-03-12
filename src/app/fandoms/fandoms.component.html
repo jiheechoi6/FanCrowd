@@ -1,8 +1,9 @@
 <section class="outer-container">
     <div class="inner-container">
 
-        <div *ngIf="isAdmin" class="buttons-container-right add-category-button-container">
-            <button (click)="openCreateCategoryDialog()" mat-raised-button color="primary">
+        <div class="flex-row-container-space-between add-category-button-container">
+            <header class="page-title">Fandoms</header>
+            <button *ngIf="isAdmin" (click)="openCreateCategoryDialog()" mat-raised-button color="primary">
                 <span>
                     Add Category <i class="fas fa-plus"></i>
                 </span>

@@ -1,6 +1,7 @@
 <section class="outer-container">
     <div class="inner-container">
-        <div class="buttons-container-right">
+        <div class="flex-row-container-space-between">
+            <header class="page-title">Events</header>
             <button mat-raised-button color="primary" (click)="openCreateEventDialog()">
                 <span>
                     Create Event <i class="fas fa-plus"></i>
@@ -40,7 +41,7 @@
                         Fandom: <a
                             [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                     </p>
-                    <div class="buttons-container-right">
+                    <div class="flex-row-container-right">
                         <button mat-flat-button color="accent" [routerLink]="['/events', event.id]">
                             <span>
                                 Details <i class="fas fa-info-circle"></i>

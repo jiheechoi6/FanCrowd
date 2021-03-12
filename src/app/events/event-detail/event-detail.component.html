@@ -27,7 +27,7 @@
                             Fandom: <a
                                 [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                         </p>
-                        <div class="buttons-container-space-between">
+                        <div class="flex-row-container-space-between">
                             <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
                                 color="primary">
                                 Unattend
@@ -103,7 +103,7 @@
                         </div>
                         <span class="review-title">{{review.title}}</span>
                         <p>{{review.content}}</p>
-                        <div class="buttons-container-right">
+                        <div class="flex-row-container-right">
                             <button mat-flat-button color="warn" class="delete-button"
                                 *ngIf="user?.role === 'admin' || user?.username === review.postedBy.username"
                                 (click)="openDeleteReviewDialog(review.id)">

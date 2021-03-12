@@ -22,7 +22,7 @@
             </div>
             <a [routerLink]="'/forgot-password'">Forgot password?</a>
             <p *ngIf="loginError" class="mat-body error-message">{{loginError}}</p>
-            <div class="buttons-container-right">
+            <div class="flex-row-container-right">
                 <button mat-flat-button color="primary" type="submit" [disabled]="logInForm.invalid || isLoggingIn"
                     [class.loading-animation]="isLoggingIn">
                     <span>
