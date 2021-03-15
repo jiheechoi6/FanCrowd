@@ -10,8 +10,6 @@ services:
       - mongo
     volumes: 
       - ./src:/usr/src/app/src
-    environment: 
-      - MONGODB_URI=mongodb://mongo:27017/fan_crowd
   mongo:
     container_name: mongo
     image: mongo

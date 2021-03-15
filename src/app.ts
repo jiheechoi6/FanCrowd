@@ -1,22 +1,19 @@
-import { Request, Response } from "express";
-import User from "./models/user";
+import config from "./config";
+import express from "express";
 
-const express = require("express");
-const mongoose = require("mongoose");
+async function startServer() {
+  const app = express();
 
-const app = express();
-const port = process.env.PORT || 5000;
+  await require("./loaders").default({ expressApp: app });
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+  app
+    .listen(config.port, () => {
+      console.log(`Server running on port ${config.port}`);
+    })
+    .on("error", (err) => {
+      console.log(`Server failed to start on port ${config.port}`);
+      process.exit(1);
+    });
+}
 
-app.get("/", async (req: Request, res: Response) => {
-  const newUser = await User.create({
-    name: "chandra panta chhetri",
-    email: "pantach@gmail.com",
-    password: "changing"
-  });
-
-  res.send({ newUser });
-});
-
-app.listen(port, () => console.log(`server is listening on ${port}`));
+startServer();
