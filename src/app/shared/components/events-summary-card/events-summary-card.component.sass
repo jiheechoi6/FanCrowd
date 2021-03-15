@@ -1,0 +1,25 @@
+.event-item-container
+    background-color: #e2f3f5
+    margin-top: 20px
+    cursor: pointer
+
+    &:hover
+        animation: shake 950ms infinite
+
+    &:focus
+        outline: none
+
+    .event-header
+        display: flex
+        flex-direction: column
+        margin-bottom: 2px
+
+        .event-name
+            font-weight: bold
+
+        .event-start-date
+            align-self: flex-end
+            margin-top: 5px
+
+    .num-people-attending
+        text-align: right

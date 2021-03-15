@@ -1,0 +1,19 @@
+<app-layout>
+    <div class="flex-row-container-space-between add-category-button-container">
+        <header class="page-title">Fandoms</header>
+        <button *ngIf="isAdmin" (click)="openCreateCategoryDialog()" mat-raised-button color="primary">
+            <span>
+                Add Category <i class="fas fa-plus"></i>
+            </span>
+        </button>
+    </div>
+
+    <section class="fandom-categories">
+        <mat-card *ngFor="let category of categories" style="background-image: url({{category.backgroundUrl}})"
+            class="category-card rounded-corners box-shadow" [routerLink]="['/fandoms', category.name | lowercase]">
+            <mat-card-content class="card-body">
+                <h1 class="name">{{category.name}}</h1>
+            </mat-card-content>
+        </mat-card>
+    </section>
+</app-layout>

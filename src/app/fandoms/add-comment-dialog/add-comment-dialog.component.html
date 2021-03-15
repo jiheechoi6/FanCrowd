@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>{{isEditing ? 'Edit Comment': 'Add Comment'}}</h1>
+<section mat-dialog-content>
+    <form (ngSubmit)="onCreateComment()" #createCommentForm="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Title</mat-label>
+                <input matInput [(ngModel)]="comment.title" name="title" required pattern=".*\S+.*" autocomplete="off"
+                    #titleField="ngModel" />
+                <mat-error *ngIf="titleField.errors?.required">Title is a required field</mat-error>
+                <mat-error *ngIf="titleField.errors?.pattern">Please enter a valid title</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Content</mat-label>
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    cdkTextareaAutosize matInput [(ngModel)]="comment.content" name="content" pattern=".*\S+.*" required
+                    autocomplete="off"></textarea>
+                <mat-error>Content is a required field</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
+
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="basic" type="button">
+        Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="createCommentForm.ngSubmit.emit()"
+        [disabled]="!createCommentForm.form.valid" *ngIf="!isEditing">
+        <span>
+            Add <i class="fas fa-plus"></i>
+        </span>
+    </button>
+    <button mat-flat-button color="primary" (click)="onEditComment()" [disabled]="!createCommentForm.form.valid"
+        *ngIf="isEditing">
+        <span>
+            Confirm <i class="fas fa-check"></i>
+        </span>
+    </button>
+</div>

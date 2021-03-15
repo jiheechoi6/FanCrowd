@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Edit Review</h1>
+
+<section mat-dialog-content>
+    <form (ngSubmit)="onUpdateReview()" #editReviewForm="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Title</mat-label>
+                <input matInput [(ngModel)]="data.review.title" name="title" required pattern=".*\S+.*"
+                    autocomplete="off">
+                <mat-error>Title is a required field</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Rating</mat-label>
+                <mat-select id="rating" name="rating" [(ngModel)]="data.review.rating" required>
+                    <mat-option>--Select Rating--</mat-option>
+                    <mat-option *ngFor="let rating of ratings" [value]="rating">
+                        {{rating}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Rating is a required field</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Review</mat-label>
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    cdkTextareaAutosize matInput [(ngModel)]="data.review.content" name="description" required
+                    pattern=".*\S+.*" autocomplete="off"></textarea>
+                <mat-error>Review is a required field</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
+
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="warn" type="button">Cancel</button>
+    <button mat-flat-button color="primary" (click)="editReviewForm.ngSubmit.emit()"
+        [disabled]="!editReviewForm.form.valid">
+        <span>
+            Confirm <i class="fas fa-check"></i>
+        </span>
+    </button>
+</div>

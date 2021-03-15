@@ -23,8 +23,10 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "@shtian/ng-pick-datetime": "^11.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "xng-breadcrumb": "^6.6.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

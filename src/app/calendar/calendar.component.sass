@@ -1,0 +1,76 @@
+.calendar-container
+    background: #CFEAEE
+
+    .month-container
+        height: 90px
+        padding: 10px
+        display: flex
+        justify-content: center
+        align-items: center
+
+        .selected-month-year
+            margin: 0 15px
+
+        .next-month-arrow,
+        .prev-month-arrow
+            cursor: pointer
+            font-size: 18px
+            &:hover
+                transform: scale(1.4)
+
+    .days-of-week-container
+        display: flex
+        align-items: center
+        margin-bottom: 10px
+        justify-content: space-between
+
+        .day-of-week
+            width: 1/7*100%
+            text-align: center
+            font-size: 15px
+
+    .days-container
+        display: flex
+        flex-wrap: wrap
+        width: 100%
+        justify-content: space-between
+
+        .prev-month-day,
+        .next-month-day
+            color: #999
+            font-weight: 400
+
+        .day
+            width: 1/7*100%
+            height: 75px
+            font-size: 15px
+            display: flex
+            flex-direction: column
+            align-items: center
+
+        .day-of-selected-month
+            font-weight: 600
+            display: flex
+            align-items: center
+            flex-direction: column
+
+            .calendar-day
+                &:hover
+                    transform: scale(1.3)
+                    cursor: pointer
+
+        .current-day
+            color: red
+
+        .num-events
+            display: flex
+            justify-content: center
+            align-items: center
+            color: white
+            border-radius: 10px
+            background-color: #040618
+            padding: 7px
+            height: 4px
+            width: 10px
+            margin: 5px 0 0
+            font-size: 12px

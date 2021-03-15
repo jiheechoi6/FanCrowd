@@ -1,0 +1,12 @@
+<mat-card class="event-item-container rounded-corners" *ngFor="let event of events"
+    [routerLink]="[ '/events', event.id ]">
+    <mat-card-content>
+        <p class="event-header">
+            <span class="event-name">{{event.name | titlecase}}</span>
+            <span class="event-start-date">{{event.date | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+        </p>
+        <p class="num-people-attending">{{event.totalAttending}} {{event.totalAttending === 1 ? 'Person' : 'People'}}
+            Attending <i class="fas fa-user-friends"></i>
+        </p>
+    </mat-card-content>
+</mat-card>

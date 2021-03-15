@@ -1,28 +1,57 @@
-<div class="button-container">
-    <div class="all"><button mat-raised-button color="primary">All Events</button></div>
-    <div class="create" (click)="create()"><button mat-raised-button color="primary">Create Event</button></div>
-</div>
-
-<div *ngIf="this.events.length === 0" class="empty">
-    <h1 class="center-pos"> Sorry, no events taking place </h1>
-</div>
-
-<div *ngFor="let event of this.events; let i = index">
-    <div class="event-card">
-        <div class="event-container"> 
-            <div><h2>{{event.name}}</h2></div>
-            <div class="flex-container header">
-                <h4 class="flex-one">{{event.location}}</h4>
-                <h4 class="date">{{event.startDate}} - {{event.endDate}}</h4>
-            </div>
-            <div class="desc">{{event.description}}</div>
-            <div>Total People Attending: {{event.totalAttendance}} </div>
-
-            <div class="flex-container footer">
-                <div class="flex-one postedBy">{{event.postedBy}}</div>
-                <div class="delete" (click)="delete(event.id)"><button mat-raised-button color="warn">Delete</button></div>
-                <div class="more"><button mat-raised-button color="accent">See More</button></div>
-            </div>
-        </div>
+<app-layout>
+    <div class="flex-row-container-space-between page-header-container">
+        <header class="page-title">Events</header>
+        <button mat-raised-button color="primary" (click)="openCreateEventDialog()">
+            <span>
+                Create Event <i class="fas fa-plus"></i>
+            </span>
+        </button>
     </div>
-</div>
+
+    <div *ngIf="!events.length" class="no-events-message">
+        <h1>It seems there are no events. Create one using the button above!</h1>
+    </div>
+
+    <section *ngIf="events.length">
+        <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
+            <mat-card-title>
+                <span>{{event.name}}</span>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="location-date-range">
+                    <span>{{event.startDate | date: 'MMM d y, h:mm a'}} -
+                        {{event.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                    <div class="location-num-people-attending">
+                        <span>{{event.location}} <i class="fas fa-map-marked-alt"></i></span>
+                        <span class="num-people-attending">{{event.totalAttendance}}
+                            {{event.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                class="fas fa-user-friends"></i></span>
+                    </div>
+                </div>
+                <article>
+                    <header class="about-title">About</header>
+                    <p>{{ (event.description.length > 200) ? (event.description | slice : 0 : 200) + '...': (event.description) }}
+                    </p>
+                </article>
+                <p class="created-by">Created By: <a
+                        [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
+                </p>
+                <p>
+                    Fandom: <a
+                        [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                </p>
+                <div class="flex-row-container-right">
+                    <button mat-flat-button color="primary" [routerLink]="['/events', event.id]">
+                        <span>
+                            Details <i class="fas fa-info-circle"></i>
+                        </span>
+                    </button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
+            [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
+        </mat-paginator>
+    </section>
+</app-layout>

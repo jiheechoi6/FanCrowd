@@ -1,15 +1,31 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../core/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.sass']
+  styleUrls: ['./login.component.sass'],
 })
 export class LoginComponent implements OnInit {
+  username = '';
+  password = '';
+  hidePassword = true;
+  loginError = '';
+  isLoggingIn = false;
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  onLogIn() {
+    this.isLoggingIn = true;
+    const user = this.authService.loginUser(this.username, this.password);
+    this.isLoggingIn = false;
+    if (user) {
+      this.router.navigate(['/users', user.username]);
+    } else {
+      this.loginError = 'Username or password is wrong';
+    }
   }
-
 }

@@ -1,10 +1,25 @@
-<mat-toolbar color="secondary" class="navbar">
-    <section>CSC309</section>
-    <section>
-        <span class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login</span>
-        <span class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup</span>
-        <span class="nav-item" [routerLink]="['/users', user?.username || '']" routerLinkActive="active">Profile</span>
-        <span class="nav-item" [routerLink]="'/events'" routerLinkActive="active">Events</span>
-        <span class="nav-item" [routerLink]="'/discussion-board'" routerLinkActive="active">Discussion Board</span>
-    </section>
-</mat-toolbar>
+<nav>
+        <mat-toolbar color="accent" class="navbar">
+                <section>
+                        <i class="fas fa-users"></i> FanCrowd
+                </section>
+                <app-search-user *ngIf="user"></app-search-user>
+                <section>
+                        <span *ngIf="!user" class="nav-item" [routerLink]="'/login'" routerLinkActive="active">Login <i
+                                        class="fas fa-sign-in-alt"></i></span>
+                        <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup
+                                <i class="fas fa-user-plus"></i></span>
+                        <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
+                                routerLinkActive="active"><i class="fas fa-user"></i>
+                                {{user?.username | titlecase}}</span>
+                        <span *ngIf="user" class="nav-item" [routerLink]="'/events'"
+                                routerLinkActive="active">Events</span>
+                        <span *ngIf="user" class="nav-item" [routerLink]="'/fandoms'" routerLinkActive="active">Fandoms
+                                <i class="fas fa-comments"></i></span>
+                        <span *ngIf="user" class="nav-item" [routerLink]="'/calendar'"
+                                routerLinkActive="active">Calendar <i class="far fa-calendar-alt"></i></span>
+                        <span *ngIf="user" class="nav-item" [routerLink]="'/login'" (click)="onLogOut()">Log Out <i
+                                        class="fas fa-sign-out-alt"></i></span>
+                </section>
+        </mat-toolbar>
+</nav>

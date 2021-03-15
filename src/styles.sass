@@ -1,3 +1,121 @@
 /* You can add global styles to this file, and also import other style files */
+@keyframes shake
+    0%
+        transform: rotate(0deg)
+    80%
+        transform: rotate(0deg)
+    85%
+        transform: rotate(2deg)
+    95%
+        transform: rotate(-2deg)
+    100%
+        transform: rotate(0deg)
+
+@keyframes ellipsis
+    0%
+        content: ''
+    25%
+        content: '.'
+    50%
+        content: '..'
+    75%
+        content: '...'
+    100%
+        content: ''
+
 body
     margin: 0px
+
+a
+    text-decoration: none
+    color: #0cb5e2
+    font-weight: bold
+    letter-spacing: 1.1px
+    outline: none
+
+    &:hover
+        text-decoration: none !important
+
+button
+    &:disabled
+        cursor: not-allowed !important
+
+.cdk-overlay-dark-backdrop
+    background: rgba(0,0,0,0.85)
+
+.mat-form-field
+    width: 100%
+
+*::-webkit-scrollbar
+    width: 12px
+
+*::-webkit-scrollbar-track
+    background: transparent
+
+*::-webkit-scrollbar-thumb
+    background-color: gray
+
+.form-group
+    margin-bottom: 10px !important
+
+.loading-animation
+    &::after
+        display: inline-block
+        animation: ellipsis steps(1,end) 2.7s infinite
+        content: ''
+
+.mat-card,
+.mat-dialog-container,
+.mat-stepper-horizontal
+    background-color: #CFEAEE
+
+.mat-dialog-content
+    position: sticky !important
+
+.flex-row-container-right
+    display: flex
+    justify-content: flex-end
+    align-items: center
+
+.flex-row-container-center
+    display: flex
+    justify-content: center
+    align-items: center
+
+.flex-row-container-space-between
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.align-center
+    text-align: center
+
+.snackbar
+    background-color: #CFEAEE
+    color: black
+
+    .mat-simple-snackbar-action
+        color: black
+
+.rounded-corners
+    border-radius: 5px !important
+
+.box-shadow
+    box-shadow: 0px 4px 8px grey !important
+
+.owl-dt-inline-container,
+.owl-dt-popup-container
+    border-radius: 5px
+    font-size: 0.85rem
+
+.owl-date-picker-custom-container
+    left: 35% !important
+
+.breadcrumb
+    margin-bottom: 10px
+    outline: none
+
+.page-title
+    font-size: 25px !important
+    letter-spacing: 1.4px !important
+    margin-bottom: 15px

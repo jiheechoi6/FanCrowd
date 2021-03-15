@@ -1,9 +1,38 @@
-<div id='background'>
-    <div id='login_container'>
-        <h1 id='login_title'>Log In</h1>
-        <div><input type="text" placeholder="ID"></div>
-        <div><input type="password" placeholder="Password"></div>
-        <button [routerLink]="'/user'" routerLinkActive="active">Log in</button>
-        <div>Don't have an account? Click <a [routerLink]="'/signup'" routerLinkActive="active">here</a> to sign up</div>
-    </div>
-</div>
+<app-layout>
+    <mat-card class="login-container box-shadow rounded-corners">
+        <mat-card-title class="header">Log In</mat-card-title>
+        <form #logInForm="ngForm" (ngSubmit)="onLogIn()" (keydown.enter)="$event.preventDefault()">
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Username</mat-label>
+                    <input matInput [(ngModel)]="username" name="username" required autocomplete="off" />
+                    <mat-error>Username is a required field</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <mat-form-field color="accent">
+                    <mat-label>Password</mat-label>
+                    <input matInput [(ngModel)]="password" name="password" [type]="hidePassword ? 'password' : 'text'"
+                        required autocomplete="off" />
+                    <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error>Password is a required field</mat-error>
+                </mat-form-field>
+            </div>
+            <a [routerLink]="'/forgot-password'">Forgot password?</a>
+            <p *ngIf="loginError" class="mat-body error-message">{{loginError}}</p>
+            <div class="flex-row-container-right">
+                <button mat-flat-button color="primary" type="submit" [disabled]="logInForm.invalid || isLoggingIn"
+                    [class.loading-animation]="isLoggingIn">
+                    <span>
+                        {{isLoggingIn ? 'Logging In': 'Log In'}} <i class="fas fa-sign-in-alt"></i>
+                    </span>
+                </button>
+            </div>
+        </form>
+        <mat-card-footer class="align-center mat-body">
+            <p>Don't have an account? <a [routerLink]="'/signup'">Sign up now!</a></p>
+        </mat-card-footer>
+    </mat-card>
+</app-layout>

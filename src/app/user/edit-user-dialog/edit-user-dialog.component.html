@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>Edit Info</h1>
+<section mat-dialog-content>
+    <form (ngSubmit)="onUpdateUser()" #editUserForm="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Username</mat-label>
+                <input matInput [(ngModel)]="user.username" name="username" required pattern="[a-z0-9_]+"
+                    autocomplete="off" #usernameField="ngModel" />
+                <mat-error *ngIf="usernameField.errors?.required">Username is a required field</mat-error>
+                <mat-error *ngIf="usernameField.errors?.pattern">Usernames can only contain lowercase characters,
+                    digits, and
+                    underscores
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Full Name</mat-label>
+                <input matInput [(ngModel)]="user.fullName" name="fullName" required pattern=".*\S+.*"
+                    autocomplete="off" />
+                <mat-error>Full Name is a required field</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Email</mat-label>
+                <input matInput [(ngModel)]="user.email" name="email" required
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" autocomplete="off"
+                    #emailField="ngModel" />
+                <mat-error *ngIf="emailField.errors?.required">Email is a required field</mat-error>
+                <mat-error *ngIf="emailField.errors?.pattern">Please enter a valid email</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Country</mat-label>
+                <input matInput [(ngModel)]="user.country" name="country" required pattern=".*\S+.*"
+                    autocomplete="off" />
+                <mat-error>Country is a required field</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>City</mat-label>
+                <input matInput [(ngModel)]="user.city" name="city" required pattern=".*\S+.*" autocomplete="off" />
+                <mat-error>City is a required field</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Profile Image URL</mat-label>
+                <input matInput [(ngModel)]="user.profileUrl" name="profileurl" required
+                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileUrl="ngModel" />
+                <mat-error *ngIf="profileUrl.errors?.required">Profile Image URL is a required field</mat-error>
+                <mat-error *ngIf="profileUrl.errors?.pattern">Please enter a valid image url</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Bio</mat-label>
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*" required
+                    autocomplete="off"></textarea>
+                <mat-error>Bio is a required field</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</section>
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="basic" type="button">
+        Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="editUserForm.ngSubmit.emit()"
+        [disabled]="!editUserForm.form.valid">
+        <span>
+            Confirm <i class="fas fa-check"></i>
+        </span>
+    </button>
+</div>
