@@ -1,10 +1,12 @@
 import config from "../config";
 import bcrypt from "bcryptjs";
-import { IUser, IUserInputDTO } from "../interfaces/IUser";
+import { IUser, INewUserInputDTO } from "../interfaces/IUser";
 import UserModel from "../models/user";
 
 export default class UserService {
-  public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser }> {
+  public async SignUp(
+    userInputDTO: INewUserInputDTO
+  ): Promise<{ user: IUser }> {
     try {
       const userRecord = await UserModel.create({
         ...userInputDTO

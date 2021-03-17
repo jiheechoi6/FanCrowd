@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { IUserInputDTO } from "../../interfaces/IUser";
+import { INewUserInputDTO } from "../../interfaces/IUser";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
 
@@ -14,7 +14,7 @@ export default (app: Router) => {
       try {
         const userServiceInstance = new UserService();
         const { user } = await userServiceInstance.SignUp(
-          req.body as IUserInputDTO
+          req.body as INewUserInputDTO
         );
         return res.status(201).json({ user });
       } catch (err) {

@@ -1,13 +1,18 @@
 export interface IUser {
-  _id: string;
-  name: string;
+  fullName: string;
   email: string;
+  username: string;
   password: string;
-  salt: string;
+  role: string;
+  bio: string;
+  profileURL: string;
+  city: string;
+  country: string;
 }
 
-export interface IUserInputDTO {
-  name: string;
+export interface INewUserInputDTO {
+  fullName: string;
   email: string;
+  username: string;
   password: string;
 }
