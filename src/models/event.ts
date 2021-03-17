@@ -3,25 +3,40 @@ import mongoose from "mongoose";
 
 const EventSchema = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    required: [true, "Event name is required"]
   },
   description: {
-    type: String
+    type: String,
+    required: [true, "Event description is required"]
   },
   location: {
-    type: String
+    type: String,
+    required: [true, "Event location is required"]
   },
   postedBy: {
-    //add ref to user instance
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Event must be associated to a user"]
   },
   startDate: {
-    type: Date
+    type: Date,
+    required: [true, "Event start date is required"],
+    validate(value: Date) {
+      const currentDate = new Date();
+      if (value < currentDate) {
+        throw new Error("Event start date must be in the future");
+      }
+    }
   },
   endDate: {
-    type: Date
+    type: Date,
+    required: [true, "Event end date is required"]
   },
   fandomType: {
-    //add ref to fandom instance
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Fandom",
+    required: [true, "Event must be associated to a fandom"]
   }
 });
 

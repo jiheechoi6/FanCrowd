@@ -1,25 +1,31 @@
 import { IFandomComment } from "../interfaces/IFandom";
 import mongoose from "mongoose";
 
-const FandomPostSchema = new mongoose.Schema(
+const FandomCommentSchema = new mongoose.Schema(
   {
     title: {
-      type: String
+      type: String,
+      required: [true, "Fandom comment title is required"]
     },
     content: {
-      type: String
+      type: String,
+      required: [true, "Fandom comment content is required"]
     },
     postedBy: {
-      //add ref to user instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Fandom comment must be associated to a user"]
     },
     fandomPostRef: {
-      //ref to fandom instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FandomPost",
+      required: [true, "Fandom comment must be associated to a fandom post"]
     }
   },
   { timestamps: true }
 );
 
 export default mongoose.model<IFandomComment & mongoose.Document>(
-  "FandomPost",
-  FandomPostSchema
+  "FandomComment",
+  FandomCommentSchema
 );

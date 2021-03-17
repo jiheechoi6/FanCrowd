@@ -4,20 +4,28 @@ import mongoose from "mongoose";
 const EventReviewSchema = new mongoose.Schema(
   {
     title: {
-      type: String
+      type: String,
+      required: [true, "Event review title is required"]
     },
     content: {
-      type: String
+      type: String,
+      required: [true, "Event review content is required"]
     },
     rating: {
-      type: Number
-      //between 1-5
+      type: Number,
+      required: [true, "Event review rating is required"],
+      min: 0,
+      max: 5
     },
     postedBy: {
-      //add ref to user instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Event review must be associated to a user"]
     },
     eventRef: {
-      //ref to event instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+      required: [true, "Event review must be associated to an event"]
     }
   },
   { timestamps: true }

@@ -4,17 +4,22 @@ import mongoose from "mongoose";
 const FandomPostSchema = new mongoose.Schema(
   {
     title: {
-      type: String
+      type: String,
+      required: [true, "Fandom post title is required"]
     },
     content: {
       type: String,
-      required: true
+      required: [true, "Fandom post content is required"]
     },
     postedBy: {
-      //add ref to user instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "Fandom post must be associated to a user"]
     },
     fandomRef: {
-      //ref to fandom instance
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Fandom",
+      required: [true, "Fandom post must be associated to a fandom"]
     }
   },
   { timestamps: true }

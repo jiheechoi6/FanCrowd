@@ -9,7 +9,7 @@
                         autocomplete="off" #usernameField="ngModel" />
                     <mat-error *ngIf="usernameField.errors?.required">Username is a required field</mat-error>
                     <mat-error *ngIf="usernameField.errors?.pattern">Usernames can only contain lowercase characters,
-                        digits, and
+                        numbers, and
                         underscores
                     </mat-error>
                 </mat-form-field>
@@ -56,7 +56,7 @@
                 <mat-form-field color="accent">
                     <mat-label>Email</mat-label>
                     <input matInput [(ngModel)]="email" name="email" required
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" autocomplete="off"
+                        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" type="email" autocomplete="off"
                         #emailField="ngModel" />
                     <mat-error *ngIf="emailField.errors?.required">Email is a required field</mat-error>
                     <mat-error *ngIf="emailField.errors?.pattern">Please enter a valid email</mat-error>
