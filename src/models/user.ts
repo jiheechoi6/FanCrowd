@@ -74,6 +74,7 @@ function isNotAdmin(this: IUser) {
 
 //Remove all posts, comments, events,..etc when user is removed
 UserSchema.pre("remove", async function (next) {
+  console.log(this);
   next();
 });
 

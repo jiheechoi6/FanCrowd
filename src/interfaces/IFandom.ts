@@ -1,10 +1,13 @@
+import mongoose from "mongoose";
 import { IUser } from "./IUser";
 
 export interface IFandom {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
   category: IFandomCategory;
+  createdBy: IUser;
+  createdAt: Date;
 }
 
 export interface INewFandomInputDTO {
@@ -14,40 +17,45 @@ export interface INewFandomInputDTO {
 }
 
 export interface IFandomCategory {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
+  createdBy: IUser;
 }
 
 export interface INewFandomCategoryInputDTO {
   name: string;
   backgroundURL: string;
+  createdBy: IUser;
 }
 
 export interface IFandomPost {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   title: string;
   content: string;
   postedBy: IUser;
-  fandomRef: IFandom;
+  fandom: IFandom;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface INewFandomPostInputDTO {
   title: string;
   content: string;
-  fandomRef: IFandom;
+  fandom: IFandom;
 }
 
 export interface IFandomComment {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   title: string;
   content: string;
   postedBy: IUser;
-  fandomPostRef: IFandomPost;
+  fandomPost: IFandomPost;
+  createdAt: Date;
 }
 
 export interface INewFandomCommentInputDTO {
   title: string;
   content: string;
-  fandomPostRef: IFandomPost;
+  fandomPost: IFandomPost;
 }

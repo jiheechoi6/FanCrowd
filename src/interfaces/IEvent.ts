@@ -1,15 +1,16 @@
+import mongoose from "mongoose";
 import { IFandom } from "./IFandom";
 import { IUser } from "./IUser";
 
 export interface IEvent {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   name: string;
   description: string;
   location: string;
   postedBy: IUser;
   startDate: Date;
   endDate: Date;
-  fandomType: IFandom;
+  fandom: IFandom;
 }
 
 export interface INewEventInputDTO {
@@ -19,21 +20,23 @@ export interface INewEventInputDTO {
   postedBy: IUser;
   startDate: Date;
   endDate: Date;
-  fandomType: IFandom;
+  fandom: IFandom;
 }
 
 export interface IEventReview {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   title: string;
   content: string;
   rating: number;
   postedBy: IUser;
-  eventRef: IEvent;
+  event: IEvent;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface INewEventReviewInputDTO {
   title: string;
   content: string;
   rating: number;
-  eventRef: IEvent;
+  event: IEvent;
 }

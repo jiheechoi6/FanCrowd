@@ -7,7 +7,7 @@ const AttendSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "User ref is required"]
   },
-  eventRef: {
+  event: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Event",
     required: [true, "Event ref is required"]

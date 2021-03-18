@@ -22,13 +22,13 @@ const EventReviewSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Event review must be associated to a user"]
     },
-    eventRef: {
+    event: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       required: [true, "Event review must be associated to an event"]
     }
   },
-  { timestamps: true }
+  { timestamps: { createdAt: true } }
 );
 
 export default mongoose.model<IEventReview & mongoose.Document>(

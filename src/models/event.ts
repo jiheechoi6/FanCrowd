@@ -33,7 +33,7 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     required: [true, "Event end date is required"]
   },
-  fandomType: {
+  fandom: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Fandom",
     required: [true, "Event must be associated to a fandom"]

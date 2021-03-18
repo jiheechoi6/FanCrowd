@@ -11,12 +11,12 @@ const FandomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Fandom background URL is required"]
     },
-    categoryRef: {
+    category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "FandomCategory",
       required: [true, "Fandom must be associated to a category"]
     },
-    postedBy: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Fandom must be associated to a user"]

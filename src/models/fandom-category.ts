@@ -10,7 +10,7 @@ const FandomCategorySchema = new mongoose.Schema({
     type: String,
     required: [true, "Fandom category background URL is required"]
   },
-  postedBy: {
+  createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: [true, "Fandom category must be associated to a user"]

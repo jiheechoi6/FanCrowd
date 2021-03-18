@@ -16,7 +16,7 @@ const FandomPostSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Fandom post must be associated to a user"]
     },
-    fandomRef: {
+    fandom: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Fandom",
       required: [true, "Fandom post must be associated to a fandom"]

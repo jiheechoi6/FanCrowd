@@ -7,11 +7,11 @@ const UserLikeSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "User ref is required"]
   },
-  fandomPostRef: {
+  fandomPost: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "FandomPost"
   },
-  fandomCommentRef: {
+  fandomComment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "FandomComment"
   },

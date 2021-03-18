@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
 import { IEvent } from "./IEvent";
 import { IFandom, IFandomComment, IFandomPost } from "./IFandom";
 
 export interface IUser {
+  _id: mongoose.Types._ObjectId;
   fullName: string;
   email: string;
   username: string;
@@ -21,21 +23,38 @@ export interface INewUserInputDTO {
 }
 
 export interface IAttendEvent {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
+  user: IUser;
+  event: IEvent;
+}
+
+export interface INewAttendEventDTO {
   user: IUser;
   event: IEvent;
 }
 
 export interface IFandomMember {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
+  user: IUser;
+  fandom: IFandom;
+}
+
+export interface INewFandomMemberInputDTO {
   user: IUser;
   fandom: IFandom;
 }
 
 export interface IUserLike {
-  _id: string;
+  _id: mongoose.Types._ObjectId;
   user: IUser;
   fandomPost?: IFandomPost;
-  fandomComment: IFandomComment;
+  fandomComment?: IFandomComment;
+  isLike: boolean;
+}
+
+export interface INewUserLikeInputDTO {
+  user: IUser;
+  fandomPost?: IFandomPost;
+  fandomComment?: IFandomComment;
   isLike: boolean;
 }

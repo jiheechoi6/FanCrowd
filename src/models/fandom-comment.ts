@@ -16,13 +16,13 @@ const FandomCommentSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Fandom comment must be associated to a user"]
     },
-    fandomPostRef: {
+    fandomPost: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "FandomPost",
       required: [true, "Fandom comment must be associated to a fandom post"]
     }
   },
-  { timestamps: true }
+  { timestamps: { createdAt: true } }
 );
 
 export default mongoose.model<IFandomComment & mongoose.Document>(

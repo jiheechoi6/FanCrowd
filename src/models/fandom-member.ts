@@ -7,7 +7,7 @@ const FandomMemberSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "User ref is required"]
   },
-  fandomRef: {
+  fandom: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Fandom",
     required: [true, "Fandom ref is required"]
