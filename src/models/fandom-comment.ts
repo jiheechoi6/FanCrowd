@@ -22,7 +22,7 @@ const FandomCommentSchema = new mongoose.Schema(
       required: [true, "Fandom comment must be associated to a fandom post"]
     }
   },
-  { timestamps: { createdAt: true } }
+  { timestamps: { createdAt: true }, versionKey: false }
 );
 
 export default mongoose.model<IFandomComment & mongoose.Document>(

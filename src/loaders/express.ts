@@ -17,6 +17,7 @@ export default ({ app }: { app: express.Application }) => {
 
   //Handles errors in endpoints
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.log("here");
     if (err.name === "UnauthorizedError") {
       return res.status(err.status).send({ message: err.message }).end();
     }

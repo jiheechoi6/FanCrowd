@@ -22,7 +22,7 @@ const FandomSchema = new mongoose.Schema(
       required: [true, "Fandom must be associated to a user"]
     }
   },
-  { timestamps: { createdAt: true } }
+  { timestamps: { createdAt: true }, versionKey: false }
 );
 
 export default mongoose.model<IFandom & mongoose.Document>(
