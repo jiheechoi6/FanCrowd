@@ -22,6 +22,8 @@ export default ({ app }: { app: express.Application }) => {
       return res.status(err.status).send({ message: err.message }).end();
     } else if (err.name === "ValidationError") {
       return res.status(400).send({ message: err.message }).end();
+    } else if (err.name === "NotFoundError") {
+      return res.status(404).send({ message: err.message }).end();
     }
     res.status(500).send({ message: "Internal Server Error" }).end();
   });
