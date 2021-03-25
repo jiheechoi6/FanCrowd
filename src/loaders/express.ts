@@ -19,7 +19,7 @@ export default ({ app }: { app: express.Application }) => {
   //Handles errors in endpoints
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === "UnauthorizedError") {
-      return res.status(err.status).send({ message: err.message }).end();
+      return res.status(401).send({ message: err.message }).end();
     } else if (err.name === "ValidationError") {
       return res.status(400).send({ message: err.message }).end();
     } else if (err.name === "NotFoundError") {

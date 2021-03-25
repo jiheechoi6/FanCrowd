@@ -8,6 +8,7 @@ import {
   IFandomCategoryDTO,
   INewFandomCategoryInputDTO
 } from "../../interfaces/IFandom";
+import ErrorService from "../../services/error";
 
 const route = Router();
 
@@ -74,21 +75,21 @@ export default (app: Router) => {
    */
   route.delete("/categories/:categoryId", async (req, res, next) => {
     try {
-      const error = new Error();
-
       const categoryId = req.params.categoryId;
       if (!isValidObjectId(categoryId)) {
-        error.name = "NotFoundError";
-        error.message = `Fandom Category with id ${categoryId} not found`;
-        throw error;
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom category with id ${categoryId} not found`
+        );
       }
       const categoryDoc = await FandomCategory.findById(categoryId);
       //check if user who created category is the one deleting (one who sent request)
 
       if (!categoryDoc) {
-        error.name = "NotFoundError";
-        error.message = `Fandom Category with id ${categoryId} not found`;
-        throw error;
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom category with id ${categoryId} not found`
+        );
       }
 
       await categoryDoc.delete();
@@ -114,22 +115,22 @@ export default (app: Router) => {
    */
   route.patch("/categories/:categoryId", async (req, res, next) => {
     try {
-      const error = new Error();
-
       const categoryId = req.params.categoryId;
       if (!isValidObjectId(categoryId)) {
-        error.name = "NotFoundError";
-        error.message = `Fandom Category with id ${categoryId} not found`;
-        throw error;
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom category with id ${categoryId} not found`
+        );
       }
 
       const categoryDoc = await FandomCategory.findById(categoryId);
       //check if user who created category is the one updating (one who sent request)
 
       if (!categoryDoc) {
-        error.name = "NotFoundError";
-        error.message = `Fandom Category with id ${categoryId} not found`;
-        throw error;
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom category with id ${categoryId} not found`
+        );
       }
 
       categoryDoc!.name = req.body.name || categoryDoc.name;
@@ -137,7 +138,10 @@ export default (app: Router) => {
         req.body.backgroundURL || categoryDoc.backgroundURL;
 
       const updatedCategory = await categoryDoc!.save();
-      res.status(200).send(updatedCategory);
+      const category = updatedCategory.toObject();
+      Reflect.deleteProperty(category, "createdBy");
+
+      res.status(200).send(category);
     } catch (err) {
       return next(err);
     }
