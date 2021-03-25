@@ -6,6 +6,7 @@ import config from "../config";
 export default ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
+  app.use(express.json());
   app.use(config.api.prefix, routes());
 
   //Catches 404 routes
@@ -19,9 +20,9 @@ export default ({ app }: { app: express.Application }) => {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === "UnauthorizedError") {
       return res.status(err.status).send({ message: err.message }).end();
-    } else {
-      return res.status(500).send({ message: "Internal Server Error" }).end();
+    } else if (err.name === "ValidationError") {
+      return res.status(400).send({ message: err.message }).end();
     }
-    return next(err);
+    res.status(500).send({ message: "Internal Server Error" }).end();
   });
 };
