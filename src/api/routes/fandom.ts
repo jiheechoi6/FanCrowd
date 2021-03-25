@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
+import { isValidObjectId } from "mongoose";
 import FandomCategory from "../../models/fandom-category";
 import User from "../../models/user";
 import {
@@ -73,12 +74,18 @@ export default (app: Router) => {
    */
   route.delete("/categories/:categoryId", async (req, res, next) => {
     try {
+      const error = new Error();
+
       const categoryId = req.params.categoryId;
+      if (!isValidObjectId(categoryId)) {
+        error.name = "NotFoundError";
+        error.message = `Fandom Category with id ${categoryId} not found`;
+        throw error;
+      }
       const categoryDoc = await FandomCategory.findById(categoryId);
       //check if user who created category is the one deleting (one who sent request)
 
       if (!categoryDoc) {
-        const error = new Error();
         error.name = "NotFoundError";
         error.message = `Fandom Category with id ${categoryId} not found`;
         throw error;
@@ -87,7 +94,6 @@ export default (app: Router) => {
       await categoryDoc.delete();
       res.status(200).send();
     } catch (err) {
-      console.log(err.name, err.message);
       return next(err);
     }
   });
@@ -108,12 +114,19 @@ export default (app: Router) => {
    */
   route.patch("/categories/:categoryId", async (req, res, next) => {
     try {
+      const error = new Error();
+
       const categoryId = req.params.categoryId;
+      if (!isValidObjectId(categoryId)) {
+        error.name = "NotFoundError";
+        error.message = `Fandom Category with id ${categoryId} not found`;
+        throw error;
+      }
+
       const categoryDoc = await FandomCategory.findById(categoryId);
       //check if user who created category is the one updating (one who sent request)
 
       if (!categoryDoc) {
-        const error = new Error();
         error.name = "NotFoundError";
         error.message = `Fandom Category with id ${categoryId} not found`;
         throw error;
@@ -126,7 +139,6 @@ export default (app: Router) => {
       const updatedCategory = await categoryDoc!.save();
       res.status(200).send(updatedCategory);
     } catch (err) {
-      console.log(err.name, err.message);
       return next(err);
     }
   });
