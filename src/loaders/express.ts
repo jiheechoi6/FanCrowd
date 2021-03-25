@@ -11,8 +11,11 @@ export default ({ app }: { app: express.Application }) => {
 
   //Catches 404 routes
   app.use((req, res, next) => {
-    const err = new Error("Not Found");
+    const err = new Error(
+      `${req.method} request to ${req.originalUrl} does not exist!`
+    );
     err.status = 404;
+    err.name = "NotFoundError";
     next(err);
   });
 
