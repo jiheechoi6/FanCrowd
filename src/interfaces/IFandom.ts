@@ -48,8 +48,8 @@ export interface IFandomPost {
   _id: mongoose.Types._ObjectId;
   title: string;
   content: string;
-  postedBy: IUser;
-  fandom: IFandom;
+  postedBy: mongoose.Types._ObjectId;
+  fandom: mongoose.Types._ObjectId;
   createdAt: Date;
 }
 
@@ -68,6 +68,7 @@ export interface INewFandomPostInputDTO {
   title: string;
   content: string;
   fandom: mongoose.Types._ObjectId;
+  postedBy: mongoose.Types._ObjectId;
 }
 
 export interface IFandomComment {

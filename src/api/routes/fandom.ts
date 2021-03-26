@@ -13,7 +13,8 @@ import {
   IFandomPost,
   IFandomPostDTOWithLikes,
   INewFandomCategoryInputDTO,
-  INewFandomInputDTO
+  INewFandomInputDTO,
+  INewFandomPostInputDTO
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
 
@@ -470,4 +471,94 @@ export default (app: Router) => {
       }
     }
   );
+
+  /**
+   * path: /api/fandoms/posts
+   * method: POST
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandom: string
+   * }
+   * params: None
+   * description: creates a post in a fandom
+   */
+  route.post("/posts", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newPost: INewFandomPostInputDTO = {
+        ...req.body,
+        postedBy: createdByUser?._id
+      };
+
+      if (!isValidObjectId(newPost.fandom)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom with id ${newPost.fandom} does not exist`
+        );
+      }
+
+      const fandom = await Fandom.findById(newPost.fandom);
+
+      if (!fandom) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom with id ${newPost.fandom} does not exist`
+        );
+      }
+
+      const newPostDoc = await FandomPost.create(newPost);
+      const post: IFandomPostDTOWithLikes = {
+        ...newPostDoc.toObject(),
+        numDislikes: 0,
+        numLikes: 0,
+        postedBy: {
+          username: createdByUser!.username,
+          profileURL: createdByUser!.profileURL
+        }
+      };
+
+      res.status(200).send(post);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: removes a post from a fandom
+   */
+  route.delete("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      if (!isValidObjectId(postId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+      const postDoc = await FandomPost.findById(postId);
+      //check if user who created post is the one deleting (one who sent request) or admin
+
+      if (!postDoc) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      await postDoc.delete();
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
 };

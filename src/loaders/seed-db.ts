@@ -476,8 +476,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[13],
-    postedBy: users[0],
+    fandom: fandoms[13]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
     createdAt: new Date(2021, 2, 17)
   },
@@ -485,8 +485,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[13],
-    postedBy: users[1],
+    fandom: fandoms[13]._id,
+    postedBy: users[1]._id,
     title: "Lorem ipsum dolor",
     createdAt: new Date(2021, 1, 1)
   },
@@ -494,8 +494,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[2],
-    postedBy: users[1],
+    fandom: fandoms[2]._id,
+    postedBy: users[1]._id,
     title: "Lorem ipsum dolor sit amet",
     createdAt: new Date(2021, 1, 19)
   },
@@ -503,8 +503,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[2],
-    postedBy: users[0],
+    fandom: fandoms[2]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
     createdAt: new Date(2021, 1, 5)
   },
@@ -512,8 +512,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[5],
-    postedBy: users[0],
+    fandom: fandoms[5]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
     createdAt: new Date(2021, 2, 14)
   },
@@ -521,8 +521,8 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[6],
-    postedBy: users[0],
+    fandom: fandoms[6]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
     createdAt: new Date(2021, 2, 12)
   }
