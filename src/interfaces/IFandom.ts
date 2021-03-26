@@ -5,7 +5,7 @@ export interface IFandom {
   _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
-  category: IFandomCategory;
+  category: mongoose.Types._ObjectId;
   createdBy: IUser;
   createdAt: Date;
 }
@@ -22,6 +22,7 @@ export interface IFandomDTO {
   name: string;
   backgroundURL: string;
   createdAt: Date;
+  category: mongoose.Types._ObjectId;
 }
 
 export interface IFandomCategory {

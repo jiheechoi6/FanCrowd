@@ -26,7 +26,7 @@ export default (app: Router) => {
    * {
    *  name: string,
    *  backgroundURL: string,
-   *  categoryId: string
+   *  category: string
    * }
    * params: None
    * description: creates a new fandom
@@ -59,7 +59,6 @@ export default (app: Router) => {
       const newFandomDoc = await Fandom.create(newFandom);
       const fandom = newFandomDoc.toObject();
       Reflect.deleteProperty(fandom, "createdBy");
-      Reflect.deleteProperty(fandom, "category");
 
       res.status(200).send(fandom);
     } catch (err) {
@@ -84,7 +83,7 @@ export default (app: Router) => {
       if (!isValidObjectId(fandomId)) {
         throw new ErrorService(
           "NotFoundError",
-          `Category with id ${fandomId} does not exist`
+          `Fandom with id ${fandomId} does not exist`
         );
       }
 
@@ -93,7 +92,7 @@ export default (app: Router) => {
       if (!fandom) {
         throw new ErrorService(
           "NotFoundError",
-          `Category with id ${fandomId} does not exist`
+          `Fandom with id ${fandomId} does not exist`
         );
       }
 
@@ -101,6 +100,57 @@ export default (app: Router) => {
 
       await fandom.delete();
       res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/:fandomId
+   * method: PATCH
+   * body:
+   * {
+   *  name: string,
+   *  backgroundURL: string,
+   *  category: string
+   * }
+   * params:
+   * {
+   *  fandomId: number
+   * }
+   * description: updates a fandom
+   */
+  route.patch("/:fandomId", async (req, res, next) => {
+    try {
+      const fandomId = req.params.fandomId;
+
+      if (!isValidObjectId(fandomId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom with id ${fandomId} does not exist`
+        );
+      }
+
+      const fandomDoc = await Fandom.findById(fandomId);
+
+      if (!fandomDoc) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandom with id ${fandomId} does not exist`
+        );
+      }
+
+      //should be checking if user who created fandom is the one updating or admin
+      fandomDoc.name = req.body.name || fandomDoc.name;
+      fandomDoc.backgroundURL =
+        req.body.backgroundURL || fandomDoc.backgroundURL;
+      fandomDoc.category = req.body.category || fandomDoc.category;
+
+      const updatedFandom = await fandomDoc.save();
+      const fandom = updatedFandom.toObject();
+      Reflect.deleteProperty(fandom, "createdBy");
+
+      res.status(200).send(fandom);
     } catch (err) {
       return next(err);
     }
@@ -149,9 +199,8 @@ export default (app: Router) => {
       }
 
       const fandoms: IFandomDTO[] =
-        (await Fandom.find({ category: category._id }).select(
-          "-category -createdBy"
-        )) || [];
+        (await Fandom.find({ category: category._id }).select("-createdBy")) ||
+        [];
 
       res.status(200).send(fandoms);
     } catch (err) {

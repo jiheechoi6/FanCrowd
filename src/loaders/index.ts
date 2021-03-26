@@ -5,7 +5,7 @@ import dbDateLoader from "./seed-db";
 
 export default async ({ expressApp }: { expressApp: express.Application }) => {
   await mongooseLoader();
-  //await dbDateLoader();
+  await dbDateLoader();
 
   expressLoader({ app: expressApp });
 };
