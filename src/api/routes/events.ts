@@ -32,7 +32,6 @@ export default (app: Router) => {
    *  endDate: string,    
    *  fandom: string,
    * }
-   * 
    * params: None
    * description: creates a new event
    */
@@ -126,7 +125,6 @@ export default (app: Router) => {
    * {
    *  eventId: number
    * }
-   * 
    * description: updates an event
    */
   route.patch("/:eventId", async (req, res, next) => {
@@ -159,7 +157,7 @@ export default (app: Router) => {
         );
       }
 
-      //should be checking if user who created fandom is the one updating or admin
+      // Should check if user who created fandom is the one updating or admin
       eventDoc.name = req.body.name || eventDoc.name;
       eventDoc.description = req.body.description || eventDoc.description;
       eventDoc.location = req.body.category || eventDoc.location;
@@ -182,7 +180,6 @@ export default (app: Router) => {
    * method: GET
    * body: None
    * params: None
-   * 
    * description: gets all the events or [] if no events exist
    */
   route.get("", async (req, res, next) => {
@@ -202,7 +199,6 @@ export default (app: Router) => {
    * {
    *  eventId: string
    * }
-   * 
    * description: gets events by id or [] if no event
    */
    route.get("/:eventId", async (req, res, next) => {
@@ -243,7 +239,6 @@ export default (app: Router) => {
    * {
    *  fandomName: string
    * }
-   * 
    * description: gets events by fandomName or [] if no fandoms
    */
   route.get("/:fandomName", async (req, res, next) => {
@@ -282,7 +277,6 @@ export default (app: Router) => {
    *  rating: number,  
    *  event: string
    * }
-   * 
    * params: None
    * description: creates a new review on an event
    */
@@ -422,7 +416,6 @@ export default (app: Router) => {
    * {
    *  reviewId: number
    * }
-   * 
    * description: updates a review
    */
    route.patch("/reviews/:reviewId", async (req, res, next) => {
@@ -479,7 +472,6 @@ export default (app: Router) => {
    * {
    *  eventId: string
    * }
-   * 
    * description: gets all the reviews of an event or [] if no reviews exist
    */
    route.get("/reviews/:eventId", async (req, res, next) => {
@@ -524,7 +516,6 @@ export default (app: Router) => {
    * {
    *  eventId: number
    * }
-   * 
    * description: user attends an event
    */
    route.post("/attend/:eventId", async (req, res, next) => {
@@ -659,7 +650,6 @@ export default (app: Router) => {
    * {
    *  eventId: string
    * }
-   * 
    * description: gets all the attendees by eventId or [] if no event/attendees exist
    */
    route.get("/attend/:eventId", async (req, res, next) => {
