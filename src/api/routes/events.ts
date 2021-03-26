@@ -322,43 +322,52 @@ export default (app: Router) => {
     }
   });
 
-  // /**
-  //  * path: /api/events/reviews/:eventId
-  //  * method: DELETE
-  //  * body: None
-  //  * params:
-  //  * {
-  //  *  eventId: number
-  //  * }
-  //  * description: deletes all reviews of an event
-  //  */
-  //  route.delete("/reviews/:eventId", async (req, res, next) => {
-  //   try {
-  //     const eventId = req.params.eventId;
+  /**
+   * path: /api/events/reviews/:eventId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *  eventId: number
+   * }
+   * description: deletes all reviews of an event
+   */
+   route.delete("/reviews/:eventId", async (req, res, next) => {
+    try {
+      const eventId = req.params.eventId;
 
-  //     if (!isValidObjectId(eventId)) {
-  //       throw new ErrorService(
-  //         "NotFoundError",
-  //         `Event with id ${eventId} does not exist`
-  //       );
-  //     }
+      if (!isValidObjectId(eventId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Event with id ${eventId} does not exist`
+        );
+      }
 
-  //     // const event = await Event.findById(eventId);
-  //     const reviews = await EventReview.find({event: eventId});
+      const event = await Event.findById(eventId);
+      if (!event) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Event with id ${eventId} does not exist`
+        );
+      }
 
-  //     if (!reviews) {
-  //       throw new ErrorService(
-  //         "NotFoundError",
-  //         `Reviews in Event with id ${eventId} do not exist`
-  //       );
-  //     }
+      const reviews = await EventReview.find({event: event._id});
 
-  //     await reviews.deleteMany({});
-  //     res.status(200).send();
-  //   } catch (err) {
-  //     return next(err);
-  //   }
-  // });
+      if (!reviews) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Reviews in Event with id ${eventId} do not exist`
+        );
+      }
+
+      reviews.forEach(async (review) => {
+        review.remove();
+      });
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
 
   /**
    * path: /api/events/reviews/:reviewId
@@ -603,7 +612,7 @@ export default (app: Router) => {
    * }
    * description: deletes all attendances of an event
    */
-   route.delete("/attend/:eventId", async (req, res, next) => {
+   route.delete("/attends/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
 
@@ -627,14 +636,14 @@ export default (app: Router) => {
       if (!attendees) {
         throw new ErrorService(
           "NotFoundError",
-          `Attendees of Event with id ${attendees} does not exist`
+          `Attendees of Event with id ${eventId} does not exist`
         );
       }
 
       // Should check if user who attended is the one deleting or admin
 
       attendees.forEach(async (attendee) => {
-        await attendee.delete();
+        attendee.remove();
       });
       res.status(200).send();
     } catch (err) {
@@ -686,5 +695,4 @@ export default (app: Router) => {
       return next(err);
     }
   });
-
 };
