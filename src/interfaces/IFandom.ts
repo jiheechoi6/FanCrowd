@@ -5,7 +5,7 @@ export interface IFandom {
   _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
-  category: IFandomCategory;
+  category: mongoose.Types._ObjectId;
   createdBy: IUser;
   createdAt: Date;
 }
@@ -13,7 +13,16 @@ export interface IFandom {
 export interface INewFandomInputDTO {
   name: string;
   backgroundURL: string;
-  category: IFandomCategory;
+  category: mongoose.Types._ObjectId;
+  createdBy: mongoose.Types._ObjectId;
+}
+
+export interface IFandomDTO {
+  _id: mongoose.Types._ObjectId;
+  name: string;
+  backgroundURL: string;
+  createdAt: Date;
+  category: mongoose.Types._ObjectId;
 }
 
 export interface IFandomCategory {
@@ -23,10 +32,16 @@ export interface IFandomCategory {
   createdBy: IUser;
 }
 
+export interface IFandomCategoryDTO {
+  _id: mongoose.Types._ObjectId;
+  name: string;
+  backgroundURL: string;
+}
+
 export interface INewFandomCategoryInputDTO {
   name: string;
   backgroundURL: string;
-  createdBy: IUser;
+  createdBy: mongoose.Types._ObjectId;
 }
 
 export interface IFandomPost {
@@ -42,7 +57,7 @@ export interface IFandomPost {
 export interface INewFandomPostInputDTO {
   title: string;
   content: string;
-  fandom: IFandom;
+  fandom: mongoose.Types._ObjectId;
 }
 
 export interface IFandomComment {
@@ -57,5 +72,5 @@ export interface IFandomComment {
 export interface INewFandomCommentInputDTO {
   title: string;
   content: string;
-  fandomPost: IFandomPost;
+  fandomPost: mongoose.Types._ObjectId;
 }

@@ -28,7 +28,7 @@ const EventReviewSchema = new mongoose.Schema(
       required: [true, "Event review must be associated to an event"]
     }
   },
-  { timestamps: { createdAt: true } }
+  { timestamps: { updatedAt: false }, versionKey: false }
 );
 
 export default mongoose.model<IEventReview & mongoose.Document>(

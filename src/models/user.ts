@@ -65,7 +65,7 @@ const UserSchema = new mongoose.Schema(
       required: [isNotAdmin, "Country is required"]
     }
   },
-  { timestamps: { createdAt: true } }
+  { timestamps: { updatedAt: false }, versionKey: false }
 );
 
 function isNotAdmin(this: IUser) {

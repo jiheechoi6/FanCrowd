@@ -17,10 +17,10 @@ export interface INewEventInputDTO {
   name: string;
   description: string;
   location: string;
-  postedBy: IUser;
+  postedBy: mongoose.Types._ObjectId;
   startDate: Date;
   endDate: Date;
-  fandom: IFandom;
+  fandom: mongoose.Types._ObjectId;
 }
 
 export interface IEventReview {
@@ -38,5 +38,5 @@ export interface INewEventReviewInputDTO {
   title: string;
   content: string;
   rating: number;
-  event: IEvent;
+  event: mongoose.Types._ObjectId;
 }
