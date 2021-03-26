@@ -29,8 +29,8 @@ export interface IAttendEvent {
 }
 
 export interface INewAttendEventDTO {
-  user: IUser;
-  event: IEvent;
+  user: mongoose.Types._ObjectId;
+  event: mongoose.Types._ObjectId;
 }
 
 export interface IFandomMember {
@@ -40,8 +40,8 @@ export interface IFandomMember {
 }
 
 export interface INewFandomMemberInputDTO {
-  user: IUser;
-  fandom: IFandom;
+  user: mongoose.Types._ObjectId;
+  fandom: mongoose.Types._ObjectId;
 }
 
 export interface IUserLike {
@@ -53,8 +53,8 @@ export interface IUserLike {
 }
 
 export interface INewUserLikeInputDTO {
-  user: IUser;
-  fandomPost?: IFandomPost;
-  fandomComment?: IFandomComment;
+  user: mongoose.Types._ObjectId;
+  fandomPost?: mongoose.Types._ObjectId;
+  fandomComment?: mongoose.Types._ObjectId;
   isLike: boolean;
 }

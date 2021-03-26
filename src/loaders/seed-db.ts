@@ -122,7 +122,7 @@ const fandomCategories: IFandomCategory[] = [
 const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[0],
+    category: fandomCategories[0]._id,
     name: "Avengers",
     backgroundURL: "https://wallpaperaccess.com/full/311206.jpg",
     createdBy: users[0],
@@ -130,7 +130,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[0],
+    category: fandomCategories[0]._id,
     name: "Harry Potter",
     backgroundURL: "https://wallpapercave.com/wp/wp2763337.jpg",
     createdBy: users[1],
@@ -138,7 +138,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[0],
+    category: fandomCategories[0]._id,
     name: "Avengers: Age of Ultron",
     backgroundURL: "https://wallpaperaccess.com/full/1117133.jpg",
     createdBy: users[0],
@@ -146,7 +146,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[0],
+    category: fandomCategories[0]._id,
     name: "Maze Runner: The Death Cure",
     backgroundURL: "https://images3.alphacoders.com/913/thumb-1920-913996.jpg",
     createdBy: users[1],
@@ -154,7 +154,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[0],
+    category: fandomCategories[0]._id,
     name: "Journey to the Mysterious Island",
     backgroundURL: "https://images2.alphacoders.com/805/805700.jpg",
     createdBy: users[0],
@@ -162,7 +162,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[1],
+    category: fandomCategories[1]._id,
     name: "Divergent",
     backgroundURL: "https://wallpapercave.com/wp/wp1826730.jpg",
     createdBy: users[1],
@@ -170,7 +170,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[1],
+    category: fandomCategories[1]._id,
     name: "The Chronicles of Narnia",
     backgroundURL: "https://wallpaperaccess.com/full/1715646.jpg",
     createdBy: users[0],
@@ -178,7 +178,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[1],
+    category: fandomCategories[1]._id,
     name: "Harry Potter",
     backgroundURL:
       "https://i.pinimg.com/originals/9e/79/90/9e799033d6cc8983b902cb9a7c41b74c.jpg",
@@ -187,7 +187,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[1],
+    category: fandomCategories[1]._id,
     name: "Percy Jackson",
     backgroundURL: "https://wallpapercave.com/wp/wp2961879.jpg",
     createdBy: users[0],
@@ -195,7 +195,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[2],
+    category: fandomCategories[2]._id,
     name: "Game of Thrones",
     backgroundURL: "https://cdn.wallpapersafari.com/26/33/Fbx3ci.jpg",
     createdBy: users[1],
@@ -203,7 +203,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[2],
+    category: fandomCategories[2]._id,
     name: "The Queen's Gambit",
     backgroundURL: "https://wallpaperaccess.com/full/4722410.jpg",
     createdBy: users[0],
@@ -211,7 +211,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[2],
+    category: fandomCategories[2]._id,
     name: "The Big Bang Theory",
     backgroundURL: "https://wallpapercave.com/wp/Htvtugs.jpg",
     createdBy: users[0],
@@ -219,7 +219,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[3],
+    category: fandomCategories[3]._id,
     name: "Yu-Gi-Oh!",
     backgroundURL:
       "https://i.pinimg.com/originals/d1/7a/d8/d17ad80144ef56adbf58a17a686ea619.jpg",
@@ -228,7 +228,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[3],
+    category: fandomCategories[3]._id,
     name: "One Punch Man",
     backgroundURL: "https://cdn.wallpapersafari.com/51/10/9A6JeS.jpg",
     createdBy: users[0],
@@ -236,7 +236,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[3],
+    category: fandomCategories[3]._id,
     name: "Beyblade",
     backgroundURL:
       "https://i.pinimg.com/originals/2c/ae/46/2cae460058ec18fa42d5a3c07589b781.jpg",
@@ -245,7 +245,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[4],
+    category: fandomCategories[4]._id,
     name: "Call of Duty",
     backgroundURL:
       "https://i.pinimg.com/originals/c4/88/a5/c488a5045bf7ac2d08b8bd9342cecf92.jpg",
@@ -254,7 +254,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[4],
+    category: fandomCategories[4]._id,
     name: "God of War",
     backgroundURL: "https://wallpapercave.com/wp/T4xxWSN.jpg",
     createdBy: users[1],
@@ -262,7 +262,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[4],
+    category: fandomCategories[4]._id,
     name: "Assassin's Creed",
     backgroundURL:
       "https://i.pinimg.com/originals/80/d9/89/80d98924b54c6ff8b8438cc30ea1e694.jpg",
@@ -271,7 +271,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[4],
+    category: fandomCategories[4]._id,
     name: "NBA 2020",
     backgroundURL: "https://wallpaperaccess.com/full/103114.jpg",
     createdBy: users[0],
@@ -279,7 +279,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[5],
+    category: fandomCategories[5]._id,
     name: "Basketball",
     backgroundURL:
       "https://i.pinimg.com/originals/dc/eb/80/dceb80db40569f060a1197d7f8c58916.jpg",
@@ -288,7 +288,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[5],
+    category: fandomCategories[5]._id,
     name: "Soccer",
     backgroundURL: "https://wallpapercave.com/wp/4dqP3rn.jpg",
     createdBy: users[0],
@@ -296,7 +296,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[5],
+    category: fandomCategories[5]._id,
     name: "Golf",
     backgroundURL: "https://cdn.hipwallpaper.com/i/91/94/rFjELC.jpg",
     createdBy: users[1],
@@ -304,7 +304,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[5],
+    category: fandomCategories[5]._id,
     name: "Cricket",
     backgroundURL:
       "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8Y3JpY2tldHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
@@ -313,7 +313,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[6],
+    category: fandomCategories[6]._id,
     name: "Apple",
     backgroundURL: "https://wallpapercave.com/wp/8duz5Ir.jpg",
     createdBy: users[0],
@@ -321,7 +321,7 @@ const fandoms: IFandom[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    category: fandomCategories[6],
+    category: fandomCategories[6]._id,
     name: "OnePlus",
     backgroundURL:
       "https://m-cdn.phonearena.com/images/hub/54-two_500/OnePlus-8T-release-date-price-features-and-news.jpg",
@@ -751,7 +751,7 @@ export default async () => {
       name: fandoms[i].name,
       backgroundURL: fandoms[i].backgroundURL,
       _id: fandoms[i]._id,
-      category: fandoms[i].category._id,
+      category: fandoms[i].category,
       createdBy: fandoms[i].createdBy._id
     };
     await FandomModel.create(fandom);

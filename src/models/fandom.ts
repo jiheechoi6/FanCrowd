@@ -5,7 +5,9 @@ const FandomSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Fandom name is required"]
+      required: [true, "Fandom name is required"],
+      lowercase: true,
+      unique: false
     },
     backgroundURL: {
       type: String,
@@ -14,7 +16,8 @@ const FandomSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "FandomCategory",
-      required: [true, "Fandom must be associated to a category"]
+      required: [true, "Fandom must be associated to a category"],
+      unique: false
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,8 +25,10 @@ const FandomSchema = new mongoose.Schema(
       required: [true, "Fandom must be associated to a user"]
     }
   },
-  { timestamps: { createdAt: true } }
+  { timestamps: { updatedAt: false }, versionKey: false }
 );
+
+FandomSchema.index({ name: 1, category: 1 }, { unique: true, dropDups: true });
 
 export default mongoose.model<IFandom & mongoose.Document>(
   "Fandom",
