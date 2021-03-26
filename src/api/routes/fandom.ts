@@ -3,12 +3,15 @@ import middlewares from "../middlewares";
 import { isValidObjectId } from "mongoose";
 import FandomCategory from "../../models/fandom-category";
 import Fandom from "../../models/fandom";
+import FandomPost from "../../models/fandom-post";
 import User from "../../models/user";
 import {
   IFandom,
   IFandomCategory,
   IFandomCategoryDTO,
   IFandomDTO,
+  IFandomPost,
+  IFandomPostDTOWithLikes,
   INewFandomCategoryInputDTO,
   INewFandomInputDTO
 } from "../../interfaces/IFandom";
@@ -198,9 +201,9 @@ export default (app: Router) => {
         );
       }
 
-      const fandoms: IFandomDTO[] =
-        (await Fandom.find({ category: category._id }).select("-createdBy")) ||
-        [];
+      const fandoms: IFandomDTO[] = await Fandom.find({
+        category: category._id
+      }).select("-createdBy");
 
       res.status(200).send(fandoms);
     } catch (err) {
@@ -327,4 +330,144 @@ export default (app: Router) => {
       return next(err);
     }
   });
+
+  /**
+   * path: /api/fandoms/categories/:categoryName/:fandomName/posts
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    categoryName: string,
+   *    fandomName: string
+   * }
+   * description: gets all the posts for a fandom given fandom name and category
+   */
+  route.get(
+    "/categories/:categoryName/:fandomName/posts",
+    async (req, res, next) => {
+      try {
+        //of the form category-name and fandom-name
+        const categoryName = req.params.categoryName;
+        const fandomName = req.params.fandomName;
+
+        const category = await FandomCategory.findOne({
+          name: categoryName.toLowerCase().split("-").join(" ")
+        });
+
+        if (!category) {
+          throw new ErrorService(
+            "NotFoundError",
+            `Category with name ${categoryName} does not exist`
+          );
+        }
+
+        const fandom = await Fandom.findOne({
+          name: fandomName.toLowerCase().split("-").join(" "),
+          category: category._id
+        });
+
+        if (!fandom) {
+          throw new ErrorService(
+            "NotFoundError",
+            `Fandom with name ${fandomName} does not exist`
+          );
+        }
+
+        const postsWithLikes: IFandomPostDTOWithLikes[] = await FandomPost.aggregate(
+          [
+            {
+              $match: {
+                fandom: fandom._id
+              }
+            },
+            {
+              $lookup: {
+                from: "userlikes",
+                as: "numLikes",
+                let: {
+                  fandomPostId: "$_id"
+                },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ["$isLike", true] },
+                          {
+                            $eq: ["$fandomPost", "$$fandomPostId"]
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    $project: {
+                      user: 1
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              $lookup: {
+                from: "userlikes",
+                as: "numDislikes",
+                let: {
+                  fandomPostId: "$_id"
+                },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ["$isLike", false] },
+                          {
+                            $eq: ["$fandomPost", "$$fandomPostId"]
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    $project: {
+                      user: 1
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              $lookup: {
+                from: "users",
+                as: "postedBy",
+                localField: "postedBy",
+                foreignField: "_id"
+              }
+            },
+            {
+              $unwind: "$postedBy"
+            },
+            {
+              $project: {
+                postedBy: {
+                  username: 1,
+                  profileURL: 1
+                },
+                numLikes: 1,
+                numDislikes: 1,
+                title: 1,
+                content: 1,
+                createdAt: 1,
+                fandom: 1
+              }
+            }
+          ]
+        );
+
+        res.status(200).send(postsWithLikes);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
 };

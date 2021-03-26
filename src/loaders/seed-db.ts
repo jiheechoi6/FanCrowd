@@ -479,8 +479,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[13],
     postedBy: users[0],
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 17),
-    updatedAt: new Date(2021, 2, 17)
+    createdAt: new Date(2021, 2, 17)
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -489,8 +488,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[13],
     postedBy: users[1],
     title: "Lorem ipsum dolor",
-    createdAt: new Date(2021, 1, 1),
-    updatedAt: new Date(2021, 1, 1)
+    createdAt: new Date(2021, 1, 1)
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -499,8 +497,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[2],
     postedBy: users[1],
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 1, 19),
-    updatedAt: new Date(2021, 1, 19)
+    createdAt: new Date(2021, 1, 19)
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -509,8 +506,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[2],
     postedBy: users[0],
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 1, 5),
-    updatedAt: new Date(2021, 1, 5)
+    createdAt: new Date(2021, 1, 5)
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -519,8 +515,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[5],
     postedBy: users[0],
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 14),
-    updatedAt: new Date(2021, 2, 14)
+    createdAt: new Date(2021, 2, 14)
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -529,8 +524,7 @@ const fandomPosts: IFandomPost[] = [
     fandom: fandoms[6],
     postedBy: users[0],
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 12),
-    updatedAt: new Date(2021, 2, 12)
+    createdAt: new Date(2021, 2, 12)
   }
 ];
 

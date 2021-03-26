@@ -15,6 +15,11 @@ export interface IUser {
   country: string;
 }
 
+export interface IUserFandomPost {
+  username: string;
+  profileURL: string;
+}
+
 export interface INewUserInputDTO {
   fullName: string;
   email: string;

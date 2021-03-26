@@ -22,7 +22,7 @@ const FandomPostSchema = new mongoose.Schema(
       required: [true, "Fandom post must be associated to a fandom"]
     }
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { updatedAt: false }, versionKey: false }
 );
 
 export default mongoose.model<IFandomPost & mongoose.Document>(

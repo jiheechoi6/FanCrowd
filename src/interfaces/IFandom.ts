@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser } from "./IUser";
+import { IUser, IUserFandomPost } from "./IUser";
 
 export interface IFandom {
   _id: mongoose.Types._ObjectId;
@@ -51,7 +51,17 @@ export interface IFandomPost {
   postedBy: IUser;
   fandom: IFandom;
   createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface IFandomPostDTOWithLikes {
+  _id: mongoose.Types._ObjectId;
+  title: string;
+  content: string;
+  postedBy: IUserFandomPost;
+  fandom: mongoose.Types._ObjectId;
+  createdAt: Date;
+  numLikes: number;
+  numDislikes: number;
 }
 
 export interface INewFandomPostInputDTO {
