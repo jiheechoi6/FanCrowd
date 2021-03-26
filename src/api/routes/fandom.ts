@@ -43,7 +43,7 @@ export default (app: Router) => {
       if (!isValidObjectId(newFandom.category)) {
         throw new ErrorService(
           "NotFoundError",
-          `Category with id ${newFandom.category} does not exists`
+          `Category with id ${newFandom.category} does not exist`
         );
       }
 
@@ -52,7 +52,7 @@ export default (app: Router) => {
       if (!category) {
         throw new ErrorService(
           "NotFoundError",
-          `Category with id ${newFandom.category} does not exists`
+          `Category with id ${newFandom.category} does not exist`
         );
       }
 
@@ -62,6 +62,45 @@ export default (app: Router) => {
       Reflect.deleteProperty(fandom, "category");
 
       res.status(200).send(fandom);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/:fandomId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *  fandomId: number
+   * }
+   * description: deletes a fandom
+   */
+  route.delete("/:fandomId", async (req, res, next) => {
+    try {
+      const fandomId = req.params.fandomId;
+
+      if (!isValidObjectId(fandomId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with id ${fandomId} does not exist`
+        );
+      }
+
+      const fandom = await Fandom.findById(fandomId);
+
+      if (!fandom) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with id ${fandomId} does not exist`
+        );
+      }
+
+      //should be checking if user who created fandom is the one deleting or admin
+
+      await fandom.delete();
+      res.status(200).send();
     } catch (err) {
       return next(err);
     }
@@ -105,7 +144,7 @@ export default (app: Router) => {
       if (!category) {
         throw new ErrorService(
           "NotFoundError",
-          `Category with name ${categoryName} does not exists`
+          `Category with name ${categoryName} does not exist`
         );
       }
 
@@ -146,6 +185,12 @@ export default (app: Router) => {
 
       res.status(200).send(category);
     } catch (err) {
+      if (err.name === "MongoError" && err.code === 11000) {
+        return next(
+          new ErrorService("MongoError", "Duplicate fandom category")
+        );
+      }
+
       return next(err);
     }
   });
@@ -170,7 +215,7 @@ export default (app: Router) => {
         );
       }
       const categoryDoc = await FandomCategory.findById(categoryId);
-      //check if user who created category is the one deleting (one who sent request)
+      //check if user who created category is the one deleting (one who sent request) or admin
 
       if (!categoryDoc) {
         throw new ErrorService(
