@@ -9,7 +9,8 @@ import {
   IFandomCategory,
   IFandomCategoryDTO,
   IFandomDTO,
-  INewFandomCategoryInputDTO
+  INewFandomCategoryInputDTO,
+  INewFandomInputDTO
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
 
@@ -17,6 +18,54 @@ const route = Router();
 
 export default (app: Router) => {
   app.use("/fandoms", route);
+
+  /**
+   * path: /api/fandoms
+   * method: POST
+   * body:
+   * {
+   *  name: string,
+   *  backgroundURL: string,
+   *  categoryId: string
+   * }
+   * params: None
+   * description: creates a new fandom
+   */
+  route.post("", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newFandom: INewFandomInputDTO = {
+        ...req.body,
+        createdBy: createdByUser?._id
+      };
+
+      if (!isValidObjectId(newFandom.category)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with id ${newFandom.category} does not exists`
+        );
+      }
+
+      const category = await FandomCategory.findById(newFandom.category);
+
+      if (!category) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with id ${newFandom.category} does not exists`
+        );
+      }
+
+      const newFandomDoc = await Fandom.create(newFandom);
+      const fandom = newFandomDoc.toObject();
+      Reflect.deleteProperty(fandom, "createdBy");
+      Reflect.deleteProperty(fandom, "category");
+
+      res.status(200).send(fandom);
+    } catch (err) {
+      return next(err);
+    }
+  });
 
   /**
    * path: /api/fandoms/categories
@@ -31,6 +80,41 @@ export default (app: Router) => {
         {}
       ).select("-createdBy");
       res.status(200).send(categories);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/categories/:categoryName
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *  categoryName: string
+   * }
+   * description: gets all the fandoms in categoryName or [] if no fandoms
+   */
+  route.get("/categories/:categoryName", async (req, res, next) => {
+    try {
+      const categoryName = req.params.categoryName;
+      const category = await FandomCategory.findOne({
+        name: categoryName.toLowerCase()
+      });
+
+      if (!category) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with name ${categoryName} does not exists`
+        );
+      }
+
+      const fandoms: IFandomDTO[] =
+        (await Fandom.find({ category: category._id }).select(
+          "-category -createdBy"
+        )) || [];
+
+      res.status(200).send(fandoms);
     } catch (err) {
       return next(err);
     }
@@ -145,41 +229,6 @@ export default (app: Router) => {
       Reflect.deleteProperty(category, "createdBy");
 
       res.status(200).send(category);
-    } catch (err) {
-      return next(err);
-    }
-  });
-
-  /**
-   * path: /api/fandoms/categories/:categoryName
-   * method: GET
-   * body: None
-   * params:
-   * {
-   *  categoryName: string
-   * }
-   * description: gets all the fandoms in categoryName or [] if no fandoms
-   */
-  route.get("/categories/:categoryName", async (req, res, next) => {
-    try {
-      const categoryName = req.params.categoryName;
-      const category = await FandomCategory.findOne({
-        name: categoryName.toLowerCase()
-      });
-
-      if (!category) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with name ${categoryName} does not exists`
-        );
-      }
-
-      const fandoms: IFandomDTO[] =
-        (await Fandom.find({ category: category._id }).select(
-          "-category -createdBy"
-        )) || [];
-
-      res.status(200).send(fandoms);
     } catch (err) {
       return next(err);
     }

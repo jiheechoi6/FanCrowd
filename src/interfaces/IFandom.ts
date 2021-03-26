@@ -14,6 +14,7 @@ export interface INewFandomInputDTO {
   name: string;
   backgroundURL: string;
   category: mongoose.Types._ObjectId;
+  createdBy: mongoose.Types._ObjectId;
 }
 
 export interface IFandomDTO {

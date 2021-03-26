@@ -23,7 +23,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err.name === "UnauthorizedError") {
       return res.status(401).send({ message: err.message }).end();
-    } else if (err.name === "ValidationError") {
+    } else if (err.name === "ValidationError" || err.name === "MongoError") {
       return res.status(400).send({ message: err.message }).end();
     } else if (err.name === "NotFoundError") {
       return res.status(404).send({ message: err.message }).end();
