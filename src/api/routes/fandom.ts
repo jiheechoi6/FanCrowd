@@ -2,8 +2,10 @@ import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
 import { isValidObjectId } from "mongoose";
 import FandomCategory from "../../models/fandom-category";
+import Fandom from "../../models/fandom";
 import User from "../../models/user";
 import {
+  IFandom,
   IFandomCategory,
   IFandomCategoryDTO,
   INewFandomCategoryInputDTO
@@ -142,6 +144,41 @@ export default (app: Router) => {
       Reflect.deleteProperty(category, "createdBy");
 
       res.status(200).send(category);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/categories/:categoryName
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *  categoryName: string
+   * }
+   * description: gets all the fandoms in categoryName or [] if no fandoms
+   */
+  route.get("/categories/:categoryName", async (req, res, next) => {
+    try {
+      const categoryName = req.params.categoryName;
+      const category = await FandomCategory.findOne({
+        name: categoryName.toLowerCase()
+      });
+
+      if (!category) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Category with name ${categoryName} does not exists`
+        );
+      }
+
+      const fandoms: IFandom[] =
+        (await Fandom.find({ category: category._id }).select(
+          "-category -createdBy"
+        )) || [];
+
+      res.status(200).send(fandoms);
     } catch (err) {
       return next(err);
     }

@@ -5,7 +5,9 @@ const FandomCategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Fandom category title is required"]
+      required: [true, "Fandom category title is required"],
+      unique: true,
+      lowercase: true
     },
     backgroundURL: {
       type: String,
