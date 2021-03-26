@@ -8,6 +8,7 @@ import {
   IFandom,
   IFandomCategory,
   IFandomCategoryDTO,
+  IFandomDTO,
   INewFandomCategoryInputDTO
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
@@ -173,7 +174,7 @@ export default (app: Router) => {
         );
       }
 
-      const fandoms: IFandom[] =
+      const fandoms: IFandomDTO[] =
         (await Fandom.find({ category: category._id }).select(
           "-category -createdBy"
         )) || [];
