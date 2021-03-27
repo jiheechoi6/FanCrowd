@@ -492,7 +492,7 @@ export default (app: Router) => {
    * {
    *    postId: string
    * }
-   * description: gets a post and its comments by id
+   * description: gets a post by id
    */
   route.get("/posts/:postId", async (req, res, next) => {
     try {
@@ -508,101 +508,6 @@ export default (app: Router) => {
         {
           $match: {
             _id: mongoose.Types.ObjectId(postId)
-          }
-        },
-        {
-          $lookup: {
-            from: "fandomcomments",
-            as: "comments",
-            let: {
-              fandomPostId: "$_id"
-            },
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $eq: ["$fandomPost", "$$fandomPostId"]
-                  }
-                }
-              },
-              {
-                $lookup: {
-                  from: "userlikes",
-                  as: "numLikes",
-                  let: {
-                    fandomCommentId: "$_id"
-                  },
-                  pipeline: [
-                    {
-                      $match: {
-                        $expr: {
-                          $and: [
-                            { $eq: ["$isLike", true] },
-                            {
-                              $eq: ["$fandomComment", "$$fandomCommentId"]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    {
-                      $project: {
-                        user: 1
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                $lookup: {
-                  from: "userlikes",
-                  as: "numDislikes",
-                  let: {
-                    fandomCommentId: "$_id"
-                  },
-                  pipeline: [
-                    {
-                      $match: {
-                        $expr: {
-                          $and: [
-                            { $eq: ["$isLike", false] },
-                            {
-                              $eq: ["$fandomComment", "$$fandomCommentId"]
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    {
-                      $project: {
-                        user: 1
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                $lookup: {
-                  from: "users",
-                  as: "postedBy",
-                  localField: "postedBy",
-                  foreignField: "_id"
-                }
-              },
-              {
-                $project: {
-                  postedBy: {
-                    username: 1,
-                    profileURL: 1
-                  },
-                  numLikes: 1,
-                  numDislikes: 1,
-                  title: 1,
-                  content: 1,
-                  createdAt: 1
-                }
-              }
-            ]
           }
         },
         {
@@ -683,8 +588,7 @@ export default (app: Router) => {
             title: 1,
             content: 1,
             createdAt: 1,
-            fandom: 1,
-            comments: 1
+            fandom: 1
           }
         }
       ]);
