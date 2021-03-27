@@ -148,7 +148,19 @@ export default (app: Router) => {
       fandomDoc.name = req.body.name || fandomDoc.name;
       fandomDoc.backgroundURL =
         req.body.backgroundURL || fandomDoc.backgroundURL;
-      fandomDoc.category = req.body.category || fandomDoc.category;
+
+      if (req.body.category) {
+        const fandomCategory = await FandomCategory.findById(req.body.category);
+
+        if (!fandomCategory) {
+          throw new ErrorService(
+            "NotFoundError",
+            `Category with id ${req.body.category} does not exist`
+          );
+        }
+
+        fandomDoc.category = req.body.category;
+      }
 
       const updatedFandom = await fandomDoc.save();
       const fandom = updatedFandom.toObject();
@@ -818,7 +830,19 @@ export default (app: Router) => {
 
       postDoc.content = req.body.content || postDoc.content;
       postDoc.title = req.body.title || postDoc.title;
-      postDoc.fandom = req.body.fandom || postDoc.fandom;
+
+      if (req.body.fandom) {
+        const fandom = await Fandom.findById(req.body.fandom);
+
+        if (!fandom) {
+          throw new ErrorService(
+            "NotFoundError",
+            `Fandom with id ${req.body.fandom} does not exist`
+          );
+        }
+
+        postDoc.fandom = req.body.fandom;
+      }
 
       const updatedPost = await postDoc.save();
 
