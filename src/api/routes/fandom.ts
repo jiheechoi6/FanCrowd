@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
-import { isValidObjectId } from "mongoose";
+import mongoose from "mongoose";
 import FandomCategory from "../../models/fandom-category";
 import Fandom from "../../models/fandom";
 import FandomPost from "../../models/fandom-post";
@@ -44,7 +44,7 @@ export default (app: Router) => {
         createdBy: createdByUser?._id
       };
 
-      if (!isValidObjectId(newFandom.category)) {
+      if (!mongoose.isValidObjectId(newFandom.category)) {
         throw new ErrorService(
           "NotFoundError",
           `Category with id ${newFandom.category} does not exist`
@@ -84,7 +84,7 @@ export default (app: Router) => {
     try {
       const fandomId = req.params.fandomId;
 
-      if (!isValidObjectId(fandomId)) {
+      if (!mongoose.isValidObjectId(fandomId)) {
         throw new ErrorService(
           "NotFoundError",
           `Fandom with id ${fandomId} does not exist`
@@ -128,7 +128,7 @@ export default (app: Router) => {
     try {
       const fandomId = req.params.fandomId;
 
-      if (!isValidObjectId(fandomId)) {
+      if (!mongoose.isValidObjectId(fandomId)) {
         throw new ErrorService(
           "NotFoundError",
           `Fandom with id ${fandomId} does not exist`
@@ -261,7 +261,7 @@ export default (app: Router) => {
   route.delete("/categories/:categoryId", async (req, res, next) => {
     try {
       const categoryId = req.params.categoryId;
-      if (!isValidObjectId(categoryId)) {
+      if (!mongoose.isValidObjectId(categoryId)) {
         throw new ErrorService(
           "NotFoundError",
           `Fandom category with id ${categoryId} not found`
@@ -301,7 +301,7 @@ export default (app: Router) => {
   route.patch("/categories/:categoryId", async (req, res, next) => {
     try {
       const categoryId = req.params.categoryId;
-      if (!isValidObjectId(categoryId)) {
+      if (!mongoose.isValidObjectId(categoryId)) {
         throw new ErrorService(
           "NotFoundError",
           `Fandom category with id ${categoryId} not found`
@@ -473,6 +473,225 @@ export default (app: Router) => {
   );
 
   /**
+   * path: /api/fandoms/posts/:postId
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: gets a post and its comments by id
+   */
+  route.get("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      if (!mongoose.isValidObjectId(postId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      const posts: IFandomPostDTOWithLikes[] = await FandomPost.aggregate([
+        {
+          $match: {
+            _id: mongoose.Types.ObjectId(postId)
+          }
+        },
+        {
+          $lookup: {
+            from: "fandomcomments",
+            as: "comments",
+            let: {
+              fandomPostId: "$_id"
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$fandomPost", "$$fandomPostId"]
+                  }
+                }
+              },
+              {
+                $lookup: {
+                  from: "userlikes",
+                  as: "numLikes",
+                  let: {
+                    fandomCommentId: "$_id"
+                  },
+                  pipeline: [
+                    {
+                      $match: {
+                        $expr: {
+                          $and: [
+                            { $eq: ["$isLike", true] },
+                            {
+                              $eq: ["$fandomComment", "$$fandomCommentId"]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      $project: {
+                        user: 1
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                $lookup: {
+                  from: "userlikes",
+                  as: "numDislikes",
+                  let: {
+                    fandomCommentId: "$_id"
+                  },
+                  pipeline: [
+                    {
+                      $match: {
+                        $expr: {
+                          $and: [
+                            { $eq: ["$isLike", false] },
+                            {
+                              $eq: ["$fandomComment", "$$fandomCommentId"]
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      $project: {
+                        user: 1
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                $lookup: {
+                  from: "users",
+                  as: "postedBy",
+                  localField: "postedBy",
+                  foreignField: "_id"
+                }
+              },
+              {
+                $project: {
+                  postedBy: {
+                    username: 1,
+                    profileURL: 1
+                  },
+                  numLikes: 1,
+                  numDislikes: 1,
+                  title: 1,
+                  content: 1,
+                  createdAt: 1
+                }
+              }
+            ]
+          }
+        },
+        {
+          $lookup: {
+            from: "userlikes",
+            as: "numLikes",
+            let: {
+              fandomPostId: "$_id"
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ["$isLike", true] },
+                      {
+                        $eq: ["$fandomPost", "$$fandomPostId"]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  user: 1
+                }
+              }
+            ]
+          }
+        },
+        {
+          $lookup: {
+            from: "userlikes",
+            as: "numDislikes",
+            let: {
+              fandomPostId: "$_id"
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ["$isLike", false] },
+                      {
+                        $eq: ["$fandomPost", "$$fandomPostId"]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                $project: {
+                  user: 1
+                }
+              }
+            ]
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            as: "postedBy",
+            localField: "postedBy",
+            foreignField: "_id"
+          }
+        },
+        {
+          $unwind: "$postedBy"
+        },
+        {
+          $project: {
+            postedBy: {
+              username: 1,
+              profileURL: 1
+            },
+            numLikes: 1,
+            numDislikes: 1,
+            title: 1,
+            content: 1,
+            createdAt: 1,
+            fandom: 1,
+            comments: 1
+          }
+        }
+      ]);
+
+      const postWithId = posts[0];
+      if (!postWithId) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      res.status(200).send(postWithId);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
    * path: /api/fandoms/posts
    * method: POST
    * body:
@@ -493,7 +712,7 @@ export default (app: Router) => {
         postedBy: createdByUser?._id
       };
 
-      if (!isValidObjectId(newPost.fandom)) {
+      if (!mongoose.isValidObjectId(newPost.fandom)) {
         throw new ErrorService(
           "NotFoundError",
           `Fandom with id ${newPost.fandom} does not exist`
@@ -539,7 +758,7 @@ export default (app: Router) => {
   route.delete("/posts/:postId", async (req, res, next) => {
     try {
       const postId = req.params.postId;
-      if (!isValidObjectId(postId)) {
+      if (!mongoose.isValidObjectId(postId)) {
         throw new ErrorService(
           "NotFoundError",
           `Post with id ${postId} not found`
@@ -557,6 +776,53 @@ export default (app: Router) => {
 
       await postDoc.delete();
       res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId
+   * method: PATCH
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandom: string
+   * }
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: updates a post
+   */
+  route.patch("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      if (!mongoose.isValidObjectId(postId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      const postDoc = await FandomPost.findById(postId);
+      //check if user who created post is the one updating (one who sent request) or admin
+
+      if (!postDoc) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      postDoc.content = req.body.content || postDoc.content;
+      postDoc.title = req.body.title || postDoc.title;
+      postDoc.fandom = req.body.fandom || postDoc.fandom;
+
+      const updatedPost = await postDoc.save();
+
+      res.status(200).send(updatedPost);
     } catch (err) {
       return next(err);
     }
