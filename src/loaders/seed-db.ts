@@ -533,81 +533,81 @@ const fandomComments: IFandomComment[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
+    postedBy: users[0]._id,
     title: "Comment 1",
-    fandomPost: fandomPosts[0],
+    fandomPost: fandomPosts[0]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
+    postedBy: users[1]._id,
     title: "Comment 2",
-    fandomPost: fandomPosts[0],
+    fandomPost: fandomPosts[0]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
+    postedBy: users[1]._id,
     title: "Comment 3",
-    fandomPost: fandomPosts[1],
+    fandomPost: fandomPosts[1]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
+    postedBy: users[0]._id,
     title: "Comment 4",
-    fandomPost: fandomPosts[1],
+    fandomPost: fandomPosts[1]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
+    postedBy: users[0]._id,
     title: "Comment 5",
-    fandomPost: fandomPosts[2],
+    fandomPost: fandomPosts[2]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
+    postedBy: users[1]._id,
     title: "Comment 6",
-    fandomPost: fandomPosts[3],
+    fandomPost: fandomPosts[3]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
+    postedBy: users[1]._id,
     title: "Comment 7",
-    fandomPost: fandomPosts[4],
+    fandomPost: fandomPosts[4]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
+    postedBy: users[0]._id,
     title: "Comment 8",
-    fandomPost: fandomPosts[5],
+    fandomPost: fandomPosts[5]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
+    postedBy: users[0]._id,
     title: "Comment 9",
-    fandomPost: fandomPosts[5],
+    fandomPost: fandomPosts[5]._id,
     createdAt: new Date(2021, 2, 8)
   }
 ];

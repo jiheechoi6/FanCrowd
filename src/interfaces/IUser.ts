@@ -57,6 +57,11 @@ export interface IUserLike {
   isLike: boolean;
 }
 
+export interface IUserLikeOnlyUser {
+  _id: mongoose.Types._ObjectId;
+  user: mongoose.Types._ObjectId;
+}
+
 export interface INewUserLikeInputDTO {
   user: mongoose.Types._ObjectId;
   fandomPost?: mongoose.Types._ObjectId;

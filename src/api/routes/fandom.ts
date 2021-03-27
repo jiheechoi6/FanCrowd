@@ -15,6 +15,7 @@ import {
   IFandomPost,
   IFandomPostDTOWithLikes,
   INewFandomCategoryInputDTO,
+  INewFandomCommentInputDTO,
   INewFandomInputDTO,
   INewFandomPostInputDTO
 } from "../../interfaces/IFandom";
@@ -649,8 +650,8 @@ export default (app: Router) => {
       const newPostDoc = await FandomPost.create(newPost);
       const post: IFandomPostDTOWithLikes = {
         ...newPostDoc.toObject(),
-        numDislikes: 0,
-        numLikes: 0,
+        numDislikes: [],
+        numLikes: [],
         postedBy: {
           username: createdByUser!.username,
           profileURL: createdByUser!.profileURL
@@ -870,6 +871,61 @@ export default (app: Router) => {
       );
 
       res.status(200).send(comments);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/comments
+   * method: POST
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandomPost: string
+   * }
+   * params: None
+   * description: creates a comment
+   */
+  route.post("/comments", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+
+      const newComment: INewFandomCommentInputDTO = {
+        ...req.body,
+        postedBy: createdByUser?._id
+      };
+
+      if (!mongoose.isValidObjectId(newComment.fandomPost)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${newComment.fandomPost} does not exist`
+        );
+      }
+
+      const post = await FandomPost.findById(newComment.fandomPost);
+
+      if (!post) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${newComment.fandomPost} does not exist`
+        );
+      }
+
+      const newCommentDoc = await FandomComment.create(newComment);
+      const comment: IFandomCommentDTOWithLikes = {
+        ...newCommentDoc.toObject(),
+        numDislikes: [],
+        numLikes: [],
+        postedBy: {
+          username: createdByUser!.username,
+          profileURL: createdByUser!.profileURL
+        }
+      };
+
+      res.status(200).send(comment);
     } catch (err) {
       return next(err);
     }

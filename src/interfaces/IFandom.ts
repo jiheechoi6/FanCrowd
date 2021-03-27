@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser, IUserPostedBy } from "./IUser";
+import { IUser, IUserLikeOnlyUser, IUserPostedBy } from "./IUser";
 
 export interface IFandom {
   _id: mongoose.Types._ObjectId;
@@ -60,8 +60,8 @@ export interface IFandomPostDTOWithLikes {
   postedBy: IUserPostedBy;
   fandom: mongoose.Types._ObjectId;
   createdAt: Date;
-  numLikes: number;
-  numDislikes: number;
+  numLikes: IUserLikeOnlyUser[];
+  numDislikes: IUserLikeOnlyUser[];
 }
 
 export interface INewFandomPostInputDTO {
@@ -75,8 +75,8 @@ export interface IFandomComment {
   _id: mongoose.Types._ObjectId;
   title: string;
   content: string;
-  postedBy: IUser;
-  fandomPost: IFandomPost;
+  postedBy: mongoose.Types._ObjectId;
+  fandomPost: mongoose.Types._ObjectId;
   createdAt: Date;
 }
 
@@ -84,6 +84,7 @@ export interface INewFandomCommentInputDTO {
   title: string;
   content: string;
   fandomPost: mongoose.Types._ObjectId;
+  postedBy: mongoose.Types._ObjectId;
 }
 
 export interface IFandomCommentDTOWithLikes {
@@ -93,6 +94,6 @@ export interface IFandomCommentDTOWithLikes {
   postedBy: IUserPostedBy;
   fandomPost: mongoose.Types._ObjectId;
   createdAt: Date;
-  numLikes: number;
-  numDislikes: number;
+  numLikes: IUserLikeOnlyUser[];
+  numDislikes: IUserLikeOnlyUser[];
 }
