@@ -874,4 +874,40 @@ export default (app: Router) => {
       return next(err);
     }
   });
+
+  /**
+   * path: /api/fandoms/comments/:commentId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *    commentId: string
+   * }
+   * description: deletes a comment
+   */
+  route.delete("/comments/:commentId", async (req, res, next) => {
+    try {
+      const commentId = req.params.commentId;
+      if (!mongoose.isValidObjectId(commentId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Comment with id ${commentId} not found`
+        );
+      }
+
+      const comment = await FandomComment.findById(commentId);
+
+      if (!comment) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Comment with id ${commentId} not found`
+        );
+      }
+
+      await comment.delete();
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
