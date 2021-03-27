@@ -1,5 +1,8 @@
 import { IFandom } from "../interfaces/IFandom";
 import mongoose from "mongoose";
+import FandomMember from "./fandom-member";
+import FandomPost from "./fandom-post";
+import Event from "./event";
 
 const FandomSchema = new mongoose.Schema(
   {
@@ -29,6 +32,14 @@ const FandomSchema = new mongoose.Schema(
 );
 
 FandomSchema.index({ name: 1, category: 1 }, { unique: true, dropDups: true });
+
+FandomSchema.post("remove", async function () {
+  const fandomId = this._id;
+
+  await FandomMember.deleteMany({ fandom: fandomId });
+  await FandomPost.deleteMany({ fandom: fandomId });
+  await Event.deleteMany({ fandom: fandomId });
+});
 
 export default mongoose.model<IFandom & mongoose.Document>(
   "Fandom",
