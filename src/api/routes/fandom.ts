@@ -4,11 +4,13 @@ import mongoose from "mongoose";
 import FandomCategory from "../../models/fandom-category";
 import Fandom from "../../models/fandom";
 import FandomPost from "../../models/fandom-post";
+import FandomComment from "../../models/fandom-comment";
 import User from "../../models/user";
 import {
   IFandom,
   IFandomCategory,
   IFandomCategoryDTO,
+  IFandomCommentDTOWithLikes,
   IFandomDTO,
   IFandomPost,
   IFandomPostDTOWithLikes,
@@ -751,6 +753,123 @@ export default (app: Router) => {
       const updatedPost = await postDoc.save();
 
       res.status(200).send(updatedPost);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId/comments
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: gets comments for a post
+   */
+  route.get("/posts/:postId/comments", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      if (!mongoose.isValidObjectId(postId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Post with id ${postId} not found`
+        );
+      }
+
+      const comments: IFandomCommentDTOWithLikes[] = await FandomComment.aggregate(
+        [
+          {
+            $match: {
+              fandomPost: mongoose.Types.ObjectId(postId)
+            }
+          },
+          {
+            $lookup: {
+              from: "userlikes",
+              as: "numLikes",
+              let: {
+                fandomCommentId: "$_id"
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ["$isLike", true] },
+                        {
+                          $eq: ["$fandomComment", "$$fandomCommentId"]
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  $project: {
+                    user: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: "userlikes",
+              as: "numDislikes",
+              let: {
+                fandomCommentId: "$_id"
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $eq: ["$isLike", false] },
+                        {
+                          $eq: ["$fandomComment", "$$fandomCommentId"]
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  $project: {
+                    user: 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            $lookup: {
+              from: "users",
+              as: "postedBy",
+              localField: "postedBy",
+              foreignField: "_id"
+            }
+          },
+          {
+            $unwind: "$postedBy"
+          },
+          {
+            $project: {
+              postedBy: {
+                username: 1,
+                profileURL: 1
+              },
+              numLikes: 1,
+              numDislikes: 1,
+              title: 1,
+              content: 1,
+              createdAt: 1,
+              fandomPost: 1
+            }
+          }
+        ]
+      );
+
+      res.status(200).send(comments);
     } catch (err) {
       return next(err);
     }

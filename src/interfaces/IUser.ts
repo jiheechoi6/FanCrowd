@@ -15,7 +15,7 @@ export interface IUser {
   country: string;
 }
 
-export interface IUserFandomPost {
+export interface IUserPostedBy {
   username: string;
   profileURL: string;
 }
