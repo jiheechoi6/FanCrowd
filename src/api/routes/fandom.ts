@@ -910,4 +910,61 @@ export default (app: Router) => {
       return next(err);
     }
   });
+
+  /**
+   * path: /api/fandoms/comments/:commentId
+   * method: PATCH
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandomPost: string
+   * }
+   * params:
+   * {
+   *    commentId: string
+   * }
+   * description: updates a comment
+   */
+  route.patch("/comments/:commentId", async (req, res, next) => {
+    try {
+      const commentId = req.params.commentId;
+      if (!mongoose.isValidObjectId(commentId)) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Comment with id ${commentId} not found`
+        );
+      }
+
+      const comment = await FandomComment.findById(commentId);
+
+      if (!comment) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Comment with id ${commentId} not found`
+        );
+      }
+
+      comment.title = req.body.title || comment.title;
+      comment.content = req.body.content || comment.content;
+
+      if (req.body.fandomPost) {
+        const post = await FandomPost.findById(req.body.fandomPost);
+
+        if (!post) {
+          throw new ErrorService(
+            "NotFoundError",
+            `Post with id ${req.body.fandomPost} does not exist`
+          );
+        }
+
+        comment.fandomPost = req.body.fandomPost;
+      }
+
+      const updatedComment = await comment.save();
+      res.status(200).send(updatedComment);
+    } catch (err) {
+      return next(err);
+    }
+  });
 };
