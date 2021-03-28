@@ -76,7 +76,7 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *  eventId: number
+   *  eventId: string
    * }
    * description: deletes an event
    */
@@ -123,7 +123,7 @@ export default (app: Router) => {
    * }
    * params:
    * {
-   *  eventId: number
+   *  eventId: string
    * }
    * description: updates an event
    */
@@ -322,7 +322,7 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *  eventId: number
+   *  eventId: string
    * }
    * description: deletes all reviews of an event
    */
@@ -369,7 +369,7 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *  reviewId: number
+   *  reviewId: string
    * }
    * description: deletes a review
    */
@@ -414,7 +414,7 @@ export default (app: Router) => {
    * }
    * params:
    * {
-   *  reviewId: number
+   *  reviewId: string
    * }
    * description: updates a review
    */
@@ -514,7 +514,7 @@ export default (app: Router) => {
    * }
    * params:
    * {
-   *  eventId: number
+   *  eventId: string
    * }
    * description: user attends an event
    */
@@ -560,7 +560,7 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *  attendId: number
+   *  attendId: string
    * }
    * description: deletes an attendance
    */
@@ -599,7 +599,7 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *  eventId: number
+   *  eventId: string
    * }
    * description: deletes all attendances of an event
    */
