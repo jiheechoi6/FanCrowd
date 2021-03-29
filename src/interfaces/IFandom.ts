@@ -6,7 +6,7 @@ export interface IFandom {
   name: string;
   backgroundURL: string;
   category: mongoose.Types._ObjectId;
-  createdBy: IUser;
+  createdBy: mongoose.Types._ObjectId;
   createdAt: Date;
 }
 
@@ -96,4 +96,10 @@ export interface IFandomCommentDTOWithLikes {
   createdAt: Date;
   numLikes: IUserLikeOnlyUser[];
   numDislikes: IUserLikeOnlyUser[];
+}
+
+export interface IUpdateFandomDTO {
+  name?: string;
+  backgroundURL?: string;
+  category?: string;
 }

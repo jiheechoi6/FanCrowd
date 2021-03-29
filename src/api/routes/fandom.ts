@@ -17,9 +17,12 @@ import {
   INewFandomCategoryInputDTO,
   INewFandomCommentInputDTO,
   INewFandomInputDTO,
-  INewFandomPostInputDTO
+  INewFandomPostInputDTO,
+  IUpdateFandomDTO
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
+import FandomService from "../../services/fandom";
+import GlobalService from "../../services/global";
 
 const route = Router();
 
@@ -47,26 +50,8 @@ export default (app: Router) => {
         createdBy: createdByUser?._id
       };
 
-      if (!mongoose.isValidObjectId(newFandom.category)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with id ${newFandom.category} does not exist`
-        );
-      }
-
-      const category = await FandomCategory.findById(newFandom.category);
-
-      if (!category) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with id ${newFandom.category} does not exist`
-        );
-      }
-
-      const newFandomDoc = await Fandom.create(newFandom);
-      const fandom = newFandomDoc.toObject();
-      Reflect.deleteProperty(fandom, "createdBy");
-
+      const fandomService = new FandomService();
+      const fandom = await fandomService.createFandom(newFandom);
       res.status(200).send(fandom);
     } catch (err) {
       return next(err);
@@ -86,26 +71,8 @@ export default (app: Router) => {
   route.delete("/:fandomId", async (req, res, next) => {
     try {
       const fandomId = req.params.fandomId;
-
-      if (!mongoose.isValidObjectId(fandomId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      const fandom = await Fandom.findById(fandomId);
-
-      if (!fandom) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      //should be checking if user who created fandom is the one deleting or admin
-
-      await fandom.delete();
+      const fandomService = new FandomService();
+      await fandomService.deleteFandomById(fandomId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -130,46 +97,17 @@ export default (app: Router) => {
   route.patch("/:fandomId", async (req, res, next) => {
     try {
       const fandomId = req.params.fandomId;
+      const fandomService = new FandomService();
 
-      if (!mongoose.isValidObjectId(fandomId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
+      const reqBody = req.body as IUpdateFandomDTO;
 
-      const fandomDoc = await Fandom.findById(fandomId);
-
-      if (!fandomDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      //should be checking if user who created fandom is the one updating or admin
-      fandomDoc.name = req.body.name || fandomDoc.name;
-      fandomDoc.backgroundURL =
-        req.body.backgroundURL || fandomDoc.backgroundURL;
-
-      if (req.body.category) {
-        const fandomCategory = await FandomCategory.findById(req.body.category);
-
-        if (!fandomCategory) {
-          throw new ErrorService(
-            "NotFoundError",
-            `Category with id ${req.body.category} does not exist`
-          );
-        }
-
-        fandomDoc.category = req.body.category;
-      }
-
-      const updatedFandom = await fandomDoc.save();
-      const fandom = updatedFandom.toObject();
-      Reflect.deleteProperty(fandom, "createdBy");
-
-      res.status(200).send(fandom);
+      //should be passing req.currentUser to updateFandomById
+      const updatedFandom = fandomService.updateFandomById(
+        fandomId,
+        reqBody,
+        undefined
+      );
+      res.status(200).send(updatedFandom);
     } catch (err) {
       return next(err);
     }
@@ -184,9 +122,9 @@ export default (app: Router) => {
    */
   route.get("/categories", async (req, res, next) => {
     try {
-      const categories: IFandomCategoryDTO[] = await FandomCategory.find(
-        {}
-      ).select("-createdBy");
+      const fandomService = new FandomService();
+      const categories = await fandomService.getFandomCategories();
+
       res.status(200).send(categories);
     } catch (err) {
       return next(err);
