@@ -2,12 +2,18 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import routes from "../api";
 import config from "../config";
+import passport from "passport";
 
 export default ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
   app.use(express.json());
   app.use(config.api.prefix, routes());
+  app.use("")
+  // Passport Middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
+  require('./config/passport')(passport);
 
   //Catches 404 routes
   app.use((req, res, next) => {
