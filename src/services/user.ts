@@ -47,25 +47,17 @@ export default class UserService {
       }
       
       let token = "";
-      let passwordValid = true;
-      // compare password
-      bcrypt.compare(password, userRecord.password, (err, isMatch) => {
-        if(err) throw Error("Wrong password");
-        // callback(null, isMatch);
-        if(isMatch){
-          token = jwt.sign(userRecord, Config.secret, {
-            expiresIn: 10800  // 3 hours
-          });
-
-        } else {
-          throw new Error("Wrong password");
-        }
-      });
+      let sucess = await bcrypt.compare(password, userRecord.password);
+      if (sucess){
+        token = await jwt.sign(userRecord.toObject(), Config.secret, {expiresIn: 10800 }); // 3 hours
+      }else{
+        throw new Error("Wrong password");
+      }
       const user = userRecord.toObject();
       Reflect.deleteProperty(user, "password");
 
       return {
-        token: token,
+        token: "JWT" + token,
         user: user
       };
     }catch(err){
