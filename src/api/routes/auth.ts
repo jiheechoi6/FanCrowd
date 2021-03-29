@@ -8,6 +8,19 @@ const route = Router();
 export default (app: Router) => {
   app.use("/auth", route);
 
+  /**
+   * path: /api/auth/signup
+   * method: post
+   * body: 
+   *  {
+   *    fullName: string,
+   *    email: string,
+   *    username: string,
+   *    password: string
+   *  }
+   * params: None
+   * description: register new user
+   */
   route.post(
     "/signup",
     async (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +29,7 @@ export default (app: Router) => {
         const { user } = await userServiceInstance.SignUp(
           req.body as INewUserInputDTO
         );
-        return res.status(201).json({ user });
+        return res.status(200).json({ user });
       } catch (err) {
         return next(err);
       }
