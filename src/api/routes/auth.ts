@@ -35,15 +35,27 @@ export default (app: Router) => {
       }
     }
   );
-
+  
+  /**
+   * path: /api/auth/signin
+   * method: post
+   * body: 
+   *  {
+   *    username: string,
+   *    password: string
+   *  }
+   * params: None
+   * description: sign in a user
+   */
   route.post(
     "/signin",
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
         const userServiceInstance = new UserService();
-        const { user } = await userServiceInstance.SignIn(email, password);
-        return res.json({ user }).status(200);
+        const tokenAndUser = await userServiceInstance.SignIn(username, password);
+
+        res.status(200).json(tokenAndUser);
       } catch (err) {
         return next(err);
       }

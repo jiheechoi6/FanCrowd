@@ -1,7 +1,9 @@
 import config from "../config";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { IUser, INewUserInputDTO } from "../interfaces/IUser";
 import UserModel from "../models/user";
+import Config from "../config/index";
 
 export default class UserService {
 
@@ -35,19 +37,38 @@ export default class UserService {
   }
 
   public async SignIn(
-    email: string,
+    username: string,
     password: string
-  ): Promise<{ user: IUser }> {
-    const userRecord = await UserModel.findOne({ email });
-    if (!userRecord) {
-      throw new Error();
-    }
-    const validPassword = true;
-    if (validPassword) {
+  ): Promise<{ token:string,  user: IUser }> {
+    try{
+      const userRecord = await UserModel.findOne({ username: username });
+      if (!userRecord) {
+        throw new Error("Invalid username");
+      }
+      
+      let token = "";
+      let passwordValid = true;
+      // compare password
+      bcrypt.compare(password, userRecord.password, (err, isMatch) => {
+        if(err) throw Error("Wrong password");
+        // callback(null, isMatch);
+        if(isMatch){
+          token = jwt.sign(userRecord, Config.secret, {
+            expiresIn: 10800  // 3 hours
+          });
+
+        } else {
+          throw new Error("Wrong password");
+        }
+      });
       const user = userRecord.toObject();
       Reflect.deleteProperty(user, "password");
-      return { user };
-    } else {
+
+      return {
+        token: token,
+        user: user
+      };
+    }catch(err){
       throw new Error("Username or password incorrect");
     }
   }

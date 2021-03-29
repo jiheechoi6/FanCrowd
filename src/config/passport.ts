@@ -1,9 +1,10 @@
 import {Strategy, ExtractJwt} from "passport-jwt";
 import UserSchema from "../models/user";
+import config from "../config/index";
 
 module.exports = function(passport: { use: (arg0: Strategy) => void; }){
     // we'll be using authorization in header
-    let opts = {jwtFromRequest: ExtractJwt.fromAuthHeader()};
+    let opts = {jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"), secretOrKey: config.secret};
     
     passport.use(new Strategy(opts, (jwt_payload, done) => {
         try{
