@@ -39,24 +39,29 @@ export default class UserService {
   public async SignIn(
     username: string,
     password: string
-  ): Promise<{ token:string,  user: IUser }> {
+  ): Promise<{ usernameValid:boolean, pwValid:boolean, token:string,  user: IUser|null }> {
     try{
+      let usernameValid = true;
+      let pwValid = true;
+      let token = "";
+      let user = null;
       const userRecord = await UserModel.findOne({ username: username });
       if (!userRecord) {
-        throw new Error("Invalid username");
-      }
-      
-      let token = "";
-      let sucess = await bcrypt.compare(password, userRecord.password);
-      if (sucess){
-        token = await jwt.sign(userRecord.toObject(), Config.secret, {expiresIn: 10800 }); // 3 hours
+        usernameValid = false;
       }else{
-        throw new Error("Wrong password");
+        pwValid = await bcrypt.compare(password, userRecord.password);
+        if (pwValid){
+          token = await jwt.sign(userRecord.toObject(), Config.secret, {expiresIn: 10800 }); // 3 hours
+        }else{
+          pwValid = false;
+        }
+        
+        user = userRecord.toObject();
+        Reflect.deleteProperty(user, "password");
       }
-      const user = userRecord.toObject();
-      Reflect.deleteProperty(user, "password");
-
       return {
+        usernameValid: usernameValid,
+        pwValid: pwValid,
         token: "JWT" + token,
         user: user
       };
