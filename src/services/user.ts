@@ -1,4 +1,5 @@
 import config from "../config";
+import {Strategy, ExtractJwt} from "passport-jwt";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IUser, INewUserInputDTO } from "../interfaces/IUser";
@@ -39,10 +40,10 @@ export default class UserService {
   public async SignIn(
     username: string,
     password: string
-  ): Promise<{ usernameValid:boolean, pwValid:boolean, token:string,  user: IUser|null }> {
+  ): Promise<{ usernameValid:boolean, pwValid:boolean, token:string,  user: any}> {
     try{
       let usernameValid = true;
-      let pwValid = true;
+      let pwValid = false;
       let token = "";
       let user = null;
       const userRecord = await UserModel.findOne({ username: username });
@@ -50,20 +51,20 @@ export default class UserService {
         usernameValid = false;
       }else{
         pwValid = await bcrypt.compare(password, userRecord.password);
+        user = userRecord.toObject();
         if (pwValid){
-          token = await jwt.sign(userRecord.toObject(), Config.secret, {expiresIn: 10800 }); // 3 hours
-        }else{
-          pwValid = false;
+          token = jwt.sign({data: user}, Config.secret, {expiresIn: 10800 }); // 3 hours
+          pwValid = true;
         }
         
-        user = userRecord.toObject();
         Reflect.deleteProperty(user, "password");
       }
+
       return {
         usernameValid: usernameValid,
         pwValid: pwValid,
-        token: "JWT" + token,
-        user: user
+        token: "JWT " + token,
+        user: {data: user}
       };
     }catch(err){
       throw new Error("Username or password incorrect");

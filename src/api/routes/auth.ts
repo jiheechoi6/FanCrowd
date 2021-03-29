@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { INewUserInputDTO } from "../../interfaces/IUser";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
+import passport from "passport";
 
 const route = Router();
 
@@ -61,4 +62,28 @@ export default (app: Router) => {
       }
     }
   );
+
+  /**
+   * path: /api/auth/currentUser
+   * method: get
+   * body: None
+   * params: None
+   * description: get information for current user logged in
+   */
+  route.get(
+    "/currentUser",
+    passport.authenticate('jwt', {session:false}),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        if(!req.user){
+          throw new Error("No user logged in");
+        }else{
+          res.status(200).json(req.user)
+        }
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
 };
+

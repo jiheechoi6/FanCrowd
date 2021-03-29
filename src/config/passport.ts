@@ -8,7 +8,7 @@ module.exports = function(passport: { use: (arg0: Strategy) => void; }){
     
     passport.use(new Strategy(opts, (jwt_payload, done) => {
         try{
-            const user = UserSchema.findById(jwt_payload._doc._id);
+            const user = UserSchema.findById(jwt_payload.data._id);
             if(user){
                 return done(null, user);
             } else {
