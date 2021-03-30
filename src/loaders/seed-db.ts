@@ -5,6 +5,7 @@ import {
   IUserLike
 } from "../interfaces/IUser";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 import UserModel from "../models/user";
 import FandomModel from "../models/fandom";
@@ -727,6 +728,8 @@ export default async () => {
   await dropDatabase();
 
   for (let i = 0; i < users.length; i++) {
+    let salt = await bcrypt.genSalt(10);
+    users[i].password = await bcrypt.hash(users[i].password, salt);
     await UserModel.create(users[i]);
   }
 
