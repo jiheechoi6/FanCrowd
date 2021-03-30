@@ -1,5 +1,6 @@
 import { IFandomCategory } from "../interfaces/IFandom";
 import mongoose from "mongoose";
+import Fandom from "./fandom";
 
 const FandomCategorySchema = new mongoose.Schema(
   {
@@ -21,6 +22,11 @@ const FandomCategorySchema = new mongoose.Schema(
   },
   { versionKey: false }
 );
+
+FandomCategorySchema.post("remove", async function () {
+  const categoryId = this._id;
+  await Fandom.deleteMany({ category: categoryId });
+});
 
 export default mongoose.model<IFandomCategory & mongoose.Document>(
   "FandomCategory",

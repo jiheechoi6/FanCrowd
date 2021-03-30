@@ -15,6 +15,11 @@ export interface IUser {
   country: string;
 }
 
+export interface IUserPostedBy {
+  username: string;
+  profileURL: string;
+}
+
 export interface INewUserInputDTO {
   fullName: string;
   email: string;
@@ -50,6 +55,11 @@ export interface IUserLike {
   fandomPost?: IFandomPost;
   fandomComment?: IFandomComment;
   isLike: boolean;
+}
+
+export interface IUserLikeOnlyUser {
+  _id: mongoose.Types._ObjectId;
+  user: mongoose.Types._ObjectId;
 }
 
 export interface INewUserLikeInputDTO {
