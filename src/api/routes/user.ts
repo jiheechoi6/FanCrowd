@@ -4,7 +4,7 @@ import {
   IUser,
   INewUserInputDTO,
 } from "../../interfaces/IUser";
-import UserSchema from "../../models/user";
+import User from "../../models/user";
 import { isValidObjectId } from "mongoose";
 import ErrorService from "../../services/error";
 const route = Router();
@@ -21,7 +21,7 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) =>{
     try {
-      const users: IUser[] = await UserSchema.find(
+      const users: IUser[] = await User.find(
         {}
       );
       res.status(200).send(users);
@@ -40,7 +40,7 @@ export default (app: Router) => {
   route.get("/:username", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const userFound = await UserSchema.findOne({
+      const userFound = await User.findOne({
         username: username
       });
 
