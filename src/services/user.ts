@@ -22,7 +22,6 @@ export default class UserService {
       const newUser: INewUserInputDTO = {
         ...userInputDTO
       }
-
       const userRecord = await UserModel.create(newUser);
 
       if (!userRecord) {
@@ -53,10 +52,10 @@ export default class UserService {
         pwValid = await bcrypt.compare(password, userRecord.password);
         user = userRecord.toObject();
         if (pwValid){
-          token = jwt.sign({data: user}, Config.secret, {expiresIn: 10800 }); // 3 hours
+          token = jwt.sign(user, Config.secret, {expiresIn: 10800 }); // 3 hours
           pwValid = true;
         }
-        
+
         Reflect.deleteProperty(user, "password");
       }
 
@@ -64,7 +63,7 @@ export default class UserService {
         usernameValid: usernameValid,
         pwValid: pwValid,
         token: "JWT " + token,
-        user: {data: user}
+        user: user
       };
     }catch(err){
       throw new Error("Username or password incorrect");

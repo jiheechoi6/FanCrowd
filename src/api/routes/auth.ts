@@ -3,6 +3,7 @@ import { INewUserInputDTO } from "../../interfaces/IUser";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
 import passport from "passport";
+import UserModel from "../../models/user";
 
 const route = Router();
 
@@ -76,7 +77,7 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         if(!req.user){
-          throw new Error("No user logged in");
+          res.status(200).json({});
         }else{
           res.status(200).json(req.user)
         }

@@ -3,12 +3,14 @@ import cors from "cors";
 import routes from "../api";
 import config from "../config";
 import passport from "passport";
+import bodyParser from 'body-parser';
 
 export default ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
   app.use(express.json());
   app.use(config.api.prefix, routes());
+  app.use(bodyParser);
 
   // Passport Middleware
   app.use(passport.initialize());
