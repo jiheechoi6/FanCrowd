@@ -29,7 +29,7 @@ export interface IFandomCategory {
   _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
-  createdBy: IUser;
+  createdBy: mongoose.Types._ObjectId;
 }
 
 export interface IFandomCategoryDTO {
@@ -51,6 +51,24 @@ export interface IFandomPost {
   postedBy: mongoose.Types._ObjectId;
   fandom: mongoose.Types._ObjectId;
   createdAt: Date;
+}
+
+export interface IFandomPostFilter {
+  _id?: mongoose.Types._ObjectId;
+  title?: string;
+  content?: string;
+  postedBy?: mongoose.Types._ObjectId;
+  fandom?: mongoose.Types._ObjectId;
+  createdAt?: Date;
+}
+
+export interface IFandomCommentFilter {
+  _id?: mongoose.Types._ObjectId;
+  title?: string;
+  content?: string;
+  postedBy?: mongoose.Types._ObjectId;
+  fandomPost?: mongoose.Types._ObjectId;
+  createdAt?: Date;
 }
 
 export interface IFandomPostDTOWithLikes {
@@ -102,4 +120,21 @@ export interface IUpdateFandomDTO {
   name?: string;
   backgroundURL?: string;
   category?: string;
+}
+
+export interface IUpdateCategoryDTO {
+  name?: string;
+  backgroundURL?: string;
+}
+
+export interface IUpdatePostDTO {
+  title?: string;
+  content?: string;
+  fandom?: mongoose.Types._ObjectId;
+}
+
+export interface IUpdateCommentDTO {
+  title?: string;
+  content?: string;
+  fandomPost?: mongoose.Types._ObjectId;
 }

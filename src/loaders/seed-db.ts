@@ -76,46 +76,46 @@ const fandomCategories: IFandomCategory[] = [
     backgroundURL:
       "https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg",
     name: "Movies",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
     name: "Books",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
     name: "Shows",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://wallpaper-house.com/data/out/7/wallpaper2you_191367.jpg",
     name: "Anime",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/242347.jpg",
     name: "Games",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/552032.jpg",
     name: "Sports",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/249743.png",
     name: "Technology",
-    createdBy: users[2]
+    createdBy: users[2]._id
   }
 ];
 
