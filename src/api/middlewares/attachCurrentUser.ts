@@ -12,17 +12,17 @@ const attachCurrentUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    const userRecord = await UserModel.findById(req.token._id);
-    if (!userRecord) {
-      return res.sendStatus(401);
-    }
-    Reflect.deleteProperty(userRecord, "password");
-    req.currentUser = userRecord;
-    return next();
-  } catch (err) {
-    return next(err);
-  }
+  // try {
+  //   const userRecord = await UserModel.findById(req.token._id);
+  //   if (!userRecord) {
+  //     return res.sendStatus(401);
+  //   }
+  //   Reflect.deleteProperty(userRecord, "password");
+  //   req.currentUser = userRecord;
+  //   return next();
+  // } catch (err) {
+  //   return next(err);
+  // }
 };
 
 export default attachCurrentUser;
