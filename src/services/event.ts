@@ -1,622 +1,302 @@
-// import mongoose from "mongoose";
-// import FandomCategory from "../models/fandom-category";
-// import Fandom from "../models/fandom";
-// import FandomPost from "../models/fandom-post";
-// import FandomComment from "../models/fandom-comment";
-// import User from "../models/user";
-// import Event from "../models/event";
-// import {
-//   IFandom,
-//   IFandomCategory,
-//   IFandomCategoryDTO,
-//   IFandomCommentDTOWithLikes,
-//   IFandomCommentFilter,
-//   IFandomDTO,
-//   IFandomPost,
-//   IFandomPostDTOWithLikes,
-//   IFandomPostFilter,
-//   INewFandomCategoryInputDTO,
-//   INewFandomCommentInputDTO,
-//   INewFandomInputDTO,
-//   INewFandomPostInputDTO,
-//   IUpdateCategoryDTO,
-//   IUpdateCommentDTO,
-//   IUpdateFandomDTO,
-//   IUpdatePostDTO
-// } from "../interfaces/IFandom";
-// import {
-//     IEvent, 
-//     INewEventInputDTO,
-//     IEventReview,
-//     INewEventReviewInputDTO
-// } from ""../interfaces/IEvent";
-// import ErrorService from "./error";
-// import GlobalService from "./global";
-// import { IUser } from "../interfaces/IUser";
-
-// export default class FandomService {
-//   private static _globalService = new GlobalService();
-
-//   public async getEventById(eventId: mongoose.Types._ObjectId | string) {
-//     const event = await Event.findById(eventId);
-//     if (!event) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Event with id ${eventId} does not exist`
-//       );
-//     }
-
-//     return event;
-//   }
-
-//   public async getFandomById(fandomId: mongoose.Types._ObjectId | string) {
-//     const fandom = await Fandom.findById(fandomId);
-
-//     if (!fandom) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Fandom with id ${fandomId} does not exist`
-//       );
-//     }
-
-//     return fandom;
-//   }
-
-//   public async getFandomCategories() {
-//     const categories: IFandomCategoryDTO[] = await FandomCategory.find(
-//       {}
-//     ).select("-createdBy");
-//     return categories;
-//   }
-
-//   public async createFandom(newFandom: INewFandomInputDTO) {
-//     FandomService._globalService.checkValidObjectId(
-//       newFandom.category,
-//       `Category with id ${newFandom.category} does not exist`
-//     );
-
-//     this.getCategoryById(newFandom.category);
-//     const newFandomDoc = await Fandom.create(newFandom);
-//     const fandom = newFandomDoc.toObject();
-//     Reflect.deleteProperty(fandom, "createdBy");
-
-//     return fandom;
-//   }
-
-//   public async updateFandomById(
-//     fandomId: mongoose.Types._ObjectId | string,
-//     updatedFandom: IUpdateFandomDTO,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       fandomId,
-//       `Fandom with id ${fandomId} does not exist`
-//     );
-
-//     const fandomDoc = await this.getFandomById(fandomId);
-
-//     //uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   fandomDoc.createdBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may update fandom with id ${fandomId}`
-//     // );
-
-//     fandomDoc.name = updatedFandom.name || fandomDoc.name;
-//     fandomDoc.backgroundURL =
-//       updatedFandom.backgroundURL || fandomDoc.backgroundURL;
-
-//     if (updatedFandom.category) {
-//       const fandomCategory = await this.getCategoryById(updatedFandom.category);
-//       fandomDoc.category = fandomCategory._id;
-//     }
-
-//     const updatedFandomDoc = await fandomDoc.save();
-//     const fandom = updatedFandomDoc.toObject();
-//     Reflect.deleteProperty(fandom, "createdBy");
-
-//     return fandom;
-//   }
-
-//   public async deleteFandomById(
-//     fandomId: mongoose.Types._ObjectId | string,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       fandomId,
-//       `Fandom with id ${fandomId} does not exist`
-//     );
-
-//     const fandom = await this.getFandomById(fandomId);
-
-//     //uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   fandom.createdBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may delete fandom with id ${fandomId}`
-//     // );
-
-//     await fandom.delete();
-//   }
-
-//   public async getFandomsInCategory(categoryName: string) {
-//     const category = await FandomCategory.findOne({
-//       name: categoryName.toLowerCase()
-//     });
-
-//     if (!category) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Category with name ${categoryName} does not exist`
-//       );
-//     }
-
-//     const fandoms: IFandomDTO[] = await Fandom.find({
-//       category: category._id
-//     }).select("-createdBy");
-
-//     return fandoms;
-//   }
-
-//   public async createCategory(newCategory: INewFandomCategoryInputDTO) {
-//     const newCategoryDoc = await FandomCategory.create(newCategory);
-//     const category = newCategoryDoc.toObject();
-//     Reflect.deleteProperty(category, "createdBy");
-
-//     return category;
-//   }
-
-//   public async deleteCategoryById(
-//     categoryId: mongoose.Types._ObjectId | string,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       categoryId,
-//       `Fandom category with id ${categoryId} not found`
-//     );
-
-//     const categoryDoc = await this.getCategoryById(categoryId);
-
-//     //uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   categoryDoc.createdBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may delete the fandom category with id ${categoryId}`
-//     // );
-
-//     await categoryDoc.delete();
-//   }
-
-//   public async updateCategoryById(
-//     categoryId: mongoose.Types._ObjectId | string,
-//     updatedCategory: IUpdateCategoryDTO,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       categoryId,
-//       `Fandom category with id ${categoryId} not found`
-//     );
-
-//     const categoryDoc = await this.getCategoryById(categoryId);
-
-//     //uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   categoryDoc.createdBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may update the fandom category with id ${categoryId}`
-//     // );
-
-//     categoryDoc.name = updatedCategory.name || categoryDoc.name;
-//     categoryDoc.backgroundURL =
-//       updatedCategory.backgroundURL || categoryDoc.backgroundURL;
-
-//     const updatedCategoryDoc = await categoryDoc!.save();
-//     const category = updatedCategoryDoc.toObject();
-//     Reflect.deleteProperty(category, "createdBy");
-
-//     return category;
-//   }
-
-//   public async getPostsMatchingFilters(postFilter: IFandomPostFilter) {
-//     const posts: IFandomPostDTOWithLikes[] = await FandomPost.aggregate([
-//       {
-//         $match: postFilter
-//       },
-//       {
-//         $lookup: {
-//           from: "userlikes",
-//           as: "numLikes",
-//           let: {
-//             fandomPostId: "$_id"
-//           },
-//           pipeline: [
-//             {
-//               $match: {
-//                 $expr: {
-//                   $and: [
-//                     { $eq: ["$isLike", true] },
-//                     {
-//                       $eq: ["$fandomPost", "$$fandomPostId"]
-//                     }
-//                   ]
-//                 }
-//               }
-//             },
-//             {
-//               $project: {
-//                 user: 1
-//               }
-//             }
-//           ]
-//         }
-//       },
-//       {
-//         $lookup: {
-//           from: "userlikes",
-//           as: "numDislikes",
-//           let: {
-//             fandomPostId: "$_id"
-//           },
-//           pipeline: [
-//             {
-//               $match: {
-//                 $expr: {
-//                   $and: [
-//                     { $eq: ["$isLike", false] },
-//                     {
-//                       $eq: ["$fandomPost", "$$fandomPostId"]
-//                     }
-//                   ]
-//                 }
-//               }
-//             },
-//             {
-//               $project: {
-//                 user: 1
-//               }
-//             }
-//           ]
-//         }
-//       },
-//       {
-//         $lookup: {
-//           from: "users",
-//           as: "postedBy",
-//           localField: "postedBy",
-//           foreignField: "_id"
-//         }
-//       },
-//       {
-//         $unwind: "$postedBy"
-//       },
-//       {
-//         $project: {
-//           postedBy: {
-//             username: 1,
-//             profileURL: 1
-//           },
-//           numLikes: 1,
-//           numDislikes: 1,
-//           title: 1,
-//           content: 1,
-//           createdAt: 1,
-//           fandom: 1
-//         }
-//       }
-//     ]);
-
-//     return posts;
-//   }
-
-//   public async getCommentsMatchingFilters(commentFilter: IFandomCommentFilter) {
-//     const comments: IFandomCommentDTOWithLikes[] = await FandomComment.aggregate(
-//       [
-//         {
-//           $match: commentFilter
-//         },
-//         {
-//           $lookup: {
-//             from: "userlikes",
-//             as: "numLikes",
-//             let: {
-//               fandomCommentId: "$_id"
-//             },
-//             pipeline: [
-//               {
-//                 $match: {
-//                   $expr: {
-//                     $and: [
-//                       { $eq: ["$isLike", true] },
-//                       {
-//                         $eq: ["$fandomComment", "$$fandomCommentId"]
-//                       }
-//                     ]
-//                   }
-//                 }
-//               },
-//               {
-//                 $project: {
-//                   user: 1
-//                 }
-//               }
-//             ]
-//           }
-//         },
-//         {
-//           $lookup: {
-//             from: "userlikes",
-//             as: "numDislikes",
-//             let: {
-//               fandomCommentId: "$_id"
-//             },
-//             pipeline: [
-//               {
-//                 $match: {
-//                   $expr: {
-//                     $and: [
-//                       { $eq: ["$isLike", false] },
-//                       {
-//                         $eq: ["$fandomComment", "$$fandomCommentId"]
-//                       }
-//                     ]
-//                   }
-//                 }
-//               },
-//               {
-//                 $project: {
-//                   user: 1
-//                 }
-//               }
-//             ]
-//           }
-//         },
-//         {
-//           $lookup: {
-//             from: "users",
-//             as: "postedBy",
-//             localField: "postedBy",
-//             foreignField: "_id"
-//           }
-//         },
-//         {
-//           $unwind: "$postedBy"
-//         },
-//         {
-//           $project: {
-//             postedBy: {
-//               username: 1,
-//               profileURL: 1
-//             },
-//             numLikes: 1,
-//             numDislikes: 1,
-//             title: 1,
-//             content: 1,
-//             createdAt: 1,
-//             fandomPost: 1
-//           }
-//         }
-//       ]
-//     );
-
-//     return comments;
-//   }
-
-//   public async getPostsForFandom(categoryName: string, fandomName: string) {
-//     const category = await FandomCategory.findOne({
-//       name: categoryName.toLowerCase().split("-").join(" ")
-//     });
-
-//     if (!category) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Category with name ${categoryName} does not exist`
-//       );
-//     }
-
-//     const fandom = await Fandom.findOne({
-//       name: fandomName.toLowerCase().split("-").join(" "),
-//       category: category._id
-//     });
-
-//     if (!fandom) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Fandom with name ${fandomName} does not exist`
-//       );
-//     }
-
-//     const posts: IFandomPostDTOWithLikes[] = await this.getPostsMatchingFilters(
-//       { fandom: fandom._id }
-//     );
-
-//     return posts;
-//   }
-
-//   public async getPostById(postId: string) {
-//     FandomService._globalService.checkValidObjectId(
-//       postId,
-//       `Post with id ${postId} not found`
-//     );
-
-//     const posts = await this.getPostsMatchingFilters({
-//       _id: mongoose.Types.ObjectId(postId)
-//     });
-
-//     const postWithId = posts[0];
-
-//     if (!postWithId) {
-//       throw new ErrorService(
-//         "NotFoundError",
-//         `Post with id ${postId} not found`
-//       );
-//     }
-
-//     return postWithId;
-//   }
-
-//   public async createPost(
-//     newPost: INewFandomPostInputDTO,
-//     createdByUser: IUser | null
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       newPost.fandom,
-//       `Fandom with id ${newPost.fandom} does not exist`
-//     );
-
-//     await this.getFandomById(newPost.fandom);
-
-//     const newPostDoc = await FandomPost.create(newPost);
-//     const post: IFandomPostDTOWithLikes = {
-//       ...newPostDoc.toObject(),
-//       numDislikes: [],
-//       numLikes: [],
-//       postedBy: {
-//         username: createdByUser!.username,
-//         profileURL: createdByUser!.profileURL
-//       }
-//     };
-
-//     return post;
-//   }
-
-//   public async deletePostById(
-//     postId: mongoose.Types._ObjectId | string,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       postId,
-//       `Post with id ${postId} not found`
-//     );
-
-//     const post = await this.getPostDocById(postId);
-
-//     // uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   post.postedBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may delete the post with id ${post}`
-//     // );
-
-//     await post.delete();
-//   }
-
-//   public async updatePostById(
-//     postId: mongoose.Types._ObjectId | string,
-//     updatedPost: IUpdatePostDTO,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       postId,
-//       `Post with id ${postId} not found`
-//     );
-
-//     const post = await this.getPostDocById(postId);
-
-//     // uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   post.postedBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may update the post with id ${post}`
-//     // );
-
-//     post.content = updatedPost.content || post.content;
-//     post.title = updatedPost.title || post.title;
-
-//     if (updatedPost.fandom) {
-//       const fandom = await this.getFandomById(updatedPost.fandom);
-//       post.fandom = fandom._id;
-//     }
-
-//     const updatedPostDoc = await post.save();
-//     return updatedPostDoc;
-//   }
-
-//   public async getCommentsForPost(postId: string) {
-//     FandomService._globalService.checkValidObjectId(
-//       postId,
-//       `Post with id ${postId} not found`
-//     );
-
-//     const comments = await this.getCommentsMatchingFilters({
-//       fandomPost: mongoose.Types.ObjectId(postId)
-//     });
-//     return comments;
-//   }
-
-//   public async createComment(
-//     newComment: INewFandomCommentInputDTO,
-//     createdByUser: IUser | null
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       newComment.fandomPost,
-//       `Post with id ${newComment.fandomPost} does not exist`
-//     );
-
-//     await this.getPostDocById(newComment.fandomPost);
-
-//     const newCommentDoc = await FandomComment.create(newComment);
-//     const comment: IFandomCommentDTOWithLikes = {
-//       ...newCommentDoc.toObject(),
-//       numDislikes: [],
-//       numLikes: [],
-//       postedBy: {
-//         username: createdByUser!.username,
-//         profileURL: createdByUser!.profileURL
-//       }
-//     };
-
-//     return comment;
-//   }
-
-//   public async deleteCommentById(
-//     commentId: mongoose.Types._ObjectId | string,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       commentId,
-//       `Comment with id ${commentId} not found`
-//     );
-
-//     const comment = await this.getCommentDocById(commentId);
-
-//     // uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   comment.postedBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may delete the comment with id ${commentId}`
-//     // );
-
-//     await comment.delete();
-//   }
-
-//   public async updateCommentById(
-//     commentId: mongoose.Types._ObjectId | string,
-//     updatedComment: IUpdateCommentDTO,
-//     createdByUserId: mongoose.Types._ObjectId | undefined
-//   ) {
-//     FandomService._globalService.checkValidObjectId(
-//       commentId,
-//       `Comment with id ${commentId} not found`
-//     );
-
-//     const comment = await this.getCommentDocById(commentId);
-
-//     // uncomment after auth is implemented
-//     // FandomService._globalService.hasPermission(
-//     //   comment.postedBy,
-//     //   createdByUserId,
-//     //   `Only the creator or an admin may update the comment with id ${commentId}`
-//     // );
-
-//     comment.title = updatedComment.title || comment.title;
-//     comment.content = updatedComment.content || comment.content;
-
-//     if (updatedComment.fandomPost) {
-//       const post = await this.getFandomById(updatedComment.fandomPost);
-//       comment.fandomPost = post._id;
-//     }
-
-//     const updatedCommentDoc = await comment.save();
-//     return updatedCommentDoc;
-//   }
-// }
+import mongoose from "mongoose";
+import Event from "../models/event";
+import Attend from "../models/attend";
+import EventReview from "../models/event-review";
+import {
+  IEvent,
+  INewEventInputDTO,
+  IEventReview,
+  INewEventReviewInputDTO,
+  IUpdateEventDTO,
+  IUpdateEventReviewDTO,
+} from "../interfaces/IEvent";
+import ErrorService from "./error";
+import GlobalService from "./global";
+import { IAttendEvent, INewAttendEventDTO } from "../interfaces/IUser";
+import FandomService from "./fandom";
+
+export default class EventService {
+  private static _globalService = new GlobalService();
+  private static _fandomService = new FandomService();
+
+  public async getEventById(eventId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    const event = await Event.findById(eventId)
+      .populate("postedBy")
+      .populate("fandom");
+    
+    if (!event) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Event with id ${eventId} does not exist`
+      );
+    }
+
+    return event;
+  }
+
+  public async getEventsByFandom(categoryName: string, fandomName: string) {
+    const fandom = await EventService._fandomService.getFandomByName(
+      categoryName, fandomName
+    );
+    const events: IEvent[] =
+      (await Event.find({ fandom: fandom._id })
+        .populate("postedBy")
+        .populate("fandom")) || [];
+
+    return events;
+  }
+
+  public async createEvent(newEvent: INewEventInputDTO) {
+    EventService._globalService.checkValidObjectId(
+      newEvent.fandom,
+      `Fandom with id ${newEvent.fandom} does not exist`
+    );
+
+    EventService._fandomService.getFandomById(newEvent.fandom);
+    const newEventDoc = await Event.create(newEvent);
+    const event = newEventDoc.toObject();
+    Reflect.deleteProperty(event, "postedBy");
+
+    return event;
+  }
+
+  public async updateEventById(
+    eventId: mongoose.Types._ObjectId | string,
+    updatedEvent: IUpdateEventDTO,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    const eventDoc = await this.getEventById(eventId);
+
+    // TODO: uncomment following code after auth is implemented
+    // EventService._globalService.hasPermission(
+    //   eventDoc.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may update event with id ${eventId}`
+    // );
+
+    eventDoc.name = updatedEvent.name || eventDoc.name;
+    eventDoc.description = updatedEvent.description || eventDoc.description;
+    eventDoc.location = updatedEvent.location || eventDoc.location;
+    eventDoc.startDate = updatedEvent.startDate || eventDoc.startDate;
+    eventDoc.endDate = updatedEvent.endDate || eventDoc.endDate;
+
+    if (updatedEvent.fandom) {
+      const fandom = await EventService._fandomService.getFandomById(
+        updatedEvent.fandom
+      );
+      eventDoc.fandom = fandom;
+    }
+
+    const updatedEventDoc = await eventDoc.save();
+    const event = updatedEventDoc.toObject();
+    Reflect.deleteProperty(event, "postedBy");
+
+    return event;
+  }
+
+  // TODO: Create two more methods to delete all reviews and attendees
+  public async deleteEventById(
+    eventId: mongoose.Types._ObjectId | string,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    const event = await this.getEventById(eventId);
+
+    // TODO: uncomment following code after auth is implemented
+    // EventService._globalService.hasPermission(
+    //   event.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may delete event with id ${eventId}`
+    // );
+
+    await event.delete();
+  }
+
+  public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
+    const eventDoc: IEvent = await this.getEventById(eventId);
+    const reviews: IEventReview[] =
+      (await EventReview.find({ event: eventDoc })
+        .populate("postedBy")
+        .populate("event")) || [];
+    return reviews;
+  }
+
+  public async getReviewById(reviewId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const review = await EventReview.findById(reviewId);
+
+    if (!review) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Review with id ${reviewId} does not exist`
+      );
+    }
+
+    return review;
+  }
+
+  public async createReview(
+    eventId: mongoose.Types._ObjectId | string,
+    newReview: INewEventReviewInputDTO
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    this.getEventById(eventId);
+    const newReviewDoc = await EventReview.create(newReview);
+    const review = newReviewDoc.toObject();
+    Reflect.deleteProperty(review, "postedBy");
+
+    return review;
+  }
+
+  public async deleteReviewById(
+    reviewId: mongoose.Types._ObjectId | string,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const review = await this.getReviewById(reviewId);
+
+    /* TODO: uncomment following code after auth is implemented,
+     * also manually check for role type Admin
+     */
+    // EventService._globalService.hasPermission(
+    //   review.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may delete review with id ${reviewId}`
+    // );
+
+    await review.delete();
+  }
+
+  public async updateReviewById(
+    eventId: mongoose.Types._ObjectId | string,
+    reviewId: mongoose.Types._ObjectId | string,
+    updatedReview: IUpdateEventReviewDTO,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const reviewDoc = await this.getReviewById(reviewId);
+
+    // TODO: uncomment following code after auth is implemented
+    //       also manually check for role type Admin
+    // EventService._globalService.hasPermission(
+    //   reviewDoc.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may update review with id ${reviewId}`
+    // );
+
+    reviewDoc.title = updatedReview.title || reviewDoc.title;
+    reviewDoc.content = updatedReview.content || reviewDoc.content;
+    reviewDoc.rating = updatedReview.rating || reviewDoc.rating;
+
+    if (eventId) {
+      const event = await this.getEventById(eventId);
+      reviewDoc.event = event;
+    }
+
+    const updatedReviewDoc = await reviewDoc.save();
+    const review = updatedReviewDoc.toObject();
+    Reflect.deleteProperty(review, "postedBy");
+
+    return review;
+  }
+
+  public async getEventAttendeesById(eventId: mongoose.Types._ObjectId | string) {
+    const eventDoc: IEvent = await this.getEventById(eventId);
+    const attendees: IAttendEvent[] = (await Attend.find({ event: eventDoc })) || [];
+
+    return attendees;
+  }
+
+  public async getAttendeeById(attendeeId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      attendeeId,
+      `Attendee with id ${attendeeId} does not exist`
+    );
+
+    const attendee = await Attend.findById(attendeeId);
+
+    if (!attendee) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Attendee with id ${attendeeId} does not exist`
+      );
+    }
+
+    return attendee;
+  }
+
+  public async createAttendee(
+    eventId: mongoose.Types._ObjectId | string,
+    newAttendee: INewAttendEventDTO
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    this.getEventById(eventId);
+    const newAttendeeDoc = await Attend.create(newAttendee);
+    const attendee = newAttendeeDoc.toObject();
+    Reflect.deleteProperty(attendee, "user");
+
+    return attendee;
+  }
+
+  public async deleteAttendeeById(
+    attendeeId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      attendeeId,
+      `Attendee with id ${attendeeId} does not exist`
+    );
+
+    const attendee = await this.getAttendeeById(attendeeId);
+
+    /* TODO: uncomment following code after auth is implemented,
+     * also manually check for role type Admin
+     */
+    // EventService._globalService.hasPermission(
+    //   attendee.user,
+    //   userId,
+    //   `Only the attendee or an admin may delete attendee with id ${attendeeId}`
+    // );
+
+    await attendee.delete();
+  }
+}
