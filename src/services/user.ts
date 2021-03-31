@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IUser, INewUserInputDTO, IUpdateUserDTO } from "../interfaces/IUser";
 import User from "../models/user";
+import Event from "../models/event";
+import FandomMember from "../models/fandom-member";
 import Config from "../config/index";
 import ErrorService from "./error";
 
@@ -109,5 +111,33 @@ export default class UserService {
     const user = updatedUserDoc.toObject();
 
     return user;
+  }
+
+  public async getUserEvents(username: string) {
+    const user = await this.getUserByUsername(username);
+    const events = await Event.find({ postedBy: user._id });
+
+      if (!events) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Events for User with username ${username} do not exist`
+        );
+      }
+
+    return events;
+  }
+
+  public async getUserFandoms(username: string) {
+    const user = await this.getUserByUsername(username);
+    const fandoms = await FandomMember.find({ user: user._id }).populate("fandom");
+
+      if (!fandoms) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Fandoms for User with username ${username} do not exist`
+        );
+      }
+
+    return fandoms;
   }
 }

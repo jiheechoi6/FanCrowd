@@ -2,9 +2,6 @@ import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
 import { IUser, IUpdateUserDTO } from "../../interfaces/IUser";
 import User from "../../models/user";
-import Event from "../../models/event";
-import FandomMember from "../../models/fandom-member";
-import ErrorService from "../../services/error";
 import UserService from "../../services/user";
 
 const route = Router();
@@ -119,25 +116,8 @@ export default (app: Router) => {
   route.get("/:username/events", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({
-        username: username,
-      });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      const events = await Event.find({ postedBy: user._id });
-
-      if (!events) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Events for User with username ${username} do not exist`
-        );
-      }
+      const userService = new UserService();
+      const events = await userService.getUserEvents(username);
 
       res.status(200).send(events);
     } catch (err) {
@@ -151,32 +131,15 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *    fandoms: string
+   *    username: string
    * }
    * description: get a user's fandoms by username
    */
   route.get("/:username/fandoms", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({
-        username: username,
-      });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      const fandoms = await FandomMember.find({ user: user._id });
-
-      if (!fandoms) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandoms for User with username ${username} do not exist`
-        );
-      }
+      const userService = new UserService();
+      const fandoms = await userService.getUserFandoms(username);
 
       res.status(200).send(fandoms);
     } catch (err) {
