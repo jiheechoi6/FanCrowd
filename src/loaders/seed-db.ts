@@ -5,6 +5,7 @@ import {
   IUserLike
 } from "../interfaces/IUser";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 import UserModel from "../models/user";
 import FandomModel from "../models/fandom";
@@ -682,25 +683,25 @@ const userLikes: IUserLike[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[1]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[1]
   }
 ];
@@ -727,6 +728,8 @@ export default async () => {
   await dropDatabase();
 
   for (let i = 0; i < users.length; i++) {
+    let salt = await bcrypt.genSalt(10);
+    users[i].password = await bcrypt.hash(users[i].password, salt);
     await UserModel.create(users[i]);
   }
 

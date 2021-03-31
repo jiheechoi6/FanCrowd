@@ -51,7 +51,7 @@ export interface INewFandomMemberInputDTO {
 
 export interface IUserLike {
   _id: mongoose.Types._ObjectId;
-  user: IUser;
+  user: mongoose.Types._ObjectId;
   fandomPost?: IFandomPost;
   fandomComment?: IFandomComment;
   isLike: boolean;

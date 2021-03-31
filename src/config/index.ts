@@ -11,5 +11,6 @@ export default {
   databaseURL: process.env.MONGODB_URI || "",
   api: {
     prefix: "/api"
-  }
+  },
+  secret: "some secret"
 };
