@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
 import User from "../../models/user";
+import passport from "passport";
 import {
   INewFandomCategoryInputDTO,
   INewFandomCommentInputDTO,
@@ -32,22 +33,27 @@ export default (app: Router) => {
    * params: None
    * description: creates a new fandom
    */
-  route.post("", async (req, res, next) => {
-    try {
-      //should be getting from req.user
-      const createdByUser = await User.findOne({ role: "user" });
-      const newFandom: INewFandomInputDTO = {
-        ...req.body,
-        createdBy: createdByUser?._id
-      };
+  route.post(
+    "",
+    passport.authenticate("jwt", { session: false }),
+    async (req, res, next) => {
+      try {
+        console.log(req.user);
+        //should be getting from req.user
+        const createdByUser = await User.findOne({ role: "user" });
+        const newFandom: INewFandomInputDTO = {
+          ...req.body,
+          createdBy: createdByUser?._id
+        };
 
-      const fandomService = new FandomService();
-      const fandom = await fandomService.createFandom(newFandom);
-      res.status(200).send(fandom);
-    } catch (err) {
-      return next(err);
+        const fandomService = new FandomService();
+        const fandom = await fandomService.createFandom(newFandom);
+        res.status(200).send(fandom);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/fandoms/:fandomId
