@@ -10,7 +10,15 @@ const FandomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Fandom name is required"],
       lowercase: true,
-      unique: false
+      unique: false,
+      validate(value: string) {
+        const fandomNameRegex = /^[a-z\d\'\s]+$/;
+        if (!fandomNameRegex.test(value)) {
+          throw new Error(
+            "Fandom name can only contain alphanumeric characters, spaces and '"
+          );
+        }
+      }
     },
     backgroundURL: {
       type: String,
