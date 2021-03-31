@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
   currentUser = new BehaviorSubject<UserDTO | null>(null);
-  token: string = "";
+  token: string | null = null;
   usernameToPassword = new Map([
     ['user1', 'user1'],
     ['user2', 'user2'],
@@ -191,6 +191,8 @@ export class AuthService {
 
   logOut() {
     this.currentUser.next(null);
+    this.token = null;
+    localStorage.clear();
   }
 
   autoLogin() {}
