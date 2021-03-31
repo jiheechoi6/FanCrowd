@@ -683,25 +683,25 @@ const userLikes: IUserLike[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[1]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[1]
   }
 ];

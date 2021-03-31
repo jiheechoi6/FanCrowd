@@ -3,7 +3,7 @@ import FandomCategory from "../models/fandom-category";
 import Fandom from "../models/fandom";
 import FandomPost from "../models/fandom-post";
 import FandomComment from "../models/fandom-comment";
-import User from "../models/user";
+import UserLike from "../models/user-like";
 import {
   IFandom,
   IFandomCategory,
@@ -25,7 +25,8 @@ import {
 } from "../interfaces/IFandom";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { IUser } from "../interfaces/IUser";
+import { INewUserLikeInputDTO, IUser } from "../interfaces/IUser";
+import fandomPost from "../models/fandom-post";
 
 export default class FandomService {
   private static _globalService = new GlobalService();
@@ -637,5 +638,31 @@ export default class FandomService {
 
     const updatedCommentDoc = await comment.save();
     return updatedCommentDoc;
+  }
+
+  public async updateLikes(newLike: INewUserLikeInputDTO) {
+    const query: { [key: string]: any } = {
+      user: newLike.user
+    };
+
+    if (newLike.fandomPost) {
+      query.fandomPost = newLike.fandomPost;
+      await this.getPostDocById(newLike.fandomPost);
+    }
+
+    if (newLike.fandomComment) {
+      query.fandomComment = newLike.fandomComment;
+      await this.getCommentDocById(newLike.fandomComment);
+    }
+
+    const previousLike = await UserLike.findOne(query);
+    if (previousLike) {
+      await previousLike.delete();
+      if (previousLike.isLike !== newLike.isLike) {
+        await UserLike.create(newLike);
+      }
+    } else {
+      await UserLike.create(newLike);
+    }
   }
 }

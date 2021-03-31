@@ -13,6 +13,7 @@ import {
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
 import FandomService from "../../services/fandom";
+import { INewUserLikeInputDTO } from "../../interfaces/IUser";
 
 const route = Router();
 
@@ -479,6 +480,35 @@ export default (app: Router) => {
       );
 
       res.status(200).send(comment);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/likes
+   * method: POST
+   * body:
+   * {
+   *  fandomPost: string,
+   *  fandomComment: string,
+   *  isLike: boolean
+   * }
+   * params: None
+   * description: adds like/dislike to a comment or post
+   */
+  route.post("/likes", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newLike: INewUserLikeInputDTO = {
+        ...req.body,
+        user: createdByUser?._id
+      };
+
+      const fandomService = new FandomService();
+      await fandomService.updateLikes(newLike);
+      res.status(200).send();
     } catch (err) {
       return next(err);
     }
