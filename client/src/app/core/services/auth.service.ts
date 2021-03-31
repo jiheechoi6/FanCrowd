@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import UserDTO from 'src/app/shared/models/user-dto';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
+import { BehaviorSubject, fromEventPattern, Observable} from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
 import { EmailService } from './email.service';
 import EventDTO from 'src/app/shared/models/event-dto';
+import SigninRes from 'src/app/shared/models/signin-res';
 import { UserService } from './user.service';
+import { map } from 'rxjs/operators';
+// import { tokenNotExpired } from '@auth0/angular-jwt'
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   currentUser = new BehaviorSubject<UserDTO | null>(null);
+  token: string = "";
   usernameToPassword = new Map([
     ['user1', 'user1'],
     ['user2', 'user2'],
@@ -172,25 +176,17 @@ export class AuthService {
   }
 
   createNewUser(newUser: NewUser) {
-    //API request to users endpoint to create new user
-    this.usernameToPassword.set(newUser.username, newUser.password);
-    const newUserDTO: UserDTO = {
-      username: newUser.username,
-      fullName: newUser.fullName,
-      email: newUser.email,
-      bio:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      city: 'Toronto',
-      country: 'Canada',
-      role: 'user',
-      fandoms: [],
-      attendingEvents: [],
-      profileUrl: 'https://dummyimage.com/250.jpg',
-    };
-    this.users.push(newUserDTO);
-    this._userService.users.push(newUserDTO);
-    this.currentUser.next(newUserDTO);
-    return newUserDTO;
+    if(!newUser.fullName || !newUser.email || !newUser.username || !newUser.password){
+      return null;
+    }
+
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    return this._http.post<SigninRes>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
+  }
+
+  processResult(user: UserDTO) {
+    return user;
   }
 
   logOut() {
