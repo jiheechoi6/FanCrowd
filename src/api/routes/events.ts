@@ -166,7 +166,7 @@ export default (app: Router) => {
     try {
       const fandomName = req.params.fandomName;
       const name = fandomName.split("-").join(" ");
-      
+
       const eventService = new EventService();
       const events = await eventService.getEventByFandom(name);
 
@@ -199,26 +199,8 @@ export default (app: Router) => {
         postedBy: postedByUser?._id,
       };
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const event = await Event.findById(eventId);
-
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const newReviewDoc = await EventReview.create(newReview);
-      const review = newReviewDoc.toObject();
-      Reflect.deleteProperty(review, "postedBy");
-
+      const eventService = new EventService();
+      const review = await eventService.createReview(eventId, newReview);
       res.status(200).send(review);
     } catch (err) {
       return next(err);
@@ -285,26 +267,10 @@ export default (app: Router) => {
    route.delete("/reviews/:reviewId", async (req, res, next) => {
     try {
       const reviewId = req.params.reviewId;
+      const eventService = new EventService();
 
-      if (!isValidObjectId(reviewId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Review with id ${reviewId} does not exist`
-        );
-      }
-
-      const review = await EventReview.findById(reviewId);
-
-      if (!review) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Review with id ${reviewId} does not exist`
-        );
-      }
-
-      // Should check if user who created the review is the one deleting or admin
-
-      await review.delete();
+      // TODO: Should pass in req.user.id instead of undefined
+      await eventService.deleteEventReviewById(reviewId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -386,28 +352,10 @@ export default (app: Router) => {
    route.get("/reviews/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
+      const eventService = new EventService();
+      const reviews = await eventService.getEventReviewsById(eventId);
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const eventDoc = await Event.findById(eventId);
-
-      if (!eventDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const events: IEventReview[] =
-        (await EventReview.find({ event: eventDoc._id }).populate("postedBy").populate("event")) ||
-        [];
-
-      res.status(200).send(events);
+      res.status(200).send(reviews);
     } catch (err) {
       return next(err);
     }

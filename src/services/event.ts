@@ -2,12 +2,13 @@ import mongoose from "mongoose";
 import Fandom from "../models/fandom";
 import User from "../models/user";
 import Event from "../models/event";
+import EventReview from "../models/event-review";
 import {
-    IEvent, 
-    INewEventInputDTO,
-    IEventReview,
-    INewEventReviewInputDTO,
-    IUpdateEventDTO
+  IEvent,
+  INewEventInputDTO,
+  IEventReview,
+  INewEventReviewInputDTO,
+  IUpdateEventDTO,
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -19,7 +20,14 @@ export default class EventService {
   private static _fandomService = new FandomService();
 
   public async getEventById(eventId: mongoose.Types._ObjectId | string) {
-    const event = await Event.findById(eventId).populate("postedBy").populate("fandom");
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    const event = await Event.findById(eventId)
+      .populate("postedBy")
+      .populate("fandom");
 
     if (!event) {
       throw new ErrorService(
@@ -32,10 +40,13 @@ export default class EventService {
   }
 
   public async getEventByFandom(fandomName: string) {
-    const fandom = await EventService._fandomService.getFandomByName(fandomName);
+    const fandom = await EventService._fandomService.getFandomByName(
+      fandomName
+    );
     const events: IEvent[] =
-        (await Event.find({ fandom: fandom._id }).populate("postedBy").populate("fandom")) ||
-        [];
+      (await Event.find({ fandom: fandom._id })
+        .populate("postedBy")
+        .populate("fandom")) || [];
 
     return events;
   }
@@ -80,7 +91,9 @@ export default class EventService {
     eventDoc.endDate = updatedEvent.endDate || eventDoc.endDate;
 
     if (updatedEvent.fandom && updatedEvent.fandom._id) {
-      const fandom = await EventService._fandomService.getFandomById(updatedEvent.fandom._id);
+      const fandom = await EventService._fandomService.getFandomById(
+        updatedEvent.fandom._id
+      );
       eventDoc.fandom = fandom;
     }
 
@@ -91,13 +104,13 @@ export default class EventService {
     return event;
   }
 
-  /* TODO */
+  // TODO: Create two more methods to delete all reviews and attendees
   public async deleteEventById(
     eventId: mongoose.Types._ObjectId | string,
     postedByUserId: mongoose.Types._ObjectId | undefined
   ) {
     EventService._globalService.checkValidObjectId(
-        eventId,
+      eventId,
       `Event with id ${eventId} does not exist`
     );
 
@@ -111,5 +124,73 @@ export default class EventService {
     // );
 
     await event.delete();
+  }
+
+  public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
+    const eventDoc = await this.getEventById(eventId);
+    const reviews: IEventReview[] =
+      (await EventReview.find({ event: eventDoc._id })
+        .populate("postedBy")
+        .populate("event")) || [];
+
+    return reviews;
+  }
+
+  public async getEventReviewById(reviewId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const review = await EventReview.findById(reviewId);
+
+    if (!review) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Review with id ${reviewId} does not exist`
+      );
+    }
+
+    return review;
+  }
+
+  public async createReview(
+    eventId: mongoose.Types._ObjectId | string,
+    newReview: INewEventReviewInputDTO
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    this.getEventById(eventId);
+    const newReviewDoc = await EventReview.create(newReview);
+    const review = newReviewDoc.toObject();
+    Reflect.deleteProperty(review, "postedBy");
+
+    return review;
+  }
+
+  public async deleteEventReviewById(
+    reviewId: mongoose.Types._ObjectId | string,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const review = await this.getEventReviewById(reviewId);
+
+    /* TODO: uncomment following code after auth is implemented,
+     * also manually check for role type Admin
+     */
+    // EventService._globalService.hasPermission(
+    //   review.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may delete review with id ${reviewId}`
+    // );
+
+    await review.delete();
   }
 }
