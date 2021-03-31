@@ -68,3 +68,12 @@ export interface INewUserLikeInputDTO {
   fandomComment?: mongoose.Types._ObjectId;
   isLike: boolean;
 }
+
+export interface IUpdateUserDTO {
+  fullName: string;
+  email: string;
+  bio: string;
+  profileURL: string;
+  city: string;
+  country: string;
+}
