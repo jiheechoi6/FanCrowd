@@ -131,13 +131,6 @@ export default class UserService {
     const user = await this.getUserByUsername(username);
     const fandoms = await FandomMember.find({ user: user._id }).populate("fandom");
 
-      if (!fandoms) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandoms for User with username ${username} do not exist`
-        );
-      }
-
     return fandoms;
   }
 }
