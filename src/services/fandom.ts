@@ -43,6 +43,21 @@ export default class FandomService {
     return fandom;
   }
 
+  public async getFandomByName(fandomName: string) {
+    const fandom = await Fandom.findOne({
+      name: fandomName.toLowerCase(),
+    });
+
+    if (!fandom) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Fandom with name ${fandomName} does not exist`
+      );
+    }
+
+    return fandom;
+  }
+
   public async getCommentDocById(commentId: mongoose.Types._ObjectId | string) {
     const comment = await FandomComment.findById(commentId);
 

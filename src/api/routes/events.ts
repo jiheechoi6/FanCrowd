@@ -166,21 +166,9 @@ export default (app: Router) => {
     try {
       const fandomName = req.params.fandomName;
       const name = fandomName.split("-").join(" ");
-
-      const fandom = await Fandom.findOne({
-        name: name.toLowerCase(),
-      });
-
-      if (!fandom) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with name ${fandomName} does not exist`
-        );
-      }
-
-      const events: IEvent[] =
-        (await Event.find({ fandom: fandom._id }).populate("postedBy").populate("fandom")) ||
-        [];
+      
+      const eventService = new EventService();
+      const events = await eventService.getEventByFandom(name);
 
       res.status(200).send(events);
     } catch (err) {

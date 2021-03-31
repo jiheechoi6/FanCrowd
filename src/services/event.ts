@@ -31,6 +31,15 @@ export default class EventService {
     return event;
   }
 
+  public async getEventByFandom(fandomName: string) {
+    const fandom = await EventService._fandomService.getFandomByName(fandomName);
+    const events: IEvent[] =
+        (await Event.find({ fandom: fandom._id }).populate("postedBy").populate("fandom")) ||
+        [];
+
+    return events;
+  }
+
   public async createEvent(newEvent: INewEventInputDTO) {
     EventService._globalService.checkValidObjectId(
       newEvent.fandom,
