@@ -14,7 +14,7 @@ export default class UserService {
    */
   public async SignUp(
     userInputDTO: INewUserInputDTO
-  ): Promise<{ user: IUser }> {
+  ): Promise<{ user: IUser, token: string }> {
     try {
       const salt = await bcrypt.genSalt(10);
       userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
@@ -30,7 +30,12 @@ export default class UserService {
 
       const user = userRecord.toObject();
       Reflect.deleteProperty(user, "password");
-      return { user };
+
+      // automatically log in user that signed up
+      const token = jwt.sign(user, Config.secret, {expiresIn: 10800 }); // 3 hours
+
+      return {user: user,
+              token: "JWT " + token};
     } catch (err) {
       throw err;
     }

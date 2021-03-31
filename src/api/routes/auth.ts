@@ -28,10 +28,10 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const userServiceInstance = new UserService();
-        const { user } = await userServiceInstance.SignUp(
+        const signedUpUser = await userServiceInstance.SignUp(
           req.body as INewUserInputDTO
         );
-        return res.status(200).json({ user });
+        return res.status(200).json(signedUpUser);
       } catch (err) {
         return next(err);
       }
@@ -66,7 +66,8 @@ export default (app: Router) => {
 
   /**
    * path: /api/auth/currentUser
-   * method: get
+   * method: GET
+   * header: Authorization: token
    * body: None
    * params: None
    * description: get information for current user logged in
