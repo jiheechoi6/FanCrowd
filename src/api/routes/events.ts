@@ -12,6 +12,7 @@ import {
   INewEventReviewInputDTO,
   INewEventInputDTO,
   IUpdateEventDTO,
+  IUpdateEventReviewDTO,
 } from "../../interfaces/IEvent";
 import { IAttendEvent, INewAttendEventDTO } from '../../interfaces/IUser';
 import ErrorService from "../../services/error";
@@ -158,17 +159,20 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
+   *  categoryName: string
    *  fandomName: string
    * }
    * description: gets events by fandomName or [] if no fandoms
    */
-  route.get("/:fandomName", async (req, res, next) => {
+  route.get("/:categoryName/:fandomName", async (req, res, next) => {
     try {
+      const categoryName = req.params.categoryName;
       const fandomName = req.params.fandomName;
-      const name = fandomName.split("-").join(" ");
+      const category = categoryName.split("-").join(" ");
+      const fandom = fandomName.split("-").join(" ");
 
       const eventService = new EventService();
-      const events = await eventService.getEventByFandom(name);
+      const events = await eventService.getEventsByFandom(category, fandom);
 
       res.status(200).send(events);
     } catch (err) {
@@ -264,13 +268,13 @@ export default (app: Router) => {
    * }
    * description: deletes a review
    */
-   route.delete("/reviews/:reviewId", async (req, res, next) => {
+   route.delete("/review/:reviewId", async (req, res, next) => {
     try {
       const reviewId = req.params.reviewId;
       const eventService = new EventService();
 
       // TODO: Should pass in req.user.id instead of undefined
-      await eventService.deleteEventReviewById(reviewId, undefined);
+      await eventService.deleteReviewById(reviewId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -298,42 +302,18 @@ export default (app: Router) => {
       const reviewId = req.params.reviewId;
       const eventId = req.body.event;
 
-      if (!isValidObjectId(reviewId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Review with id ${reviewId} does not exist`
-        );
-      }
+      const eventService = new EventService();
+      const reqBody = req.body as IUpdateEventReviewDTO;
 
-      const reviewDoc = await EventReview.findById(reviewId);
+      // TODO: Pass in req.user.id instead of undefined
+      const updatedReview = await eventService.updateReviewById(
+        eventId,
+        reviewId,
+        reqBody,
+        undefined
+      );
 
-      if (!reviewDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Review with id ${eventId} does not exist`
-        );
-      }
-
-      const eventDoc = await Event.findById(eventId);
-
-      if (!eventDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      // Should check if user who created the review is the one updating or admin
-      reviewDoc.title = req.body.title || reviewDoc.title;
-      reviewDoc.content = req.body.content || reviewDoc.content;
-      reviewDoc.rating = req.body.rating || reviewDoc.rating;
-      reviewDoc.event = req.body.event || reviewDoc.event;
-
-      const updatedReview = await reviewDoc.save();
-      const review = updatedReview.toObject();
-      Reflect.deleteProperty(review, "postedBy");
-
-      res.status(200).send(review);
+      res.status(200).send(updatedReview);
     } catch (err) {
       return next(err);
     }
@@ -353,7 +333,8 @@ export default (app: Router) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
-      const reviews = await eventService.getEventReviewsById(eventId);
+      const event: IEvent = await eventService.getEventById(eventId);
+      const reviews: IEventReview[] = await eventService.getEventReviewsById(event._id);
 
       res.status(200).send(reviews);
     } catch (err) {
@@ -380,32 +361,15 @@ export default (app: Router) => {
       // Should be getting from req.user
       const user = await User.findOne({ role: "user" });
       const eventId = req.params.eventId;
-      const newAttend: INewAttendEventDTO = {
+      const newAttendee: INewAttendEventDTO = {
         ...req.body,
-        postedBy: user?._id,
+        user: user?._id,
       };
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
+      const eventService = new EventService();
+      const attendee = await eventService.createAttendee(eventId, newAttendee);
 
-      const event = await Event.findById(eventId);
-
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const newAttendDoc = await Attend.create(newAttend);
-      const attend = newAttendDoc.toObject();
-      Reflect.deleteProperty(attend, "user");
-
-      res.status(200).send(attend);
+      res.status(200).send(attendee);
     } catch (err) {
       return next(err);
     }
@@ -424,26 +388,10 @@ export default (app: Router) => {
    route.delete("/attend/:attendId", async (req, res, next) => {
     try {
       const attendeeId = req.params.attendId;
-
-      if (!isValidObjectId(attendeeId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Attendee with id ${attendeeId} does not exist`
-        );
-      }
-
-      const attendee = await Attend.findById(attendeeId);
-
-      if (!attendee) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Attendee with id ${attendeeId} does not exist`
-        );
-      }
+      const eventService = new EventService();
 
       // Should check if user who attended is the one deleting or admin
-
-      await attendee.delete();
+      eventService.deleteAttendeeById(attendeeId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -512,30 +460,9 @@ export default (app: Router) => {
    route.get("/attend/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
+      const eventService = new EventService();
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const event = await Event.findById(eventId);
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const attendees = await Attend.find({event: event._id});
-
-      if (!attendees) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Attendees with Event id ${eventId} do not exist`
-        );
-      }
+      const attendees = eventService.getEventAttendeesById(eventId);
 
       res.status(200).send(attendees);
     } catch (err) {

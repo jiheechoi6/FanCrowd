@@ -43,8 +43,11 @@ export default class FandomService {
     return fandom;
   }
 
-  public async getFandomByName(fandomName: string) {
+  public async getFandomByName(categoryName: string, fandomName: string) {
+    const category = await this.getCategoryByName(categoryName);
+
     const fandom = await Fandom.findOne({
+      category: category?._id,
       name: fandomName.toLowerCase(),
     });
 
@@ -91,6 +94,21 @@ export default class FandomService {
       throw new ErrorService(
         "NotFoundError",
         `Category with id ${categoryId} does not exist`
+      );
+    }
+
+    return fandomCategory;
+  }
+
+  public async getCategoryByName(categoryName: string) {
+    const fandomCategory = await FandomCategory.findOne({
+      name: categoryName.toLowerCase(),
+    });
+
+    if (!fandomCategory) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Category with name ${categoryName} does not exist`
       );
     }
 

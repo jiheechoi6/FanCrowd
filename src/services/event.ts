@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Fandom from "../models/fandom";
 import User from "../models/user";
 import Event from "../models/event";
+import Attend from "../models/attend";
 import EventReview from "../models/event-review";
 import {
   IEvent,
@@ -9,10 +10,11 @@ import {
   IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
+  IUpdateEventReviewDTO,
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { IUser } from "../interfaces/IUser";
+import { IAttendEvent, INewAttendEventDTO, IUser } from "../interfaces/IUser";
 import FandomService from "./fandom";
 
 export default class EventService {
@@ -28,7 +30,7 @@ export default class EventService {
     const event = await Event.findById(eventId)
       .populate("postedBy")
       .populate("fandom");
-
+    
     if (!event) {
       throw new ErrorService(
         "NotFoundError",
@@ -39,9 +41,9 @@ export default class EventService {
     return event;
   }
 
-  public async getEventByFandom(fandomName: string) {
+  public async getEventsByFandom(categoryName: string, fandomName: string) {
     const fandom = await EventService._fandomService.getFandomByName(
-      fandomName
+      categoryName, fandomName
     );
     const events: IEvent[] =
       (await Event.find({ fandom: fandom._id })
@@ -90,9 +92,9 @@ export default class EventService {
     eventDoc.startDate = updatedEvent.startDate || eventDoc.startDate;
     eventDoc.endDate = updatedEvent.endDate || eventDoc.endDate;
 
-    if (updatedEvent.fandom && updatedEvent.fandom._id) {
+    if (updatedEvent.fandom) {
       const fandom = await EventService._fandomService.getFandomById(
-        updatedEvent.fandom._id
+        updatedEvent.fandom
       );
       eventDoc.fandom = fandom;
     }
@@ -127,16 +129,15 @@ export default class EventService {
   }
 
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
-    const eventDoc = await this.getEventById(eventId);
+    const eventDoc: IEvent = await this.getEventById(eventId);
     const reviews: IEventReview[] =
-      (await EventReview.find({ event: eventDoc._id })
+      (await EventReview.find({ event: eventDoc })
         .populate("postedBy")
         .populate("event")) || [];
-
     return reviews;
   }
 
-  public async getEventReviewById(reviewId: mongoose.Types._ObjectId | string) {
+  public async getReviewById(reviewId: mongoose.Types._ObjectId | string) {
     EventService._globalService.checkValidObjectId(
       reviewId,
       `Review with id ${reviewId} does not exist`
@@ -171,7 +172,7 @@ export default class EventService {
     return review;
   }
 
-  public async deleteEventReviewById(
+  public async deleteReviewById(
     reviewId: mongoose.Types._ObjectId | string,
     postedByUserId: mongoose.Types._ObjectId | undefined
   ) {
@@ -180,7 +181,7 @@ export default class EventService {
       `Review with id ${reviewId} does not exist`
     );
 
-    const review = await this.getEventReviewById(reviewId);
+    const review = await this.getReviewById(reviewId);
 
     /* TODO: uncomment following code after auth is implemented,
      * also manually check for role type Admin
@@ -192,5 +193,112 @@ export default class EventService {
     // );
 
     await review.delete();
+  }
+
+  public async updateReviewById(
+    eventId: mongoose.Types._ObjectId | string,
+    reviewId: mongoose.Types._ObjectId | string,
+    updatedReview: IUpdateEventReviewDTO,
+    postedByUserId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    EventService._globalService.checkValidObjectId(
+      reviewId,
+      `Review with id ${reviewId} does not exist`
+    );
+
+    const reviewDoc = await this.getReviewById(reviewId);
+
+    // TODO: uncomment following code after auth is implemented
+    //       also manually check for role type Admin
+    // EventService._globalService.hasPermission(
+    //   reviewDoc.postedBy,
+    //   postedByUserId,
+    //   `Only the creator or an admin may update review with id ${reviewId}`
+    // );
+
+    reviewDoc.title = updatedReview.title || reviewDoc.title;
+    reviewDoc.content = updatedReview.content || reviewDoc.content;
+    reviewDoc.rating = updatedReview.rating || reviewDoc.rating;
+
+    if (eventId) {
+      const event = await this.getEventById(eventId);
+      reviewDoc.event = event;
+    }
+
+    const updatedReviewDoc = await reviewDoc.save();
+    const review = updatedReviewDoc.toObject();
+    Reflect.deleteProperty(review, "postedBy");
+
+    return review;
+  }
+
+  public async getEventAttendeesById(eventId: mongoose.Types._ObjectId | string) {
+    const eventDoc = await this.getEventById(eventId);
+    const attendees: IAttendEvent[] = await Attend.find({ event: eventDoc._id });
+
+    return attendees;
+  }
+
+  public async getAttendeeById(attendeeId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      attendeeId,
+      `Attendee with id ${attendeeId} does not exist`
+    );
+
+    const attendee = await Attend.findById(attendeeId);
+
+    if (!attendee) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Attendee with id ${attendeeId} does not exist`
+      );
+    }
+
+    return attendee;
+  }
+
+  public async createAttendee(
+    eventId: mongoose.Types._ObjectId | string,
+    newAttendee: INewAttendEventDTO
+  ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    this.getEventById(eventId);
+    const newAttendeeDoc = await Attend.create(newAttendee);
+    const attendee = newAttendeeDoc.toObject();
+    Reflect.deleteProperty(attendee, "user");
+
+    return attendee;
+  }
+
+  public async deleteAttendeeById(
+    attendeeId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | undefined
+  ) {
+    EventService._globalService.checkValidObjectId(
+      attendeeId,
+      `Attendee with id ${attendeeId} does not exist`
+    );
+
+    const attendee = await this.getAttendeeById(attendeeId);
+
+    /* TODO: uncomment following code after auth is implemented,
+     * also manually check for role type Admin
+     */
+    // EventService._globalService.hasPermission(
+    //   attendee.user,
+    //   userId,
+    //   `Only the attendee or an admin may delete attendee with id ${attendeeId}`
+    // );
+
+    await attendee.delete();
   }
 }

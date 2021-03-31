@@ -47,5 +47,12 @@ export interface IUpdateEventDTO {
   location?: string;
   startDate?: Date;
   endDate?: Date;
-  fandom?: IFandom;
+  fandom?: string;
+}
+
+export interface IUpdateEventReviewDTO {
+  title: string;
+  content: string;
+  rating: number;
+  event: string;
 }
