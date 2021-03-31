@@ -5,6 +5,7 @@ import {
   IUserLike
 } from "../interfaces/IUser";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 import UserModel from "../models/user";
 import FandomModel from "../models/fandom";
@@ -76,46 +77,46 @@ const fandomCategories: IFandomCategory[] = [
     backgroundURL:
       "https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg",
     name: "Movies",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
     name: "Books",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
     name: "Shows",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL:
       "https://wallpaper-house.com/data/out/7/wallpaper2you_191367.jpg",
     name: "Anime",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/242347.jpg",
     name: "Games",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/552032.jpg",
     name: "Sports",
-    createdBy: users[2]
+    createdBy: users[2]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
     backgroundURL: "https://wallpaperaccess.com/full/249743.png",
     name: "Technology",
-    createdBy: users[2]
+    createdBy: users[2]._id
   }
 ];
 
@@ -125,7 +126,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[0]._id,
     name: "Avengers",
     backgroundURL: "https://wallpaperaccess.com/full/311206.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 7)
   },
   {
@@ -133,7 +134,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[0]._id,
     name: "Harry Potter",
     backgroundURL: "https://wallpapercave.com/wp/wp2763337.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 5, 7)
   },
   {
@@ -141,7 +142,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[0]._id,
     name: "Avengers: Age of Ultron",
     backgroundURL: "https://wallpaperaccess.com/full/1117133.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 1)
   },
   {
@@ -149,7 +150,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[0]._id,
     name: "Maze Runner: The Death Cure",
     backgroundURL: "https://images3.alphacoders.com/913/thumb-1920-913996.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2010, 1, 7)
   },
   {
@@ -157,7 +158,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[0]._id,
     name: "Journey to the Mysterious Island",
     backgroundURL: "https://images2.alphacoders.com/805/805700.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2019, 1, 7)
   },
   {
@@ -165,7 +166,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[1]._id,
     name: "Divergent",
     backgroundURL: "https://wallpapercave.com/wp/wp1826730.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2012, 1, 7)
   },
   {
@@ -173,7 +174,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[1]._id,
     name: "The Chronicles of Narnia",
     backgroundURL: "https://wallpaperaccess.com/full/1715646.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 8, 7)
   },
   {
@@ -182,7 +183,7 @@ const fandoms: IFandom[] = [
     name: "Harry Potter",
     backgroundURL:
       "https://i.pinimg.com/originals/9e/79/90/9e799033d6cc8983b902cb9a7c41b74c.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 9, 7)
   },
   {
@@ -190,7 +191,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[1]._id,
     name: "Percy Jackson",
     backgroundURL: "https://wallpapercave.com/wp/wp2961879.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2019, 1, 7)
   },
   {
@@ -198,7 +199,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[2]._id,
     name: "Game of Thrones",
     backgroundURL: "https://cdn.wallpapersafari.com/26/33/Fbx3ci.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2015, 1, 10)
   },
   {
@@ -206,7 +207,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[2]._id,
     name: "The Queen's Gambit",
     backgroundURL: "https://wallpaperaccess.com/full/4722410.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2021, 2, 7)
   },
   {
@@ -214,7 +215,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[2]._id,
     name: "The Big Bang Theory",
     backgroundURL: "https://wallpapercave.com/wp/Htvtugs.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2021, 3, 7)
   },
   {
@@ -223,7 +224,7 @@ const fandoms: IFandom[] = [
     name: "Yu-Gi-Oh!",
     backgroundURL:
       "https://i.pinimg.com/originals/d1/7a/d8/d17ad80144ef56adbf58a17a686ea619.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 9, 7)
   },
   {
@@ -231,7 +232,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[3]._id,
     name: "One Punch Man",
     backgroundURL: "https://cdn.wallpapersafari.com/51/10/9A6JeS.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 15)
   },
   {
@@ -240,7 +241,7 @@ const fandoms: IFandom[] = [
     name: "Beyblade",
     backgroundURL:
       "https://i.pinimg.com/originals/2c/ae/46/2cae460058ec18fa42d5a3c07589b781.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 4, 7)
   },
   {
@@ -249,7 +250,7 @@ const fandoms: IFandom[] = [
     name: "Call of Duty",
     backgroundURL:
       "https://i.pinimg.com/originals/c4/88/a5/c488a5045bf7ac2d08b8bd9342cecf92.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 7, 7)
   },
   {
@@ -257,7 +258,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[4]._id,
     name: "God of War",
     backgroundURL: "https://wallpapercave.com/wp/T4xxWSN.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 9, 7)
   },
   {
@@ -266,7 +267,7 @@ const fandoms: IFandom[] = [
     name: "Assassin's Creed",
     backgroundURL:
       "https://i.pinimg.com/originals/80/d9/89/80d98924b54c6ff8b8438cc30ea1e694.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 12, 7)
   },
   {
@@ -274,7 +275,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[4]._id,
     name: "NBA 2020",
     backgroundURL: "https://wallpaperaccess.com/full/103114.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 5, 7)
   },
   {
@@ -283,7 +284,7 @@ const fandoms: IFandom[] = [
     name: "Basketball",
     backgroundURL:
       "https://i.pinimg.com/originals/dc/eb/80/dceb80db40569f060a1197d7f8c58916.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2016, 1, 7)
   },
   {
@@ -291,7 +292,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[5]._id,
     name: "Soccer",
     backgroundURL: "https://wallpapercave.com/wp/4dqP3rn.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 9)
   },
   {
@@ -299,7 +300,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[5]._id,
     name: "Golf",
     backgroundURL: "https://cdn.hipwallpaper.com/i/91/94/rFjELC.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 9, 7)
   },
   {
@@ -308,7 +309,7 @@ const fandoms: IFandom[] = [
     name: "Cricket",
     backgroundURL:
       "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8Y3JpY2tldHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 18)
   },
   {
@@ -316,7 +317,7 @@ const fandoms: IFandom[] = [
     category: fandomCategories[6]._id,
     name: "Apple",
     backgroundURL: "https://wallpapercave.com/wp/8duz5Ir.jpg",
-    createdBy: users[0],
+    createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 12)
   },
   {
@@ -325,7 +326,7 @@ const fandoms: IFandom[] = [
     name: "OnePlus",
     backgroundURL:
       "https://m-cdn.phonearena.com/images/hub/54-two_500/OnePlus-8T-release-date-price-features-and-news.jpg",
-    createdBy: users[1],
+    createdBy: users[1]._id,
     createdAt: new Date(2020, 5, 17)
   }
 ];
@@ -476,61 +477,55 @@ const fandomPosts: IFandomPost[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[13],
-    postedBy: users[0],
+    fandom: fandoms[13]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 17),
-    updatedAt: new Date(2021, 2, 17)
+    createdAt: new Date(2021, 2, 17)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[13],
-    postedBy: users[1],
+    fandom: fandoms[13]._id,
+    postedBy: users[1]._id,
     title: "Lorem ipsum dolor",
-    createdAt: new Date(2021, 1, 1),
-    updatedAt: new Date(2021, 1, 1)
+    createdAt: new Date(2021, 1, 1)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[2],
-    postedBy: users[1],
+    fandom: fandoms[2]._id,
+    postedBy: users[1]._id,
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 1, 19),
-    updatedAt: new Date(2021, 1, 19)
+    createdAt: new Date(2021, 1, 19)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[2],
-    postedBy: users[0],
+    fandom: fandoms[2]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 1, 5),
-    updatedAt: new Date(2021, 1, 5)
+    createdAt: new Date(2021, 1, 5)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[5],
-    postedBy: users[0],
+    fandom: fandoms[5]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 14),
-    updatedAt: new Date(2021, 2, 14)
+    createdAt: new Date(2021, 2, 14)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    fandom: fandoms[6],
-    postedBy: users[0],
+    fandom: fandoms[6]._id,
+    postedBy: users[0]._id,
     title: "Lorem ipsum dolor sit amet",
-    createdAt: new Date(2021, 2, 12),
-    updatedAt: new Date(2021, 2, 12)
+    createdAt: new Date(2021, 2, 12)
   }
 ];
 
@@ -539,81 +534,81 @@ const fandomComments: IFandomComment[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[0],
+    postedBy: users[0]._id,
+    title: "Comment 1",
+    fandomPost: fandomPosts[0]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[0],
+    postedBy: users[1]._id,
+    title: "Comment 2",
+    fandomPost: fandomPosts[0]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[1],
+    postedBy: users[1]._id,
+    title: "Comment 3",
+    fandomPost: fandomPosts[1]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[1],
+    postedBy: users[0]._id,
+    title: "Comment 4",
+    fandomPost: fandomPosts[1]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[2],
+    postedBy: users[0]._id,
+    title: "Comment 5",
+    fandomPost: fandomPosts[2]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[3],
+    postedBy: users[1]._id,
+    title: "Comment 6",
+    fandomPost: fandomPosts[3]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[1],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[4],
+    postedBy: users[1]._id,
+    title: "Comment 7",
+    fandomPost: fandomPosts[4]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[5],
+    postedBy: users[0]._id,
+    title: "Comment 8",
+    fandomPost: fandomPosts[5]._id,
     createdAt: new Date(2021, 2, 8)
   },
   {
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    postedBy: users[0],
-    title: "Excepteur sint occaecat cupidatat non proident",
-    fandomPost: fandomPosts[5],
+    postedBy: users[0]._id,
+    title: "Comment 9",
+    fandomPost: fandomPosts[5]._id,
     createdAt: new Date(2021, 2, 8)
   }
 ];
@@ -688,25 +683,25 @@ const userLikes: IUserLike[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[0],
+    user: users[0]._id,
     fandomPost: fandomPosts[1]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: true,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[0]
   },
   {
     _id: new mongoose.Types.ObjectId(),
     isLike: false,
-    user: users[1],
+    user: users[1]._id,
     fandomPost: fandomPosts[1]
   }
 ];
@@ -733,6 +728,8 @@ export default async () => {
   await dropDatabase();
 
   for (let i = 0; i < users.length; i++) {
+    let salt = await bcrypt.genSalt(10);
+    users[i].password = await bcrypt.hash(users[i].password, salt);
     await UserModel.create(users[i]);
   }
 

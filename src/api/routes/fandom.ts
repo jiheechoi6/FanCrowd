@@ -1,18 +1,19 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
-import { isValidObjectId } from "mongoose";
-import FandomCategory from "../../models/fandom-category";
-import Fandom from "../../models/fandom";
 import User from "../../models/user";
 import {
-  IFandom,
-  IFandomCategory,
-  IFandomCategoryDTO,
-  IFandomDTO,
   INewFandomCategoryInputDTO,
-  INewFandomInputDTO
+  INewFandomCommentInputDTO,
+  INewFandomInputDTO,
+  INewFandomPostInputDTO,
+  IUpdateCategoryDTO,
+  IUpdateCommentDTO,
+  IUpdateFandomDTO,
+  IUpdatePostDTO
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
+import FandomService from "../../services/fandom";
+import { INewUserLikeInputDTO } from "../../interfaces/IUser";
 
 const route = Router();
 
@@ -40,26 +41,8 @@ export default (app: Router) => {
         createdBy: createdByUser?._id
       };
 
-      if (!isValidObjectId(newFandom.category)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with id ${newFandom.category} does not exist`
-        );
-      }
-
-      const category = await FandomCategory.findById(newFandom.category);
-
-      if (!category) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with id ${newFandom.category} does not exist`
-        );
-      }
-
-      const newFandomDoc = await Fandom.create(newFandom);
-      const fandom = newFandomDoc.toObject();
-      Reflect.deleteProperty(fandom, "createdBy");
-
+      const fandomService = new FandomService();
+      const fandom = await fandomService.createFandom(newFandom);
       res.status(200).send(fandom);
     } catch (err) {
       return next(err);
@@ -79,26 +62,10 @@ export default (app: Router) => {
   route.delete("/:fandomId", async (req, res, next) => {
     try {
       const fandomId = req.params.fandomId;
+      const fandomService = new FandomService();
 
-      if (!isValidObjectId(fandomId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      const fandom = await Fandom.findById(fandomId);
-
-      if (!fandom) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      //should be checking if user who created fandom is the one deleting or admin
-
-      await fandom.delete();
+      //Should be passing in req.user.id instead of undefined
+      await fandomService.deleteFandomById(fandomId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -123,34 +90,17 @@ export default (app: Router) => {
   route.patch("/:fandomId", async (req, res, next) => {
     try {
       const fandomId = req.params.fandomId;
+      const fandomService = new FandomService();
 
-      if (!isValidObjectId(fandomId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
+      const reqBody = req.body as IUpdateFandomDTO;
 
-      const fandomDoc = await Fandom.findById(fandomId);
-
-      if (!fandomDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      //should be checking if user who created fandom is the one updating or admin
-      fandomDoc.name = req.body.name || fandomDoc.name;
-      fandomDoc.backgroundURL =
-        req.body.backgroundURL || fandomDoc.backgroundURL;
-      fandomDoc.category = req.body.category || fandomDoc.category;
-
-      const updatedFandom = await fandomDoc.save();
-      const fandom = updatedFandom.toObject();
-      Reflect.deleteProperty(fandom, "createdBy");
-
-      res.status(200).send(fandom);
+      //Should be passing in req.user.id instead of undefined
+      const updatedFandom = await fandomService.updateFandomById(
+        fandomId,
+        reqBody,
+        undefined
+      );
+      res.status(200).send(updatedFandom);
     } catch (err) {
       return next(err);
     }
@@ -165,9 +115,9 @@ export default (app: Router) => {
    */
   route.get("/categories", async (req, res, next) => {
     try {
-      const categories: IFandomCategoryDTO[] = await FandomCategory.find(
-        {}
-      ).select("-createdBy");
+      const fandomService = new FandomService();
+      const categories = await fandomService.getFandomCategories();
+
       res.status(200).send(categories);
     } catch (err) {
       return next(err);
@@ -186,22 +136,10 @@ export default (app: Router) => {
    */
   route.get("/categories/:categoryName", async (req, res, next) => {
     try {
-      const categoryName = req.params.categoryName;
-      const category = await FandomCategory.findOne({
-        name: categoryName.toLowerCase()
-      });
-
-      if (!category) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Category with name ${categoryName} does not exist`
-        );
-      }
-
-      const fandoms: IFandomDTO[] =
-        (await Fandom.find({ category: category._id }).select("-createdBy")) ||
-        [];
-
+      const fandomService = new FandomService();
+      const fandoms = await fandomService.getFandomsInCategory(
+        req.params.categoryName
+      );
       res.status(200).send(fandoms);
     } catch (err) {
       return next(err);
@@ -228,10 +166,8 @@ export default (app: Router) => {
         createdBy: createdByUser?._id
       };
 
-      const newCategoryDoc = await FandomCategory.create(newCategory);
-      const category = newCategoryDoc.toObject();
-      Reflect.deleteProperty(category, "createdBy");
-
+      const fandomService = new FandomService();
+      const category = await fandomService.createCategory(newCategory);
       res.status(200).send(category);
     } catch (err) {
       if (err.name === "MongoError" && err.code === 11000) {
@@ -256,24 +192,10 @@ export default (app: Router) => {
    */
   route.delete("/categories/:categoryId", async (req, res, next) => {
     try {
-      const categoryId = req.params.categoryId;
-      if (!isValidObjectId(categoryId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom category with id ${categoryId} not found`
-        );
-      }
-      const categoryDoc = await FandomCategory.findById(categoryId);
-      //check if user who created category is the one deleting (one who sent request) or admin
+      const fandomService = new FandomService();
 
-      if (!categoryDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom category with id ${categoryId} not found`
-        );
-      }
-
-      await categoryDoc.delete();
+      //Should be passing in req.user.id instead of undefined
+      await fandomService.deleteCategoryById(req.params.categoryId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -296,33 +218,297 @@ export default (app: Router) => {
    */
   route.patch("/categories/:categoryId", async (req, res, next) => {
     try {
-      const categoryId = req.params.categoryId;
-      if (!isValidObjectId(categoryId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom category with id ${categoryId} not found`
-        );
-      }
+      const fandomService = new FandomService();
+      const reqBody = req.body as IUpdateCategoryDTO;
 
-      const categoryDoc = await FandomCategory.findById(categoryId);
-      //check if user who created category is the one updating (one who sent request)
-
-      if (!categoryDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom category with id ${categoryId} not found`
-        );
-      }
-
-      categoryDoc!.name = req.body.name || categoryDoc.name;
-      categoryDoc!.backgroundURL =
-        req.body.backgroundURL || categoryDoc.backgroundURL;
-
-      const updatedCategory = await categoryDoc!.save();
-      const category = updatedCategory.toObject();
-      Reflect.deleteProperty(category, "createdBy");
+      //Should be passing in req.user.id instead of undefined
+      const category = await fandomService.updateCategoryById(
+        req.params.categoryId,
+        reqBody,
+        undefined
+      );
 
       res.status(200).send(category);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/categories/:categoryName/:fandomName/posts
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    categoryName: string,
+   *    fandomName: string
+   * }
+   * description: gets all the posts for a fandom given fandom name and category
+   */
+  route.get(
+    "/categories/:categoryName/:fandomName/posts",
+    async (req, res, next) => {
+      try {
+        //of the form category-name and fandom-name
+        const categoryName = req.params.categoryName;
+        const fandomName = req.params.fandomName;
+
+        const fandomService = new FandomService();
+        const posts = await fandomService.getPostsForFandom(
+          categoryName,
+          fandomName
+        );
+
+        res.status(200).send(posts);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  /**
+   * path: /api/fandoms/posts/:postId
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: gets a post by id
+   */
+  route.get("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      const fandomService = new FandomService();
+      const post = await fandomService.getPostById(postId);
+
+      res.status(200).send(post);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts
+   * method: POST
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandom: string
+   * }
+   * params: None
+   * description: creates a post in a fandom
+   */
+  route.post("/posts", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newPost: INewFandomPostInputDTO = {
+        ...req.body,
+        postedBy: createdByUser?._id
+      };
+
+      const fandomService = new FandomService();
+      const post = await fandomService.createPost(newPost, createdByUser);
+      res.status(200).send(post);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: removes a post from a fandom
+   */
+  route.delete("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      const fandomService = new FandomService();
+
+      //Should be passing in req.user.id instead of undefined
+      await fandomService.deletePostById(postId, undefined);
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId
+   * method: PATCH
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandom: string
+   * }
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: updates a post
+   */
+  route.patch("/posts/:postId", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      const reqBody = req.body as IUpdatePostDTO;
+      const fandomService = new FandomService();
+
+      //Should be passing in req.user.id instead of undefined
+      const post = await fandomService.updatePostById(
+        postId,
+        reqBody,
+        undefined
+      );
+
+      res.status(200).send(post);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/posts/:postId/comments
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    postId: string
+   * }
+   * description: gets comments for a post
+   */
+  route.get("/posts/:postId/comments", async (req, res, next) => {
+    try {
+      const postId = req.params.postId;
+      const fandomService = new FandomService();
+      const comments = await fandomService.getCommentsForPost(postId);
+      res.status(200).send(comments);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/comments
+   * method: POST
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandomPost: string
+   * }
+   * params: None
+   * description: creates a comment
+   */
+  route.post("/comments", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newComment: INewFandomCommentInputDTO = {
+        ...req.body,
+        postedBy: createdByUser?._id
+      };
+
+      const fandomService = new FandomService();
+      const comment = await fandomService.createComment(
+        newComment,
+        createdByUser
+      );
+
+      res.status(200).send(comment);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/comments/:commentId
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *    commentId: string
+   * }
+   * description: deletes a comment
+   */
+  route.delete("/comments/:commentId", async (req, res, next) => {
+    try {
+      const commentId = req.params.commentId;
+      const fandomService = new FandomService();
+
+      //Should be passing in req.user.id instead of undefined
+      await fandomService.deleteCommentById(commentId, undefined);
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/comments/:commentId
+   * method: PATCH
+   * body:
+   * {
+   *  title: string,
+   *  content: string,
+   *  fandomPost: string
+   * }
+   * params:
+   * {
+   *    commentId: string
+   * }
+   * description: updates a comment
+   */
+  route.patch("/comments/:commentId", async (req, res, next) => {
+    try {
+      const commentId = req.params.commentId;
+      const reqBody = req.body as IUpdateCommentDTO;
+      const fandomService = new FandomService();
+
+      //Should be passing in req.user.id instead of undefined
+      const comment = await fandomService.updateCommentById(
+        commentId,
+        reqBody,
+        undefined
+      );
+
+      res.status(200).send(comment);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/fandoms/likes
+   * method: POST
+   * body:
+   * {
+   *  fandomPost: string,
+   *  fandomComment: string,
+   *  isLike: boolean
+   * }
+   * params: None
+   * description: adds like/dislike to a comment or post
+   */
+  route.post("/likes", async (req, res, next) => {
+    try {
+      //should be getting from req.user
+      const createdByUser = await User.findOne({ role: "user" });
+      const newLike: INewUserLikeInputDTO = {
+        ...req.body,
+        user: createdByUser?._id
+      };
+
+      const fandomService = new FandomService();
+      await fandomService.updateLikes(newLike);
+      res.status(200).send();
     } catch (err) {
       return next(err);
     }

@@ -157,10 +157,10 @@ export default (app: Router) => {
         );
       }
 
-      // Should check if user who created fandom is the one updating or admin
+      // Should check if user who created the event is the one updating or admin
       eventDoc.name = req.body.name || eventDoc.name;
       eventDoc.description = req.body.description || eventDoc.description;
-      eventDoc.location = req.body.category || eventDoc.location;
+      eventDoc.location = req.body.location || eventDoc.location;
       eventDoc.startDate = req.body.startDate || eventDoc.startDate;
       eventDoc.endDate = req.body.endDate || eventDoc.endDate;
       eventDoc.fandom = req.body.fandom || eventDoc.fandom;

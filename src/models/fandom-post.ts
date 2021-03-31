@@ -1,5 +1,7 @@
 import { IFandomPost } from "../interfaces/IFandom";
 import mongoose from "mongoose";
+import FandomComment from "./fandom-comment";
+import UserLike from "./user-like";
 
 const FandomPostSchema = new mongoose.Schema(
   {
@@ -22,8 +24,15 @@ const FandomPostSchema = new mongoose.Schema(
       required: [true, "Fandom post must be associated to a fandom"]
     }
   },
-  { timestamps: true, versionKey: false }
+  { timestamps: { updatedAt: false }, versionKey: false }
 );
+
+FandomPostSchema.post("remove", async function () {
+  const postId = this._id;
+
+  await FandomComment.deleteMany({ fandomPost: postId });
+  await UserLike.deleteMany({ fandomPost: postId });
+});
 
 export default mongoose.model<IFandomPost & mongoose.Document>(
   "FandomPost",
