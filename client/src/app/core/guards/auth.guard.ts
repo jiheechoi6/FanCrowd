@@ -25,7 +25,12 @@ export class AuthGuard implements CanActivate {
     return this._authService.currentUser.pipe(
       take(1),
       map((user) => {
-        return user ? true : this._router.createUrlTree(['/login']);
+        if(user && this._authService.checkTokenExpired()){
+          return true;
+        }else{
+          return this._router.createUrlTree(['/login']);
+        }
+        // return user ? true : this._router.createUrlTree(['/login']);
       })
     );
   }

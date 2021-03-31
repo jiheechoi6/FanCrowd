@@ -57,7 +57,7 @@ export default class UserService {
         pwValid = await bcrypt.compare(password, userRecord.password);
         user = userRecord.toObject();
         if (pwValid){
-          token = jwt.sign(user, Config.secret, {expiresIn: 10800 }); // 3 hours
+          token = jwt.sign(user, Config.secret, {expiresIn: 10800 }); // 3 hours 10800
           pwValid = true;
         }
 

@@ -51,7 +51,7 @@ export class SignupComponent implements OnInit {
           fandoms: []
         })
         this._authService.token = res.token;
-        
+
         this._router.navigate(['/users', res.user.username]);
       } else {
         this.signUpError = 'Username is already taken';

@@ -8,10 +8,10 @@ import EventDTO from 'src/app/shared/models/event-dto';
 import SigninRes from 'src/app/shared/models/signin-res';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
-// import { tokenNotExpired } from '@auth0/angular-jwt'
+import { JwtHelperService } from '@auth0/angular-jwt'
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', 
 })
 export class AuthService {
   currentUser = new BehaviorSubject<UserDTO | null>(null);
@@ -149,7 +149,7 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _emailService: EmailService,
-    private _userService: UserService
+    private _userService: UserService,
   ) {}
 
   loginUser(username: string, password: string) {
@@ -173,6 +173,18 @@ export class AuthService {
 
   getCurrentUser(): BehaviorSubject<UserDTO | null> {
     return this.currentUser;
+  }
+
+  checkTokenExpired(): boolean {
+    // return localStorage.getItem('id_token') == null;
+    const helper = new JwtHelperService();
+    const token = localStorage.getItem('id_token');
+    if(token == null){
+      return false;
+    }
+    console.log("token: " + token);
+    console.log(helper.isTokenExpired(token));
+    return !helper.isTokenExpired(localStorage.id_token);
   }
 
   createNewUser(newUser: NewUser) {
