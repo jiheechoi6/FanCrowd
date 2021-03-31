@@ -5,13 +5,10 @@ import FandomPost from "../models/fandom-post";
 import FandomComment from "../models/fandom-comment";
 import UserLike from "../models/user-like";
 import {
-  IFandom,
-  IFandomCategory,
   IFandomCategoryDTO,
   IFandomCommentDTOWithLikes,
   IFandomCommentFilter,
   IFandomDTO,
-  IFandomPost,
   IFandomPostDTOWithLikes,
   IFandomPostFilter,
   INewFandomCategoryInputDTO,
@@ -26,7 +23,6 @@ import {
 import ErrorService from "./error";
 import GlobalService from "./global";
 import { INewUserLikeInputDTO, IUser } from "../interfaces/IUser";
-import fandomPost from "../models/fandom-post";
 
 export default class FandomService {
   private static _globalService = new GlobalService();

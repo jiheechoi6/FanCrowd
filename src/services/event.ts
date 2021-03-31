@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import Fandom from "../models/fandom";
-import User from "../models/user";
 import Event from "../models/event";
 import Attend from "../models/attend";
 import EventReview from "../models/event-review";
@@ -14,7 +12,7 @@ import {
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { IAttendEvent, INewAttendEventDTO, IUser } from "../interfaces/IUser";
+import { IAttendEvent, INewAttendEventDTO } from "../interfaces/IUser";
 import FandomService from "./fandom";
 
 export default class EventService {
@@ -238,8 +236,8 @@ export default class EventService {
   }
 
   public async getEventAttendeesById(eventId: mongoose.Types._ObjectId | string) {
-    const eventDoc = await this.getEventById(eventId);
-    const attendees: IAttendEvent[] = await Attend.find({ event: eventDoc._id });
+    const eventDoc: IEvent = await this.getEventById(eventId);
+    const attendees: IAttendEvent[] = (await Attend.find({ event: eventDoc })) || [];
 
     return attendees;
   }

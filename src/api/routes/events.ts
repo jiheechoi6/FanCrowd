@@ -3,7 +3,6 @@ import middlewares from "../middlewares";
 import { isValidObjectId } from "mongoose";
 import EventReview from "../../models/event-review";
 import Event from "../../models/event";
-import Fandom from "../../models/fandom";
 import User from "../../models/user";
 import Attend from "../../models/attend";
 import {
@@ -148,33 +147,6 @@ export default (app: Router) => {
       const event = await eventService.getEventById(eventId);
 
       res.status(200).send(event);
-    } catch (err) {
-      return next(err);
-    }
-  });
-
-  /**
-   * path: /api/events/:fandomName
-   * method: GET
-   * body: None
-   * params:
-   * {
-   *  categoryName: string
-   *  fandomName: string
-   * }
-   * description: gets events by fandomName or [] if no fandoms
-   */
-  route.get("/:categoryName/:fandomName", async (req, res, next) => {
-    try {
-      const categoryName = req.params.categoryName;
-      const fandomName = req.params.fandomName;
-      const category = categoryName.split("-").join(" ");
-      const fandom = fandomName.split("-").join(" ");
-
-      const eventService = new EventService();
-      const events = await eventService.getEventsByFandom(category, fandom);
-
-      res.status(200).send(events);
     } catch (err) {
       return next(err);
     }
@@ -461,10 +433,37 @@ export default (app: Router) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
-
-      const attendees = eventService.getEventAttendeesById(eventId);
+      const event: IEvent = await eventService.getEventById(eventId);
+      const attendees: IAttendEvent[] = await eventService.getEventAttendeesById(eventId);
 
       res.status(200).send(attendees);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/events/:categoryName/:fandomName
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *  categoryName: string
+   *  fandomName: string
+   * }
+   * description: gets events by fandomName or [] if no fandoms
+   */
+   route.get("/:categoryName/:fandomName", async (req, res, next) => {
+    try {
+      const categoryName = req.params.categoryName;
+      const fandomName = req.params.fandomName;
+      const category = categoryName.split("-").join(" ");
+      const fandom = fandomName.split("-").join(" ");
+
+      const eventService = new EventService();
+      const events = await eventService.getEventsByFandom(category, fandom);
+
+      res.status(200).send(events);
     } catch (err) {
       return next(err);
     }
