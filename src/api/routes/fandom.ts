@@ -91,7 +91,6 @@ export default (app: Router) => {
     try {
       const fandomId = req.params.fandomId;
       const fandomService = new FandomService();
-
       const reqBody = req.body as IUpdateFandomDTO;
 
       //Should be passing in req.user.id instead of undefined

@@ -40,3 +40,12 @@ export interface INewEventReviewInputDTO {
   rating: number;
   event: mongoose.Types._ObjectId;
 }
+
+export interface IUpdateEventDTO {
+  name?: string;
+  description?: string;
+  location?: string;
+  startDate?: Date;
+  endDate?: Date;
+  fandom?: IFandom;
+}

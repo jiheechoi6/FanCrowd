@@ -11,9 +11,11 @@ import {
   IEventReview,
   INewEventReviewInputDTO,
   INewEventInputDTO,
+  IUpdateEventDTO,
 } from "../../interfaces/IEvent";
 import { IAttendEvent, INewAttendEventDTO } from '../../interfaces/IUser';
 import ErrorService from "../../services/error";
+import EventService from "../../services/event";
 
 const route = Router();
 
@@ -37,33 +39,15 @@ export default (app: Router) => {
    */
   route.post("", async (req, res, next) => {
     try {
-      // Should be getting from req.user
+      // TODO: Should get from req.user
       const postedByUser = await User.findOne({ role: "user" });
       const newEvent: INewEventInputDTO = {
         ...req.body,
         postedBy: postedByUser?._id,
       };
 
-      if (!isValidObjectId(newEvent.fandom)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${newEvent.fandom} does not exist`
-        );
-      }
-
-      const fandom = await Fandom.findById(newEvent.fandom);
-
-      if (!fandom) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${newEvent.fandom} does not exist`
-        );
-      }
-
-      const newEventDoc = await Event.create(newEvent);
-      const event = newEventDoc.toObject();
-      Reflect.deleteProperty(event, "postedBy");
-
+      const eventService = new EventService();
+      const event = await eventService.createEvent(newEvent);
       res.status(200).send(event);
     } catch (err) {
       return next(err);
@@ -83,26 +67,10 @@ export default (app: Router) => {
   route.delete("/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
+      const eventService = new EventService();
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const event = await Event.findById(eventId);
-
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      // Should be checking if user who created event is the one deleting or admin
-
-      await event.delete();
+      // TODO: Should pass in req.user.id instead of undefined
+      await eventService.deleteEventById(eventId, undefined);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -130,46 +98,17 @@ export default (app: Router) => {
   route.patch("/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
-      const fandomId = req.body.fandom;
+      const eventService = new EventService();
+      const reqBody = req.body as IUpdateEventDTO;
 
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
+      // TODO: Pass in req.user.id instead of undefined
+      const updatedEvent = await eventService.updateEventById(
+        eventId,
+        reqBody,
+        undefined
+      );
 
-      const eventDoc = await Event.findById(eventId);
-
-      if (!eventDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const fandomDoc = await Fandom.findById(fandomId);
-
-      if (!fandomDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandom with id ${fandomId} does not exist`
-        );
-      }
-
-      // Should check if user who created the event is the one updating or admin
-      eventDoc.name = req.body.name || eventDoc.name;
-      eventDoc.description = req.body.description || eventDoc.description;
-      eventDoc.location = req.body.location || eventDoc.location;
-      eventDoc.startDate = req.body.startDate || eventDoc.startDate;
-      eventDoc.endDate = req.body.endDate || eventDoc.endDate;
-      eventDoc.fandom = req.body.fandom || eventDoc.fandom;
-
-      const updatedEvent = await eventDoc.save();
-      const event = updatedEvent.toObject();
-      Reflect.deleteProperty(event, "postedBy");
-
-      res.status(200).send(event);
+      res.status(200).send(updatedEvent);
     } catch (err) {
       return next(err);
     }
@@ -204,26 +143,8 @@ export default (app: Router) => {
    route.get("/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
-
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const event = await Event.findOne({
-        _id: eventId,
-      })
-      .populate("postedBy")
-      .populate("fandom");
-
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
+      const eventService = new EventService();
+      const event = await eventService.getEventById(eventId);
 
       res.status(200).send(event);
     } catch (err) {
