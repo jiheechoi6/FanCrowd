@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IRequestUser } from "../interfaces/IUser";
 import ErrorService from "./error";
 
 export default class GlobalService {
@@ -13,10 +14,10 @@ export default class GlobalService {
 
   public hasPermission(
     createdByUserId: mongoose.Types._ObjectId | string,
-    reqUserId: mongoose.Types._ObjectId | string,
+    reqUser: IRequestUser,
     errMsg: string
   ) {
-    if (createdByUserId !== reqUserId) {
+    if (reqUser.role !== "admin" && !reqUser._id.equals(createdByUserId)) {
       throw new ErrorService("UnauthorizedError", errMsg);
     }
   }
