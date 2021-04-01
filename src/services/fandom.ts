@@ -5,13 +5,10 @@ import FandomPost from "../models/fandom-post";
 import FandomComment from "../models/fandom-comment";
 import UserLike from "../models/user-like";
 import {
-  IFandom,
-  IFandomCategory,
   IFandomCategoryDTO,
   IFandomCommentDTOWithLikes,
   IFandomCommentFilter,
   IFandomDTO,
-  IFandomPost,
   IFandomPostDTOWithLikes,
   IFandomPostFilter,
   INewFandomCategoryInputDTO,
@@ -26,7 +23,6 @@ import {
 import ErrorService from "./error";
 import GlobalService from "./global";
 import { INewUserLikeInputDTO, IUser } from "../interfaces/IUser";
-import fandomPost from "../models/fandom-post";
 
 export default class FandomService {
   private static _globalService = new GlobalService();
@@ -37,6 +33,24 @@ export default class FandomService {
       throw new ErrorService(
         "NotFoundError",
         `Fandom with id ${fandomId} does not exist`
+      );
+    }
+
+    return fandom;
+  }
+
+  public async getFandomByName(categoryName: string, fandomName: string) {
+    const category = await this.getCategoryByName(categoryName);
+
+    const fandom = await Fandom.findOne({
+      category: category?._id,
+      name: fandomName.toLowerCase(),
+    });
+
+    if (!fandom) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Fandom with name ${fandomName} does not exist`
       );
     }
 
@@ -76,6 +90,21 @@ export default class FandomService {
       throw new ErrorService(
         "NotFoundError",
         `Category with id ${categoryId} does not exist`
+      );
+    }
+
+    return fandomCategory;
+  }
+
+  public async getCategoryByName(categoryName: string) {
+    const fandomCategory = await FandomCategory.findOne({
+      name: categoryName.toLowerCase(),
+    });
+
+    if (!fandomCategory) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Category with name ${categoryName} does not exist`
       );
     }
 

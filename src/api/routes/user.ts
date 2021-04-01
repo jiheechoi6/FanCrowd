@@ -1,11 +1,9 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
-import { IUser, INewUserInputDTO } from "../../interfaces/IUser";
+import { IUser, IUpdateUserDTO } from "../../interfaces/IUser";
 import User from "../../models/user";
-import Event from "../../models/event";
-import FandomMember from "../../models/fandom-member";
-import { isValidObjectId } from "mongoose";
-import ErrorService from "../../services/error";
+import UserService from "../../services/user";
+
 const route = Router();
 
 export default (app: Router) => {
@@ -40,17 +38,8 @@ export default (app: Router) => {
   route.get("/:username", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({
-        username: username,
-      });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
+      const userService = new UserService();
+      const user = await userService.getUserByUsername(username);
       res.status(200).send(user);
     } catch (err) {
       return next(err);
@@ -70,16 +59,8 @@ export default (app: Router) => {
   route.delete("/:username", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({ username: username });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      await user.delete();
+      const userService = new UserService();
+      const user = await userService.deleteUserByUsername(username);
       res.status(200).send();
     } catch (err) {
       return next(err);
@@ -107,24 +88,14 @@ export default (app: Router) => {
   route.patch("/:username", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const userDoc = await User.findOne({ username: username });
+      const userService = new UserService();
+      const reqBody = req.body as IUpdateUserDTO;
 
-      if (!userDoc) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      userDoc.bio = req.body.bio || userDoc.bio;
-      userDoc.city = req.body.city || userDoc.city;
-      userDoc.country = req.body.country || userDoc.country;
-      userDoc.email = req.body.email || userDoc.email;
-      userDoc.fullName = req.body.fullName || userDoc.fullName;
-      userDoc.profileURL = req.body.profileURL || userDoc.profileURL;
-
-      const updatedUser = await userDoc.save();
-      const user = updatedUser.toObject();
+      //Should be passing in req.user.id instead of undefined
+      const user = await userService.updateUser(
+        username,
+        reqBody
+      );
 
       res.status(200).send(user);
     } catch (err) {
@@ -145,25 +116,8 @@ export default (app: Router) => {
   route.get("/:username/events", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({
-        username: username,
-      });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      const events = await Event.find({ postedBy: user._id });
-
-      if (!events) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Events for User with username ${username} do not exist`
-        );
-      }
+      const userService = new UserService();
+      const events = await userService.getUserEvents(username);
 
       res.status(200).send(events);
     } catch (err) {
@@ -177,32 +131,15 @@ export default (app: Router) => {
    * body: None
    * params:
    * {
-   *    fandoms: string
+   *    username: string
    * }
    * description: get a user's fandoms by username
    */
   route.get("/:username/fandoms", async (req, res, next) => {
     try {
       const username = req.params.username;
-      const user = await User.findOne({
-        username: username,
-      });
-
-      if (!user) {
-        throw new ErrorService(
-          "NotFoundError",
-          `User with username ${username} does not exist`
-        );
-      }
-
-      const fandoms = await FandomMember.find({ user: user._id });
-
-      if (!fandoms) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Fandoms for User with username ${username} do not exist`
-        );
-      }
+      const userService = new UserService();
+      const fandoms = await userService.getUserFandoms(username);
 
       res.status(200).send(fandoms);
     } catch (err) {

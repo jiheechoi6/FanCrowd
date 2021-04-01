@@ -140,7 +140,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[0]._id,
-    name: "Avengers: Age of Ultron",
+    name: "Avengers Age of Ultron",
     backgroundURL: "https://wallpaperaccess.com/full/1117133.jpg",
     createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 1)
@@ -148,7 +148,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[0]._id,
-    name: "Maze Runner: The Death Cure",
+    name: "Maze Runner The Death Cure",
     backgroundURL: "https://images3.alphacoders.com/913/thumb-1920-913996.jpg",
     createdBy: users[1]._id,
     createdAt: new Date(2010, 1, 7)
@@ -221,7 +221,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[3]._id,
-    name: "Yu-Gi-Oh!",
+    name: "Yu Gi Oh",
     backgroundURL:
       "https://i.pinimg.com/originals/d1/7a/d8/d17ad80144ef56adbf58a17a686ea619.jpg",
     createdBy: users[1]._id,
