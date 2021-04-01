@@ -5,7 +5,8 @@ import {
   INewUserInputDTO,
   IUpdateUserDTO,
   IResetPasswordEmailDTO,
-  IResetPasswordInputDTO
+  IResetPasswordInputDTO,
+  IRequestUser
 } from "../interfaces/IUser";
 import User from "../models/user";
 import Event from "../models/event";
@@ -13,22 +14,15 @@ import FandomMember from "../models/fandom-member";
 import ErrorService from "./error";
 import crypto from "crypto";
 import EmailService from "./email";
+import config from "../config";
 
 export default class UserService {
-/**
+  /**
    * helper function for authentication
    * @param userInputDTO new user
    */
   public async SignUp(userInputDTO: INewUserInputDTO) {
-    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
-    if (!passwordRegex.test(userInputDTO.password)) {
-      throw new ErrorService(
-        "ValidationError",
-        "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number"
-      );
-    }
-    const salt = await bcrypt.genSalt(10);
-    userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
+    userInputDTO.password = await this.hashPassword(userInputDTO.password);
     const userRecord = await User.create(userInputDTO);
 
     const user: IRequestUser = {
@@ -43,7 +37,7 @@ export default class UserService {
     return { user, token: "JWT " + token };
   }
 
-public async SignIn(username: string = "", password: string = "") {
+  public async SignIn(username: string = "", password: string = "") {
     const userRecord = await User.findOne({ username: username });
 
     if (!userRecord) {
@@ -169,7 +163,7 @@ public async SignIn(username: string = "", password: string = "") {
 
     const verificationCode = this.generateVerificationCode();
     const expiresIn = new Date();
-    expiresIn.setMinutes(expiresIn.getMinutes() + 1); //token expires in 10 mins
+    expiresIn.setMinutes(expiresIn.getMinutes() + 10); //token expires in 10 mins
 
     user.resetPasswordToken!.token = verificationCode;
     user.resetPasswordToken!.expiresIn = expiresIn;
