@@ -14,14 +14,14 @@ export default (passport: { use: (arg0: Strategy) => void }) => {
     new Strategy(opts, async (jwt_payload, done) => {
       try {
         const userDoc = await User.findById(jwt_payload._id);
-        console.log(userDoc);
         if (!userDoc) {
           return done(null, false);
         }
         const user: IRequestUser = {
           _id: userDoc._id,
           role: userDoc.role,
-          username: userDoc.username
+          username: userDoc.username,
+          profileURL: userDoc.profileURL
         };
 
         if (user) {

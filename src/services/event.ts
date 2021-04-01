@@ -8,11 +8,15 @@ import {
   IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
-  IUpdateEventReviewDTO,
+  IUpdateEventReviewDTO
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { IAttendEvent, INewAttendEventDTO } from "../interfaces/IUser";
+import {
+  IAttendEvent,
+  INewAttendEventDTO,
+  IRequestUser
+} from "../interfaces/IUser";
 import FandomService from "./fandom";
 
 export default class EventService {
@@ -28,7 +32,7 @@ export default class EventService {
     const event = await Event.findById(eventId)
       .populate("postedBy")
       .populate("fandom");
-    
+
     if (!event) {
       throw new ErrorService(
         "NotFoundError",
@@ -41,7 +45,8 @@ export default class EventService {
 
   public async getEventsByFandom(categoryName: string, fandomName: string) {
     const fandom = await EventService._fandomService.getFandomByName(
-      categoryName, fandomName
+      categoryName,
+      fandomName
     );
     const events: IEvent[] =
       (await Event.find({ fandom: fandom._id })
@@ -68,7 +73,7 @@ export default class EventService {
   public async updateEventById(
     eventId: mongoose.Types._ObjectId | string,
     updatedEvent: IUpdateEventDTO,
-    postedByUserId: mongoose.Types._ObjectId | undefined
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -77,12 +82,11 @@ export default class EventService {
 
     const eventDoc = await this.getEventById(eventId);
 
-    // TODO: uncomment following code after auth is implemented
-    // EventService._globalService.hasPermission(
-    //   eventDoc.postedBy,
-    //   postedByUserId,
-    //   `Only the creator or an admin may update event with id ${eventId}`
-    // );
+    EventService._globalService.hasPermission(
+      eventDoc.postedBy._id,
+      reqUser,
+      `Only the creator or an admin may update event with id ${eventId}`
+    );
 
     eventDoc.name = updatedEvent.name || eventDoc.name;
     eventDoc.description = updatedEvent.description || eventDoc.description;
@@ -107,7 +111,7 @@ export default class EventService {
   // TODO: Create two more methods to delete all reviews and attendees
   public async deleteEventById(
     eventId: mongoose.Types._ObjectId | string,
-    postedByUserId: mongoose.Types._ObjectId | undefined
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -116,12 +120,11 @@ export default class EventService {
 
     const event = await this.getEventById(eventId);
 
-    // TODO: uncomment following code after auth is implemented
-    // EventService._globalService.hasPermission(
-    //   event.postedBy,
-    //   postedByUserId,
-    //   `Only the creator or an admin may delete event with id ${eventId}`
-    // );
+    EventService._globalService.hasPermission(
+      event.postedBy._id,
+      reqUser,
+      `Only the creator or an admin may delete event with id ${eventId}`
+    );
 
     await event.delete();
   }
@@ -172,7 +175,7 @@ export default class EventService {
 
   public async deleteReviewById(
     reviewId: mongoose.Types._ObjectId | string,
-    postedByUserId: mongoose.Types._ObjectId | undefined
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       reviewId,
@@ -181,14 +184,11 @@ export default class EventService {
 
     const review = await this.getReviewById(reviewId);
 
-    /* TODO: uncomment following code after auth is implemented,
-     * also manually check for role type Admin
-     */
-    // EventService._globalService.hasPermission(
-    //   review.postedBy,
-    //   postedByUserId,
-    //   `Only the creator or an admin may delete review with id ${reviewId}`
-    // );
+    EventService._globalService.hasPermission(
+      review.postedBy._id,
+      reqUser,
+      `Only the creator or an admin may delete review with id ${reviewId}`
+    );
 
     await review.delete();
   }
@@ -197,7 +197,7 @@ export default class EventService {
     eventId: mongoose.Types._ObjectId | string,
     reviewId: mongoose.Types._ObjectId | string,
     updatedReview: IUpdateEventReviewDTO,
-    postedByUserId: mongoose.Types._ObjectId | undefined
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -211,13 +211,11 @@ export default class EventService {
 
     const reviewDoc = await this.getReviewById(reviewId);
 
-    // TODO: uncomment following code after auth is implemented
-    //       also manually check for role type Admin
-    // EventService._globalService.hasPermission(
-    //   reviewDoc.postedBy,
-    //   postedByUserId,
-    //   `Only the creator or an admin may update review with id ${reviewId}`
-    // );
+    EventService._globalService.hasPermission(
+      reviewDoc.postedBy._id,
+      reqUser,
+      `Only the creator or an admin may update review with id ${reviewId}`
+    );
 
     reviewDoc.title = updatedReview.title || reviewDoc.title;
     reviewDoc.content = updatedReview.content || reviewDoc.content;
@@ -235,9 +233,12 @@ export default class EventService {
     return review;
   }
 
-  public async getEventAttendeesById(eventId: mongoose.Types._ObjectId | string) {
+  public async getEventAttendeesById(
+    eventId: mongoose.Types._ObjectId | string
+  ) {
     const eventDoc: IEvent = await this.getEventById(eventId);
-    const attendees: IAttendEvent[] = (await Attend.find({ event: eventDoc })) || [];
+    const attendees: IAttendEvent[] =
+      (await Attend.find({ event: eventDoc })) || [];
 
     return attendees;
   }
@@ -279,7 +280,7 @@ export default class EventService {
 
   public async deleteAttendeeById(
     attendeeId: mongoose.Types._ObjectId | string,
-    userId: mongoose.Types._ObjectId | undefined
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       attendeeId,
@@ -288,14 +289,11 @@ export default class EventService {
 
     const attendee = await this.getAttendeeById(attendeeId);
 
-    /* TODO: uncomment following code after auth is implemented,
-     * also manually check for role type Admin
-     */
-    // EventService._globalService.hasPermission(
-    //   attendee.user,
-    //   userId,
-    //   `Only the attendee or an admin may delete attendee with id ${attendeeId}`
-    // );
+    EventService._globalService.hasPermission(
+      attendee.user._id,
+      reqUser,
+      `Only the attendee or an admin may delete attendee with id ${attendeeId}`
+    );
 
     await attendee.delete();
   }

@@ -28,7 +28,8 @@ export default class UserService {
     const user: IRequestUser = {
       _id: userRecord._id,
       role: userRecord.role,
-      username: userRecord.username
+      username: userRecord.username,
+      profileURL: userRecord.profileURL
     };
 
     // automatically log in user that signed up
@@ -59,7 +60,8 @@ export default class UserService {
     const user: IRequestUser = {
       _id: userRecord._id,
       role: userRecord.role,
-      username: userRecord.username
+      username: userRecord.username,
+      profileURL: userRecord.profileURL
     };
 
     const token = jwt.sign(user, config.jwtSecret);
