@@ -2,8 +2,10 @@ import config from "../config";
 import {Strategy, ExtractJwt} from "passport-jwt";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { IUser, INewUserInputDTO } from "../interfaces/IUser";
-import UserModel from "../models/user";
+import { IUser, INewUserInputDTO, IUpdateUserDTO } from "../interfaces/IUser";
+import User from "../models/user";
+import Event from "../models/event";
+import FandomMember from "../models/fandom-member";
 import Config from "../config/index";
 import ErrorService from "./error";
 
@@ -27,7 +29,7 @@ export default class UserService {
       // const checkUsername = await UserModel.findOne({username:userInputDTO.email});
       // if(checkUsername) throw new Error("Username already exists");
 
-      const userRecord = await UserModel.create(newUser);
+      const userRecord = await User.create(newUser);
 
       if (!userRecord) {
         throw new ErrorService("Duplicate key", "User cannot be created");
@@ -55,7 +57,7 @@ export default class UserService {
       let pwValid = false;
       let token = "";
       let user = null;
-      const userRecord = await UserModel.findOne({ username: username });
+      const userRecord = await User.findOne({ username: username });
       if (!userRecord) {
         usernameValid = false;
       }else{
@@ -78,5 +80,61 @@ export default class UserService {
     }catch(err){
       throw new Error("Username or password incorrect");
     }
+  }
+
+  public async getUserByUsername(username: string) {
+    const user = await User.findOne({username: username});
+    if (!user) {
+      throw new ErrorService(
+        "NotFoundError",
+        `User with username ${username} does not exist`
+      );
+    }
+
+    return user;
+  }
+
+  public async deleteUserByUsername(username: string) {
+    const user = await this.getUserByUsername(username);
+    await user.delete();
+  }
+
+  public async updateUser(
+    username: string,
+    updatedUser: IUpdateUserDTO) {
+    const userDoc = await this.getUserByUsername(username);
+
+    userDoc.fullName = updatedUser.fullName || userDoc.fullName;
+    userDoc.email = updatedUser.email || userDoc.email;
+    userDoc.bio = updatedUser.bio || userDoc.bio;
+    userDoc.profileURL = updatedUser.profileURL || userDoc.profileURL;
+    userDoc.city = updatedUser.city || userDoc.city;
+    userDoc.country = updatedUser.country || userDoc.country;
+
+    const updatedUserDoc = await userDoc.save();
+    const user = updatedUserDoc.toObject();
+
+    return user;
+  }
+
+  public async getUserEvents(username: string) {
+    const user = await this.getUserByUsername(username);
+    const events = await Event.find({ postedBy: user._id });
+
+      if (!events) {
+        throw new ErrorService(
+          "NotFoundError",
+          `Events for User with username ${username} do not exist`
+        );
+      }
+
+    return events;
+  }
+
+  public async getUserFandoms(username: string) {
+    const user = await this.getUserByUsername(username);
+    const fandoms = await FandomMember.find({ user: user._id }).populate("fandom");
+
+    return fandoms;
   }
 }
