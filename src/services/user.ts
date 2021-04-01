@@ -1,18 +1,21 @@
-import config from "../config";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {
+  IUser,
   INewUserInputDTO,
   IUpdateUserDTO,
-  IRequestUser
+  IResetPasswordEmailDTO,
+  IResetPasswordInputDTO
 } from "../interfaces/IUser";
 import User from "../models/user";
 import Event from "../models/event";
 import FandomMember from "../models/fandom-member";
 import ErrorService from "./error";
+import crypto from "crypto";
+import EmailService from "./email";
 
 export default class UserService {
-  /**
+/**
    * helper function for authentication
    * @param userInputDTO new user
    */
@@ -40,7 +43,7 @@ export default class UserService {
     return { user, token: "JWT " + token };
   }
 
-  public async SignIn(username: string = "", password: string = "") {
+public async SignIn(username: string = "", password: string = "") {
     const userRecord = await User.findOne({ username: username });
 
     if (!userRecord) {
@@ -127,5 +130,82 @@ export default class UserService {
     );
 
     return fandoms;
+  }
+
+  private generateVerificationCode() {
+    const randomBytes = crypto.randomBytes(3);
+    return parseInt(randomBytes.toString("hex"), 16).toString().substr(0, 6);
+  }
+
+  private async hashPassword(password: string) {
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      throw new ErrorService(
+        "ValidationError",
+        "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number"
+      );
+    }
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+  }
+
+  public async sendResetPasswordEmail(resetEmailInfo: IResetPasswordEmailDTO) {
+    if (!resetEmailInfo.email || !resetEmailInfo.username) {
+      throw new ErrorService(
+        "ValidationError",
+        "Username and email is required"
+      );
+    }
+
+    const emailService = new EmailService();
+    const user = await User.findOne({
+      email: resetEmailInfo.email,
+      username: resetEmailInfo.username
+    });
+
+    if (!user) {
+      return;
+    }
+
+    const verificationCode = this.generateVerificationCode();
+    const expiresIn = new Date();
+    expiresIn.setMinutes(expiresIn.getMinutes() + 1); //token expires in 10 mins
+
+    user.resetPasswordToken!.token = verificationCode;
+    user.resetPasswordToken!.expiresIn = expiresIn;
+
+    await user.save();
+    await emailService.sendEmail();
+  }
+
+  public async resetPassword(resetPasswordInput: IResetPasswordInputDTO) {
+    const user = await User.findOne({
+      username: resetPasswordInput.username,
+      email: resetPasswordInput.email
+    });
+
+    if (!user) {
+      throw new ErrorService(
+        "NotFoundError",
+        "User not found with email and username"
+      );
+    }
+
+    const currentTime = new Date();
+
+    if (
+      user.resetPasswordToken?.token !== resetPasswordInput.verificationCode ||
+      currentTime > user.resetPasswordToken?.expiresIn
+    ) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "The verification code is incorrect or has expired"
+      );
+    }
+
+    user.password = await this.hashPassword(resetPasswordInput.password);
+    user.resetPasswordToken = undefined;
+
+    await user.save();
   }
 }

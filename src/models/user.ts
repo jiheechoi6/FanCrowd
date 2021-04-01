@@ -59,6 +59,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       // required: [isNotAdmin, "Country is required"],
       default: ""
+    },
+    resetPasswordToken: {
+      token: {
+        type: String
+      },
+      expiresIn: {
+        type: Date
+      }
     }
   },
   { timestamps: { updatedAt: false }, versionKey: false }
