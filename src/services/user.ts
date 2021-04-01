@@ -10,81 +10,70 @@ import {
 import User from "../models/user";
 import Event from "../models/event";
 import FandomMember from "../models/fandom-member";
-import Config from "../config/index";
 import ErrorService from "./error";
 import crypto from "crypto";
 import EmailService from "./email";
 
 export default class UserService {
-  /**
+/**
    * helper function for authentication
    * @param userInputDTO new user
    */
-  public async SignUp(
-    userInputDTO: INewUserInputDTO
-  ): Promise<{ user: IUser; token: string }> {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
-
-      const newUser: INewUserInputDTO = {
-        ...userInputDTO
-      };
-      const userRecord = await User.create(newUser);
-
-      if (!userRecord) {
-        throw new Error("User cannot be created");
-      }
-
-      const user = userRecord.toObject();
-      Reflect.deleteProperty(user, "password");
-
-      // automatically log in user that signed up
-      const token = jwt.sign(user, Config.secret, { expiresIn: 10800 }); // 3 hours
-
-      return { user: user, token: "JWT " + token };
-    } catch (err) {
-      throw err;
+  public async SignUp(userInputDTO: INewUserInputDTO) {
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+    if (!passwordRegex.test(userInputDTO.password)) {
+      throw new ErrorService(
+        "ValidationError",
+        "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number"
+      );
     }
+    const salt = await bcrypt.genSalt(10);
+    userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
+    const userRecord = await User.create(userInputDTO);
+
+    const user: IRequestUser = {
+      _id: userRecord._id,
+      role: userRecord.role,
+      username: userRecord.username
+    };
+
+    // automatically log in user that signed up
+    const token = jwt.sign(user, config.secret);
+
+    return { user, token: "JWT " + token };
   }
 
-  public async SignIn(
-    username: string,
-    password: string
-  ): Promise<{
-    usernameValid: boolean;
-    pwValid: boolean;
-    token: string;
-    user: any;
-  }> {
-    try {
-      let usernameValid = true;
-      let pwValid = false;
-      let token = "";
-      let user = null;
-      const userRecord = await User.findOne({ username: username });
-      if (!userRecord) {
-        usernameValid = false;
-      } else {
-        pwValid = await bcrypt.compare(password, userRecord.password);
-        user = userRecord.toObject();
-        if (pwValid) {
-          token = jwt.sign(user, Config.secret, { expiresIn: 10800 }); // 3 hours
-          pwValid = true;
-        }
+public async SignIn(username: string = "", password: string = "") {
+    const userRecord = await User.findOne({ username: username });
 
-        Reflect.deleteProperty(user, "password");
-      }
-
-      return {
-        usernameValid: usernameValid,
-        pwValid: pwValid,
-        token: "JWT " + token,
-        user: user
-      };
-    } catch (err) {
-      throw new Error("Username or password incorrect");
+    if (!userRecord) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "Username or password is incorrect"
+      );
     }
+
+    const isPasswordValid = await bcrypt.compare(password, userRecord.password);
+
+    if (!isPasswordValid) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "Username or password is incorrect"
+      );
+    }
+
+    const user: IRequestUser = {
+      _id: userRecord._id,
+      role: userRecord.role,
+      username: userRecord.username
+    };
+
+    const token = jwt.sign(user, config.secret);
+
+    return {
+      token: "JWT " + token,
+      user
+    };
   }
 
   public async getUserByUsername(username: string) {

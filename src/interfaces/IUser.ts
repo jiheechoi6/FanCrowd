@@ -16,6 +16,12 @@ export interface IUser {
   resetPasswordToken?: IResetPasswordToken;
 }
 
+export interface IRequestUser {
+  _id: mongoose.Types._ObjectId;
+  username: string;
+  role: string;
+}
+
 export interface IUserPostedBy {
   username: string;
   profileURL: string;

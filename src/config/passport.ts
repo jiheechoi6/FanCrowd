@@ -1,9 +1,9 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
-import UserSchema from "../models/user";
+import User from "../models/user";
 import config from "../config/index";
-import { request, response } from "express";
+import { IRequestUser } from "../interfaces/IUser";
 
-module.exports = function (passport: { use: (arg0: Strategy) => void }) {
+export default (passport: { use: (arg0: Strategy) => void }) => {
   // we'll be using authorization in header
   let opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
@@ -13,16 +13,21 @@ module.exports = function (passport: { use: (arg0: Strategy) => void }) {
   passport.use(
     new Strategy(opts, async (jwt_payload, done) => {
       try {
-        const user = await UserSchema.findById(jwt_payload._id);
-        // const user = await UserSchema.findOne({username: "admin"});
-        // response.send({user});
-
-        if (user) {
-          const userd = user.toObject();
-          return done(null, user);
-        } else {
+        const userDoc = await User.findById(jwt_payload._id);
+        console.log(userDoc);
+        if (!userDoc) {
           return done(null, false);
         }
+        const user: IRequestUser = {
+          _id: userDoc._id,
+          role: userDoc.role,
+          username: userDoc.username
+        };
+
+        if (user) {
+          return done(null, user);
+        }
+        return done(null, false);
       } catch (error) {
         return done(error, false);
       }
