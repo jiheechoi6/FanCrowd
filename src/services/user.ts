@@ -32,7 +32,7 @@ export default class UserService {
     };
 
     // automatically log in user that signed up
-    const token = jwt.sign(user, config.secret);
+    const token = jwt.sign(user, config.jwtSecret);
 
     return { user, token: "JWT " + token };
   }
@@ -62,7 +62,7 @@ export default class UserService {
       username: userRecord.username
     };
 
-    const token = jwt.sign(user, config.secret);
+    const token = jwt.sign(user, config.jwtSecret);
 
     return {
       token: "JWT " + token,
@@ -169,7 +169,11 @@ export default class UserService {
     user.resetPasswordToken!.expiresIn = expiresIn;
 
     await user.save();
-    await emailService.sendEmail();
+    await emailService.sendEmail({
+      subject: "FanCrowd - Password Reset Verification Code",
+      text: `Here is the verification code needed to reset your password: ${verificationCode}. Please note that it will expire in 10 mins.`,
+      to: user.email
+    });
   }
 
   public async resetPassword(resetPasswordInput: IResetPasswordInputDTO) {
