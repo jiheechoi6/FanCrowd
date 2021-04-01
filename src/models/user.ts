@@ -50,19 +50,23 @@ const UserSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      // required: [isNotAdmin, "Bio is required"]
+      // required: [isNotAdmin, "Bio is required"],
+      default: ""
     },
     profileURL: {
       type: String,
-      // required: [isNotAdmin, "Profile URL is required"]
+      // required: [isNotAdmin, "Profile URL is required"],
+      default: ""
     },
     city: {
       type: String,
-      // required: [isNotAdmin, "City is required"]
+      // required: [isNotAdmin, "City is required"],
+      default: ""
     },
     country: {
       type: String,
-      // required: [isNotAdmin, "Country is required"]
+      // required: [isNotAdmin, "Country is required"],
+      default: ""
     }
   },
   { timestamps: { updatedAt: false }, versionKey: false }

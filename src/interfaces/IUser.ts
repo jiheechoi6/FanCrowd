@@ -15,6 +15,12 @@ export interface IUser {
   country: string;
 }
 
+export interface IRequestUser {
+  _id: mongoose.Types._ObjectId;
+  username: string;
+  role: string;
+}
+
 export interface IUserPostedBy {
   username: string;
   profileURL: string;
