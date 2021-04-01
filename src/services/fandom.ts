@@ -22,7 +22,7 @@ import {
 } from "../interfaces/IFandom";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { INewUserLikeInputDTO, IUser } from "../interfaces/IUser";
+import { INewUserLikeInputDTO, IRequestUser, IUser } from "../interfaces/IUser";
 
 export default class FandomService {
   private static _globalService = new GlobalService();
@@ -44,7 +44,7 @@ export default class FandomService {
 
     const fandom = await Fandom.findOne({
       category: category?._id,
-      name: fandomName.toLowerCase(),
+      name: fandomName.toLowerCase()
     });
 
     if (!fandom) {
@@ -98,7 +98,7 @@ export default class FandomService {
 
   public async getCategoryByName(categoryName: string) {
     const fandomCategory = await FandomCategory.findOne({
-      name: categoryName.toLowerCase(),
+      name: categoryName.toLowerCase()
     });
 
     if (!fandomCategory) {
@@ -135,7 +135,7 @@ export default class FandomService {
   public async updateFandomById(
     fandomId: mongoose.Types._ObjectId | string,
     updatedFandom: IUpdateFandomDTO,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       fandomId,
@@ -144,12 +144,11 @@ export default class FandomService {
 
     const fandomDoc = await this.getFandomById(fandomId);
 
-    //uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   fandomDoc.createdBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may update fandom with id ${fandomId}`
-    // );
+    FandomService._globalService.hasPermission(
+      fandomDoc.createdBy,
+      createdByUserId,
+      `Only the creator or an admin may update fandom with id ${fandomId}`
+    );
 
     fandomDoc.name = updatedFandom.name || fandomDoc.name;
     fandomDoc.backgroundURL =
@@ -169,7 +168,7 @@ export default class FandomService {
 
   public async deleteFandomById(
     fandomId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       fandomId,
@@ -178,12 +177,11 @@ export default class FandomService {
 
     const fandom = await this.getFandomById(fandomId);
 
-    //uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   fandom.createdBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may delete fandom with id ${fandomId}`
-    // );
+    FandomService._globalService.hasPermission(
+      fandom.createdBy,
+      createdByUserId,
+      `Only the creator or an admin may delete fandom with id ${fandomId}`
+    );
 
     await fandom.delete();
   }
@@ -217,7 +215,7 @@ export default class FandomService {
 
   public async deleteCategoryById(
     categoryId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       categoryId,
@@ -226,12 +224,11 @@ export default class FandomService {
 
     const categoryDoc = await this.getCategoryById(categoryId);
 
-    //uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   categoryDoc.createdBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may delete the fandom category with id ${categoryId}`
-    // );
+    FandomService._globalService.hasPermission(
+      categoryDoc.createdBy,
+      createdByUserId,
+      `Only the creator or an admin may delete the fandom category with id ${categoryId}`
+    );
 
     await categoryDoc.delete();
   }
@@ -239,7 +236,7 @@ export default class FandomService {
   public async updateCategoryById(
     categoryId: mongoose.Types._ObjectId | string,
     updatedCategory: IUpdateCategoryDTO,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       categoryId,
@@ -248,12 +245,11 @@ export default class FandomService {
 
     const categoryDoc = await this.getCategoryById(categoryId);
 
-    //uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   categoryDoc.createdBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may update the fandom category with id ${categoryId}`
-    // );
+    FandomService._globalService.hasPermission(
+      categoryDoc.createdBy,
+      createdByUserId,
+      `Only the creator or an admin may update the fandom category with id ${categoryId}`
+    );
 
     categoryDoc.name = updatedCategory.name || categoryDoc.name;
     categoryDoc.backgroundURL =
@@ -505,7 +501,7 @@ export default class FandomService {
 
   public async createPost(
     newPost: INewFandomPostInputDTO,
-    createdByUser: IUser | null
+    createdByUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       newPost.fandom,
@@ -520,8 +516,8 @@ export default class FandomService {
       numDislikes: [],
       numLikes: [],
       postedBy: {
-        username: createdByUser!.username,
-        profileURL: createdByUser!.profileURL
+        username: createdByUser.username,
+        profileURL: createdByUser.profileURL
       }
     };
 
@@ -530,7 +526,7 @@ export default class FandomService {
 
   public async deletePostById(
     postId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       postId,
@@ -538,13 +534,11 @@ export default class FandomService {
     );
 
     const post = await this.getPostDocById(postId);
-
-    // uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   post.postedBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may delete the post with id ${post}`
-    // );
+    FandomService._globalService.hasPermission(
+      post.postedBy,
+      createdByUserId,
+      `Only the creator or an admin may delete the post with id ${post}`
+    );
 
     await post.delete();
   }
@@ -552,7 +546,7 @@ export default class FandomService {
   public async updatePostById(
     postId: mongoose.Types._ObjectId | string,
     updatedPost: IUpdatePostDTO,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       postId,
@@ -561,12 +555,11 @@ export default class FandomService {
 
     const post = await this.getPostDocById(postId);
 
-    // uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   post.postedBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may update the post with id ${post}`
-    // );
+    FandomService._globalService.hasPermission(
+      post.postedBy,
+      createdByUserId,
+      `Only the creator or an admin may update the post with id ${post}`
+    );
 
     post.content = updatedPost.content || post.content;
     post.title = updatedPost.title || post.title;
@@ -594,7 +587,7 @@ export default class FandomService {
 
   public async createComment(
     newComment: INewFandomCommentInputDTO,
-    createdByUser: IUser | null
+    createdByUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       newComment.fandomPost,
@@ -609,8 +602,8 @@ export default class FandomService {
       numDislikes: [],
       numLikes: [],
       postedBy: {
-        username: createdByUser!.username,
-        profileURL: createdByUser!.profileURL
+        username: createdByUser.username,
+        profileURL: createdByUser.profileURL
       }
     };
 
@@ -619,7 +612,7 @@ export default class FandomService {
 
   public async deleteCommentById(
     commentId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       commentId,
@@ -628,12 +621,11 @@ export default class FandomService {
 
     const comment = await this.getCommentDocById(commentId);
 
-    // uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   comment.postedBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may delete the comment with id ${commentId}`
-    // );
+    FandomService._globalService.hasPermission(
+      comment.postedBy,
+      createdByUserId,
+      `Only the creator or an admin may delete the comment with id ${commentId}`
+    );
 
     await comment.delete();
   }
@@ -641,7 +633,7 @@ export default class FandomService {
   public async updateCommentById(
     commentId: mongoose.Types._ObjectId | string,
     updatedComment: IUpdateCommentDTO,
-    createdByUserId: mongoose.Types._ObjectId | undefined
+    createdByUserId: mongoose.Types._ObjectId
   ) {
     FandomService._globalService.checkValidObjectId(
       commentId,
@@ -650,12 +642,11 @@ export default class FandomService {
 
     const comment = await this.getCommentDocById(commentId);
 
-    // uncomment after auth is implemented
-    // FandomService._globalService.hasPermission(
-    //   comment.postedBy,
-    //   createdByUserId,
-    //   `Only the creator or an admin may update the comment with id ${commentId}`
-    // );
+    FandomService._globalService.hasPermission(
+      comment.postedBy,
+      createdByUserId,
+      `Only the creator or an admin may update the comment with id ${commentId}`
+    );
 
     comment.title = updatedComment.title || comment.title;
     comment.content = updatedComment.content || comment.content;
