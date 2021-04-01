@@ -27,7 +27,6 @@ export default async ({ app }: { app: express.Application }) => {
 
   //Handles errors in endpoints
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(err.message);
     if (
       err.name === "UnauthorizedError" ||
       err.name === "AuthenticationError"

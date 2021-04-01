@@ -17,24 +17,27 @@ export default class UserService {
    * @param userInputDTO new user
    */
   public async SignUp(userInputDTO: INewUserInputDTO) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
-      const userRecord = await User.create(userInputDTO);
-
-      const user: IRequestUser = {
-        _id: userRecord._id,
-        role: userRecord.role,
-        username: userRecord.username
-      };
-
-      // automatically log in user that signed up
-      const token = jwt.sign(user, config.secret);
-
-      return { user, token: "JWT " + token };
-    } catch (err) {
-      throw err;
+    const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
+    if (!passwordRegex.test(userInputDTO.password)) {
+      throw new ErrorService(
+        "ValidationError",
+        "Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter and 1 number"
+      );
     }
+    const salt = await bcrypt.genSalt(10);
+    userInputDTO.password = await bcrypt.hash(userInputDTO.password, salt);
+    const userRecord = await User.create(userInputDTO);
+
+    const user: IRequestUser = {
+      _id: userRecord._id,
+      role: userRecord.role,
+      username: userRecord.username
+    };
+
+    // automatically log in user that signed up
+    const token = jwt.sign(user, config.secret);
+
+    return { user, token: "JWT " + token };
   }
 
   public async SignIn(username: string = "", password: string = "") {
