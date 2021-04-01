@@ -7,7 +7,7 @@ export default (passport: { use: (arg0: Strategy) => void }) => {
   // we'll be using authorization in header
   let opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("JWT"),
-    secretOrKey: config.secret
+    secretOrKey: config.jwtSecret
   };
 
   passport.use(
