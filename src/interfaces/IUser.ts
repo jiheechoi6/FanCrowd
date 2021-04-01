@@ -88,3 +88,10 @@ export interface IResetPasswordToken {
   token: string;
   expiresIn: Date;
 }
+
+export interface IResetPasswordInputDTO {
+  username: string;
+  email: string;
+  verificationCode: string;
+  password: string;
+}

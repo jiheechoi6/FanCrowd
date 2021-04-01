@@ -3,7 +3,8 @@ import middlewares from "../middlewares";
 import {
   IUser,
   IUpdateUserDTO,
-  IResetPasswordEmailDTO
+  IResetPasswordEmailDTO,
+  IResetPasswordInputDTO
 } from "../../interfaces/IUser";
 import User from "../../models/user";
 import UserService from "../../services/user";
@@ -54,17 +55,23 @@ export default (app: Router) => {
   /**
    * path: /api/users/reset-password
    * method: POST
-   * body: None
+   * body:
+   * {
+   *  verificationCode: string,
+   *  password: string,
+   *  username: string,
+   *  email: string
+   * }
    * params: None
-   * description: get a user's fandoms by username
+   * description: resets user's password if verification is correct
    */
   route.post("/reset-password", async (req, res, next) => {
     try {
-      const username = req.params.username;
+      const reqBody = req.body as IResetPasswordInputDTO;
       const userService = new UserService();
-      const fandoms = await userService.getUserFandoms(username);
+      await userService.resetPassword(reqBody);
 
-      res.status(200).send(fandoms);
+      res.status(200).send();
     } catch (err) {
       return next(err);
     }
