@@ -135,7 +135,7 @@ export default class FandomService {
   public async updateFandomById(
     fandomId: mongoose.Types._ObjectId | string,
     updatedFandom: IUpdateFandomDTO,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       fandomId,
@@ -146,7 +146,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       fandomDoc.createdBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may update fandom with id ${fandomId}`
     );
 
@@ -168,7 +168,7 @@ export default class FandomService {
 
   public async deleteFandomById(
     fandomId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       fandomId,
@@ -179,7 +179,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       fandom.createdBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may delete fandom with id ${fandomId}`
     );
 
@@ -215,7 +215,7 @@ export default class FandomService {
 
   public async deleteCategoryById(
     categoryId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       categoryId,
@@ -226,7 +226,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       categoryDoc.createdBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may delete the fandom category with id ${categoryId}`
     );
 
@@ -236,7 +236,7 @@ export default class FandomService {
   public async updateCategoryById(
     categoryId: mongoose.Types._ObjectId | string,
     updatedCategory: IUpdateCategoryDTO,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       categoryId,
@@ -247,7 +247,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       categoryDoc.createdBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may update the fandom category with id ${categoryId}`
     );
 
@@ -526,7 +526,7 @@ export default class FandomService {
 
   public async deletePostById(
     postId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       postId,
@@ -536,7 +536,7 @@ export default class FandomService {
     const post = await this.getPostDocById(postId);
     FandomService._globalService.hasPermission(
       post.postedBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may delete the post with id ${post}`
     );
 
@@ -546,7 +546,7 @@ export default class FandomService {
   public async updatePostById(
     postId: mongoose.Types._ObjectId | string,
     updatedPost: IUpdatePostDTO,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       postId,
@@ -557,7 +557,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       post.postedBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may update the post with id ${post}`
     );
 
@@ -612,7 +612,7 @@ export default class FandomService {
 
   public async deleteCommentById(
     commentId: mongoose.Types._ObjectId | string,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       commentId,
@@ -623,7 +623,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       comment.postedBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may delete the comment with id ${commentId}`
     );
 
@@ -633,7 +633,7 @@ export default class FandomService {
   public async updateCommentById(
     commentId: mongoose.Types._ObjectId | string,
     updatedComment: IUpdateCommentDTO,
-    createdByUserId: mongoose.Types._ObjectId
+    reqUser: IRequestUser
   ) {
     FandomService._globalService.checkValidObjectId(
       commentId,
@@ -644,7 +644,7 @@ export default class FandomService {
 
     FandomService._globalService.hasPermission(
       comment.postedBy,
-      createdByUserId,
+      reqUser,
       `Only the creator or an admin may update the comment with id ${commentId}`
     );
 

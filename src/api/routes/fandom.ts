@@ -39,7 +39,7 @@ export default (app: Router) => {
       try {
         const newFandom: INewFandomInputDTO = {
           ...req.body,
-          createdBy: req.user!._id
+          createdBy: req.user!
         };
 
         const fandomService = new FandomService();
@@ -68,7 +68,7 @@ export default (app: Router) => {
       try {
         const fandomId = req.params.fandomId;
         const fandomService = new FandomService();
-        await fandomService.deleteFandomById(fandomId, req.user!._id);
+        await fandomService.deleteFandomById(fandomId, req.user!);
         res.status(200).send();
       } catch (err) {
         return next(err);
@@ -103,7 +103,7 @@ export default (app: Router) => {
         const updatedFandom = await fandomService.updateFandomById(
           fandomId,
           reqBody,
-          req.user!._id
+          req.user!
         );
         res.status(200).send(updatedFandom);
       } catch (err) {
@@ -207,7 +207,7 @@ export default (app: Router) => {
         const fandomService = new FandomService();
         await fandomService.deleteCategoryById(
           req.params.categoryId,
-          req.user!._id
+          req.user!
         );
         res.status(200).send();
       } catch (err) {
@@ -242,7 +242,7 @@ export default (app: Router) => {
         const category = await fandomService.updateCategoryById(
           req.params.categoryId,
           reqBody,
-          req.user!._id
+          req.user!
         );
 
         res.status(200).send(category);
@@ -325,7 +325,7 @@ export default (app: Router) => {
       try {
         const newPost: INewFandomPostInputDTO = {
           ...req.body,
-          postedBy: req.user!._id
+          postedBy: req.user!
         };
 
         const fandomService = new FandomService();
@@ -354,7 +354,7 @@ export default (app: Router) => {
       try {
         const postId = req.params.postId;
         const fandomService = new FandomService();
-        await fandomService.deletePostById(postId, req.user!._id);
+        await fandomService.deletePostById(postId, req.user!);
         res.status(200).send();
       } catch (err) {
         return next(err);
@@ -389,7 +389,7 @@ export default (app: Router) => {
         const post = await fandomService.updatePostById(
           postId,
           reqBody,
-          req.user!._id
+          req.user!
         );
 
         res.status(200).send(post);
@@ -439,7 +439,7 @@ export default (app: Router) => {
       try {
         const newComment: INewFandomCommentInputDTO = {
           ...req.body,
-          postedBy: req.user!._id
+          postedBy: req.user!
         };
 
         const fandomService = new FandomService();
@@ -472,7 +472,7 @@ export default (app: Router) => {
       try {
         const commentId = req.params.commentId;
         const fandomService = new FandomService();
-        await fandomService.deleteCommentById(commentId, req.user!._id);
+        await fandomService.deleteCommentById(commentId, req.user!);
         res.status(200).send();
       } catch (err) {
         return next(err);
@@ -507,7 +507,7 @@ export default (app: Router) => {
         const comment = await fandomService.updateCommentById(
           commentId,
           reqBody,
-          req.user!._id
+          req.user!
         );
 
         res.status(200).send(comment);
@@ -536,7 +536,7 @@ export default (app: Router) => {
       try {
         const newLike: INewUserLikeInputDTO = {
           ...req.body,
-          user: req.user!._id
+          user: req.user!
         };
 
         const fandomService = new FandomService();
