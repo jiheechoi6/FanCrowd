@@ -14,18 +14,41 @@ export class LoginComponent implements OnInit {
   loginError = '';
   isLoggingIn = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private _authService: AuthService, private _router: Router) {}
 
   ngOnInit(): void {}
 
   onLogIn() {
     this.isLoggingIn = true;
-    const user = this.authService.loginUser(this.username, this.password);
-    this.isLoggingIn = false;
-    if (user) {
-      this.router.navigate(['/users', user.username]);
-    } else {
-      this.loginError = 'Username or password is wrong';
-    }
+    this._authService.loginUser(this.username, this.password)?.subscribe((res)=>{
+      console.log(res);
+      this.isLoggingIn = false;
+      
+      if(!res.pwValid) {
+        this.loginError = 'Password is wrong';
+        return;
+      }
+      if(!res.usernameValid) {
+        this.loginError = 'Username is wrong';
+        return;
+      }
+
+      if (res.user) {
+        localStorage.setItem('id_token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.user))
+        this._authService.currentUser.next({
+          ...res.user,
+          country: "",
+          city: "",
+          bio: "",
+          profileUrl: "",
+          attendingEvents: [],
+          fandoms: []
+        })
+        this._authService.token = res.token;
+
+        this._router.navigate(['/users', res.user.username]);
+      }
+    })
   }
 }

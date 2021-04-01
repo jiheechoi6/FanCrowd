@@ -52,7 +52,7 @@ export default class UserService {
   ): Promise<{ usernameValid:boolean, pwValid:boolean, token:string,  user: any}> {
     try{
       let usernameValid = true;
-      let pwValid = false;
+      let pwValid = true;
       let token = "";
       let user = null;
       const userRecord = await UserModel.findOne({ username: username });
@@ -63,7 +63,6 @@ export default class UserService {
         user = userRecord.toObject();
         if (pwValid){
           token = jwt.sign(user, Config.secret, {expiresIn: 10800 }); // 3 hours 10800
-          pwValid = true;
         }
 
         Reflect.deleteProperty(user, "password");

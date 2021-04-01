@@ -5,6 +5,7 @@ import { BehaviorSubject, fromEventPattern, Observable} from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
 import { EmailService } from './email.service';
 import EventDTO from 'src/app/shared/models/event-dto';
+import SignupRes from 'src/app/shared/models/signup-res';
 import SigninRes from 'src/app/shared/models/signin-res';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
@@ -154,21 +155,21 @@ export class AuthService {
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
-    if (
-      !this.usernameToPassword.has(username) ||
-      this.usernameToPassword.get(username) !== password
-    ) {
-      this.currentUser.next(null);
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    return this._http.post<SigninRes>('http://localhost:5000/api/auth/signin', 
+            {username: username, password: password}, 
+            {headers: headers, responseType: 'json'})
+  }
+
+  createNewUser(newUser: NewUser) {
+    if(!newUser.fullName || !newUser.email || !newUser.username || !newUser.password){
       return null;
     }
-    let loggedInUser = null;
-    for (let user of this.users) {
-      if (user.username === username) {
-        loggedInUser = user;
-      }
-    }
-    this.currentUser.next(loggedInUser);
-    return loggedInUser;
+
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    return this._http.post<SignupRes>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
   }
 
   getCurrentUser(): BehaviorSubject<UserDTO | null> {
@@ -183,16 +184,6 @@ export class AuthService {
     }
 
     return helper.isTokenExpired(localStorage.id_token);
-  }
-
-  createNewUser(newUser: NewUser) {
-    if(!newUser.fullName || !newUser.email || !newUser.username || !newUser.password){
-      return null;
-    }
-
-    let headers = new HttpHeaders({'Content-Type': 'application/json'});
-
-    return this._http.post<SigninRes>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
   }
 
   processResult(user: UserDTO) {

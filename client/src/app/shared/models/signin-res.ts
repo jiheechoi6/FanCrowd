@@ -1,13 +1,14 @@
 interface SigninRes{
-    user:{
-        _id: string;
+    usernameValid: boolean;
+    pwValid: boolean;
+    token: string;
+    user: {
         role: string;
+        _id: string
         fullName: string;
         email: string;
         username: string;
         createdAt: string;
-    },
-    token: string;
+    }
 }
-
-export default SigninRes;
+export default SigninRes
