@@ -33,9 +33,9 @@ const users: IUser[] = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     city: "Toronto",
     country: "Canada",
-    email: "chandra@gmail.com",
+    email: "chandra.panta345@hotmail.com",
     fullName: "Chandra Panta Chhetri",
-    password: "User1234",
+    password: "user1",
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "user",
@@ -49,7 +49,7 @@ const users: IUser[] = [
     country: "Canada",
     email: "raj@gmail.com",
     fullName: "Raj Patel",
-    password: "User2345",
+    password: "user2",
     profileURL:
       "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
     role: "user",
@@ -63,7 +63,7 @@ const users: IUser[] = [
     country: "Canada",
     email: "jihee@gmail.com",
     fullName: "Jihee",
-    password: "Admin123",
+    password: "admin",
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "admin",
@@ -140,7 +140,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[0]._id,
-    name: "Avengers: Age of Ultron",
+    name: "Avengers Age of Ultron",
     backgroundURL: "https://wallpaperaccess.com/full/1117133.jpg",
     createdBy: users[0]._id,
     createdAt: new Date(2020, 1, 1)
@@ -148,7 +148,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[0]._id,
-    name: "Maze Runner: The Death Cure",
+    name: "Maze Runner The Death Cure",
     backgroundURL: "https://images3.alphacoders.com/913/thumb-1920-913996.jpg",
     createdBy: users[1]._id,
     createdAt: new Date(2010, 1, 7)
@@ -221,7 +221,7 @@ const fandoms: IFandom[] = [
   {
     _id: new mongoose.Types.ObjectId(),
     category: fandomCategories[3]._id,
-    name: "Yu-Gi-Oh!",
+    name: "Yu Gi Oh",
     backgroundURL:
       "https://i.pinimg.com/originals/d1/7a/d8/d17ad80144ef56adbf58a17a686ea619.jpg",
     createdBy: users[1]._id,

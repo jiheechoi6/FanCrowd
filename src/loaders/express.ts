@@ -3,19 +3,17 @@ import cors from "cors";
 import routes from "../api";
 import config from "../config";
 import passport from "passport";
-import bodyParser from 'body-parser';
 
-export default ({ app }: { app: express.Application }) => {
+export default async ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
   app.use(express.json());
   app.use(config.api.prefix, routes());
-  app.use(bodyParser);
 
   // Passport Middleware
   app.use(passport.initialize());
   app.use(passport.session());
-  require('../config/passport')(passport);
+  await require("../config/passport").default(passport);
 
   //Catches 404 routes
   app.use((req, res, next) => {
@@ -29,7 +27,10 @@ export default ({ app }: { app: express.Application }) => {
 
   //Handles errors in endpoints
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (err.name === "UnauthorizedError") {
+    if (
+      err.name === "UnauthorizedError" ||
+      err.name === "AuthenticationError"
+    ) {
       return res.status(401).send({ message: err.message }).end();
     } else if (err.name === "ValidationError" || err.name === "MongoError") {
       return res.status(400).send({ message: err.message }).end();

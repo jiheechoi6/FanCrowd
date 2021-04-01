@@ -1,11 +1,11 @@
 import express from "express";
 import expressLoader from "./express";
 import mongooseLoader from "./mongoose";
-import dbDateLoader from "./seed-db";
+import dbDataLoader from "./seed-db";
 
 export default async ({ expressApp }: { expressApp: express.Application }) => {
   await mongooseLoader();
-  await dbDateLoader();
+  await dbDataLoader();
 
-  expressLoader({ app: expressApp });
+  await expressLoader({ app: expressApp });
 };

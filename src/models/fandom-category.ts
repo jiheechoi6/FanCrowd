@@ -8,7 +8,15 @@ const FandomCategorySchema = new mongoose.Schema(
       type: String,
       required: [true, "Fandom category title is required"],
       unique: true,
-      lowercase: true
+      lowercase: true,
+      validate(value: string) {
+        const categoryNameRegex = /^[a-z\d\'\s]+$/;
+        if (!categoryNameRegex.test(value)) {
+          throw new Error(
+            "Category name can only contain alphanumeric characters, spaces and '"
+          );
+        }
+      }
     },
     backgroundURL: {
       type: String,

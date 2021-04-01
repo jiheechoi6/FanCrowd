@@ -13,6 +13,13 @@ export interface IUser {
   profileURL: string;
   city: string;
   country: string;
+  resetPasswordToken?: IResetPasswordToken;
+}
+
+export interface IRequestUser {
+  _id: mongoose.Types._ObjectId;
+  username: string;
+  role: string;
 }
 
 export interface IUserPostedBy {
@@ -67,4 +74,30 @@ export interface INewUserLikeInputDTO {
   fandomPost?: mongoose.Types._ObjectId;
   fandomComment?: mongoose.Types._ObjectId;
   isLike: boolean;
+}
+
+export interface IUpdateUserDTO {
+  fullName: string;
+  email: string;
+  bio: string;
+  profileURL: string;
+  city: string;
+  country: string;
+}
+
+export interface IResetPasswordEmailDTO {
+  username: string;
+  email: string;
+}
+
+export interface IResetPasswordToken {
+  token: string;
+  expiresIn: Date;
+}
+
+export interface IResetPasswordInputDTO {
+  username: string;
+  email: string;
+  verificationCode: string;
+  password: string;
 }
