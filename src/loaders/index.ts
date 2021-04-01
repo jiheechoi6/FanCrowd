@@ -7,5 +7,5 @@ export default async ({ expressApp }: { expressApp: express.Application }) => {
   await mongooseLoader();
   await dbDataLoader();
 
-  expressLoader({ app: expressApp });
+  await expressLoader({ app: expressApp });
 };

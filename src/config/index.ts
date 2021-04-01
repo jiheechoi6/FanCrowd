@@ -12,5 +12,12 @@ export default {
   api: {
     prefix: "/api"
   },
-  secret: "some secret"
+  jwtSecret: process.env.JWT_SECRET || "",
+  nodemailer: {
+    senderEmail: process.env.SENDER_EMAIL,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+    redirectUri: "https://developers.google.com/oauthplayground"
+  }
 };

@@ -1,9 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { INewUserInputDTO } from "../../interfaces/IUser";
 import UserService from "../../services/user";
-import middlewares from "../middlewares";
 import passport from "passport";
-import UserModel from "../../models/user";
 
 const route = Router();
 
@@ -12,8 +10,8 @@ export default (app: Router) => {
 
   /**
    * path: /api/auth/signup
-   * method: post
-   * body: 
+   * method: POST
+   * body:
    *  {
    *    fullName: string,
    *    email: string,
@@ -21,27 +19,27 @@ export default (app: Router) => {
    *    password: string
    *  }
    * params: None
-   * description: register new user
+   * description: registers a new user
    */
   route.post(
     "/signup",
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const userServiceInstance = new UserService();
-        const signedUpUser = await userServiceInstance.SignUp(
+        const userService = new UserService();
+        const signedUpUser = await userService.SignUp(
           req.body as INewUserInputDTO
         );
-        return res.status(200).json(signedUpUser);
+        res.status(200).send(signedUpUser);
       } catch (err) {
         next(err);
       }
     }
   );
-  
+
   /**
    * path: /api/auth/signin
-   * method: post
-   * body: 
+   * method: POST
+   * body:
    *  {
    *    username: string,
    *    password: string
@@ -54,10 +52,9 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { username, password } = req.body;
-        const userServiceInstance = new UserService();
-        const tokenAndUser = await userServiceInstance.SignIn(username, password);
-
-        res.status(200).json(tokenAndUser);
+        const userService = new UserService();
+        const tokenAndUser = await userService.SignIn(username, password);
+        res.status(200).send(tokenAndUser);
       } catch (err) {
         return next(err);
       }
@@ -74,18 +71,13 @@ export default (app: Router) => {
    */
   route.get(
     "/currentUser",
-    passport.authenticate('jwt', {session:false}),
+    passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        if(!req.user){
-          res.status(200).json({});
-        }else{
-          res.status(200).json(req.user)
-        }
+        res.status(200).send(req.user);
       } catch (err) {
         return next(err);
       }
     }
   );
 };
-
