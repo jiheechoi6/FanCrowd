@@ -25,7 +25,7 @@ export class LoggedInGuard implements CanActivate {
     return this._authService.currentUser.pipe(
       take(1),
       map((user) => {
-        if(user && this._authService.checkTokenExpired()){
+        if(user && !this._authService.checkTokenExpired()){
           return this._router.createUrlTree(['/users', user.username]);
         }else{
           return true;

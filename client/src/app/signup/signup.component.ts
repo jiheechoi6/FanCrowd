@@ -56,7 +56,17 @@ export class SignupComponent implements OnInit {
       } else {
         this.signUpError = 'Username is already taken';
       }
+    },
+    (error)=>{
+      console.log(error);
+      console.log(error.error.message);
+
+      if(error.error.message.indexOf("dup key: { email:") != -1){
+        this.signUpError = "An account with this email address already exists"
+      }else{
+        this.signUpError = "Username is already taken";
+      }
     })
-    // this.isSigningUp = true;
+    this.isSigningUp = false;
   }
 }

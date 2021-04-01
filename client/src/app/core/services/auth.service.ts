@@ -176,15 +176,13 @@ export class AuthService {
   }
 
   checkTokenExpired(): boolean {
-    // return localStorage.getItem('id_token') == null;
     const helper = new JwtHelperService();
     const token = localStorage.getItem('id_token');
     if(token == null){
       return false;
     }
-    console.log("token: " + token);
-    console.log(helper.isTokenExpired(token));
-    return !helper.isTokenExpired(localStorage.id_token);
+
+    return helper.isTokenExpired(localStorage.id_token);
   }
 
   createNewUser(newUser: NewUser) {

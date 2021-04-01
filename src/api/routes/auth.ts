@@ -33,7 +33,7 @@ export default (app: Router) => {
         );
         return res.status(200).json(signedUpUser);
       } catch (err) {
-        return next(err);
+        next(err);
       }
     }
   );

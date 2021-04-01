@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { IUser, INewUserInputDTO } from "../interfaces/IUser";
 import UserModel from "../models/user";
 import Config from "../config/index";
+import ErrorService from "./error";
 
 export default class UserService {
 
@@ -22,10 +23,14 @@ export default class UserService {
       const newUser: INewUserInputDTO = {
         ...userInputDTO
       }
+
+      // const checkUsername = await UserModel.findOne({username:userInputDTO.email});
+      // if(checkUsername) throw new Error("Username already exists");
+
       const userRecord = await UserModel.create(newUser);
 
       if (!userRecord) {
-        throw new Error("User cannot be created");
+        throw new ErrorService("Duplicate key", "User cannot be created");
       }
 
       const user = userRecord.toObject();
