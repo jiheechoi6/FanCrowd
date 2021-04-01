@@ -49,20 +49,28 @@ const UserSchema = new mongoose.Schema(
       enum: ["admin", "user"]
     },
     bio: {
-      type: String,
+      type: String
       // required: [isNotAdmin, "Bio is required"]
     },
     profileURL: {
-      type: String,
+      type: String
       // required: [isNotAdmin, "Profile URL is required"]
     },
     city: {
-      type: String,
+      type: String
       // required: [isNotAdmin, "City is required"]
     },
     country: {
-      type: String,
+      type: String
       // required: [isNotAdmin, "Country is required"]
+    },
+    resetPasswordToken: {
+      token: {
+        type: String
+      },
+      expiresIn: {
+        type: Date
+      }
     }
   },
   { timestamps: { updatedAt: false }, versionKey: false }
