@@ -1,6 +1,10 @@
 import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
-import { IUser, IUpdateUserDTO } from "../../interfaces/IUser";
+import {
+  IUser,
+  IUpdateUserDTO,
+  IResetPasswordEmailDTO
+} from "../../interfaces/IUser";
 import User from "../../models/user";
 import UserService from "../../services/user";
 
@@ -20,6 +24,47 @@ export default (app: Router) => {
     try {
       const users: IUser[] = await User.find({});
       res.status(200).send(users);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/users/reset-password
+   * method: POST
+   * body:
+   * {
+   *  username: string,
+   *  email: string
+   * }
+   * params: None
+   * description: sends a reset password email to a user
+   */
+  route.post("/reset-password-email", async (req, res, next) => {
+    try {
+      const reqBody = req.body as IResetPasswordEmailDTO;
+      const userService = new UserService();
+      await userService.sendResetPasswordEmail(reqBody);
+      res.status(200).send();
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
+   * path: /api/users/reset-password
+   * method: POST
+   * body: None
+   * params: None
+   * description: get a user's fandoms by username
+   */
+  route.post("/reset-password", async (req, res, next) => {
+    try {
+      const username = req.params.username;
+      const userService = new UserService();
+      const fandoms = await userService.getUserFandoms(username);
+
+      res.status(200).send(fandoms);
     } catch (err) {
       return next(err);
     }
@@ -92,10 +137,7 @@ export default (app: Router) => {
       const reqBody = req.body as IUpdateUserDTO;
 
       //Should be passing in req.user.id instead of undefined
-      const user = await userService.updateUser(
-        username,
-        reqBody
-      );
+      const user = await userService.updateUser(username, reqBody);
 
       res.status(200).send(user);
     } catch (err) {

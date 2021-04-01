@@ -13,6 +13,7 @@ export interface IUser {
   profileURL: string;
   city: string;
   country: string;
+  resetPasswordToken?: IResetPasswordToken;
 }
 
 export interface IUserPostedBy {
@@ -76,4 +77,14 @@ export interface IUpdateUserDTO {
   profileURL: string;
   city: string;
   country: string;
+}
+
+export interface IResetPasswordEmailDTO {
+  username: string;
+  email: string;
+}
+
+export interface IResetPasswordToken {
+  token: string;
+  expiresIn: Date;
 }
