@@ -23,6 +23,24 @@ export default class UserService {
    */
 
   public async SignUp(userInputDTO: INewUserInputDTO) {
+    const usernameCheck = await User.findOne({ username: userInputDTO.username });
+
+    if (usernameCheck) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "Username is already taken"
+      );
+    }
+
+    const emailCheck = await User.findOne({ email: userInputDTO.email });
+
+    if (emailCheck) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "An account with this email already exists"
+      );
+    }
+
     userInputDTO.password = await this.hashPassword(userInputDTO.password);
     const userRecord = await User.create(userInputDTO);
 
@@ -44,16 +62,16 @@ export default class UserService {
     if (!userRecord) {
       throw new ErrorService(
         "UnauthorizedError",
-        "Username or password is incorrect"
+        "Username is incorrect"
       );
     }
 
-    const isPasswordValid = await bcrypt.compare(password, userRecord.password, , {expiresIn: 10800 });
+    const isPasswordValid = await bcrypt.compare(password, userRecord.password);
 
     if (!isPasswordValid) {
       throw new ErrorService(
         "UnauthorizedError",
-        "Username or password is incorrect"
+        "Password is incorrect"
       );
     }
 

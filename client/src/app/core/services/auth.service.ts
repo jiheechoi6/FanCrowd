@@ -7,6 +7,7 @@ import { EmailService } from './email.service';
 import EventDTO from 'src/app/shared/models/event-dto';
 import SignupRes from 'src/app/shared/models/signup-res';
 import SigninRes from 'src/app/shared/models/signin-res';
+import UserIdentity from 'src/app/shared/models/user-identity';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt'
@@ -15,7 +16,9 @@ import { JwtHelperService } from '@auth0/angular-jwt'
   providedIn: 'root', 
 })
 export class AuthService {
-  currentUser = new BehaviorSubject<UserDTO | null>(null);
+  currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
+  // this is the variable that's updated during log in/sign up/ log out
+  currentUser = new BehaviorSubject<UserIdentity | null>(null);  
   token: string | null = null;
   usernameToPassword = new Map([
     ['user1', 'user1'],
@@ -172,7 +175,7 @@ export class AuthService {
     return this._http.post<SignupRes>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
   }
 
-  getCurrentUser(): BehaviorSubject<UserDTO | null> {
+  getCurrentUser(): BehaviorSubject<UserIdentity | null> {
     return this.currentUser;
   }
 
@@ -210,14 +213,14 @@ export class AuthService {
   }
 
   getCurrentLoggedInUserEvents() {
-    return this.currentUser.getValue()?.attendingEvents;
+    return this.currentUserInfo.getValue()?.attendingEvents;
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {
     // Update user info (Add event to events attending) on server,
     // code below requires server call
 
-    let user = this.currentUser.getValue();
+    let user = this.currentUserInfo.getValue();
 
     if (user) {
       let index = user.attendingEvents.findIndex(
@@ -237,7 +240,7 @@ export class AuthService {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
-    let user = this.currentUser.getValue();
+    let user = this.currentUserInfo.getValue();
     if (user) {
       let eventIndex = user.attendingEvents.findIndex(
         (userEvent) => userEvent.id === eventId

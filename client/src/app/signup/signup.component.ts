@@ -42,30 +42,17 @@ export class SignupComponent implements OnInit {
         localStorage.setItem('id_token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user))
         this._authService.currentUser.next({
-          ...res.user,
-          country: "",
-          city: "",
-          bio: "",
-          profileUrl: "",
-          attendingEvents: [],
-          fandoms: []
+          ...res.user
         })
         this._authService.token = res.token;
 
         this._router.navigate(['/users', res.user.username]);
       } else {
-        this.signUpError = 'Username is already taken';
+        this.signUpError = 'Signup failed';
       }
     },
     (error)=>{
-      console.log(error);
-      console.log(error.error.message);
-
-      if(error.error.message.indexOf("dup key: { email:") != -1){
-        this.signUpError = "An account with this email address already exists"
-      }else{
-        this.signUpError = "Username is already taken";
-      }
+      this.signUpError = error.error.message;
     })
     this.isSigningUp = false;
   }

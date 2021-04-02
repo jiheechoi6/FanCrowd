@@ -21,34 +21,19 @@ export class LoginComponent implements OnInit {
   onLogIn() {
     this.isLoggingIn = true;
     this._authService.loginUser(this.username, this.password)?.subscribe((res)=>{
-      console.log(res);
-      this.isLoggingIn = false;
-      
-      if(!res.pwValid) {
-        this.loginError = 'Password is wrong';
-        return;
-      }
-      if(!res.usernameValid) {
-        this.loginError = 'Username is wrong';
-        return;
-      }
-
       if (res.user) {
         localStorage.setItem('id_token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user))
         this._authService.currentUser.next({
           ...res.user,
-          country: "",
-          city: "",
-          bio: "",
-          profileUrl: "",
-          attendingEvents: [],
-          fandoms: []
         })
         this._authService.token = res.token;
 
         this._router.navigate(['/users', res.user.username]);
       }
+    }, (err)=>{
+      this.loginError = err.error.message;
     })
+    this.isLoggingIn = false;
   }
 }
