@@ -77,7 +77,7 @@ export class FandomDetailComponent implements OnInit {
   removeFromFandom() {
     this._userService.removeFandomFromUser(
       this.loggedInUser?.username || '',
-      this.fandom?.id
+      this.fandom?._id
     );
 
     this.hasUserJoinedFandom = false;
@@ -91,7 +91,7 @@ export class FandomDetailComponent implements OnInit {
           username: this.loggedInUser?.username,
           profileUrl: this.loggedInUser?.profileUrl,
         },
-        fandomId: this.fandom?.id,
+        fandomId: this.fandom?._id,
       },
       autoFocus: false,
       width: '450px',

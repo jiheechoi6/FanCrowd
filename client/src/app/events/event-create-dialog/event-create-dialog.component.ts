@@ -54,9 +54,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.event = this.data.eventBeingUpdated;
       this.eventDateRange = [this.event.startDate, this.event.endDate];
 
-      this.fandomForCategory = this._fandomService.getFandomsByCategories(
-        this.event.fandomType.category
-      );
+      this.fetchFandomsForCategory(this.event.fandomType.category);
     } else {
       const defaultStartDate = new Date();
       defaultStartDate.setHours(new Date().getHours() + 1);
@@ -70,6 +68,8 @@ export class EventCreateDialogComponent implements OnInit {
         fandomType: {
           category: '',
           name: '',
+          backgroundURL: '',
+          createdAt: new Date(),
         },
         description: '',
         startDate: this.eventDateRange[0],
@@ -89,9 +89,13 @@ export class EventCreateDialogComponent implements OnInit {
   }
 
   categoryChange(event: any) {
-    this.fandomForCategory = this._fandomService.getFandomsByCategories(
-      event.value
-    );
+    this.fetchFandomsForCategory(event.value);
+  }
+
+  fetchFandomsForCategory(category: string) {
+    this._fandomService
+      .getFandomsByCategories(category)
+      .subscribe((fandoms) => (this.fandomForCategory = fandoms));
   }
 
   setStartDateAndEndDate() {

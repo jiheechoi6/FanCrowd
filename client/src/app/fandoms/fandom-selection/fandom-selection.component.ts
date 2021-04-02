@@ -18,14 +18,21 @@ export class FandomSelectionComponent implements OnInit {
     private _fandomService: FandomService,
     private _activatedRoute: ActivatedRoute,
     public dialog: MatDialog
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       this.category = params['category'];
+      this.fetchFandoms();
     });
   }
 
-  ngOnInit(): void {
-    this.fandoms = this._fandomService.getFandomsByCategories(this.category);
+  fetchFandoms() {
+    this._fandomService
+      .getFandomsByCategories(this.category)
+      .subscribe((fandoms) => {
+        this.fandoms = fandoms;
+      });
   }
 
   openCreateFandomDialog(): void {
@@ -41,7 +48,7 @@ export class FandomSelectionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.fandoms = this._fandomService.getFandomsByCategories(this.category);
+      this.fetchFandoms();
     });
   }
 }

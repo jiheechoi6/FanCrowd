@@ -14,9 +14,11 @@ export class EventService {
     {
       id: 1,
       fandomType: {
-        id: 11,
+        _id: 11,
         category: 'Books',
         name: 'Harry Potter',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Comic Con',
       description: `A comic book convention or comic con is an event with a primary focus on comic books and comic book culture, in which comic book fans gather to meet creators, experts, and each other. Commonly, comic conventions are multi-day events hosted at convention centers, hotels, or college campuses.`,
@@ -57,9 +59,11 @@ export class EventService {
     {
       id: 2,
       fandomType: {
-        id: 30,
+        _id: 30,
         category: 'Technology',
         name: 'Apple',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'World Expo',
       description: `Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.`,
@@ -100,9 +104,11 @@ export class EventService {
     {
       id: 3,
       fandomType: {
-        id: 1,
+        _id: 1,
         category: 'Movies',
         name: 'Avengers',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Marvel Studios',
       description: `Marvel Studios, LLC is an American film and television studio that is a subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios is known for the production of the Marvel Cinematic Universe films, based on characters that appear in Marvel Comics publications.`,
@@ -116,9 +122,11 @@ export class EventService {
     {
       id: 4,
       fandomType: {
-        id: 21,
+        _id: 21,
         category: 'Games',
         name: 'God of War',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Sony Game Release',
       description: `God of War is an action-adventure game franchise created by David Jaffe at Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and has become a flagship title for the PlayStation brand, consisting of eight games across multiple platforms with a ninth currently in development.`,
@@ -145,9 +153,11 @@ export class EventService {
     {
       id: 5,
       fandomType: {
-        id: 9,
+        _id: 9,
         category: 'Books',
         name: 'Harry Potter',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'J.K Rowling Meet & Greet',
       description: `Harry Potter is a series of seven fantasy novels written by British author, J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.`,
@@ -161,9 +171,11 @@ export class EventService {
     {
       id: 6,
       fandomType: {
-        id: 17,
+        _id: 17,
         category: 'Anime',
         name: 'One Punch Man',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Anime-Fest',
       description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It tells the story of Saitama, a superhero who can defeat any opponent with a single punch but seeks to find a worthy opponent after growing bored by a lack of challenge due to his overwhelming strength.`,
@@ -177,9 +189,11 @@ export class EventService {
     {
       id: 7,
       fandomType: {
-        id: 26,
+        _id: 26,
         category: 'Sports',
         name: 'Soccer',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'FIFA World Cup Party',
       description: `The FIFA World Cup, often simply called the World Cup, is an international association football competition contested by the senior men's national teams of the members of the Fédération Internationale de Football Association, the sport's global governing body.`,
@@ -193,9 +207,11 @@ export class EventService {
     {
       id: 8,
       fandomType: {
-        id: 15,
+        _id: 15,
         category: 'Shows',
         name: 'Game of Thrones',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'New HBO Show Press Release',
       description: `Home Box Office is an American pay television network owned by WarnerMedia Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
@@ -283,7 +299,7 @@ export class EventService {
 
   getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
-    
+
     return this.events.find((event) => event.id === eventId)?.reviews || [];
   }
 

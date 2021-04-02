@@ -21,10 +21,11 @@ export class AddDialogComponent implements OnInit {
     backgroundURL: '',
   };
   newFandom: Fandom = {
-    id: 1000,
+    _id: 1000,
     name: '',
     category: '',
-    backgroundUrl: '',
+    backgroundURL: '',
+    createdAt: new Date(),
   };
   object: any;
 
@@ -56,7 +57,7 @@ export class AddDialogComponent implements OnInit {
       // Add a Fandom
       this.newFandom.name = this.object.name;
       this.newFandom.category = this.object.category;
-      this.newFandom.backgroundUrl =
+      this.newFandom.backgroundURL =
         this.object.backgroundUrl ||
         'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
 

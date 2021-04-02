@@ -19,7 +19,7 @@
     </div>
 
     <section class="fandoms" *ngIf="fandoms.length">
-        <mat-card *ngFor="let fandom of fandoms" style="background-image: url({{fandom.backgroundUrl}})"
+        <mat-card *ngFor="let fandom of fandoms" style="background-image: url({{fandom.backgroundURL}})"
             class="fandom-card rounded-corners box-shadow"
             [routerLink]="['/fandoms', category, fandom.name | spacesToHyphen | lowercase]">
             <mat-card-content class="card-body">
