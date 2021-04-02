@@ -83,7 +83,9 @@ export class EventCreateDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.categories = this._fandomService.getCategories();
+    this._fandomService.getCategories().subscribe((res) => {
+      this.categories = res;
+    });
   }
 
   categoryChange(event: any) {

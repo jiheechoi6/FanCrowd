@@ -11,43 +11,43 @@ import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 export class FandomService {
   category: Category[] = [
     {
-      id: 1,
+      _id: 1,
       name: 'Movies',
-      backgroundUrl:
+      backgroundURL:
         'https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg',
     },
     {
-      id: 2,
+      _id: 2,
       name: 'Books',
-      backgroundUrl:
+      backgroundURL:
         'https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80',
     },
     {
-      id: 3,
+      _id: 3,
       name: 'Shows',
-      backgroundUrl:
+      backgroundURL:
         'https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg',
     },
     {
-      id: 4,
+      _id: 4,
       name: 'Anime',
-      backgroundUrl:
+      backgroundURL:
         'https://wallpaper-house.com/data/out/7/wallpaper2you_191367.jpg',
     },
     {
-      id: 5,
+      _id: 5,
       name: 'Games',
-      backgroundUrl: 'https://wallpaperaccess.com/full/242347.jpg',
+      backgroundURL: 'https://wallpaperaccess.com/full/242347.jpg',
     },
     {
-      id: 6,
+      _id: 6,
       name: 'Sports',
-      backgroundUrl: 'https://wallpaperaccess.com/full/552032.jpg',
+      backgroundURL: 'https://wallpaperaccess.com/full/552032.jpg',
     },
     {
-      id: 7,
+      _id: 7,
       name: 'Technology',
-      backgroundUrl: 'https://wallpaperaccess.com/full/249743.png',
+      backgroundURL: 'https://wallpaperaccess.com/full/249743.png',
     },
   ];
 
@@ -202,8 +202,7 @@ export class FandomService {
       id: 29,
       category: this.category[6].name,
       name: 'Apple',
-      backgroundUrl:
-        'https://wallpapercave.com/wp/8duz5Ir.jpg',
+      backgroundUrl: 'https://wallpapercave.com/wp/8duz5Ir.jpg',
     },
     {
       id: 30,
@@ -460,7 +459,7 @@ export class FandomService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   sortFunction(a: any, b: any): number {
     var dateA = a.name;
@@ -484,10 +483,9 @@ export class FandomService {
     }
   }
 
-  getCategories(): Category[] {
+  getCategories() {
     // Get categories from server, code below requires server call
-
-    return this.category.sort((a, b) => this.sortFunction(a, b));
+    return this._http.get<Category[]>('/api/fandoms/categories');
   }
 
   addFandom(fandom: Fandom): void {

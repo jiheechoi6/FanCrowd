@@ -7,7 +7,7 @@ import Fandom from '../../models/fandom';
 interface DialogData {
   title: string;
   categoryName: string;
-  isCategory : any;
+  isCategory: any;
 }
 
 @Component({
@@ -15,18 +15,18 @@ interface DialogData {
   templateUrl: './add-dialog.component.html',
 })
 export class AddDialogComponent implements OnInit {
-    newCategory: Category = {
-        id: 1000,
-        name: '',
-        backgroundUrl: ''
-    };
-    newFandom: Fandom = {
-        id: 1000,
-        name: '',
-        category: '',
-        backgroundUrl: ''
-    };
-    object: any;
+  newCategory: Category = {
+    _id: 1000,
+    name: '',
+    backgroundURL: '',
+  };
+  newFandom: Fandom = {
+    id: 1000,
+    name: '',
+    category: '',
+    backgroundUrl: '',
+  };
+  object: any;
 
   constructor(
     private fandomService: FandomService,
@@ -36,29 +36,33 @@ export class AddDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.object = {
-        id: 1000,
-        name: '',
-        category: this.data.categoryName,
-        backgroundUrl: ''
-    }
+      id: 1000,
+      name: '',
+      category: this.data.categoryName,
+      backgroundUrl: '',
+    };
   }
 
   onConfirm() {
-    if (this.data.isCategory){
-        // Add a Category
-        this.newCategory.name = this.object.name;
-        this.newCategory.backgroundUrl = this.object.backgroundUrl || 'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
+    if (this.data.isCategory) {
+      // Add a Category
+      this.newCategory.name = this.object.name;
+      this.newCategory.backgroundURL =
+        this.object.backgroundUrl ||
+        'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
 
-        this.addCategory(this.newCategory);
+      this.addCategory(this.newCategory);
     } else {
-        // Add a Fandom
-        this.newFandom.name = this.object.name;
-        this.newFandom.category = this.object.category;
-        this.newFandom.backgroundUrl = this.object.backgroundUrl || 'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
+      // Add a Fandom
+      this.newFandom.name = this.object.name;
+      this.newFandom.category = this.object.category;
+      this.newFandom.backgroundUrl =
+        this.object.backgroundUrl ||
+        'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
 
-        this.addFandom(this.newFandom);
+      this.addFandom(this.newFandom);
     }
-    
+
     this.dialogRef.close();
   }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 import { FandomService } from '../core/services/fandom.service';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
@@ -11,8 +12,9 @@ import Category from '../shared/models/category';
   styleUrls: ['./fandoms.component.sass'],
 })
 export class FandomsComponent implements OnInit {
-  categories: Array<Category> = [];
+  categories: Category[] = [];
   isAdmin = false;
+  isLoading = false;
 
   constructor(
     private _fandomService: FandomService,
@@ -21,10 +23,24 @@ export class FandomsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categories = this._fandomService.getCategories();
+    this.fetchCategories();
     this._authService.currentUser.subscribe(
       (user) => (this.isAdmin = user?.role === 'admin')
     );
+  }
+
+  fetchCategories() {
+    this.isLoading = true;
+    this._fandomService
+      .getCategories()
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe((res) => {
+        this.categories = res;
+      });
   }
 
   openCreateCategoryDialog(): void {
@@ -41,7 +57,7 @@ export class FandomsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.categories = this._fandomService.getCategories();
+      this.fetchCategories();
     });
   }
 }
