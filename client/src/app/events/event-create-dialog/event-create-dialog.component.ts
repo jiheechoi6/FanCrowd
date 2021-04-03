@@ -63,7 +63,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.eventDateRange = [defaultStartDate, defaultEndDate];
 
       this.event = {
-        id: 1000,
+        _id: 1000,
         name: '',
         fandomType: {
           category: '',
@@ -77,7 +77,6 @@ export class EventCreateDialogComponent implements OnInit {
         location: '',
         postedBy: this.data.username,
         totalAttendance: 0,
-        reviews: [],
       };
     }
   }
@@ -111,7 +110,7 @@ export class EventCreateDialogComponent implements OnInit {
 
   updateEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.updateEventById(this.event.id, this.event);
+    this._eventService.updateEventById(this.event._id, this.event);
     this.dialogRef.close(this.event);
   }
 }

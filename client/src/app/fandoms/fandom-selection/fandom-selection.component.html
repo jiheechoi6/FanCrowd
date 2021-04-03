@@ -23,7 +23,7 @@
             class="fandom-card rounded-corners box-shadow"
             [routerLink]="['/fandoms', category, fandom.name | spacesToHyphen | lowercase]">
             <mat-card-content class="card-body">
-                <h1 class="name">{{fandom.name}}</h1>
+                <h1 class="name">{{fandom.name | titlecase}}</h1>
             </mat-card-content>
         </mat-card>
     </section>

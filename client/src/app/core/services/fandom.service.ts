@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Fandom from 'src/app/shared/models/fandom';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Category from 'src/app/shared/models/category';
-import FandomPost from 'src/app/shared/models/fandom-post';
+import { FandomPost } from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 
 @Injectable({
@@ -240,247 +240,94 @@ export class FandomService {
 
   fandomPosts: FandomPost[] = [
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 0,
-        },
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 1,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 2, 17),
-      numDislikes: 10,
-      numLikes: 20,
+      createdAt: new Date(2021, 2, 17),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user1',
-        profileUrl:
+        profileURL:
           'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor sit amet',
-      fandomId: 17,
-      id: 0,
+      fandom: '17',
+      _id: '0',
     },
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 2,
-        },
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 3,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 1, 1),
-      numDislikes: 0,
-      numLikes: 10,
+      createdAt: new Date(2021, 1, 1),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user2',
-        profileUrl:
+        profileURL:
           'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor',
-      fandomId: 17,
-      id: 1,
+      fandom: '17',
+      _id: '1',
     },
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 4,
-        },
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 5,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 1, 19),
-      numDislikes: 15,
-      numLikes: 4,
+      createdAt: new Date(2021, 1, 19),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user2',
-        profileUrl:
+        profileURL:
           'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor sit amet',
-      fandomId: 11,
-      id: 2,
+      fandom: '11',
+      _id: '2',
     },
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 8),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 6,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 1, 5),
-      numDislikes: 6,
-      numLikes: 100,
+      createdAt: new Date(2021, 1, 5),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user1',
-        profileUrl:
+        profileURL:
           'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor sit amet',
-      fandomId: 12,
-      id: 3,
+      fandom: '12',
+      _id: '3',
     },
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 18),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 7,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 2, 14),
-      numDislikes: 10,
-      numLikes: 25,
+      createdAt: new Date(2021, 2, 14),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user1',
-        profileUrl:
+        profileURL:
           'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor sit amet',
-      fandomId: 14,
-      id: 4,
+      fandom: '14',
+      _id: '4',
     },
     {
-      comments: [
-        {
-          content:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-          datePosted: new Date(2021, 2, 16),
-          numDislikes: 0,
-          numLikes: 10,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          title: 'Excepteur sint occaecat cupidatat non proident',
-          id: 8,
-        },
-      ],
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      datePosted: new Date(2021, 2, 12),
-      numDislikes: 30,
-      numLikes: 1,
+      createdAt: new Date(2021, 2, 12),
+      numDislikes: [],
+      numLikes: [],
       postedBy: {
         username: 'user2',
-        profileUrl:
+        profileURL:
           'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-        role: 'user',
       },
       title: 'Lorem ipsum dolor sit amet',
-      fandomId: 16,
-      id: 5,
+      fandom: '16',
+      _id: '5',
     },
   ];
 
@@ -550,47 +397,28 @@ export class FandomService {
     return false;
   }
 
-  getPostsForFandom(fandomName: string) {
-    //Get posts associated to a fandom, code below requires server call
-
-    const fandomId = this.fandoms.find(
-      (fandom) =>
-        fandom.name.toLowerCase().split(' ').join('-') ===
-        fandomName.toLowerCase()
-    )?._id;
-
-    return this.fandomPosts.filter((post) => post.fandomId === fandomId);
+  getPostsForFandom(categoryName: string, fandomName: string) {
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    const dashedFandomName = fandomName.split(' ').join('-');
+    return this._http.get<FandomPost[]>(
+      `/api/fandoms/categories/${dashedCategoryName}/${dashedFandomName}/posts`
+    );
   }
 
   updatePostForFandom(postId: number | undefined, updatedPost: FandomPost) {
     //Update post with id postId in db, code below requires server call
 
-    if (typeof postId === 'undefined') return this.fandomPosts;
-
-    for (let i = 0; i < this.fandomPosts.length; i++) {
-      if (this.fandomPosts[i].id === postId) {
-        this.fandomPosts[i] = updatedPost;
-      }
-    }
-
-    return this.fandomPosts || [];
+    return [];
   }
 
   deletePostFromFandom(postId: number | undefined) {
     //Remove post with id postId in db, code below requires server call
 
-    if (typeof postId === 'undefined') return this.fandomPosts;
-
-    this.fandomPosts = this.fandomPosts.filter((post) => post.id !== postId);
-
-    return this.fandomPosts;
+    return [];
   }
 
   createPostForFandom(post: FandomPost) {
     //Add post to a fandom, code below requires server call
-
-    post.id = Math.floor(Math.random() * (10000 - 12) + 12);
-    this.fandomPosts.push(post);
 
     return post;
   }
@@ -604,23 +432,26 @@ export class FandomService {
     );
   }
 
-  getFandomPostById(postId: number) {
-    //Get a post with id postId from db, code below requires server call
-
-    return this.fandomPosts.find((post) => post.id === postId) || null;
+  getFandomPostById(postId: string = '') {
+    return this._http.get<FandomPost>(`/api/fandoms/posts/${postId}`);
   }
 
-  addCommentToPost(postId: number, comment: FandomPostComment) {
+  getCommentsForPost(postId: string = '') {
+    return this._http.get<FandomPostComment[]>(
+      `/api/fandoms/posts/${postId}/comments`
+    );
+  }
+
+  addCommentToPost(postId: string, comment: FandomPostComment) {
     const fandomPost = this.getFandomPostById(postId);
 
-    comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
-    fandomPost?.comments.push(comment);
+    // comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
 
     return comment;
   }
 
   editPostComment(
-    postId: number | undefined,
+    postId: string | undefined,
     commentId: number | undefined,
     updatedComment: FandomPostComment
   ) {
@@ -630,27 +461,13 @@ export class FandomService {
 
     if (typeof commentId === 'undefined') return fandomPost;
 
-    if (fandomPost) {
-      for (let i = 0; i < fandomPost.comments.length; i++) {
-        if (fandomPost.comments[i].id === commentId) {
-          fandomPost.comments[i] = updatedComment;
-        }
-      }
-    }
-
     return fandomPost;
   }
 
-  removeCommentFromPost(postId: number | undefined, commentId: number) {
+  removeCommentFromPost(postId: string | undefined, commentId: number) {
     if (typeof postId === 'undefined') return null;
 
     const fandomPost = this.getFandomPostById(postId);
-
-    if (fandomPost) {
-      fandomPost.comments = fandomPost.comments.filter(
-        (comment) => comment.id !== commentId
-      );
-    }
 
     return fandomPost;
   }

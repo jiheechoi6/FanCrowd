@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import EventDTO from '../../models/event-dto';
+import Event from '../../models/event';
 
 @Component({
   selector: 'app-events-summary-card',
@@ -7,7 +7,7 @@ import EventDTO from '../../models/event-dto';
   styleUrls: ['./events-summary-card.component.sass'],
 })
 export class EventsSummaryCardComponent implements OnInit {
-  @Input() events: EventDTO[] = [];
+  @Input() events: Event[] = [];
 
   constructor() {}
 

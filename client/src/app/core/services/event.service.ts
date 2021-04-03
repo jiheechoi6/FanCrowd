@@ -12,7 +12,7 @@ export class EventService {
 
   events: Event[] = [
     {
-      id: 1,
+      _id: 1,
       fandomType: {
         _id: 11,
         category: 'Books',
@@ -27,37 +27,9 @@ export class EventService {
       startDate: new Date(2021, 10, 12),
       endDate: new Date(2021, 10, 14),
       totalAttendance: 2,
-      reviews: [
-        {
-          id: 1,
-          title: 'Great Event',
-          rating: 4,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-        {
-          id: 2,
-          title: "Amazing, Lot's of fun",
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 2,
+      _id: 2,
       fandomType: {
         _id: 30,
         category: 'Technology',
@@ -72,37 +44,9 @@ export class EventService {
       startDate: new Date(2021, 5, 12),
       endDate: new Date(2021, 5, 14),
       totalAttendance: 2,
-      reviews: [
-        {
-          id: 1,
-          title: 'Cool tech!',
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-        {
-          id: 2,
-          title: 'Nice things to see',
-          rating: 3,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 3,
+      _id: 3,
       fandomType: {
         _id: 1,
         category: 'Movies',
@@ -117,10 +61,9 @@ export class EventService {
       startDate: new Date(2021, 6, 12),
       endDate: new Date(2021, 7, 14),
       totalAttendance: 1,
-      reviews: [],
     },
     {
-      id: 4,
+      _id: 4,
       fandomType: {
         _id: 21,
         category: 'Games',
@@ -135,23 +78,9 @@ export class EventService {
       startDate: new Date(2021, 4, 8),
       endDate: new Date(2021, 4, 11),
       totalAttendance: 1,
-      reviews: [
-        {
-          id: 2,
-          title: 'Great Release Party!!!',
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 5,
+      _id: 5,
       fandomType: {
         _id: 9,
         category: 'Books',
@@ -166,10 +95,9 @@ export class EventService {
       startDate: new Date(2021, 9, 12),
       endDate: new Date(2021, 9, 15),
       totalAttendance: 3,
-      reviews: [],
     },
     {
-      id: 6,
+      _id: 6,
       fandomType: {
         _id: 17,
         category: 'Anime',
@@ -184,10 +112,9 @@ export class EventService {
       startDate: new Date(2021, 7, 30),
       endDate: new Date(2021, 8, 1),
       totalAttendance: 2,
-      reviews: [],
     },
     {
-      id: 7,
+      _id: 7,
       fandomType: {
         _id: 26,
         category: 'Sports',
@@ -202,10 +129,9 @@ export class EventService {
       startDate: new Date(2021, 11, 3),
       endDate: new Date(2021, 11, 8),
       totalAttendance: 1,
-      reviews: [],
     },
     {
-      id: 8,
+      _id: 8,
       fandomType: {
         _id: 15,
         category: 'Shows',
@@ -220,7 +146,6 @@ export class EventService {
       startDate: new Date(2021, 12, 10),
       endDate: new Date(2021, 12, 13),
       totalAttendance: 1,
-      reviews: [],
     },
   ];
 
@@ -238,44 +163,32 @@ export class EventService {
     return this.events.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsByCategoryAndFandom(
-    categoryName: string,
-    fandomName: string
-  ): Event[] {
-    // Get events from server, code below requires server call
-    let filterdEvents: Event[] = [];
+  getEventsByCategoryAndFandom(categoryName: string, fandomName: string) {
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    const dashedFandomName = fandomName.split(' ').join('-');
 
-    this.events.forEach((event) => {
-      if (
-        event.fandomType.category?.toLowerCase() ===
-          categoryName.toLowerCase() &&
-        event.fandomType.name?.toLowerCase().split(' ').join('-') ===
-          fandomName.toLowerCase()
-      ) {
-        filterdEvents.push(event);
-      }
-    });
-
-    return filterdEvents.sort((a, b) => this.sortFunction(a, b));
+    return this._http.get<Event[]>(
+      `/api/events/${dashedCategoryName}/${dashedFandomName}`
+    );
   }
 
   getEventById(id: number): Event | null {
     // Get event from server, code below requires server call
 
-    return this.events.find((event) => event.id === id) || null;
+    return this.events.find((event) => event._id === id) || null;
   }
 
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
-    event.id = Math.floor(Math.random() * (10000 - 12) + 12);
+    event._id = Math.floor(Math.random() * (10000 - 12) + 12);
     this.events.push(event);
   }
 
   updateEventAttendance(id: number | undefined, isAttending: boolean): void {
     // Update event attendance on server, code below requires server call
 
-    let event = this.events.find((event) => event.id === id);
+    let event = this.events.find((event) => event._id === id);
 
     if (event) {
       if (isAttending) {
@@ -300,43 +213,19 @@ export class EventService {
   getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
 
-    return this.events.find((event) => event.id === eventId)?.reviews || [];
+    return [];
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
     // Add review to a specific event on server, code below requires server call
-
-    let event = this.events.find((event) => event.id === eventId);
-
-    if (event) {
-      event.reviews.push(review);
-    }
   }
 
   updateReviewById(eventId: number | null, updatedReview: Review): void {
     // Update review to a specific review on server, code below requires server call
-
-    let event = this.events.find((event) => event.id === eventId);
-
-    if (event) {
-      let index = event.reviews.findIndex(
-        (review) => review.id === updatedReview.id
-      );
-
-      if (index >= 0) {
-        event.reviews[index] = updatedReview;
-      }
-    }
   }
 
   deleteReview(eventIndex: number, reviewIndex: number): boolean {
     // Delete review from server, code below requires server call
-
-    if (eventIndex >= 0) {
-      let event = this.events[eventIndex];
-      event.reviews.splice(reviewIndex, 1);
-      return true;
-    }
 
     return false;
   }
@@ -346,18 +235,7 @@ export class EventService {
 
     if (!eventId) return;
 
-    const eventIndex = this.events.findIndex((event) => event.id === eventId);
+    const eventIndex = this.events.findIndex((event) => event._id === eventId);
     this.events[eventIndex] = updatedEvent;
-  }
-
-  convertEventsToEventDTOs(events: Event[]): EventDTO[] {
-    const eventsAsEventDTO: EventDTO[] = events.map((event) => ({
-      name: event.name,
-      id: event.id,
-      date: event.startDate,
-      totalAttending: event.totalAttendance,
-    }));
-
-    return eventsAsEventDTO;
   }
 }

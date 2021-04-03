@@ -5,11 +5,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { EventService } from 'src/app/core/services/event.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { UserService } from 'src/app/core/services/user.service';
-import EventDTO from 'src/app/shared/models/event-dto';
 import Fandom from 'src/app/shared/models/fandom';
-import FandomPost from 'src/app/shared/models/fandom-post';
+import { FandomPost } from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
+import Event from 'src/app/shared/models/event';
 
 @Component({
   selector: 'app-fandom-detail',
@@ -17,7 +17,7 @@ import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dia
   styleUrls: ['./fandom-detail.component.sass'],
 })
 export class FandomDetailComponent implements OnInit {
-  eventsForFandom: EventDTO[] = [];
+  eventsForFandom: Event[] = [];
   fandomCategory: string = '';
   fandomName: string = '';
   postsForFandom: FandomPost[] = [];
@@ -43,20 +43,15 @@ export class FandomDetailComponent implements OnInit {
       this.fandomCategory = params['category'];
       this.fandomName = params['fandom'];
 
-      this.fandom = this._fandomService.getFandomByName(this.fandomName);
+      this._eventService
+        .getEventsByCategoryAndFandom(this.fandomCategory, this.fandomName)
+        .subscribe((events) => {
+          this.eventsForFandom = events;
+        });
 
-      const events = this._eventService.getEventsByCategoryAndFandom(
-        this.fandomCategory,
-        this.fandomName
-      );
-
-      this.eventsForFandom = this._eventService.convertEventsToEventDTOs(
-        events
-      );
-
-      this.postsForFandom = this._fandomService.getPostsForFandom(
-        this.fandomName
-      );
+      this._fandomService
+        .getPostsForFandom(this.fandomCategory, this.fandomName)
+        .subscribe((posts) => (this.postsForFandom = posts));
 
       this.hasUserJoinedFandom = this._userService.hasUserJoinedFandom(
         this.loggedInUser?.username || '',
@@ -100,20 +95,18 @@ export class FandomDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newPost: FandomPost) => {
       if (newPost) {
-        this.postsForFandom = this._fandomService.getPostsForFandom(
-          this.fandomName
-        );
+        this.postsForFandom.push(newPost);
       }
     });
   }
 
   updatePostLikes(post: FandomPost) {
-    post.numLikes += 1;
-    this._fandomService.updatePostForFandom(post.id, post);
+    // post.numLikes += 1;
+    // this._fandomService.updatePostForFandom(post.id, post);
   }
 
   updatePostDislikes(post: FandomPost) {
-    post.numDislikes += 1;
-    this._fandomService.updatePostForFandom(post.id, post);
+    // post.numDislikes += 1;
+    // this._fandomService.updatePostForFandom(post.id, post);
   }
 }
