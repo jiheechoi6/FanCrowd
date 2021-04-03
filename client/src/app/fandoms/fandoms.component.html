@@ -8,7 +8,8 @@
         </button>
     </div>
 
-    <section class="fandom-categories">
+    <section class="fandom-categories" [class.fandom-categories-loading]="isLoading">
+        <app-spinner *ngIf="isLoading"></app-spinner>
         <mat-card *ngFor="let category of categories" style="background-image: url({{category.backgroundURL}})"
             class="category-card rounded-corners box-shadow" [routerLink]="['/fandoms', category.name | lowercase]">
             <mat-card-content class="card-body">
