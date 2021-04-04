@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
@@ -24,6 +25,9 @@ export class PostDetailComponent implements OnInit {
   fandomName: string = '';
   comments: FandomPostComment[] = [];
 
+  isLoadingComments = true;
+  isLoadingPost = true;
+
   constructor(
     private _fandomService: FandomService,
     private _activatedRoute: ActivatedRoute,
@@ -39,8 +43,20 @@ export class PostDetailComponent implements OnInit {
       this.fandomCategory = params['category'];
       this.fandomName = params['fandom'];
 
-      this._breadcrumbService.set('@postName', '');
-      this._fandomService.getFandomPostById(this.postId).subscribe((post) => {
+      this._breadcrumbService.set('@postName', '...');
+      this.fetchComponentInfo();
+    });
+
+    this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
+  }
+
+  fetchComponentInfo() {
+    this._fandomService
+      .getFandomPostById(this.postId)
+      .pipe(finalize(() => (this.isLoadingPost = false)))
+      .subscribe((post) => {
         this.post = post;
         if (!this.post) {
           this._router.navigate([
@@ -52,14 +68,10 @@ export class PostDetailComponent implements OnInit {
         this._breadcrumbService.set('@postName', this.post!.title);
       });
 
-      this._fandomService
-        .getCommentsForPost(this.postId)
-        .subscribe((comments) => (this.comments = comments));
-    });
-
-    this._authService.currentUser.subscribe(
-      (user) => (this.loggedInUser = user)
-    );
+    this._fandomService
+      .getCommentsForPost(this.postId)
+      .pipe(finalize(() => (this.isLoadingComments = false)))
+      .subscribe((comments) => (this.comments = comments));
   }
 
   updatePostLikes() {
