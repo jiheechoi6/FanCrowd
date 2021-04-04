@@ -92,10 +92,10 @@ export class FandomDetailComponent implements OnInit {
   }
 
   removeFromFandom() {
-    this._userService.removeFandomFromUser(
-      this.loggedInUser?.username || '',
-      this.fandom?._id
-    );
+    // this._userService.removeFandomFromUser(
+    //   this.loggedInUser?.username || '',
+    //   this.fandom?._id
+    // );
 
     this.hasUserJoinedFandom = false;
   }

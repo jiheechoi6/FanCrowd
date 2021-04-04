@@ -8,6 +8,7 @@ import { finalize } from 'rxjs/operators';
 import Category from 'src/app/shared/models/category';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-fandom-selection',
@@ -25,7 +26,7 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
   constructor(
     private _fandomService: FandomService,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
+    public _dialog: MatDialog,
     private _router: Router,
     private _authService: AuthService
   ) {}
@@ -63,10 +64,10 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
   }
 
   openCreateFandomDialog(): void {
-    const dialogRef = this.dialog.open(AddDialogComponent, {
+    const dialogRef = this._dialog.open(AddDialogComponent, {
       data: {
         title: 'Fandom',
-        categoryId: this.category._id,
+        categoryId: this.category?._id,
         isCategory: false,
       },
       width: '360px',
@@ -82,7 +83,47 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  openDeleteCategoryDialog() {}
+  deleteCategory() {
+    this._fandomService
+      .deleteCategoryById(this.category?._id)
+      .subscribe(() => this._router.navigate(['/fandoms']));
+  }
 
-  openEditCategoryDialog() {}
+  openDeleteCategoryDialog() {
+    this._dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Delete Category Confirmation',
+        details:
+          'Are you sure you want to delete this category? All associated fandoms, posts and comments will be removed as well',
+        onConfirmCb: this.deleteCategory.bind(this),
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+  }
+
+  openEditCategoryDialog() {
+    const dialogRef = this._dialog.open(AddDialogComponent, {
+      data: {
+        title: 'Category',
+        isCategory: true,
+        isEditing: true,
+        category: this.category,
+      },
+      width: '360px',
+      height: '300px',
+      autoFocus: false,
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedCategory: Category) => {
+      if (updatedCategory) {
+        this._router.navigate([
+          '/fandoms',
+          updatedCategory.name.split(' ').join('-'),
+        ]);
+      }
+    });
+  }
 }

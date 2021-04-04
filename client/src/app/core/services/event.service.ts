@@ -14,7 +14,7 @@ export class EventService {
     {
       _id: 1,
       fandomType: {
-        _id: 11,
+        _id: '15',
         category: 'Books',
         name: 'Harry Potter',
         backgroundURL: '',
@@ -31,7 +31,7 @@ export class EventService {
     {
       _id: 2,
       fandomType: {
-        _id: 30,
+        _id: '15',
         category: 'Technology',
         name: 'Apple',
         backgroundURL: '',
@@ -48,7 +48,7 @@ export class EventService {
     {
       _id: 3,
       fandomType: {
-        _id: 1,
+        _id: '15',
         category: 'Movies',
         name: 'Avengers',
         backgroundURL: '',
@@ -65,7 +65,7 @@ export class EventService {
     {
       _id: 4,
       fandomType: {
-        _id: 21,
+        _id: '15',
         category: 'Games',
         name: 'God of War',
         backgroundURL: '',
@@ -82,7 +82,7 @@ export class EventService {
     {
       _id: 5,
       fandomType: {
-        _id: 9,
+        _id: '15',
         category: 'Books',
         name: 'Harry Potter',
         backgroundURL: '',
@@ -99,7 +99,7 @@ export class EventService {
     {
       _id: 6,
       fandomType: {
-        _id: 17,
+        _id: '15',
         category: 'Anime',
         name: 'One Punch Man',
         backgroundURL: '',
@@ -116,7 +116,7 @@ export class EventService {
     {
       _id: 7,
       fandomType: {
-        _id: 26,
+        _id: '15',
         category: 'Sports',
         name: 'Soccer',
         backgroundURL: '',
@@ -133,7 +133,7 @@ export class EventService {
     {
       _id: 8,
       fandomType: {
-        _id: 15,
+        _id: '15',
         category: 'Shows',
         name: 'Game of Thrones',
         backgroundURL: '',

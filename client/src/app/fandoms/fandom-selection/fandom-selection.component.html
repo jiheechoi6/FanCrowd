@@ -6,7 +6,15 @@
     </xng-breadcrumb>
 
     <div class="flex-row-container-space-between add-fandom-button-container">
-        <header class="page-title">{{categoryName | titlecase}}</header>
+        <header>
+            <div class="flex-row-container-space-between margin-bottom-2" *ngIf="isAdmin">
+                <i class="fas fa-trash-alt delete-icon" (click)="openDeleteCategoryDialog()"></i>
+                <i class="fas fa-edit edit-icon" (click)="openEditCategoryDialog()"></i>
+            </div>
+            <span class="page-title">
+                {{categoryName | titlecase}}
+            </span>
+        </header>
         <button (click)="openCreateFandomDialog()" mat-raised-button color="primary">
             <span>
                 Create Fandom <i class="fas fa-plus"></i>
@@ -15,7 +23,7 @@
     </div>
 
     <div *ngIf="!fandoms.length && !isLoading" class="no-fandoms-message">
-        <h1>No fandoms for {{categoryName | titlecase}} found. Create one using the button above!</h1>
+        <h1>No fandoms found. Create one using the button above!</h1>
     </div>
 
     <section class="fandoms" [class.fandoms-loading]="isLoading">

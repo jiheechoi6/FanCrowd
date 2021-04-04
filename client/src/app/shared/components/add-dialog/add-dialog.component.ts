@@ -9,12 +9,16 @@ interface DialogData {
   title: string;
   categoryId?: string;
   isCategory: boolean;
+  isEditing: boolean;
+  category?: Category;
+  fandom?: Fandom;
 }
 
 interface AddDialogData {
   name: string;
   backgroundURL: string;
   category?: string;
+  _id?: string;
 }
 
 @Component({
@@ -22,37 +26,56 @@ interface AddDialogData {
   templateUrl: './add-dialog.component.html',
 })
 export class AddDialogComponent implements OnInit {
-  newEntity: AddDialogData;
+  entity: AddDialogData;
   errorMsg: string | null = null;
-  isCreatingEntity = false;
+  isLoading = false;
 
   constructor(
     private _fandomService: FandomService,
     public dialogRef: MatDialogRef<AddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
-    this.newEntity = {
-      name: '',
-      category: this.data.categoryId,
-      backgroundURL: '',
-    };
+    if (data.isEditing && data.isCategory) {
+      this.entity = {
+        name: this.data.category!.name,
+        _id: this.data.category!._id,
+        backgroundURL: this.data.category!.backgroundURL,
+      };
+    } else if (data.isEditing && !data.isCategory) {
+      this.entity = {
+        name: this.data.fandom!.name,
+        category: this.data.fandom!.category,
+        backgroundURL: this.data.fandom!.backgroundURL,
+        _id: this.data.fandom!._id,
+      };
+    } else {
+      this.entity = {
+        name: '',
+        category: this.data.categoryId,
+        backgroundURL: '',
+      };
+    }
   }
 
   ngOnInit() {}
 
   onConfirm() {
-    if (this.data.isCategory) {
-      this.addCategory(this.newEntity as Category);
-    } else {
-      this.addFandom(this.newEntity as Fandom);
+    if (this.data.isCategory && !this.data.isEditing) {
+      this.addCategory(this.entity as Category);
+    } else if (!this.data.isCategory && !this.data.isEditing) {
+      this.addFandom(this.entity as Fandom);
+    } else if (this.data.isCategory && this.data.isEditing) {
+      this.updateCategory(this.entity as Category);
+    } else if (!this.data.isCategory && this.data.isEditing) {
+      this.updateFandom(this.entity as Fandom);
     }
   }
 
   addCategory(newCategory: Category) {
-    this.isCreatingEntity = true;
+    this.isLoading = true;
     this._fandomService
       .addCategory(newCategory)
-      .pipe(finalize(() => (this.isCreatingEntity = false)))
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(
         (category) => this.dialogRef.close(category),
         (err) => (this.errorMsg = err.error.message)
@@ -60,12 +83,34 @@ export class AddDialogComponent implements OnInit {
   }
 
   addFandom(newFandom: Fandom) {
-    this.isCreatingEntity = true;
+    this.isLoading = true;
     this._fandomService
       .addFandom(newFandom)
-      .pipe(finalize(() => (this.isCreatingEntity = false)))
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(
         (fandom) => this.dialogRef.close(fandom),
+        (err) => (this.errorMsg = err.error.message)
+      );
+  }
+
+  updateCategory(updatedCategory: Category) {
+    this.isLoading = true;
+    this._fandomService
+      .updateCategoryById(updatedCategory._id, updatedCategory)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        () => this.dialogRef.close(updatedCategory),
+        (err) => (this.errorMsg = err.error.message)
+      );
+  }
+
+  updateFandom(updatedFandom: Fandom) {
+    this.isLoading = true;
+    this._fandomService
+      .updateCategoryById(updatedFandom._id, updatedFandom)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        () => this.dialogRef.close(updatedFandom),
         (err) => (this.errorMsg = err.error.message)
       );
   }
