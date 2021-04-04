@@ -10,6 +10,7 @@ import { FandomPost } from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 import Event from 'src/app/shared/models/event';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fandom-detail',
@@ -24,6 +25,9 @@ export class FandomDetailComponent implements OnInit {
   loggedInUser: UserDTO | null = null;
   fandom: Fandom | null = null;
   hasUserJoinedFandom = false;
+
+  isLoadingEvents = true;
+  isLoadingPosts = true;
 
   constructor(
     private _authService: AuthService,
@@ -65,14 +69,18 @@ export class FandomDetailComponent implements OnInit {
         }
       );
 
+    this.isLoadingEvents = true;
     this._eventService
       .getEventsByCategoryAndFandom(this.fandomCategory, this.fandomName)
+      .pipe(finalize(() => (this.isLoadingEvents = false)))
       .subscribe((events) => {
         this.eventsForFandom = events;
       });
 
+    this.isLoadingPosts = true;
     this._fandomService
       .getPostsForFandom(this.fandomCategory, this.fandomName)
+      .pipe(finalize(() => (this.isLoadingPosts = false)))
       .subscribe((posts) => (this.postsForFandom = posts));
   }
 

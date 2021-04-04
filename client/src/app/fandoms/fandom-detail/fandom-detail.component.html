@@ -5,10 +5,6 @@
         </ng-container>
     </xng-breadcrumb>
 
-    <!-- <div class="no-fandom-message" *ngIf="!fandom">
-        <h1>Unfortunately, there are no {{fandomName | hyphenToSpaces | titlecase}} fandom</h1>
-    </div> -->
-
     <header class="page-title">{{fandomName | hyphenToSpaces | titlecase}}</header>
     <div class="flex-row-container-space-between join-create-post-buttons-container">
         <button mat-raised-button color="primary" (click)="joinFandom()" *ngIf="!hasUserJoinedFandom">
@@ -21,7 +17,7 @@
                 Unjoin Fandom
             </span>
         </button>
-        <button mat-raised-button color="primary" (click)="openCreatePostDialog()" *ngIf="hasUserJoinedFandom">
+        <button mat-raised-button color="primary" (click)="openCreatePostDialog()">
             <span>
                 Create Post <i class="fas fa-plus"></i>
             </span>
@@ -29,9 +25,10 @@
     </div>
 
     <section class="posts-events">
-        <div class="posts">
+        <div class="posts" [class.posts-loading]="isLoadingPosts">
 
-            <div *ngIf="!postsForFandom.length" class="no-posts-message">
+            <app-spinner *ngIf="isLoadingPosts"></app-spinner>
+            <div *ngIf="!postsForFandom.length && !isLoadingPosts" class="no-posts-message">
                 <h1>It seems there are no posts yet. Join the fandom to create one!</h1>
             </div>
 
@@ -81,11 +78,12 @@
         <mat-card class="events rounded-corners box-shadow">
             <mat-card-title>Upcoming Events</mat-card-title>
 
-            <mat-card-content class="no-events-message" *ngIf="!eventsForFandom.length">
-                <h1>Unfortunately, there are no events planned for the fandom</h1>
+            <mat-card-content class="no-events-message" *ngIf="!eventsForFandom.length && !isLoadingEvents">
+                <h1>No events planned</h1>
             </mat-card-content>
 
-            <mat-card-content class="event-items">
+            <mat-card-content class="event-items" [class.events-loading]="isLoadingEvents">
+                <app-spinner *ngIf="isLoadingEvents"></app-spinner>
                 <app-events-summary-card class="event-summary" [events]="eventsForFandom"></app-events-summary-card>
             </mat-card-content>
         </mat-card>
