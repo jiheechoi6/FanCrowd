@@ -253,6 +253,35 @@ export default (app: Router) => {
   );
 
   /**
+   * path: /api/fandoms/categories/:categoryName/:fandomName
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *    categoryName: string,
+   *    fandomName: string
+   * }
+   * description: gets a fandom by name
+   */
+  route.get("/categories/:categoryName/:fandomName", async (req, res, next) => {
+    try {
+      //of the form category-name and fandom-name
+      const categoryName = req.params.categoryName;
+      const fandomName = req.params.fandomName;
+
+      const fandomService = new FandomService();
+      const fandom = await fandomService.getFandomByName(
+        categoryName,
+        fandomName
+      );
+
+      res.status(200).send(fandom);
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  /**
    * path: /api/fandoms/categories/:categoryName/:fandomName/posts
    * method: GET
    * body: None

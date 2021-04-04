@@ -44,7 +44,7 @@ export default class FandomService {
 
     const fandom = await Fandom.findOne({
       category: category?._id,
-      name: fandomName.toLowerCase()
+      name: fandomName.toLowerCase().split("-").join(" ")
     });
 
     if (!fandom) {
@@ -98,7 +98,7 @@ export default class FandomService {
 
   public async getCategoryByName(categoryName: string) {
     const fandomCategory = await FandomCategory.findOne({
-      name: categoryName.toLowerCase()
+      name: categoryName.toLowerCase().split("-").join(" ")
     });
 
     if (!fandomCategory) {
@@ -447,28 +447,7 @@ export default class FandomService {
   }
 
   public async getPostsForFandom(categoryName: string, fandomName: string) {
-    const category = await FandomCategory.findOne({
-      name: categoryName.toLowerCase().split("-").join(" ")
-    });
-
-    if (!category) {
-      throw new ErrorService(
-        "NotFoundError",
-        `Category with name ${categoryName} does not exist`
-      );
-    }
-
-    const fandom = await Fandom.findOne({
-      name: fandomName.toLowerCase().split("-").join(" "),
-      category: category._id
-    });
-
-    if (!fandom) {
-      throw new ErrorService(
-        "NotFoundError",
-        `Fandom with name ${fandomName} does not exist`
-      );
-    }
+    const fandom = await this.getFandomByName(categoryName, fandomName);
 
     const posts: IFandomPostDTOWithLikes[] = await this.getPostsMatchingFilters(
       { fandom: fandom._id }

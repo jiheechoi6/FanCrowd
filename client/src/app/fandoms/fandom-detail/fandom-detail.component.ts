@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EventService } from 'src/app/core/services/event.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
@@ -31,7 +31,8 @@ export class FandomDetailComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _fandomService: FandomService,
     private _dialog: MatDialog,
-    private _userService: UserService
+    private _userService: UserService,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,21 +44,36 @@ export class FandomDetailComponent implements OnInit {
       this.fandomCategory = params['category'];
       this.fandomName = params['fandom'];
 
-      this._eventService
-        .getEventsByCategoryAndFandom(this.fandomCategory, this.fandomName)
-        .subscribe((events) => {
-          this.eventsForFandom = events;
-        });
-
-      this._fandomService
-        .getPostsForFandom(this.fandomCategory, this.fandomName)
-        .subscribe((posts) => (this.postsForFandom = posts));
+      this.fetchComponentInfo();
 
       this.hasUserJoinedFandom = this._userService.hasUserJoinedFandom(
         this.loggedInUser?.username || '',
         this.fandomName || ''
       );
     });
+  }
+
+  fetchComponentInfo() {
+    this._fandomService
+      .getFandomByName(this.fandomCategory, this.fandomName)
+      .subscribe(
+        (fandom) => (this.fandom = fandom),
+        (err) => {
+          if (err.status === 404) {
+            this._router.navigate(['/fandoms', this.fandomCategory]);
+          }
+        }
+      );
+
+    this._eventService
+      .getEventsByCategoryAndFandom(this.fandomCategory, this.fandomName)
+      .subscribe((events) => {
+        this.eventsForFandom = events;
+      });
+
+    this._fandomService
+      .getPostsForFandom(this.fandomCategory, this.fandomName)
+      .subscribe((posts) => (this.postsForFandom = posts));
   }
 
   joinFandom() {

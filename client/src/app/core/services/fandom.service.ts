@@ -423,12 +423,11 @@ export class FandomService {
     return post;
   }
 
-  getFandomByName(fandomName: string) {
-    return (
-      this.fandoms.find(
-        (fandom) =>
-          fandom.name.toLowerCase().split(' ').join('-') === fandomName
-      ) || null
+  getFandomByName(categoryName: string, fandomName: string) {
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    const dashedFandomName = fandomName.split(' ').join('-');
+    return this._http.get<Fandom>(
+      `/api/fandoms/categories/${dashedCategoryName}/${dashedFandomName}`
     );
   }
 
