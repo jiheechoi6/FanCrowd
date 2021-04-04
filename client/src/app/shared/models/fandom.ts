@@ -3,7 +3,7 @@ interface Fandom {
   category: string;
   name: string;
   backgroundURL: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export default Fandom;

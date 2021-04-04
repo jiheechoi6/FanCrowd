@@ -48,7 +48,6 @@ export class FandomsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Category',
-        categoryName: '',
         isCategory: true,
       },
       width: '360px',
@@ -57,8 +56,10 @@ export class FandomsComponent implements OnInit, OnDestroy {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.fetchCategories();
+    dialogRef.afterClosed().subscribe((newCategory: Category) => {
+      if (newCategory) {
+        this.categories.push(newCategory);
+      }
     });
   }
 }

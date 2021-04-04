@@ -6,8 +6,14 @@ import Fandom from '../../models/fandom';
 
 interface DialogData {
   title: string;
-  categoryName: string;
-  isCategory: any;
+  categoryId?: string;
+  isCategory: boolean;
+}
+
+interface AddDialogData {
+  name: string;
+  backgroundURL: string;
+  category?: string;
 }
 
 @Component({
@@ -15,65 +21,40 @@ interface DialogData {
   templateUrl: './add-dialog.component.html',
 })
 export class AddDialogComponent implements OnInit {
-  newCategory: Category = {
-    _id: 1000,
-    name: '',
-    backgroundURL: '',
-  };
-  newFandom: Fandom = {
-    _id: 1000,
-    name: '',
-    category: '',
-    backgroundURL: '',
-    createdAt: new Date(),
-  };
-  object: any;
+  newEntity: AddDialogData;
+  errorMsg: string | null = null;
 
   constructor(
-    private fandomService: FandomService,
+    private _fandomService: FandomService,
     public dialogRef: MatDialogRef<AddDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
-  ) {}
-
-  ngOnInit(): void {
-    this.object = {
-      id: 1000,
+  ) {
+    this.newEntity = {
       name: '',
-      category: this.data.categoryName,
-      backgroundUrl: '',
+      category: this.data.categoryId,
+      backgroundURL: '',
     };
   }
 
+  ngOnInit() {}
+
   onConfirm() {
     if (this.data.isCategory) {
-      // Add a Category
-      this.newCategory.name = this.object.name;
-      this.newCategory.backgroundURL =
-        this.object.backgroundUrl ||
-        'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
-
-      this.addCategory(this.newCategory);
+      this.addCategory(this.newEntity as Category);
     } else {
-      // Add a Fandom
-      this.newFandom.name = this.object.name;
-      this.newFandom.category = this.object.category;
-      this.newFandom.backgroundURL =
-        this.object.backgroundUrl ||
-        'https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg';
-
-      this.addFandom(this.newFandom);
+      this.newEntity.category = this.data.categoryId!;
+      this.addFandom(this.newEntity as Fandom);
     }
-
-    this.dialogRef.close();
   }
 
-  addCategory(newCategory: Category): void {
-    // Call fandomService and add caategory
-    this.fandomService.addCategory(newCategory);
+  addCategory(newCategory: Category) {
+    this._fandomService.addCategory(newCategory).subscribe(
+      (category) => this.dialogRef.close(category),
+      (err) => (this.errorMsg = err.error.message)
+    );
   }
 
-  addFandom(newFandom: Fandom): void {
-    // Call fandomService and add caategory
-    this.fandomService.addFandom(newFandom);
+  addFandom(newFandom: Fandom) {
+    this._fandomService.addFandom(newFandom);
   }
 }

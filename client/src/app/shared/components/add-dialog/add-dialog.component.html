@@ -5,7 +5,7 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="object.name" name="name" required pattern=".*\S+.*" autocomplete="off">
+                <input matInput [(ngModel)]="newEntity.name" name="name" required pattern=".*\S+.*" autocomplete="off">
                 <mat-error>Name is a required field</mat-error>
             </mat-form-field>
         </div>
@@ -13,18 +13,21 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Image URL</mat-label>
-                <input matInput [(ngModel)]="object.backgroundUrl" name="title" required
+                <input matInput [(ngModel)]="newEntity.backgroundURL" name="title" required
                     pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #imageUrl="ngModel">
                 <mat-error *ngIf="imageUrl.errors?.required">Image URL is a required field</mat-error>
                 <mat-error *ngIf="imageUrl.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <div mat-dialog-actions align="end">
     <button mat-flat-button type="button" mat-dialog-close color="basic">Cancel</button>
-    <button mat-flat-button color="primary" (click)="addForm.ngSubmit.emit()" [disabled]="!addForm.form.valid">
+    <button mat-flat-button color="primary" (click)="addForm.ngSubmit.emit()"
+        [disabled]="!addForm.form.valid || errorMsg">
         <span>
             Add <i class="fas fa-plus"></i>
         </span>

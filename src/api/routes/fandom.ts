@@ -179,7 +179,7 @@ export default (app: Router) => {
       } catch (err) {
         if (err.name === "MongoError" && err.code === 11000) {
           return next(
-            new ErrorService("MongoError", "Duplicate fandom category")
+            new ErrorService("MongoError", "Fandom name already in use")
           );
         }
 

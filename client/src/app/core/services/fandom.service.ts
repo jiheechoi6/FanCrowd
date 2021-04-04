@@ -339,20 +339,8 @@ export class FandomService {
     return dateA > dateB ? 1 : -1;
   }
 
-  addCategory(category: Category): void {
-    // Add fandom to server, code below requires server call
-
-    let exists = false;
-
-    this.category.forEach((x) => {
-      if (x.name.toLowerCase() === category.name.toLowerCase()) {
-        exists = true;
-      }
-    });
-
-    if (!exists) {
-      this.category.push(category);
-    }
+  addCategory(category: Category) {
+    return this._http.post<Category>(`/api/fandoms/categories`, category);
   }
 
   getCategories() {
