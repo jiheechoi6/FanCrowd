@@ -159,7 +159,7 @@ export class AuthService {
       const value:string = String(localStorage.getItem('user'));
       this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
     }
-    // this.currentUser.next(this.users[0]);
+    this.autoLogin();
   }
 
   loginUser(username: string, password: string) {
@@ -210,10 +210,10 @@ export class AuthService {
   }
 
   autoLogin(){
-    if(!localStorage.getItem('user')){
-      const value:string = String(localStorage.getItem('user'));
-      this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
-    }
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+    
+    this._http.get<UserIdentity>('http://localhost:5000/api/auth/currentUser', 
+      {headers, responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
   }
 
   resetPassword(
