@@ -4,6 +4,7 @@ interface UserIdentityToken{
         _id: string;
         role: string;
         username: string;
+        profileURL: string;
     }
 }
 export default UserIdentityToken

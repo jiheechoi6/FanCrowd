@@ -15,8 +15,8 @@ import { SingleKeyOptions } from 'nodemailer/lib/dkim';
   providedIn: 'root', 
 })
 export class AuthService {
-  currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
   // this is the variable that's updated during log in/sign up/ log out
+  // currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
   currentUser = new BehaviorSubject<UserIdentity | null>(null);  
   token: string | null = null;
   usernameToPassword = new Map([
@@ -182,8 +182,8 @@ export class AuthService {
         .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
-  getCurrentUser(): BehaviorSubject<UserDTO | null> {
-    return this.currentUserInfo;
+  getCurrentUser(): BehaviorSubject<UserIdentity | null> {
+    return this.currentUser;
   }
 
   updateCurrentUser(res: UserIdentityToken): UserIdentityToken {
@@ -210,7 +210,10 @@ export class AuthService {
   }
 
   autoLogin(){
-
+    if(!localStorage.getItem('user')){
+      const value:string = String(localStorage.getItem('user'));
+      this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
+    }
   }
 
   resetPassword(
@@ -225,24 +228,24 @@ export class AuthService {
   }
 
   getCurrentLoggedInUserEvents() {
-    return this.currentUserInfo.getValue()?.attendingEvents;
+    // return this.currentUserInfo.getValue()?.attendingEvents;
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {
     // Update user info (Add event to events attending) on server,
     // code below requires server call
 
-    let user = this.currentUserInfo.getValue();
+    // let user = this.currentUserInfo.getValue();
 
-    if (user) {
-      let index = user.attendingEvents.findIndex(
-        (userEvent) => userEvent.id === event.id
-      );
+    // if (user) {
+    //   let index = user.attendingEvents.findIndex(
+    //     (userEvent) => userEvent.id === event.id
+    //   );
 
-      if (index < 0) {
-        user.attendingEvents.push(event);
-      }
-    }
+    //   if (index < 0) {
+    //     user.attendingEvents.push(event);
+    //   }
+    // }
   }
 
   removeEventFromUserEvents(
@@ -252,16 +255,16 @@ export class AuthService {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
-    let user = this.currentUserInfo.getValue();
-    if (user) {
-      let eventIndex = user.attendingEvents.findIndex(
-        (userEvent) => userEvent.id === eventId
-      );
+    // let user = this.currentUserInfo.getValue();
+    // if (user) {
+    //   let eventIndex = user.attendingEvents.findIndex(
+    //     (userEvent) => userEvent.id === eventId
+    //   );
 
-      if (eventIndex >= 0) {
-        user.attendingEvents.splice(eventIndex, 1);
-      }
-    }
+    //   if (eventIndex >= 0) {
+    //     user.attendingEvents.splice(eventIndex, 1);
+    //   }
+    // }
   }
 
   removeEventFromAllUsersEvents(eventId: number | undefined): void {

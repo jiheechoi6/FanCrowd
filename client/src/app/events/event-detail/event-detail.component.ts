@@ -45,7 +45,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this._authService.getCurrentUser().value;
+    // this.user = this._authService.getCurrentUser().value;
     if (this.user) {
       this.isAttending = false;
       let index = this.user.attendingEvents.findIndex(
