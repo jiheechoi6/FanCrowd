@@ -15,7 +15,7 @@ import Category from '../shared/models/category';
 export class FandomsComponent implements OnInit, OnDestroy {
   categories: Category[] = [];
   isAdmin = false;
-  isLoading = false;
+  isLoading = true;
   userSubscription!: Subscription;
 
   constructor(
@@ -36,7 +36,6 @@ export class FandomsComponent implements OnInit, OnDestroy {
   }
 
   fetchCategories() {
-    this.isLoading = true;
     this._fandomService
       .getCategories()
       .pipe(finalize(() => (this.isLoading = false)))

@@ -69,7 +69,6 @@ export class FandomDetailComponent implements OnInit {
         }
       );
 
-    this.isLoadingEvents = true;
     this._eventService
       .getEventsByCategoryAndFandom(this.fandomCategory, this.fandomName)
       .pipe(finalize(() => (this.isLoadingEvents = false)))
@@ -77,7 +76,6 @@ export class FandomDetailComponent implements OnInit {
         this.eventsForFandom = events;
       });
 
-    this.isLoadingPosts = true;
     this._fandomService
       .getPostsForFandom(this.fandomCategory, this.fandomName)
       .pipe(finalize(() => (this.isLoadingPosts = false)))

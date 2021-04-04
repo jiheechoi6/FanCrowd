@@ -56,17 +56,21 @@ export class PostDetailComponent implements OnInit {
     this._fandomService
       .getFandomPostById(this.postId)
       .pipe(finalize(() => (this.isLoadingPost = false)))
-      .subscribe((post) => {
-        this.post = post;
-        if (!this.post) {
-          this._router.navigate([
-            'fandoms',
-            this.fandomCategory,
-            this.fandomName,
-          ]);
+      .subscribe(
+        (post) => {
+          this.post = post;
+          this._breadcrumbService.set('@postName', this.post.title);
+        },
+        (err) => {
+          if (err.status === 404) {
+            this._router.navigate([
+              'fandoms',
+              this.fandomCategory,
+              this.fandomName,
+            ]);
+          }
         }
-        this._breadcrumbService.set('@postName', this.post!.title);
-      });
+      );
 
     this._fandomService
       .getCommentsForPost(this.postId)

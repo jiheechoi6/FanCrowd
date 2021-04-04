@@ -31,7 +31,6 @@ export class FandomSelectionComponent implements OnInit {
   }
 
   fetchFandoms() {
-    this.isLoading = true;
     this._fandomService
       .getFandomsByCategories(this.category)
       .pipe(finalize(() => (this.isLoading = false)))
