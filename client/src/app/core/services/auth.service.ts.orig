@@ -152,14 +152,18 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _emailService: EmailService,
- 
-    private _userService: UserService
+<<<<<<< HEAD
+    private _userService: UserService,
   ) {
     if(localStorage.getItem('user')!= null){
       const value:string = String(localStorage.getItem('user'));
       this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
     }
-    // this.currentUser.next(this.users[0]);
+=======
+    private _userService: UserService
+  ) {
+    this.currentUser.next(this.users[0]);
+>>>>>>> dev
   }
 
   loginUser(username: string, password: string) {

@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FandomService } from 'src/app/core/services/fandom.service';
-import FandomPost from 'src/app/shared/models/fandom-post';
+import { FandomPost } from 'src/app/shared/models/fandom-post';
 import PartialUserDTO from 'src/app/shared/models/partial-user-dto';
 
 interface DialogData {
   postBeingUpdated?: FandomPost;
   userCreatingEvent: PartialUserDTO;
-  fandomId: number;
+  fandomId: string;
 }
 
 @Component({
@@ -28,13 +28,8 @@ export class CreatePostDialogComponent implements OnInit {
       this.isEditing = true;
     } else {
       this.post = {
-        comments: [],
         content: '',
-        datePosted: new Date(),
-        fandomId: this.data.fandomId,
-        numDislikes: 0,
-        numLikes: 0,
-        postedBy: this.data.userCreatingEvent,
+        fandom: this.data.fandomId,
         title: '',
       };
     }
@@ -43,13 +38,13 @@ export class CreatePostDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onCreatePost() {
-    this.post.datePosted = new Date();
+    this.post.createdAt = new Date();
     const newPost = this._fandomService.createPostForFandom(this.post);
     this.dialogRef.close(newPost);
   }
 
   onEditPost() {
-    this._fandomService.updatePostForFandom(this.post.id, this.post);
+    //this._fandomService.updatePostForFandom(this.post._id, this.post);
     this.dialogRef.close(this.post);
   }
 }

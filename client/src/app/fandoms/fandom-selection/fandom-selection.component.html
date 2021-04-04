@@ -14,16 +14,17 @@
         </button>
     </div>
 
-    <div *ngIf="!fandoms.length" class="no-fandoms-message">
+    <div *ngIf="!fandoms.length && !isLoading" class="no-fandoms-message">
         <h1>It seems there are no fandoms for {{category | titlecase}}. Create one using the button above!</h1>
     </div>
 
-    <section class="fandoms" *ngIf="fandoms.length">
-        <mat-card *ngFor="let fandom of fandoms" style="background-image: url({{fandom.backgroundUrl}})"
+    <section class="fandoms" [class.fandoms-loading]="isLoading">
+        <app-spinner *ngIf="isLoading"></app-spinner>
+        <mat-card *ngFor="let fandom of fandoms" style="background-image: url({{fandom.backgroundURL}})"
             class="fandom-card rounded-corners box-shadow"
             [routerLink]="['/fandoms', category, fandom.name | spacesToHyphen | lowercase]">
             <mat-card-content class="card-body">
-                <h1 class="name">{{fandom.name}}</h1>
+                <h1 class="name">{{fandom.name | titlecase}}</h1>
             </mat-card-content>
         </mat-card>
     </section>

@@ -20,7 +20,8 @@ export default (passport: { use: (arg0: Strategy) => void }) => {
         const user: IRequestUser = {
           _id: userDoc._id,
           role: userDoc.role,
-          username: userDoc.username
+          username: userDoc.username,
+          profileURL: userDoc.profileURL
         };
 
         if (user) {

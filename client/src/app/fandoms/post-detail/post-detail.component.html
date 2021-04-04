@@ -1,4 +1,4 @@
-<app-layout *ngIf="post">
+<app-layout>
     <xng-breadcrumb class="breadcrumb" [separator]="breadcrumbSeparator">
         <ng-container *xngBreadcrumbItem="let breadcrumb">
             <ng-container>{{ breadcrumb | hyphenToSpaces | titlecase }}</ng-container>
@@ -6,50 +6,55 @@
     </xng-breadcrumb>
 
     <mat-card class="rounded-corners box-shadow post">
-        <mat-card-content>
-            <header class="username-container">
-                <div class="profile-img-wrapper">
-                    <img class="profile-img" [src]="post.postedBy.profileUrl" alt="Profile Picture">
+        <mat-card-content [class.loading]="isLoadingPost">
+            <app-spinner *ngIf="isLoadingPost"></app-spinner>
+            <ng-container *ngIf="post">
+                <header class="username-container">
+                    <div class="profile-img-wrapper">
+                        <img class="profile-img" [src]="post!.postedBy!.profileURL" alt="Profile Picture">
+                    </div>
+                    <a [routerLink]="['/users', post!.postedBy!.username]"
+                        class="username">{{post!.postedBy!.username | titlecase}}</a>
+                </header>
+                <div class="title-post-date">
+                    <span class="post-title">{{post.title}}</span>
+                    <span class="post-date">{{post!.createdAt | date: 'MMM d y, h:mm a'}} <i
+                            class="fas fa-clock"></i></span>
                 </div>
-                <a [routerLink]="['/users', post.postedBy.username]"
-                    class="username">{{post.postedBy.username | titlecase}}</a>
-            </header>
-            <div class="title-post-date">
-                <span class="post-title">{{post.title}}</span>
-                <span class="post-date">{{post.datePosted | date: 'MMM d y, h:mm a'}} <i
-                        class="fas fa-clock"></i></span>
-            </div>
-            <p>{{post.content}}</p>
-            <div class="flex-row-container-space-between">
-                <section>
-                    <button mat-icon-button color="primary" class="like-post-button-container"
-                        (click)="updatePostLikes()">
-                        <span>
-                            <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                            <span>{{post.numLikes}}</span>
-                        </span>
-                    </button>
-                    <button mat-icon-button color="warn" class="dislike-post-button-container"
-                        (click)="updatePostDislikes()">
-                        <span>
-                            <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                            <span>{{post.numDislikes}}</span>
-                        </span>
-                    </button>
-                </section>
-                <section *ngIf="loggedInUser?.role === 'admin' || post.postedBy.username === loggedInUser?.username">
-                    <button class="delete-post-button" (click)="openDeletePostDialog()" mat-flat-button color="warn">
-                        <span>
-                            Delete <i class="fas fa-trash-alt"></i>
-                        </span>
-                    </button>
-                    <button mat-flat-button color="primary" (click)="openEditPostDialog()">
-                        <span>
-                            Edit <i class="fas fa-edit"></i>
-                        </span>
-                    </button>
-                </section>
-            </div>
+                <p>{{post.content}}</p>
+                <div class="flex-row-container-space-between">
+                    <section>
+                        <button mat-icon-button color="primary" class="like-post-button-container"
+                            (click)="updatePostLikes()">
+                            <span>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
+                                <span>{{post.numLikes?.length}}</span>
+                            </span>
+                        </button>
+                        <button mat-icon-button color="warn" class="dislike-post-button-container"
+                            (click)="updatePostDislikes()">
+                            <span>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
+                                <span>{{post.numDislikes?.length}}</span>
+                            </span>
+                        </button>
+                    </section>
+                    <section
+                        *ngIf="loggedInUser?.role === 'admin' || post!.postedBy!.username === loggedInUser?.username">
+                        <button class="delete-post-button" (click)="openDeletePostDialog()" mat-flat-button
+                            color="warn">
+                            <span>
+                                Delete <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </button>
+                        <button mat-flat-button color="primary" (click)="openEditPostDialog()">
+                            <span>
+                                Edit <i class="fas fa-edit"></i>
+                            </span>
+                        </button>
+                    </section>
+                </div>
+            </ng-container>
         </mat-card-content>
     </mat-card>
 
@@ -61,19 +66,20 @@
         </button>
     </div>
 
-    <section class="comments">
-        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of post?.comments">
+    <section class="comments" [class.loading]="isLoadingComments">
+        <app-spinner *ngIf="isLoadingComments"></app-spinner>
+        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of comments">
             <mat-card-content>
                 <header class="username-container">
                     <div class="profile-img-wrapper">
-                        <img class="profile-img" [src]="comment.postedBy.profileUrl" alt="Profile Picture">
+                        <img class="profile-img" [src]="comment!.postedBy!.profileURL" alt="Profile Picture">
                     </div>
-                    <a [routerLink]="['/users', comment.postedBy.username]"
-                        class="username">{{comment.postedBy.username | titlecase}}</a>
+                    <a [routerLink]="['/users', comment!.postedBy!.username]"
+                        class="username">{{comment!.postedBy!.username | titlecase}}</a>
                 </header>
                 <div class="title-post-date">
                     <span class="post-title">{{comment.title}}</span>
-                    <span class="post-date">{{comment.datePosted | date: 'MMM d y, h:mm a'}} <i
+                    <span class="post-date">{{comment.createdAt | date: 'MMM d y, h:mm a'}} <i
                             class="fas fa-clock"></i></span>
                 </div>
                 <p>{{comment.content}}</p>
@@ -83,21 +89,21 @@
                             (click)="updateCommentLikes(comment)">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numLikes}}</span>
+                                <span>{{comment.numLikes?.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updateCommentDislikes(comment)">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numDislikes}}</span>
+                                <span>{{comment.numDislikes?.length}}</span>
                             </span>
                         </button>
                     </section>
                     <section
-                        *ngIf="loggedInUser?.role === 'admin' || comment.postedBy.username === loggedInUser?.username">
-                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment.id)" mat-flat-button
-                            color="warn">
+                        *ngIf="loggedInUser?.role === 'admin' || comment.postedBy!.username === loggedInUser?.username">
+                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment._id)"
+                            mat-flat-button color="warn">
                             <span>
                                 Delete <i class="fas fa-trash-alt"></i>
                             </span>

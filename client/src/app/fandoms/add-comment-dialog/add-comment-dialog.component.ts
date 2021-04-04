@@ -29,11 +29,8 @@ export class AddCommentDialogComponent implements OnInit {
     } else {
       this.comment = {
         content: '',
-        datePosted: new Date(),
-        numDislikes: 0,
-        numLikes: 0,
-        postedBy: this.data.userCreatingComment,
         title: '',
+        fandomPost: '',
       };
     }
   }
@@ -41,20 +38,19 @@ export class AddCommentDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onCreateComment() {
-    this.comment.datePosted = new Date();
-    const newComment = this._fandomService.addCommentToPost(
-      this.data.postId,
-      this.comment
-    );
-    this.dialogRef.close(newComment);
+    // const newComment = this._fandomService.addCommentToPost(
+    //   this.data.postId,
+    //   this.comment
+    // );
+    this.dialogRef.close();
   }
 
   onEditComment() {
-    this._fandomService.editPostComment(
-      this.data.postId,
-      this.comment.id,
-      this.comment
-    );
+    // this._fandomService.editPostComment(
+    //   this.data.postId,
+    //   this.comment.id,
+    //   this.comment
+    // );
     this.dialogRef.close(this.comment);
   }
 }

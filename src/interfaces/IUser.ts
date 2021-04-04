@@ -20,6 +20,7 @@ export interface IRequestUser {
   _id: mongoose.Types._ObjectId;
   username: string;
   role: string;
+  profileURL: string;
 }
 
 export interface IUserPostedBy {

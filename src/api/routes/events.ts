@@ -5,15 +5,16 @@ import EventReview from "../../models/event-review";
 import Event from "../../models/event";
 import User from "../../models/user";
 import Attend from "../../models/attend";
+import passport from "passport";
 import {
   IEvent,
   IEventReview,
   INewEventReviewInputDTO,
   INewEventInputDTO,
   IUpdateEventDTO,
-  IUpdateEventReviewDTO,
+  IUpdateEventReviewDTO
 } from "../../interfaces/IEvent";
-import { IAttendEvent, INewAttendEventDTO } from '../../interfaces/IUser';
+import { IAttendEvent, INewAttendEventDTO } from "../../interfaces/IUser";
 import ErrorService from "../../services/error";
 import EventService from "../../services/event";
 
@@ -30,29 +31,31 @@ export default (app: Router) => {
    *  name: string,
    *  description: string,
    *  location: string,
-   *  startDate: string,    
-   *  endDate: string,    
+   *  startDate: string,
+   *  endDate: string,
    *  fandom: string,
    * }
    * params: None
    * description: creates a new event
    */
-  route.post("", async (req, res, next) => {
-    try {
-      // TODO: Should get from req.user
-      const postedByUser = await User.findOne({ role: "user" });
-      const newEvent: INewEventInputDTO = {
-        ...req.body,
-        postedBy: postedByUser?._id,
-      };
+  route.post(
+    "",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const newEvent: INewEventInputDTO = {
+          ...req.body,
+          postedBy: req.user!
+        };
 
-      const eventService = new EventService();
-      const event = await eventService.createEvent(newEvent);
-      res.status(200).send(event);
-    } catch (err) {
-      return next(err);
+        const eventService = new EventService();
+        const event = await eventService.createEvent(newEvent);
+        res.status(200).send(event);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/:eventId
@@ -64,18 +67,20 @@ export default (app: Router) => {
    * }
    * description: deletes an event
    */
-  route.delete("/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-      const eventService = new EventService();
-
-      // TODO: Should pass in req.user.id instead of undefined
-      await eventService.deleteEventById(eventId, undefined);
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
+  route.delete(
+    "/:eventId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        await eventService.deleteEventById(eventId, req.user!);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/:eventId
@@ -85,8 +90,8 @@ export default (app: Router) => {
    *  name: string,
    *  description: string,
    *  location: string,
-   *  startDate: string,    
-   *  endDate: string,    
+   *  startDate: string,
+   *  endDate: string,
    *  fandom: string,
    * }
    * params:
@@ -95,24 +100,27 @@ export default (app: Router) => {
    * }
    * description: updates an event
    */
-  route.patch("/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-      const eventService = new EventService();
-      const reqBody = req.body as IUpdateEventDTO;
+  route.patch(
+    "/:eventId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        const reqBody = req.body as IUpdateEventDTO;
 
-      // TODO: Pass in req.user.id instead of undefined
-      const updatedEvent = await eventService.updateEventById(
-        eventId,
-        reqBody,
-        undefined
-      );
+        const updatedEvent = await eventService.updateEventById(
+          eventId,
+          reqBody,
+          req.user!
+        );
 
-      res.status(200).send(updatedEvent);
-    } catch (err) {
-      return next(err);
+        res.status(200).send(updatedEvent);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events
@@ -123,7 +131,9 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) => {
     try {
-      const events: IEvent[] = await Event.find({}).populate("postedBy").populate("fandom");
+      const events: IEvent[] = await Event.find({})
+        .populate("postedBy")
+        .populate("fandom");
       res.status(200).send(events);
     } catch (err) {
       return next(err);
@@ -140,7 +150,7 @@ export default (app: Router) => {
    * }
    * description: gets events by id or [] if no event
    */
-   route.get("/:eventId", async (req, res, next) => {
+  route.get("/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
@@ -159,29 +169,31 @@ export default (app: Router) => {
    * {
    *  title: string,
    *  content: string,
-   *  rating: number,  
+   *  rating: number,
    *  event: string
    * }
    * params: None
    * description: creates a new review on an event
    */
-   route.post("/reviews/:eventId", async (req, res, next) => {
-    try {
-      // Should be getting from req.user
-      const postedByUser = await User.findOne({ role: "user" });
-      const eventId = req.params.eventId;
-      const newReview: INewEventReviewInputDTO = {
-        ...req.body,
-        postedBy: postedByUser?._id,
-      };
+  route.post(
+    "/reviews/:eventId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const newReview: INewEventReviewInputDTO = {
+          ...req.body,
+          postedBy: req.user!
+        };
 
-      const eventService = new EventService();
-      const review = await eventService.createReview(eventId, newReview);
-      res.status(200).send(review);
-    } catch (err) {
-      return next(err);
+        const eventService = new EventService();
+        const review = await eventService.createReview(eventId, newReview);
+        res.status(200).send(review);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/reviews/:eventId
@@ -193,7 +205,7 @@ export default (app: Router) => {
    * }
    * description: deletes all reviews of an event
    */
-   route.delete("/reviews/:eventId", async (req, res, next) => {
+  route.delete("/reviews/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
 
@@ -212,7 +224,7 @@ export default (app: Router) => {
         );
       }
 
-      const reviews = await EventReview.find({event: event._id});
+      const reviews = await EventReview.find({ event: event._id });
 
       if (!reviews) {
         throw new ErrorService(
@@ -240,18 +252,21 @@ export default (app: Router) => {
    * }
    * description: deletes a review
    */
-   route.delete("/review/:reviewId", async (req, res, next) => {
-    try {
-      const reviewId = req.params.reviewId;
-      const eventService = new EventService();
+  route.delete(
+    "/review/:reviewId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const reviewId = req.params.reviewId;
+        const eventService = new EventService();
 
-      // TODO: Should pass in req.user.id instead of undefined
-      await eventService.deleteReviewById(reviewId, undefined);
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
+        await eventService.deleteReviewById(reviewId, req.user!);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/reviews/:reviewId
@@ -269,27 +284,30 @@ export default (app: Router) => {
    * }
    * description: updates a review
    */
-   route.patch("/reviews/:reviewId", async (req, res, next) => {
-    try {
-      const reviewId = req.params.reviewId;
-      const eventId = req.body.event;
+  route.patch(
+    "/reviews/:reviewId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const reviewId = req.params.reviewId;
+        const eventId = req.body.event;
 
-      const eventService = new EventService();
-      const reqBody = req.body as IUpdateEventReviewDTO;
+        const eventService = new EventService();
+        const reqBody = req.body as IUpdateEventReviewDTO;
 
-      // TODO: Pass in req.user.id instead of undefined
-      const updatedReview = await eventService.updateReviewById(
-        eventId,
-        reviewId,
-        reqBody,
-        undefined
-      );
+        const updatedReview = await eventService.updateReviewById(
+          eventId,
+          reviewId,
+          reqBody,
+          req.user!
+        );
 
-      res.status(200).send(updatedReview);
-    } catch (err) {
-      return next(err);
+        res.status(200).send(updatedReview);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/reviews/:eventId
@@ -301,12 +319,14 @@ export default (app: Router) => {
    * }
    * description: gets all the reviews of an event or [] if no reviews exist
    */
-   route.get("/reviews/:eventId", async (req, res, next) => {
+  route.get("/reviews/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
       const event: IEvent = await eventService.getEventById(eventId);
-      const reviews: IEventReview[] = await eventService.getEventReviewsById(event._id);
+      const reviews: IEventReview[] = await eventService.getEventReviewsById(
+        event._id
+      );
 
       res.status(200).send(reviews);
     } catch (err) {
@@ -328,24 +348,29 @@ export default (app: Router) => {
    * }
    * description: user attends an event
    */
-   route.post("/attend/:eventId", async (req, res, next) => {
-    try {
-      // Should be getting from req.user
-      const user = await User.findOne({ role: "user" });
-      const eventId = req.params.eventId;
-      const newAttendee: INewAttendEventDTO = {
-        ...req.body,
-        user: user?._id,
-      };
+  route.post(
+    "/attend/:eventId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const newAttendee: INewAttendEventDTO = {
+          ...req.body,
+          user: req.user!
+        };
 
-      const eventService = new EventService();
-      const attendee = await eventService.createAttendee(eventId, newAttendee);
+        const eventService = new EventService();
+        const attendee = await eventService.createAttendee(
+          eventId,
+          newAttendee
+        );
 
-      res.status(200).send(attendee);
-    } catch (err) {
-      return next(err);
+        res.status(200).send(attendee);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/attend/:attendId
@@ -357,18 +382,22 @@ export default (app: Router) => {
    * }
    * description: deletes an attendance
    */
-   route.delete("/attend/:attendId", async (req, res, next) => {
-    try {
-      const attendeeId = req.params.attendId;
-      const eventService = new EventService();
+  route.delete(
+    "/attend/:attendId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const attendeeId = req.params.attendId;
+        const eventService = new EventService();
 
-      // Should check if user who attended is the one deleting or admin
-      eventService.deleteAttendeeById(attendeeId, undefined);
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
+        // Should check if user who attended is the one deleting or admin
+        eventService.deleteAttendeeById(attendeeId, req.user!);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/attend/:eventId
@@ -380,7 +409,7 @@ export default (app: Router) => {
    * }
    * description: deletes all attendances of an event
    */
-   route.delete("/attends/:eventId", async (req, res, next) => {
+  route.delete("/attends/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
 
@@ -399,7 +428,7 @@ export default (app: Router) => {
         );
       }
 
-      const attendees = await Attend.find({event: event._id});
+      const attendees = await Attend.find({ event: event._id });
 
       if (!attendees) {
         throw new ErrorService(
@@ -429,12 +458,14 @@ export default (app: Router) => {
    * }
    * description: gets all the attendees by eventId or [] if no event/attendees exist
    */
-   route.get("/attend/:eventId", async (req, res, next) => {
+  route.get("/attend/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
       const event: IEvent = await eventService.getEventById(eventId);
-      const attendees: IAttendEvent[] = await eventService.getEventAttendeesById(eventId);
+      const attendees: IAttendEvent[] = await eventService.getEventAttendeesById(
+        eventId
+      );
 
       res.status(200).send(attendees);
     } catch (err) {
@@ -453,7 +484,7 @@ export default (app: Router) => {
    * }
    * description: gets events by fandomName or [] if no fandoms
    */
-   route.get("/:categoryName/:fandomName", async (req, res, next) => {
+  route.get("/:categoryName/:fandomName", async (req, res, next) => {
     try {
       const categoryName = req.params.categoryName;
       const fandomName = req.params.fandomName;

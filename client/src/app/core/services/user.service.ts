@@ -250,7 +250,7 @@ export class UserService {
     const fandomDTO: FandomDTO = {
       activityLevel: 0,
       category: fandom.category,
-      id: fandom.id,
+      id: fandom._id,
       name: fandom.name,
     };
 
