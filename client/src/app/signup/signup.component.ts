@@ -39,12 +39,12 @@ export class SignupComponent implements OnInit {
     this._authService.createNewUser(newUser)?.subscribe((res)=>{
       console.log(res);
       if (res.user) {
-        localStorage.setItem('id_token', res.token);
-        localStorage.setItem('user', JSON.stringify(res.user))
-        this._authService.currentUser.next({
-          ...res.user
-        })
-        this._authService.token = res.token;
+        // localStorage.setItem('id_token', res.token);
+        // localStorage.setItem('user', JSON.stringify(res.user))
+        // this._authService.currentUser.next({
+        //   ...res.user
+        // })
+        // this._authService.token = res.token;
 
         this._router.navigate(['/users', res.user.username]);
       } else {

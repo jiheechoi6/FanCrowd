@@ -1,4 +1,4 @@
-interface SigninRes{
+interface UserIdentityToken{
     token: string;
     user: {
         _id: string;
@@ -6,4 +6,4 @@ interface SigninRes{
         username: string;
     }
 }
-export default SigninRes
+export default UserIdentityToken

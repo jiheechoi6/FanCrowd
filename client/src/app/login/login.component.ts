@@ -21,19 +21,19 @@ export class LoginComponent implements OnInit {
   onLogIn() {
     this.isLoggingIn = true;
     this._authService.loginUser(this.username, this.password)?.subscribe((res)=>{
-      if (res.user) {
-        localStorage.setItem('id_token', res.token);
-        localStorage.setItem('user', JSON.stringify(res.user))
-        this._authService.currentUser.next({
-          ...res.user,
-        })
-        this._authService.token = res.token;
+        if (res.user) {
+          // localStorage.setItem('id_token', res.token);
+          // localStorage.setItem('user', JSON.stringify(res.user))
+          // this._authService.currentUser.next({
+          //   ...res.user,
+          // })
+          // this._authService.token = res.token;
 
-        this._router.navigate(['/users', res.user.username]);
-      }
-    }, (err)=>{
-      this.loginError = err.error.message;
-    })
-    this.isLoggingIn = false;
-  }
+          this._router.navigate(['/users', res.user.username]);
+        }
+      }, (err)=>{
+        this.loginError = err.error.message;
+      })
+      this.isLoggingIn = false;
+    }
 }

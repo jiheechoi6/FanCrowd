@@ -5,12 +5,11 @@ import { BehaviorSubject, fromEventPattern, Observable} from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
 import { EmailService } from './email.service';
 import EventDTO from 'src/app/shared/models/event-dto';
-import SignupRes from 'src/app/shared/models/signup-res';
-import SigninRes from 'src/app/shared/models/signin-res';
+import UserIdentityToken from 'src/app/shared/models/user-identity-token';
 import UserIdentity from 'src/app/shared/models/user-identity';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
-import { JwtHelperService } from '@auth0/angular-jwt'
+import { SingleKeyOptions } from 'nodemailer/lib/dkim';
 
 @Injectable({
   providedIn: 'root', 
@@ -154,15 +153,20 @@ export class AuthService {
     private _http: HttpClient,
     private _emailService: EmailService,
     private _userService: UserService,
-  ) {}
+  ) {
+    if(localStorage.getItem('user')!= null){
+      const value:string = String(localStorage.getItem('user'));
+      this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
+    }
+  }
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    return this._http.post<SigninRes>('http://localhost:5000/api/auth/signin', 
-            {username: username, password: password}, 
-            {headers: headers, responseType: 'json'})
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signin', 
+        {username, password}, {headers: headers, responseType: 'json'})
+          .pipe(map(res => this.updateCurrentUser(res)));
   }
 
   createNewUser(newUser: NewUser) {
@@ -172,21 +176,24 @@ export class AuthService {
 
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    return this._http.post<SignupRes>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
+        .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
   getCurrentUser(): BehaviorSubject<UserIdentity | null> {
     return this.currentUser;
   }
 
-  checkTokenExpired(): boolean {
-    const helper = new JwtHelperService();
-    const token = localStorage.getItem('id_token');
-    if(token == null){
-      return false;
+  updateCurrentUser(res: UserIdentityToken): UserIdentityToken {
+    if(res.user && res.token){
+      localStorage.setItem('id_token', res.token);
+      localStorage.setItem('user', JSON.stringify(res.user))
+      this.currentUser.next({
+        ...res.user
+      })
+      this.token = res.token;
     }
-
-    return helper.isTokenExpired(localStorage.id_token);
+    return res;
   }
 
   processResult(user: UserDTO) {
@@ -196,10 +203,13 @@ export class AuthService {
   logOut() {
     this.currentUser.next(null);
     this.token = null;
-    localStorage.clear();
+    localStorage.removeItem('user');
+    localStorage.removeItem('id_token');
   }
 
-  autoLogin() {}
+  autoLogin(){
+
+  }
 
   resetPassword(
     emailVerficationCodeSentTo: string,
