@@ -9,6 +9,7 @@ import Category from 'src/app/shared/models/category';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-fandom-selection',
@@ -28,7 +29,8 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     private _activatedRoute: ActivatedRoute,
     public _dialog: MatDialog,
     private _router: Router,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -79,6 +81,11 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((newFandom: Fandom) => {
       if (newFandom) {
         this.fandoms.push(newFandom);
+        this._snackBar.open(`${newFandom.name} fandom has been created!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 2000,
+        });
       }
     });
   }

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
@@ -21,7 +22,8 @@ export class FandomsComponent implements OnInit, OnDestroy {
   constructor(
     private _fandomService: FandomService,
     private _authService: AuthService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -59,6 +61,15 @@ export class FandomsComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((newCategory: Category) => {
       if (newCategory) {
         this.categories.push(newCategory);
+        this._snackBar.open(
+          `${newCategory.name} category has been created!`,
+          'X',
+          {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2000,
+          }
+        );
       }
     });
   }

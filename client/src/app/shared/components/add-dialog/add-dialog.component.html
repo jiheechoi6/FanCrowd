@@ -5,7 +5,7 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="entity.name" name="name" required pattern="^[a-z\d\'\s]+$"
+                <input matInput [(ngModel)]="entity.name" name="name" required pattern="^[a-zA-Z\d\'\s]+$"
                     autocomplete="off" #name="ngModel">
                 <mat-error *ngIf="name.hasError('required')">Name is a required field</mat-error>
                 <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters, spaces and '
