@@ -9,15 +9,14 @@ import UserIdentityToken from 'src/app/shared/models/user-identity-token';
 import UserIdentity from 'src/app/shared/models/user-identity';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
-import { SingleKeyOptions } from 'nodemailer/lib/dkim';
 
 @Injectable({
-  providedIn: 'root', 
+  providedIn: 'root',
 })
 export class AuthService {
   // this is the variable that's updated during log in/sign up/ log out
   // currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
-  currentUser = new BehaviorSubject<UserIdentity | null>(null);  
+  currentUser = new BehaviorSubject<UserIdentity | null>(null);
   token: string | null = null;
   usernameToPassword = new Map([
     ['user1', 'user1'],
@@ -152,7 +151,7 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _emailService: EmailService,
- 
+
     private _userService: UserService
   ) {
     if(localStorage.getItem('user')!= null){
@@ -166,7 +165,7 @@ export class AuthService {
     //API request to auth endpoint
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signin', 
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signin',
         {username, password}, {headers: headers, responseType: 'json'})
           .pipe(map(res => this.updateCurrentUser(res)));
   }
@@ -211,8 +210,8 @@ export class AuthService {
 
   autoLogin(){
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
-    
-    this._http.get<UserIdentity>('http://localhost:5000/api/auth/currentUser', 
+
+    this._http.get<UserIdentity>('http://localhost:5000/api/auth/currentUser',
       {headers, responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
   }
 
