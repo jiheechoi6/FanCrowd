@@ -147,7 +147,7 @@ export class AuthService {
     private _emailService: EmailService,
     private _userService: UserService
   ) {
-    this.currentUser.next(this.users[0]);
+    this.currentUser.next(this.users[2]);
   }
 
   loginUser(username: string, password: string) {
