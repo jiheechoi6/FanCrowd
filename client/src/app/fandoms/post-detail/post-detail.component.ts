@@ -47,7 +47,7 @@ export class PostDetailComponent implements OnInit {
       this.fetchComponentInfo();
     });
 
-    this._authService.currentUser.subscribe(
+    this._authService.currentUserInfo.subscribe(
       (user) => (this.loggedInUser = user)
     );
   }

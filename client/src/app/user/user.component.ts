@@ -37,7 +37,7 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userSubscription = this._authService.currentUser.subscribe(
+    this.userSubscription = this._authService.currentUserInfo.subscribe(
       (user) => (this.loggedInUser = user)
     );
   }
@@ -67,7 +67,7 @@ export class UserComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        this._authService.currentUser.next(updatedUser);
+        this._authService.currentUserInfo.next(updatedUser);
       }
     });
   }

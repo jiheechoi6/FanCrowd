@@ -40,7 +40,7 @@ export class FandomDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._authService.currentUser.subscribe(
+    this._authService.currentUserInfo.subscribe(
       (user) => (this.loggedInUser = user)
     );
 

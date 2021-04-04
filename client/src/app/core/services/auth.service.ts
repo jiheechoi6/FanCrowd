@@ -182,8 +182,8 @@ export class AuthService {
         .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
-  getCurrentUser(): BehaviorSubject<UserIdentity | null> {
-    return this.currentUser;
+  getCurrentUser(): BehaviorSubject<UserDTO | null> {
+    return this.currentUserInfo;
   }
 
   updateCurrentUser(res: UserIdentityToken): UserIdentityToken {
