@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import EventDTO from 'src/app/shared/models/event-dto';
+import Event from 'src/app/shared/models/event';
 
 interface DialogData {
-  events: EventDTO[];
+  events: Event[];
   selectedDate: Date;
 }
 

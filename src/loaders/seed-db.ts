@@ -95,8 +95,7 @@ const fandomCategories: IFandomCategory[] = [
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    backgroundURL:
-      "https://wallpaper-house.com/data/out/7/wallpaper2you_191367.jpg",
+    backgroundURL: "https://cdn.wallpapersafari.com/28/72/eMnp5F.jpg",
     name: "Anime",
     createdBy: users[2]._id
   },

@@ -1,13 +1,14 @@
-import PartialUserDTO from './partial-user-dto';
+import { IUserLikeOnlyUser, IUserPostedBy } from './fandom-post';
 
 interface FandomPostComment {
+  _id?: string;
   title: string;
-  numLikes: number;
-  numDislikes: number;
-  postedBy: PartialUserDTO;
-  datePosted: Date;
-  id?: number;
   content: string;
+  postedBy?: IUserPostedBy;
+  fandomPost: string;
+  createdAt?: Date;
+  numLikes?: IUserLikeOnlyUser[];
+  numDislikes?: IUserLikeOnlyUser[];
 }
 
 export default FandomPostComment;

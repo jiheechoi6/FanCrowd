@@ -32,7 +32,7 @@
                             [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
                     </p>
                     <div class="flex-row-container-space-between">
-                        <button *ngIf="isAttending" (click)="removeEventFromProfile(event?.id)" mat-flat-button
+                        <button *ngIf="isAttending" (click)="removeEventFromProfile(event?._id)" mat-flat-button
                             color="primary">
                             Unattend
                         </button>
@@ -40,7 +40,7 @@
                             Attend
                         </button>
                         <div *ngIf="user?.role === 'admin' || user?.username === event?.postedBy">
-                            <button class="delete-event-button" (click)="openDeleteEventDialog(event?.id)"
+                            <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
                                 mat-flat-button color="warn">
                                 <span>
                                     Delete <i class="fas fa-trash-alt"></i>

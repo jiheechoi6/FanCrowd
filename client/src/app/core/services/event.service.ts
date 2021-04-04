@@ -12,11 +12,13 @@ export class EventService {
 
   events: Event[] = [
     {
-      id: 1,
+      _id: 1,
       fandomType: {
-        id: 11,
+        _id: 11,
         category: 'Books',
         name: 'Harry Potter',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Comic Con',
       description: `A comic book convention or comic con is an event with a primary focus on comic books and comic book culture, in which comic book fans gather to meet creators, experts, and each other. Commonly, comic conventions are multi-day events hosted at convention centers, hotels, or college campuses.`,
@@ -25,41 +27,15 @@ export class EventService {
       startDate: new Date(2021, 10, 12),
       endDate: new Date(2021, 10, 14),
       totalAttendance: 2,
-      reviews: [
-        {
-          id: 1,
-          title: 'Great Event',
-          rating: 4,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-        {
-          id: 2,
-          title: "Amazing, Lot's of fun",
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 2,
+      _id: 2,
       fandomType: {
-        id: 30,
+        _id: 30,
         category: 'Technology',
         name: 'Apple',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'World Expo',
       description: `Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.`,
@@ -68,41 +44,15 @@ export class EventService {
       startDate: new Date(2021, 5, 12),
       endDate: new Date(2021, 5, 14),
       totalAttendance: 2,
-      reviews: [
-        {
-          id: 1,
-          title: 'Cool tech!',
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user1',
-            profileUrl:
-              'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-        {
-          id: 2,
-          title: 'Nice things to see',
-          rating: 3,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl:
-              'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 3,
+      _id: 3,
       fandomType: {
-        id: 1,
+        _id: 1,
         category: 'Movies',
         name: 'Avengers',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Marvel Studios',
       description: `Marvel Studios, LLC is an American film and television studio that is a subsidiary of Walt Disney Studios, a division of The Walt Disney Company. Marvel Studios is known for the production of the Marvel Cinematic Universe films, based on characters that appear in Marvel Comics publications.`,
@@ -111,14 +61,15 @@ export class EventService {
       startDate: new Date(2021, 6, 12),
       endDate: new Date(2021, 7, 14),
       totalAttendance: 1,
-      reviews: [],
     },
     {
-      id: 4,
+      _id: 4,
       fandomType: {
-        id: 21,
+        _id: 21,
         category: 'Games',
         name: 'God of War',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Sony Game Release',
       description: `God of War is an action-adventure game franchise created by David Jaffe at Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and has become a flagship title for the PlayStation brand, consisting of eight games across multiple platforms with a ninth currently in development.`,
@@ -127,27 +78,15 @@ export class EventService {
       startDate: new Date(2021, 4, 8),
       endDate: new Date(2021, 4, 11),
       totalAttendance: 1,
-      reviews: [
-        {
-          id: 2,
-          title: 'Great Release Party!!!',
-          rating: 5,
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.`,
-          postedBy: {
-            username: 'user2',
-            profileUrl: 'https://dummyimage.com/250.jpg',
-            role: 'user',
-          },
-          postDate: new Date(2021, 1, 15),
-        },
-      ],
     },
     {
-      id: 5,
+      _id: 5,
       fandomType: {
-        id: 9,
+        _id: 9,
         category: 'Books',
         name: 'Harry Potter',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'J.K Rowling Meet & Greet',
       description: `Harry Potter is a series of seven fantasy novels written by British author, J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.`,
@@ -156,14 +95,15 @@ export class EventService {
       startDate: new Date(2021, 9, 12),
       endDate: new Date(2021, 9, 15),
       totalAttendance: 3,
-      reviews: [],
     },
     {
-      id: 6,
+      _id: 6,
       fandomType: {
-        id: 17,
+        _id: 17,
         category: 'Anime',
         name: 'One Punch Man',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'Anime-Fest',
       description: `One-Punch Man is a Japanese superhero franchise created by the artist ONE. It tells the story of Saitama, a superhero who can defeat any opponent with a single punch but seeks to find a worthy opponent after growing bored by a lack of challenge due to his overwhelming strength.`,
@@ -172,14 +112,15 @@ export class EventService {
       startDate: new Date(2021, 7, 30),
       endDate: new Date(2021, 8, 1),
       totalAttendance: 2,
-      reviews: [],
     },
     {
-      id: 7,
+      _id: 7,
       fandomType: {
-        id: 26,
+        _id: 26,
         category: 'Sports',
         name: 'Soccer',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'FIFA World Cup Party',
       description: `The FIFA World Cup, often simply called the World Cup, is an international association football competition contested by the senior men's national teams of the members of the Fédération Internationale de Football Association, the sport's global governing body.`,
@@ -188,14 +129,15 @@ export class EventService {
       startDate: new Date(2021, 11, 3),
       endDate: new Date(2021, 11, 8),
       totalAttendance: 1,
-      reviews: [],
     },
     {
-      id: 8,
+      _id: 8,
       fandomType: {
-        id: 15,
+        _id: 15,
         category: 'Shows',
         name: 'Game of Thrones',
+        backgroundURL: '',
+        createdAt: new Date(),
       },
       name: 'New HBO Show Press Release',
       description: `Home Box Office is an American pay television network owned by WarnerMedia Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.`,
@@ -204,7 +146,6 @@ export class EventService {
       startDate: new Date(2021, 12, 10),
       endDate: new Date(2021, 12, 13),
       totalAttendance: 1,
-      reviews: [],
     },
   ];
 
@@ -222,44 +163,32 @@ export class EventService {
     return this.events.sort((a, b) => this.sortFunction(a, b));
   }
 
-  getEventsByCategoryAndFandom(
-    categoryName: string,
-    fandomName: string
-  ): Event[] {
-    // Get events from server, code below requires server call
-    let filterdEvents: Event[] = [];
+  getEventsByCategoryAndFandom(categoryName: string, fandomName: string) {
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    const dashedFandomName = fandomName.split(' ').join('-');
 
-    this.events.forEach((event) => {
-      if (
-        event.fandomType.category?.toLowerCase() ===
-          categoryName.toLowerCase() &&
-        event.fandomType.name?.toLowerCase().split(' ').join('-') ===
-          fandomName.toLowerCase()
-      ) {
-        filterdEvents.push(event);
-      }
-    });
-
-    return filterdEvents.sort((a, b) => this.sortFunction(a, b));
+    return this._http.get<Event[]>(
+      `/api/events/${dashedCategoryName}/${dashedFandomName}`
+    );
   }
 
   getEventById(id: number): Event | null {
     // Get event from server, code below requires server call
 
-    return this.events.find((event) => event.id === id) || null;
+    return this.events.find((event) => event._id === id) || null;
   }
 
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
-    event.id = Math.floor(Math.random() * (10000 - 12) + 12);
+    event._id = Math.floor(Math.random() * (10000 - 12) + 12);
     this.events.push(event);
   }
 
   updateEventAttendance(id: number | undefined, isAttending: boolean): void {
     // Update event attendance on server, code below requires server call
 
-    let event = this.events.find((event) => event.id === id);
+    let event = this.events.find((event) => event._id === id);
 
     if (event) {
       if (isAttending) {
@@ -283,44 +212,20 @@ export class EventService {
 
   getReviewsByEventId(eventId: number): Review[] {
     // Get reviews of a specific event from server, code below requires server call
-    
-    return this.events.find((event) => event.id === eventId)?.reviews || [];
+
+    return [];
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
     // Add review to a specific event on server, code below requires server call
-
-    let event = this.events.find((event) => event.id === eventId);
-
-    if (event) {
-      event.reviews.push(review);
-    }
   }
 
   updateReviewById(eventId: number | null, updatedReview: Review): void {
     // Update review to a specific review on server, code below requires server call
-
-    let event = this.events.find((event) => event.id === eventId);
-
-    if (event) {
-      let index = event.reviews.findIndex(
-        (review) => review.id === updatedReview.id
-      );
-
-      if (index >= 0) {
-        event.reviews[index] = updatedReview;
-      }
-    }
   }
 
   deleteReview(eventIndex: number, reviewIndex: number): boolean {
     // Delete review from server, code below requires server call
-
-    if (eventIndex >= 0) {
-      let event = this.events[eventIndex];
-      event.reviews.splice(reviewIndex, 1);
-      return true;
-    }
 
     return false;
   }
@@ -330,18 +235,7 @@ export class EventService {
 
     if (!eventId) return;
 
-    const eventIndex = this.events.findIndex((event) => event.id === eventId);
+    const eventIndex = this.events.findIndex((event) => event._id === eventId);
     this.events[eventIndex] = updatedEvent;
-  }
-
-  convertEventsToEventDTOs(events: Event[]): EventDTO[] {
-    const eventsAsEventDTO: EventDTO[] = events.map((event) => ({
-      name: event.name,
-      id: event.id,
-      date: event.startDate,
-      totalAttending: event.totalAttendance,
-    }));
-
-    return eventsAsEventDTO;
   }
 }

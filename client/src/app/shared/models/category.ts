@@ -1,7 +1,7 @@
 interface Category {
-    id?: number;
-    name: string;
-    backgroundUrl?: string;
+  _id: number;
+  name: string;
+  backgroundURL: string;
 }
-  
+
 export default Category;

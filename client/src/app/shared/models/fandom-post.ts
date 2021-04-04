@@ -1,16 +1,20 @@
-import FandomPostComment from './fandom-post-comment';
-import PartialUserDTO from './partial-user-dto';
-
-interface FandomPost {
-  postedBy: PartialUserDTO;
+export interface FandomPost {
+  _id?: string;
   title: string;
-  datePosted: Date;
-  numLikes: number;
-  numDislikes: number;
   content: string;
-  comments: FandomPostComment[];
-  id?: number;
-  fandomId: number;
+  postedBy?: IUserPostedBy;
+  fandom: string;
+  createdAt?: Date;
+  numLikes?: IUserLikeOnlyUser[];
+  numDislikes?: IUserLikeOnlyUser[];
 }
 
-export default FandomPost;
+export interface IUserPostedBy {
+  username: string;
+  profileURL: string;
+}
+
+export interface IUserLikeOnlyUser {
+  _id: string;
+  user: string;
+}
