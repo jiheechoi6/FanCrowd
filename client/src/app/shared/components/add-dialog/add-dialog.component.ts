@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import Category from '../../models/category';
 import Fandom from '../../models/fandom';
@@ -23,6 +24,7 @@ interface AddDialogData {
 export class AddDialogComponent implements OnInit {
   newEntity: AddDialogData;
   errorMsg: string | null = null;
+  isCreatingEntity = false;
 
   constructor(
     private _fandomService: FandomService,
@@ -48,13 +50,18 @@ export class AddDialogComponent implements OnInit {
   }
 
   addCategory(newCategory: Category) {
-    this._fandomService.addCategory(newCategory).subscribe(
-      (category) => this.dialogRef.close(category),
-      (err) => (this.errorMsg = err.error.message)
-    );
+    this.isCreatingEntity = true;
+    this._fandomService
+      .addCategory(newCategory)
+      .pipe(finalize(() => (this.isCreatingEntity = false)))
+      .subscribe(
+        (category) => this.dialogRef.close(category),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 
   addFandom(newFandom: Fandom) {
+    this.isCreatingEntity = true;
     this._fandomService.addFandom(newFandom);
   }
 }
