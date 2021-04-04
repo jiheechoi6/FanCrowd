@@ -188,7 +188,7 @@ export default class FandomService {
 
   public async getFandomsInCategory(categoryName: string) {
     const category = await FandomCategory.findOne({
-      name: categoryName.toLowerCase()
+      name: categoryName.toLowerCase().split("-").join(" ")
     });
 
     if (!category) {
@@ -202,7 +202,7 @@ export default class FandomService {
       category: category._id
     }).select("-createdBy");
 
-    return fandoms;
+    return { fandoms, category };
   }
 
   public async createCategory(newCategory: INewFandomCategoryInputDTO) {

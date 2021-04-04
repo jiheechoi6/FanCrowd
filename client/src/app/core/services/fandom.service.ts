@@ -344,24 +344,11 @@ export class FandomService {
   }
 
   getCategories() {
-    // Get categories from server, code below requires server call
     return this._http.get<Category[]>('/api/fandoms/categories');
   }
 
-  addFandom(fandom: Fandom): void {
-    // Add fandom to server, code below requires server call
-    let exists = false;
-    let fandoms = this.getFandomsByCategories(fandom.category);
-
-    // fandoms.forEach((x) => {
-    //   if (x.name.toLowerCase() === fandom.name.toLowerCase()) {
-    //     exists = true;
-    //   }
-    // });
-
-    if (!exists) {
-      this.fandoms.push(fandom);
-    }
+  addFandom(fandom: Fandom) {
+    return this._http.post<Fandom>(`/api/fandoms`, fandom);
   }
 
   getFandoms(): Fandom[] {
@@ -371,7 +358,10 @@ export class FandomService {
   }
 
   getFandomsByCategories(categoryName: string = '') {
-    return this._http.get<Fandom[]>(`/api/fandoms/categories/${categoryName}`);
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    return this._http.get<{ fandoms: Fandom[]; category: Category }>(
+      `/api/fandoms/categories/${dashedCategoryName}`
+    );
   }
 
   deleteFandom(index: number): boolean {

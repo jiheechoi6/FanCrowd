@@ -44,7 +44,6 @@ export class AddDialogComponent implements OnInit {
     if (this.data.isCategory) {
       this.addCategory(this.newEntity as Category);
     } else {
-      this.newEntity.category = this.data.categoryId!;
       this.addFandom(this.newEntity as Fandom);
     }
   }
@@ -62,6 +61,12 @@ export class AddDialogComponent implements OnInit {
 
   addFandom(newFandom: Fandom) {
     this.isCreatingEntity = true;
-    this._fandomService.addFandom(newFandom);
+    this._fandomService
+      .addFandom(newFandom)
+      .pipe(finalize(() => (this.isCreatingEntity = false)))
+      .subscribe(
+        (fandom) => this.dialogRef.close(fandom),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 }

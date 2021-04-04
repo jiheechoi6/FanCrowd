@@ -46,6 +46,16 @@ export default (app: Router) => {
         const fandom = await fandomService.createFandom(newFandom);
         res.status(200).send(fandom);
       } catch (err) {
+        if (err.name === "MongoError" && err.code === 11000) {
+          return next(
+            new ErrorService("MongoError", "Fandom name already taken")
+          );
+        }
+        if (err.name === "ValidationError") {
+          return next(
+            new ErrorService("ValidationError", err.errors["name"].message)
+          );
+        }
         return next(err);
       }
     }
@@ -142,10 +152,10 @@ export default (app: Router) => {
   route.get("/categories/:categoryName", async (req, res, next) => {
     try {
       const fandomService = new FandomService();
-      const fandoms = await fandomService.getFandomsInCategory(
+      const fandomsAndCategory = await fandomService.getFandomsInCategory(
         req.params.categoryName
       );
-      res.status(200).send(fandoms);
+      res.status(200).send(fandomsAndCategory);
     } catch (err) {
       return next(err);
     }
@@ -177,9 +187,14 @@ export default (app: Router) => {
         const category = await fandomService.createCategory(newCategory);
         res.status(200).send(category);
       } catch (err) {
+        if (err.name === "ValidationError") {
+          return next(
+            new ErrorService("ValidationError", err.errors["name"].message)
+          );
+        }
         if (err.name === "MongoError" && err.code === 11000) {
           return next(
-            new ErrorService("MongoError", "Fandom name already in use")
+            new ErrorService("MongoError", "Category name already taken")
           );
         }
 
