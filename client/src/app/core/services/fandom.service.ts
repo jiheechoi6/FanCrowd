@@ -368,15 +368,8 @@ export class FandomService {
     );
   }
 
-  deleteFandom(index: number): boolean {
-    // Delete fandom from server, code below requires server call
-
-    if (index >= 0) {
-      this.fandoms.splice(index, 1);
-      return true;
-    }
-
-    return false;
+  deleteFandomById(fandomId: string = '') {
+    return this._http.delete(`/api/fandoms/${fandomId}`);
   }
 
   getPostsForFandom(categoryName: string, fandomName: string) {
