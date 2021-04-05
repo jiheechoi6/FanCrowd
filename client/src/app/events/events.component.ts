@@ -27,7 +27,7 @@ export class EventsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this._authService.getCurrentUser().value;
+    // this.user = this._authService.getCurrentUser().value;
     this.allEvents = this._eventService.getEvents();
     this.events = this.allEvents.slice(0, this.pageSize);
   }
