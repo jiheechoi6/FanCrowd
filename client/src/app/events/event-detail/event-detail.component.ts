@@ -45,7 +45,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.user = this._authService.getCurrentUser().value;
+    // this.user = this._authService.getCurrentUser().value;
     if (this.user) {
       this.isAttending = false;
       let index = this.user.attendingEvents.findIndex(
@@ -60,7 +60,7 @@ export class EventDetailComponent implements OnInit {
     this.event = this._eventService.getEventById(this.id);
     if (this.event) {
       this._breadcrumbService.set('@eventName', this.event.name);
-      this.reviews = this.event.reviews;
+      // this.reviews = this.event.reviews;
       this.alreadyWroteReview(this.reviews);
     } else {
       this.reviews = [];
@@ -178,7 +178,7 @@ export class EventDetailComponent implements OnInit {
         name: this.event?.name,
         date: this.event.startDate,
         totalAttending: this.event.totalAttendance + 1,
-        id: this.event.id!,
+        id: this.event._id!,
       };
 
       if (this.user) {
@@ -191,7 +191,7 @@ export class EventDetailComponent implements OnInit {
           eventDTO
         );
         this._eventService.updateEventAttendance(
-          this.event.id,
+          this.event._id,
           this.isAttending
         );
         this.event = this._eventService.getEventById(this.id);
@@ -204,13 +204,16 @@ export class EventDetailComponent implements OnInit {
     if (this.user && this.event) {
       this._userService.removeEventFromUserEvents(
         this.user.username,
-        this.event.id
+        this.event._id
       );
       this._authService.removeEventFromUserEvents(
         this.user.username,
-        this.event.id
+        this.event._id
       );
-      this._eventService.updateEventAttendance(this.event.id, this.isAttending);
+      this._eventService.updateEventAttendance(
+        this.event._id,
+        this.isAttending
+      );
       this.event = this._eventService.getEventById(this.id);
     }
   }
@@ -218,13 +221,13 @@ export class EventDetailComponent implements OnInit {
   deleteEvent(id: number | undefined): void {
     if (id) {
       let allEvents = this._eventService.getEvents();
-      let index = allEvents.findIndex((event) => event.id === id);
+      let index = allEvents.findIndex((event) => event._id === id);
 
       this._eventService.deleteEvent(index);
 
       if (this.user && this.event) {
-        this._userService.removeEventFromAllUsersEvents(this.event.id);
-        this._authService.removeEventFromAllUsersEvents(this.event.id);
+        this._userService.removeEventFromAllUsersEvents(this.event._id);
+        this._authService.removeEventFromAllUsersEvents(this.event._id);
       }
 
       this._router.navigate(['events']);
@@ -233,12 +236,12 @@ export class EventDetailComponent implements OnInit {
 
   deleteReview(id: number | undefined): void {
     let allEvents = this._eventService.getEvents();
-    let eventIindex = allEvents.findIndex((event) => event.id === this.id);
+    let eventIindex = allEvents.findIndex((event) => event._id === this.id);
 
     if (eventIindex >= 0) {
       let event = allEvents[eventIindex];
-      let reviewIndex = event.reviews.findIndex((review) => review.id === id);
-      this._eventService.deleteReview(eventIindex, reviewIndex);
+      // let reviewIndex = event.reviews.findIndex((review) => review.id === id);
+      // this._eventService.deleteReview(eventIindex, reviewIndex);
     }
   }
 
@@ -252,7 +255,7 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
       if (updatedEvent) {
-        this._eventService.updateEventById(updatedEvent.id, updatedEvent);
+        this._eventService.updateEventById(updatedEvent._id, updatedEvent);
         this.event = updatedEvent;
       }
     });

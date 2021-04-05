@@ -54,9 +54,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.event = this.data.eventBeingUpdated;
       this.eventDateRange = [this.event.startDate, this.event.endDate];
 
-      this.fandomForCategory = this._fandomService.getFandomsByCategories(
-        this.event.fandomType.category
-      );
+      this.fetchFandomsForCategory(this.event.fandomType.category);
     } else {
       const defaultStartDate = new Date();
       defaultStartDate.setHours(new Date().getHours() + 1);
@@ -65,11 +63,13 @@ export class EventCreateDialogComponent implements OnInit {
       this.eventDateRange = [defaultStartDate, defaultEndDate];
 
       this.event = {
-        id: 1000,
+        _id: 1000,
         name: '',
         fandomType: {
           category: '',
           name: '',
+          backgroundURL: '',
+          createdAt: new Date(),
         },
         description: '',
         startDate: this.eventDateRange[0],
@@ -77,19 +77,24 @@ export class EventCreateDialogComponent implements OnInit {
         location: '',
         postedBy: this.data.username,
         totalAttendance: 0,
-        reviews: [],
       };
     }
   }
 
   ngOnInit(): void {
-    this.categories = this._fandomService.getCategories();
+    this._fandomService.getCategories().subscribe((res) => {
+      this.categories = res;
+    });
   }
 
   categoryChange(event: any) {
-    this.fandomForCategory = this._fandomService.getFandomsByCategories(
-      event.value
-    );
+    this.fetchFandomsForCategory(event.value);
+  }
+
+  fetchFandomsForCategory(category: string) {
+    this._fandomService
+      .getFandomsByCategories(category)
+      .subscribe((fandoms) => (this.fandomForCategory = fandoms));
   }
 
   setStartDateAndEndDate() {
@@ -105,7 +110,7 @@ export class EventCreateDialogComponent implements OnInit {
 
   updateEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.updateEventById(this.event.id, this.event);
+    this._eventService.updateEventById(this.event._id, this.event);
     this.dialogRef.close(this.event);
   }
 }

@@ -1,8 +1,7 @@
-import Fandom from "./fandom";
-import Review from "./review";
+import Fandom from './fandom';
 
 interface Event {
-  id?: number;
+  _id?: number;
   fandomType: Fandom;
   name: string;
   description: string;
@@ -11,7 +10,6 @@ interface Event {
   startDate: Date;
   endDate: Date;
   totalAttendance: number;
-  reviews: Review[];
 }
 
 export default Event;

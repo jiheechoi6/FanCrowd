@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
+import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 
@@ -17,6 +18,7 @@ export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserDTO | null = null;
   loggedInUser: UserDTO | null = null;
+  events: Event[] = [];
 
   constructor(
     private _userService: UserService,
@@ -35,13 +37,13 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.userSubscription = this._authService.currentUser.subscribe(
-      (user) => (this.loggedInUser = user)
-    );
+    // this.userSubscription = this._authService.currentUserInfo.subscribe(
+    //   (user) => (this.loggedInUser = user)
+    // );
   }
 
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    // this.userSubscription.unsubscribe();
   }
 
   deleteUser() {
@@ -65,7 +67,7 @@ export class UserComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        this._authService.currentUser.next(updatedUser);
+        // this._authService.currentUserInfo.next(updatedUser);
       }
     });
   }
