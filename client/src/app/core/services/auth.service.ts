@@ -154,10 +154,6 @@ export class AuthService {
 
     private _userService: UserService
   ) {
-    if(localStorage.getItem('user')!= null){
-      const value:string = String(localStorage.getItem('user'));
-      this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
-    }
     this.autoLogin();
   }
 
@@ -165,7 +161,7 @@ export class AuthService {
     //API request to auth endpoint
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signin',
+    return this._http.post<UserIdentityToken>('/api/auth/signin',
         {username, password}, {headers: headers, responseType: 'json'})
           .pipe(map(res => this.updateCurrentUser(res)));
   }
@@ -175,9 +171,7 @@ export class AuthService {
       return null;
     }
 
-    let headers = new HttpHeaders({'Content-Type': 'application/json'});
-
-    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signup', newUser, {responseType: 'json'})
         .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
@@ -209,10 +203,12 @@ export class AuthService {
   }
 
   autoLogin(){
-    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+    if(localStorage.getItem('token')){
+      this.token = localStorage.getItem('token');
+    }
 
     this._http.get<UserIdentity>('http://localhost:5000/api/auth/currentUser',
-      {headers, responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
+      {responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
   }
 
   resetPassword(
