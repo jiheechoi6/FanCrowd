@@ -25,7 +25,7 @@ export class EventDetailComponent implements OnInit {
   reviews: Review[] = [];
   today: Date = new Date();
   isAttending: boolean = false;
-  id: number = NaN;
+  id: string = "";
   user: UserIdentity | null = null;
   wroteReview: boolean = false;
   avgRating = 0;
@@ -41,7 +41,7 @@ export class EventDetailComponent implements OnInit {
     private _breadcrumbService: BreadcrumbService
   ) {
     this._activatedRoute.params.subscribe((params) => {
-      this.id = +params['id'];
+      this.id = params['id'];
     });
   }
 
@@ -59,20 +59,20 @@ export class EventDetailComponent implements OnInit {
       });
     }
 
-    console.log("Details", this.id.toString());
     this._eventService.getEventById(this.id.toString()).subscribe((event) => {
       this.event = event;
-    });
-    if (this.event) {
-      this._breadcrumbService.set('@eventName', this.event.name);
-      // this.reviews = this.event.reviews;
-      this.alreadyWroteReview(this.reviews);
-    } else {
-      this.reviews = [];
-    }
+      console.log("Details", this.id, this.event);
+      if (this.event) {
+        this._breadcrumbService.set('@eventName', this.event.name);
+        // this.reviews = this.event.reviews;
+        this.alreadyWroteReview(this.reviews);
+      } else {
+        this.reviews = [];
+      }
 
-    this.calculateAvgRating();
-    this.groupReviewsByRating();
+      this.calculateAvgRating();
+      this.groupReviewsByRating();
+    });
   }
 
   openAddReviewDialog(): void {
@@ -239,7 +239,7 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  deleteEvent(id: number | undefined): void {
+  deleteEvent(id: string | undefined): void {
     if (id) {
       let allEvents;
       let index;

@@ -12,7 +12,7 @@ export class EventService {
 
   events: Event[] = [
     {
-      _id: 1,
+      _id: "1",
       fandom: {
         _id: 11,
         category: {
@@ -37,7 +37,7 @@ export class EventService {
       totalAttendance: 2,
     },
     {
-      _id: 2,
+      _id: "2",
       fandom: {
         _id: 30,
         category: {
@@ -62,7 +62,7 @@ export class EventService {
       totalAttendance: 2,
     },
     {
-      _id: 3,
+      _id: "3",
       fandom: {
         _id: 1,
         category: {
@@ -87,7 +87,7 @@ export class EventService {
       totalAttendance: 1,
     },
     {
-      _id: 4,
+      _id: "4",
       fandom: {
         _id: 21,
         category: {
@@ -112,7 +112,7 @@ export class EventService {
       totalAttendance: 1,
     },
     {
-      _id: 5,
+      _id: "5",
       fandom: {
         _id: 9,
         category: {
@@ -137,7 +137,7 @@ export class EventService {
       totalAttendance: 3,
     },
     {
-      _id: 6,
+      _id: "6",
       fandom: {
         _id: 17,
         category: {
@@ -162,7 +162,7 @@ export class EventService {
       totalAttendance: 2,
     },
     {
-      _id: 7,
+      _id: "7",
       fandom: {
         _id: 26,
         category: {
@@ -187,7 +187,7 @@ export class EventService {
       totalAttendance: 1,
     },
     {
-      _id: 8,
+      _id: "8",
       fandom: {
         _id: 15,
         category: {
@@ -247,7 +247,7 @@ export class EventService {
   createEvent(event: Event): void {
     // Add event to server, code below requires server call
 
-    event._id = Math.floor(Math.random() * (10000 - 12) + 12);
+    event._id = "9999";
     this.events.push(event);
   }
 
@@ -258,7 +258,7 @@ export class EventService {
     return this._http.get<Event[]>('/api/events');
   }
 
-  updateEventAttendance(id: number | undefined, isAttending: boolean): void {
+  updateEventAttendance(id: string | undefined, isAttending: boolean): void {
     // Update event attendance on server, code below requires server call
 
     let event = this.events.find((event) => event._id === id);
@@ -303,7 +303,7 @@ export class EventService {
     return false;
   }
 
-  updateEventById(eventId: number | undefined, updatedEvent: Event) {
+  updateEventById(eventId: string | undefined, updatedEvent: Event) {
     //Update event in db, code below requires server call
 
     if (!eventId) return;

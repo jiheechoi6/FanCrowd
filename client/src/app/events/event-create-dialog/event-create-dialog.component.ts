@@ -66,7 +66,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.eventDateRange = [defaultStartDate, defaultEndDate];
 
       this.event = {
-        _id: 1000,
+        _id: "1000",
         name: '',
         fandom: {
           category: {

@@ -25,7 +25,7 @@
                         <p>{{ event?.description }}</p>
                     </article>
                     <p class="created-by">Created By: <a
-                            [routerLink]="['/users', event?.postedBy.name]">{{event?.postedBy.name | titlecase}}</a>
+                            [routerLink]="['/users', event?.postedBy.username]">{{event?.postedBy.username | titlecase}}</a>
                     </p>
                     <p>
                         Fandom: <a
