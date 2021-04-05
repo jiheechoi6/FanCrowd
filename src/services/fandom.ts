@@ -3,6 +3,7 @@ import FandomCategory from "../models/fandom-category";
 import Fandom from "../models/fandom";
 import FandomPost from "../models/fandom-post";
 import FandomComment from "../models/fandom-comment";
+import FandomMember from "../models/fandom-member";
 import UserLike from "../models/user-like";
 import {
   IFandomCategoryDTO,
@@ -22,7 +23,12 @@ import {
 } from "../interfaces/IFandom";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { INewUserLikeInputDTO, IRequestUser, IUser } from "../interfaces/IUser";
+import {
+  INewFandomMemberInputDTO,
+  INewUserLikeInputDTO,
+  IRequestUser,
+  IUser
+} from "../interfaces/IUser";
 
 export default class FandomService {
   private static _globalService = new GlobalService();
@@ -211,6 +217,29 @@ export default class FandomService {
     Reflect.deleteProperty(category, "createdBy");
 
     return category;
+  }
+
+  public async joinFandom(newMember: INewFandomMemberInputDTO) {
+    FandomService._globalService.checkValidObjectId(
+      newMember.fandom,
+      `Fandom with id ${newMember.fandom} not found`
+    );
+    await this.getFandomById(newMember.fandom);
+    await FandomMember.create(newMember);
+  }
+
+  public async leaveFandom(
+    userId: mongoose.Types._ObjectId,
+    fandomId: mongoose.Types._ObjectId | string
+  ) {
+    await FandomMember.deleteOne({ user: userId, fandom: fandomId });
+  }
+
+  public async isUserInFandom(
+    userId: mongoose.Types._ObjectId,
+    fandomId: mongoose.Types._ObjectId | string
+  ) {
+    return await FandomMember.exists({ user: userId, fandom: fandomId });
   }
 
   public async deleteCategoryById(

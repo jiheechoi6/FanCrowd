@@ -48,13 +48,13 @@ export interface INewAttendEventDTO {
 
 export interface IFandomMember {
   _id: mongoose.Types._ObjectId;
-  user: IUser;
-  fandom: IFandom;
+  user: mongoose.Types._ObjectId;
+  fandom: mongoose.Types._ObjectId;
 }
 
 export interface INewFandomMemberInputDTO {
   user: mongoose.Types._ObjectId;
-  fandom: mongoose.Types._ObjectId;
+  fandom: mongoose.Types._ObjectId | string;
 }
 
 export interface IUserLike {

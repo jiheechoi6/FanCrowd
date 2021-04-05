@@ -13,7 +13,10 @@ import {
 } from "../../interfaces/IFandom";
 import ErrorService from "../../services/error";
 import FandomService from "../../services/fandom";
-import { INewUserLikeInputDTO } from "../../interfaces/IUser";
+import {
+  INewFandomMemberInputDTO,
+  INewUserLikeInputDTO
+} from "../../interfaces/IUser";
 
 const route = Router();
 
@@ -160,6 +163,94 @@ export default (app: Router) => {
       return next(err);
     }
   });
+
+  /**
+   * path: /api/fandoms/:fandomId/hasJoined
+   * method: GET
+   * body: None
+   * params:
+   * {
+   *  fandomId: string
+   * }
+   * description: checks if user has joined fandom with id fandomId
+   */
+  route.post(
+    "/:fandomId/unjoin",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const fandomService = new FandomService();
+        const hasUserJoined = await fandomService.isUserInFandom(
+          req.user!._id,
+          req.params["fandomId"]
+        );
+        res.status(200).send(hasUserJoined);
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  /**
+   * path: /api/fandoms/:fandomId/join
+   * method: POST
+   * body: None
+   * params:
+   * {
+   *  fandomId: string
+   * }
+   * description: adds a user to a fandom
+   */
+  route.post(
+    "/:fandomId/join",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const newMember: INewFandomMemberInputDTO = {
+          fandom: req.params["fandomId"],
+          user: req.user!._id
+        };
+
+        const fandomService = new FandomService();
+        await fandomService.joinFandom(newMember);
+        res.status(200).send();
+      } catch (err) {
+        if (err.name === "MongoError" && err.code === 11000) {
+          return next(
+            new ErrorService(
+              "MongoError",
+              `User already in fandom with id ${req.params["fandomId"]}`
+            )
+          );
+        }
+        return next(err);
+      }
+    }
+  );
+
+  /**
+   * path: /api/fandoms/:fandomId/unjoin
+   * method: DELETE
+   * body: None
+   * params:
+   * {
+   *  fandomId: string
+   * }
+   * description: removes a user from a fandom
+   */
+  route.post(
+    "/:fandomId/unjoin",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const fandomService = new FandomService();
+        await fandomService.leaveFandom(req.user!._id, req.params["fandomId"]);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
 
   /**
    * path: /api/fandoms/categories
