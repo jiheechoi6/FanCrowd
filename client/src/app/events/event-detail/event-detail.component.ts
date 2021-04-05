@@ -61,11 +61,12 @@ export class EventDetailComponent implements OnInit {
 
     this._eventService.getEventById(this.id.toString()).subscribe((event) => {
       this.event = event;
-      console.log("Details", this.id, this.event);
       if (this.event) {
         this._breadcrumbService.set('@eventName', this.event.name);
-        // this.reviews = this.event.reviews;
-        this.alreadyWroteReview(this.reviews);
+        this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
+          this.reviews = reviews;
+          this.alreadyWroteReview(this.reviews);
+        })
       } else {
         this.reviews = [];
       }
@@ -93,7 +94,7 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
       if (newReview) {
-        this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+        this._eventService.getReviewsByEventId(this.id).subscribe(
           (reviews) => {
             this.reviews = reviews;
             this.alreadyWroteReview(this.reviews);
@@ -135,7 +136,7 @@ export class EventDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+      this._eventService.getReviewsByEventId(this.id).subscribe(
         (reviews) => {
           this.reviews = reviews;
           this.alreadyWroteReview(this.reviews);
@@ -160,7 +161,7 @@ export class EventDetailComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((updatedReview: Review) => {
         if (updatedReview) {
-          this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+          this._eventService.getReviewsByEventId(this.id).subscribe(
             (reviews) => {
               this.reviews = reviews;
               this.alreadyWroteReview(this.reviews);
