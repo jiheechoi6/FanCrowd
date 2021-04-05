@@ -15,6 +15,12 @@ export interface IUserPostedBy {
 }
 
 export interface IUserLikeOnlyUser {
-  _id: string;
+  _id?: string;
   user: string;
+}
+
+export interface IUserLikeDTO {
+  fandomPost?: string;
+  fandomComment?: string;
+  isLike: boolean;
 }

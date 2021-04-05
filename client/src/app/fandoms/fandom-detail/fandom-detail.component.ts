@@ -6,7 +6,10 @@ import { EventService } from 'src/app/core/services/event.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { UserService } from 'src/app/core/services/user.service';
 import Fandom from 'src/app/shared/models/fandom';
-import { FandomPost } from 'src/app/shared/models/fandom-post';
+import {
+  FandomPost,
+  IUserLikeOnlyUser,
+} from 'src/app/shared/models/fandom-post';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
 import Event from 'src/app/shared/models/event';
@@ -157,11 +160,43 @@ export class FandomDetailComponent implements OnInit {
     });
   }
 
+  hasUserLikedPost(post: FandomPost) {
+    return !!post.likes!.find((like) => like.user === this.loggedInUser!._id);
+  }
+
+  hasUserDislikedPost(post: FandomPost) {
+    return !!post.dislikes!.find(
+      (like) => like.user === this.loggedInUser!._id
+    );
+  }
+
+  toggleLikesOrDislikes(
+    likesOrDislikes: IUserLikeOnlyUser[],
+    addNew: boolean = true
+  ) {
+    const index = likesOrDislikes.findIndex(
+      (like) => like.user === this.loggedInUser!._id
+    );
+    if (index === -1 && addNew) {
+      likesOrDislikes?.push({ user: this.loggedInUser!._id! });
+    } else {
+      likesOrDislikes?.splice(index, 1);
+    }
+  }
+
   updatePostLikes(post: FandomPost) {
-    // this._fandomService.updatePost(post.id, post);
+    this.toggleLikesOrDislikes(post.dislikes!, false);
+    this.toggleLikesOrDislikes(post.likes!);
+    this._fandomService
+      .updatePostLikes({ isLike: true, fandomPost: post!._id })
+      .subscribe();
   }
 
   updatePostDislikes(post: FandomPost) {
-    // this._fandomService.updatePost(post.id, post);
+    this.toggleLikesOrDislikes(post.likes!, false);
+    this.toggleLikesOrDislikes(post.dislikes!);
+    this._fandomService
+      .updatePostLikes({ isLike: false, fandomPost: post!._id })
+      .subscribe();
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Fandom from 'src/app/shared/models/fandom';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Category from 'src/app/shared/models/category';
-import { FandomPost } from 'src/app/shared/models/fandom-post';
+import { FandomPost, IUserLikeDTO } from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 
 @Injectable({
@@ -458,6 +458,10 @@ export class FandomService {
     if (typeof commentId === 'undefined') return fandomPost;
 
     return fandomPost;
+  }
+
+  updatePostLikes(userLikeDTO: IUserLikeDTO) {
+    return this._http.post(`/api/fandoms/likes`, userLikeDTO);
   }
 
   removeCommentFromPost(postId: string | undefined, commentId: number) {
