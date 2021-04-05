@@ -8,7 +8,7 @@ interface UserDTO {
   country: string;
   city: string;
   bio: string;
-  profileUrl: string;
+  profileURL: string;
   role: string;
   attendingEvents: EventDTO[];
   fandoms: FandomDTO[];

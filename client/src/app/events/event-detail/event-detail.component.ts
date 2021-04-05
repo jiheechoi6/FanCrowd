@@ -76,7 +76,7 @@ export class EventDetailComponent implements OnInit {
         id: this.id,
         user: {
           username: this.user?.username,
-          profileUrl: this.user?.profileUrl,
+          profileUrl: this.user?.profileURL,
           role: this.user?.role,
         },
       },

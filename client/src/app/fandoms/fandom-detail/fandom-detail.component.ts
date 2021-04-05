@@ -106,7 +106,7 @@ export class FandomDetailComponent implements OnInit {
         userCreatingEvent: {
           role: this.loggedInUser?.role,
           username: this.loggedInUser?.username,
-          profileUrl: this.loggedInUser?.profileUrl,
+          profileURL: this.loggedInUser?.profileURL,
         },
         fandomId: this.fandom?._id,
       },

@@ -155,7 +155,7 @@ export class PostDetailComponent implements OnInit {
         userCreatingComment: {
           role: this.loggedInUser?.role,
           username: this.loggedInUser?.username,
-          profileUrl: this.loggedInUser?.profileUrl,
+          profileURL: this.loggedInUser?.profileURL,
         },
         postId: this.post?._id,
       },

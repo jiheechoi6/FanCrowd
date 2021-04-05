@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class SearchUserComponent implements OnInit {
   myControl = new FormControl();
-  userList: Map<string, string> = new Map();
+  userList= new Map<string, string>();
   filteredOptions: Observable<Map<string, string>> | undefined;
   userProfilePhotos: Map<String, String> = new Map<String, String>();
   userToSearch: string = '';
@@ -20,14 +20,8 @@ export class SearchUserComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.userList = this.userService.getUsernameNameMap();
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filterName(value))
-    );
-
-    this.userProfilePhotos = this.userService.getUserProfilePhotos();
+  ngOnInit() {
+    this.loadUsers();
   }
 
   searchUser() {
@@ -37,7 +31,9 @@ export class SearchUserComponent implements OnInit {
   private _filterName(value: string): Map<string, string> {
     const filterValue = value.toLowerCase();
     let filteredMap = new Map<string, string>();
-
+    if(!this.userList){
+      return filteredMap;
+    }
     for (let [key, value] of this.userList) {
       if (
         key.toLowerCase().includes(filterValue) ||
@@ -48,4 +44,19 @@ export class SearchUserComponent implements OnInit {
     }
     return filteredMap;
   }
+
+  loadUsers(){
+    this.userService.getAllUsers().subscribe(
+      (users)=>{
+        users.forEach((user) => {
+          this.userList.set(user.fullName, user.username);
+          this.userProfilePhotos.set(user.username, user.profileURL);
+        })
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+          startWith(''),
+          map((value) => this._filterName(value))
+        );
+      });
+  }
 }
+

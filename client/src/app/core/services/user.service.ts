@@ -16,7 +16,7 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',
-      profileUrl:
+      profileURL:
         'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
       role: 'user',
       bio:
@@ -82,7 +82,7 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'raj@gmail.com',
-      profileUrl:
+      profileURL:
         'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
       role: 'user',
       bio:
@@ -125,7 +125,7 @@ export class UserService {
       city: 'Toronto',
       country: 'Canada',
       email: 'jihee@gmail.com',
-      profileUrl: 'https://dummyimage.com/250.jpg',
+      profileURL: 'https://dummyimage.com/250.jpg',
       role: 'admin',
       bio: '',
       attendingEvents: [],
@@ -135,10 +135,14 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
-  getUserByUsername(username: string): UserDTO | null {
-    // Get user from server, code below requires server call
+  getAllUsers(){
+    return this._http.get<UserDTO[]>('/api/users/', {responseType: 'json'});
+  }
 
-    return this.users.find((user) => user.username === username) || null;
+  getUserByUsername(username: string){
+    // Get user from server, code below requires server call
+    return this._http.get<UserDTO>('/api/users/username',
+      {responseType: 'json'});
   }
 
   getUserEventsByUsername(username: string) {
@@ -217,23 +221,6 @@ export class UserService {
     });
   }
 
-  getUsernameNameMap() {
-    let usermap: Map<string, string> = new Map();
-    this.users.forEach((user) => {
-      usermap.set(user.fullName, user.username);
-    });
-
-    return usermap;
-  }
-
-  getUserProfilePhotos() {
-    let photos: Map<string, string> = new Map<string, string>();
-    this.users.forEach((user) => {
-      photos.set(user.username, user.profileUrl);
-    });
-    return photos;
-  }
-
   addFandomToUser(username: string, fandom: Fandom | null) {
     //Add a fandom with id fandomId to Users fandoms, code below requires server call
 
@@ -288,3 +275,4 @@ export class UserService {
     return false;
   }
 }
+

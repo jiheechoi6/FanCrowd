@@ -49,10 +49,10 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Profile Image URL</mat-label>
-                <input matInput [(ngModel)]="user.profileUrl" name="profileurl" required
-                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileUrl="ngModel" />
-                <mat-error *ngIf="profileUrl.errors?.required">Profile Image URL is a required field</mat-error>
-                <mat-error *ngIf="profileUrl.errors?.pattern">Please enter a valid image url</mat-error>
+                <input matInput [(ngModel)]="user.profileURL" name="profileurl" required
+                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileURL="ngModel" />
+                <mat-error *ngIf="profileURL.errors?.required">Profile Image URL is a required field</mat-error>
+                <mat-error *ngIf="profileURL.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
         <div class="form-group">

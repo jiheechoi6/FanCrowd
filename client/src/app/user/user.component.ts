@@ -31,7 +31,7 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
-      this.user = this._userService.getUserByUsername(username);
+      // this.user = this._userService.getUserByUsername(username);
       if (!this.user) {
         this._router.navigate(['../']);
       }
