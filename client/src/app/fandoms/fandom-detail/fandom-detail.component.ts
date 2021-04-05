@@ -97,12 +97,7 @@ export class FandomDetailComponent implements OnInit {
   openCreatePostDialog() {
     const dialogRef = this._dialog.open(CreatePostDialogComponent, {
       data: {
-        userCreatingEvent: {
-          role: this.loggedInUser?.role,
-          username: this.loggedInUser?.username,
-          profileUrl: this.loggedInUser?.profileUrl,
-        },
-        fandomId: this.fandom?._id,
+        fandomId: this.fandom!._id,
       },
       autoFocus: false,
       width: '450px',
@@ -163,12 +158,10 @@ export class FandomDetailComponent implements OnInit {
   }
 
   updatePostLikes(post: FandomPost) {
-    // post.numLikes += 1;
-    // this._fandomService.updatePostForFandom(post.id, post);
+    // this._fandomService.updatePost(post.id, post);
   }
 
   updatePostDislikes(post: FandomPost) {
-    // post.numDislikes += 1;
-    // this._fandomService.updatePostForFandom(post.id, post);
+    // this._fandomService.updatePost(post.id, post);
   }
 }

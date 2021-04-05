@@ -81,14 +81,14 @@ export class PostDetailComponent implements OnInit {
   updatePostLikes() {
     if (this.post) {
       // this.post.numLikes += 1;
-      // this._fandomService.updatePostForFandom(this.post.id, this.post);
+      // this._fandomService.updatePost(this.post.id, this.post);
     }
   }
 
   updatePostDislikes() {
     if (this.post) {
       // this.post.numDislikes += 1;
-      // this._fandomService.updatePostForFandom(this.post.id, this.post);
+      // this._fandomService.updatePost(this.post.id, this.post);
     }
   }
 

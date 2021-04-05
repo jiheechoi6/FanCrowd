@@ -392,10 +392,11 @@ export class FandomService {
     );
   }
 
-  updatePostForFandom(postId: number | undefined, updatedPost: FandomPost) {
-    //Update post with id postId in db, code below requires server call
-
-    return [];
+  updatePost(postId: string = '', updatedPost: FandomPost) {
+    return this._http.patch<FandomPost>(
+      `/api/fandoms/posts/${postId}`,
+      updatedPost
+    );
   }
 
   deletePostFromFandom(postId: number | undefined) {
@@ -404,10 +405,8 @@ export class FandomService {
     return [];
   }
 
-  createPostForFandom(post: FandomPost) {
-    //Add post to a fandom, code below requires server call
-
-    return post;
+  createPost(post: FandomPost) {
+    return this._http.post<FandomPost>(`/api/fandoms/posts`, post);
   }
 
   getFandomByName(categoryName: string, fandomName: string) {
