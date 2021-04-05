@@ -5,7 +5,10 @@ import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
-import { FandomPost } from 'src/app/shared/models/fandom-post';
+import {
+  FandomPost,
+  IUserLikeOnlyUser,
+} from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { BreadcrumbService } from 'xng-breadcrumb';
@@ -78,13 +81,73 @@ export class PostDetailComponent implements OnInit {
       .subscribe((comments) => (this.comments = comments));
   }
 
-  updatePostLikes() {}
+  isUserInLikes(likes: IUserLikeOnlyUser[]) {
+    return !!likes!.find((like) => like.user === this.loggedInUser!._id);
+  }
 
-  updatePostDislikes() {}
+  updatePostLikes() {
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.dislikes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.likes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: true, fandomPost: this.post!._id })
+      .subscribe();
+  }
 
-  updateCommentLikes(comment: FandomPostComment) {}
+  updatePostDislikes() {
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.likes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.dislikes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: false, fandomPost: this.post!._id })
+      .subscribe();
+  }
 
-  updateCommentDislikes(comment: FandomPostComment) {}
+  updateCommentLikes(comment: FandomPostComment) {
+    this._fandomService.toggleLikesOrDislikes(
+      comment.dislikes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      comment.likes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: true, fandomComment: comment!._id })
+      .subscribe();
+  }
+
+  updateCommentDislikes(comment: FandomPostComment) {
+    this._fandomService.toggleLikesOrDislikes(
+      comment.likes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      comment.dislikes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: false, fandomComment: comment!._id })
+      .subscribe();
+  }
 
   deletePost() {
     this._fandomService

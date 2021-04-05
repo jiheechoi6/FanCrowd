@@ -20,6 +20,7 @@ export class AuthService {
 
   users: UserDTO[] = [
     {
+      _id: '1',
       username: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
@@ -86,6 +87,7 @@ export class AuthService {
       ],
     },
     {
+      _id: '2',
       username: 'user2',
       fullName: 'Raj Patel',
       city: 'Toronto',
@@ -129,6 +131,7 @@ export class AuthService {
       ],
     },
     {
+      _id: '3',
       username: 'admin',
       fullName: 'Jihee',
       city: 'Toronto',

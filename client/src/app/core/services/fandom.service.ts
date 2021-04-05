@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import Fandom from 'src/app/shared/models/fandom';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Category from 'src/app/shared/models/category';
-import { FandomPost, IUserLikeDTO } from 'src/app/shared/models/fandom-post';
+import {
+  FandomPost,
+  IUserLikeDTO,
+  IUserLikeOnlyUser,
+} from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 
 @Injectable({
@@ -461,11 +465,25 @@ export class FandomService {
     return fandomPost;
   }
 
-  updatePostLikes(userLikeDTO: IUserLikeDTO) {
+  updateLikes(userLikeDTO: IUserLikeDTO) {
     return this._http.post(`/api/fandoms/likes`, userLikeDTO);
   }
 
   deleteCommentById(commentId: string = '') {
     return this._http.delete(`/api/fandoms/comments/${commentId}`);
+  }
+
+  toggleLikesOrDislikes(
+    likesOrDislikes: IUserLikeOnlyUser[],
+    addNew: boolean,
+    userId: string
+  ) {
+    const index = likesOrDislikes.findIndex((like) => like.user === userId);
+    if (index === -1 && addNew) {
+      likesOrDislikes?.push({ user: userId });
+    } else if (index !== -1) {
+      likesOrDislikes?.splice(index, 1);
+    }
+    return likesOrDislikes;
   }
 }

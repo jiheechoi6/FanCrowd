@@ -160,43 +160,41 @@ export class FandomDetailComponent implements OnInit {
     });
   }
 
-  hasUserLikedPost(post: FandomPost) {
-    return !!post.likes!.find((like) => like.user === this.loggedInUser!._id);
-  }
-
-  hasUserDislikedPost(post: FandomPost) {
-    return !!post.dislikes!.find(
-      (like) => like.user === this.loggedInUser!._id
-    );
-  }
-
-  toggleLikesOrDislikes(
-    likesOrDislikes: IUserLikeOnlyUser[],
-    addNew: boolean = true
-  ) {
-    const index = likesOrDislikes.findIndex(
-      (like) => like.user === this.loggedInUser!._id
-    );
-    if (index === -1 && addNew) {
-      likesOrDislikes?.push({ user: this.loggedInUser!._id! });
-    } else {
-      likesOrDislikes?.splice(index, 1);
-    }
+  isUserInLikes(likes: IUserLikeOnlyUser[]) {
+    return !!likes!.find((like) => like.user === this.loggedInUser!._id);
   }
 
   updatePostLikes(post: FandomPost) {
-    this.toggleLikesOrDislikes(post.dislikes!, false);
-    this.toggleLikesOrDislikes(post.likes!);
+    this._fandomService.toggleLikesOrDislikes(
+      post.dislikes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    console.log(this.loggedInUser?._id);
+    this._fandomService.toggleLikesOrDislikes(
+      post.likes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    console.log(post.likes);
     this._fandomService
-      .updatePostLikes({ isLike: true, fandomPost: post!._id })
+      .updateLikes({ isLike: true, fandomPost: post!._id })
       .subscribe();
   }
 
   updatePostDislikes(post: FandomPost) {
-    this.toggleLikesOrDislikes(post.likes!, false);
-    this.toggleLikesOrDislikes(post.dislikes!);
+    this._fandomService.toggleLikesOrDislikes(
+      post.likes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      post.dislikes!,
+      true,
+      this.loggedInUser!._id!
+    );
     this._fandomService
-      .updatePostLikes({ isLike: false, fandomPost: post!._id })
+      .updateLikes({ isLike: false, fandomPost: post!._id })
       .subscribe();
   }
 }

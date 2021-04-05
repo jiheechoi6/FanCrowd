@@ -27,15 +27,21 @@
                         <button mat-icon-button color="primary" class="like-post-button-container"
                             (click)="updatePostLikes()">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.likes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(post!.likes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(post!.likes!)"></mat-icon>
+                                <span>{{post!.likes!.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updatePostDislikes()">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.dislikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(post!.dislikes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(post!.dislikes!)"></mat-icon>
+                                <span>{{post!.dislikes!?.length}}</span>
                             </span>
                         </button>
                     </section>
@@ -88,15 +94,21 @@
                         <button mat-icon-button color="primary" class="like-post-button-container"
                             (click)="updateCommentLikes(comment)">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(comment.likes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(comment!.likes!)"></mat-icon>
                                 <span>{{comment.likes?.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updateCommentDislikes(comment)">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.dislikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(comment!.dislikes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(comment!.dislikes!)"></mat-icon>
+                                <span>{{comment!.dislikes!.length}}</span>
                             </span>
                         </button>
                     </section>
