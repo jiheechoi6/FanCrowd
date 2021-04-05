@@ -28,8 +28,11 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this._authService.getCurrentUser().value;
-    this.allEvents = this._eventService.getEvents();
-    this.events = this.allEvents.slice(0, this.pageSize);
+    this._eventService.getEvents().subscribe((events) => {
+      console.log("Events", events);
+      this.allEvents = events;
+      this.events = this.allEvents.slice(0, this.pageSize);
+    });
   }
 
   selectPage(event: any) {
@@ -50,7 +53,9 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this.events = this._eventService.getEvents();
+        this._eventService.getEvents().subscribe((events) => {
+          this.events = events;
+        });
       }
     });
   }

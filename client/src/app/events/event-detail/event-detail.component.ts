@@ -57,7 +57,9 @@ export class EventDetailComponent implements OnInit {
       }
     }
 
-    this.event = this._eventService.getEventById(this.id);
+    this._eventService.getEventById(this.id.toString()).subscribe((event) => {
+      this.event = event;
+    });
     if (this.event) {
       this._breadcrumbService.set('@eventName', this.event.name);
       // this.reviews = this.event.reviews;
@@ -88,10 +90,14 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
       if (newReview) {
-        this.reviews = this._eventService.getReviewsByEventId(this.id);
-        this.alreadyWroteReview(this.reviews);
-        this.calculateAvgRating();
-        this.groupReviewsByRating();
+        this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+          (reviews) => {
+            this.reviews = reviews;
+            this.alreadyWroteReview(this.reviews);
+            this.calculateAvgRating();
+            this.groupReviewsByRating();
+          }
+        );
       }
     });
   }
@@ -126,10 +132,14 @@ export class EventDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.reviews = this._eventService.getReviewsByEventId(this.id);
-      this.alreadyWroteReview(this.reviews);
-      this.calculateAvgRating();
-      this.groupReviewsByRating();
+      this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+        (reviews) => {
+          this.reviews = reviews;
+          this.alreadyWroteReview(this.reviews);
+          this.calculateAvgRating();
+          this.groupReviewsByRating();
+        }
+      );
     });
   }
 
@@ -147,10 +157,14 @@ export class EventDetailComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((updatedReview: Review) => {
         if (updatedReview) {
-          this.reviews = this._eventService.getReviewsByEventId(this.id);
-          this.alreadyWroteReview(this.reviews);
-          this.calculateAvgRating();
-          this.groupReviewsByRating();
+          this._eventService.getReviewsByEventId(this.id.toString()).subscribe(
+            (reviews) => {
+              this.reviews = reviews;
+              this.alreadyWroteReview(this.reviews);
+              this.calculateAvgRating();
+              this.groupReviewsByRating();
+            }
+          );
         }
       });
     }
@@ -194,7 +208,9 @@ export class EventDetailComponent implements OnInit {
           this.event._id,
           this.isAttending
         );
-        this.event = this._eventService.getEventById(this.id);
+        this._eventService.getEventById(this.id.toString()).subscribe((event) => {
+          this.event = event;
+        });
       }
     }
   }
@@ -214,16 +230,22 @@ export class EventDetailComponent implements OnInit {
         this.event._id,
         this.isAttending
       );
-      this.event = this._eventService.getEventById(this.id);
+      this._eventService.getEventById(this.id.toString()).subscribe((event) => {
+        this.event = event;
+      });
     }
   }
 
   deleteEvent(id: number | undefined): void {
     if (id) {
-      let allEvents = this._eventService.getEvents();
-      let index = allEvents.findIndex((event) => event._id === id);
+      let allEvents;
+      let index;
 
-      this._eventService.deleteEvent(index);
+      this._eventService.getEvents().subscribe((events) => {
+        allEvents = events;
+        index = allEvents.findIndex((event) => event._id === id);
+        this._eventService.deleteEvent(index);
+      });
 
       if (this.user && this.event) {
         this._userService.removeEventFromAllUsersEvents(this.event._id);
@@ -235,14 +257,18 @@ export class EventDetailComponent implements OnInit {
   }
 
   deleteReview(id: number | undefined): void {
-    let allEvents = this._eventService.getEvents();
-    let eventIindex = allEvents.findIndex((event) => event._id === this.id);
+    let allEvents;
+    let eventIndex;
+    this._eventService.getEvents().subscribe((events) => {
+      allEvents = events;
+      eventIndex = allEvents.findIndex((event) => event._id === this.id);
 
-    if (eventIindex >= 0) {
-      let event = allEvents[eventIindex];
-      // let reviewIndex = event.reviews.findIndex((review) => review.id === id);
-      // this._eventService.deleteReview(eventIindex, reviewIndex);
-    }
+      if (eventIndex >= 0) {
+        let event = allEvents[eventIndex];
+        // let reviewIndex = event.reviews.findIndex((review) => review.id === id);
+        // this._eventService.deleteReview(eventIindex, reviewIndex);
+      }
+    });
   }
 
   openEditEventDialog() {

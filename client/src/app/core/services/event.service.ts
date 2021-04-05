@@ -157,10 +157,11 @@ export class EventService {
     return dateA > dateB ? 1 : -1;
   }
 
-  getEvents(): Event[] {
+  getEvents() {
     // Get events from server, code below requires server call
 
-    return this.events.sort((a, b) => this.sortFunction(a, b));
+    // return this.events.sort((a, b) => this.sortFunction(a, b));
+    return this._http.get<Event[]>('/api/events');
   }
 
   getEventsByCategoryAndFandom(categoryName: string, fandomName: string) {
@@ -172,10 +173,11 @@ export class EventService {
     );
   }
 
-  getEventById(id: number): Event | null {
+  getEventById(id: string) {
     // Get event from server, code below requires server call
 
-    return this.events.find((event) => event._id === id) || null;
+    // return this.events.find((event) => event._id === id) || null;
+    return this._http.get<Event>(`/api/events/${id}`);
   }
 
   createEvent(event: Event): void {
@@ -210,10 +212,10 @@ export class EventService {
     return false;
   }
 
-  getReviewsByEventId(eventId: number): Review[] {
+  getReviewsByEventId(eventId: string) {
     // Get reviews of a specific event from server, code below requires server call
 
-    return [];
+    return this._http.get<Review[]>(`/api/events/reviews/${eventId}`);
   }
 
   addReviewToEvent(eventId: number, review: Review): void {
