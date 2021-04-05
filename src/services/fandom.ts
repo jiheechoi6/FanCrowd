@@ -299,7 +299,7 @@ export default class FandomService {
       {
         $lookup: {
           from: "userlikes",
-          as: "numLikes",
+          as: "likes",
           let: {
             fandomPostId: "$_id"
           },
@@ -327,7 +327,7 @@ export default class FandomService {
       {
         $lookup: {
           from: "userlikes",
-          as: "numDislikes",
+          as: "dislikes",
           let: {
             fandomPostId: "$_id"
           },
@@ -369,8 +369,8 @@ export default class FandomService {
             username: 1,
             profileURL: 1
           },
-          numLikes: 1,
-          numDislikes: 1,
+          likes: 1,
+          dislikes: 1,
           title: 1,
           content: 1,
           createdAt: 1,
@@ -391,7 +391,7 @@ export default class FandomService {
         {
           $lookup: {
             from: "userlikes",
-            as: "numLikes",
+            as: "likes",
             let: {
               fandomCommentId: "$_id"
             },
@@ -419,7 +419,7 @@ export default class FandomService {
         {
           $lookup: {
             from: "userlikes",
-            as: "numDislikes",
+            as: "dislikes",
             let: {
               fandomCommentId: "$_id"
             },
@@ -461,8 +461,8 @@ export default class FandomService {
               username: 1,
               profileURL: 1
             },
-            numLikes: 1,
-            numDislikes: 1,
+            likes: 1,
+            dislikes: 1,
             title: 1,
             content: 1,
             createdAt: 1,
@@ -521,8 +521,8 @@ export default class FandomService {
     const newPostDoc = await FandomPost.create(newPost);
     const post: IFandomPostDTOWithLikes = {
       ...newPostDoc.toObject(),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: createdByUser.username,
         profileURL: createdByUser.profileURL
@@ -607,8 +607,8 @@ export default class FandomService {
     const newCommentDoc = await FandomComment.create(newComment);
     const comment: IFandomCommentDTOWithLikes = {
       ...newCommentDoc.toObject(),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: createdByUser.username,
         profileURL: createdByUser.profileURL

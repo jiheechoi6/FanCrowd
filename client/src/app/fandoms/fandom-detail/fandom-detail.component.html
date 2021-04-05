@@ -57,14 +57,14 @@
                                 (click)="updatePostLikes(post)">
                                 <span>
                                     <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numLikes?.length}}</span>
+                                    <span>{{post.likes?.length}}</span>
                                 </span>
                             </button>
                             <button mat-icon-button color="warn" class="dislike-post-button-container"
                                 (click)="updatePostDislikes(post)">
                                 <span>
                                     <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numDislikes?.length}}</span>
+                                    <span>{{post.dislikes?.length}}</span>
                                 </span>
                             </button>
                         </div>

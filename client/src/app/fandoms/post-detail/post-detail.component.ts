@@ -80,21 +80,21 @@ export class PostDetailComponent implements OnInit {
 
   updatePostLikes() {
     if (this.post) {
-      // this.post.numLikes += 1;
+      // this.post.likes += 1;
       // this._fandomService.updatePost(this.post.id, this.post);
     }
   }
 
   updatePostDislikes() {
     if (this.post) {
-      // this.post.numDislikes += 1;
+      // this.post.dislikes += 1;
       // this._fandomService.updatePost(this.post.id, this.post);
     }
   }
 
   updateCommentLikes(comment: FandomPostComment) {
     if (this.post) {
-      // comment.numLikes += 1;
+      // comment.likes += 1;
       // this.post = this._fandomService.editPostComment(
       //   this.post?._id,
       //   comment.id,
@@ -105,7 +105,7 @@ export class PostDetailComponent implements OnInit {
 
   updateCommentDislikes(comment: FandomPostComment) {
     if (this.post) {
-      // comment.numDislikes += 1;
+      // comment.dislikes += 1;
       // this.post = this._fandomService.editPostComment(
       //   this.post.id,
       //   comment.id,

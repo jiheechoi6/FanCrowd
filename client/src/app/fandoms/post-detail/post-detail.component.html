@@ -28,14 +28,14 @@
                             (click)="updatePostLikes()">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.numLikes?.length}}</span>
+                                <span>{{post.likes?.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updatePostDislikes()">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.numDislikes?.length}}</span>
+                                <span>{{post.dislikes?.length}}</span>
                             </span>
                         </button>
                     </section>
@@ -89,14 +89,14 @@
                             (click)="updateCommentLikes(comment)">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numLikes?.length}}</span>
+                                <span>{{comment.likes?.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updateCommentDislikes(comment)">
                             <span>
                                 <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numDislikes?.length}}</span>
+                                <span>{{comment.dislikes?.length}}</span>
                             </span>
                         </button>
                     </section>

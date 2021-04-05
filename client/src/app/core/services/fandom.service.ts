@@ -243,8 +243,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 17),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -258,8 +258,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 1),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
@@ -273,8 +273,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 19),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
@@ -288,8 +288,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 5),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -303,8 +303,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 14),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -318,8 +318,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 12),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
