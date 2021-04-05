@@ -12,7 +12,7 @@ export default {
   api: {
     prefix: "/api"
   },
-  jwtSecret: process.env.JWT_SECRET || "",
+  jwtSecret: process.env.JWT_SECRET || "secret",
   nodemailer: {
     senderEmail: process.env.SENDER_EMAIL,
     googleClientId: process.env.GOOGLE_CLIENT_ID,

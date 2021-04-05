@@ -45,9 +45,9 @@ export class FandomDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._authService.currentUser.subscribe(
-      (user) => (this.loggedInUser = user)
-    );
+    // this._authService.currentUserInfo.subscribe(
+    //   (user) => (this.loggedInUser = user)
+    // );
 
     this._activatedRoute.params.subscribe((params) => {
       this.fandomCategory = params['category'];
