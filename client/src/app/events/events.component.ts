@@ -19,7 +19,7 @@ export class EventsComponent implements OnInit {
   pageSize: number = this.pageSizeOptions[1];
   pageIndex: number = 0;
   today: Date = new Date();
-  user: UserDTO | UserIdentity |null = null;
+  user: UserIdentity | null = null;
 
   constructor(
     private _authService: AuthService,
@@ -30,9 +30,9 @@ export class EventsComponent implements OnInit {
   ngOnInit(): void {
     this.user = this._authService.getCurrentUser().value;
     this._eventService.getEvents().subscribe((events) => {
-      console.log("Events", events);
       this.allEvents = events;
       this.events = this.allEvents.slice(0, this.pageSize);
+      console.log("Events", this.events);
     });
   }
 
@@ -46,7 +46,13 @@ export class EventsComponent implements OnInit {
 
   openCreateEventDialog(): void {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: { username: this.user?.username },
+      data: {
+        user: {
+          username: this.user?.username,
+          profileURL: this.user?.profileURL,
+          role: this.user?.role
+        }
+      },
       width: '800px',
       autoFocus: false,
       disableClose: true,

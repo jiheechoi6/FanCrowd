@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import UserDTO from 'src/app/shared/models/user-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Event from 'src/app/shared/models/event';
 import Fandom from 'src/app/shared/models/fandom';
 import FandomDTO from 'src/app/shared/models/fandom-dto';
 
@@ -135,18 +136,20 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
-  getUserByUsername(username: string): UserDTO | null {
+  getUserByUsername(username: string){
     // Get user from server, code below requires server call
 
-    return this.users.find((user) => user.username === username) || null;
+    // return this.users.find((user) => user.username === username) || null;
+    return this._http.get<UserDTO>(`/api/users/${username}`);
   }
 
   getUserEventsByUsername(username: string) {
     // Get User's events from server, code below requires server call
-    return (
-      this.users.find((user) => user.username === username)?.attendingEvents ||
-      []
-    );
+    // return (
+    //   this.users.find((user) => user.username === username)?.attendingEvents ||
+    //   []
+    // );
+    return this._http.get<EventDTO[]>(`/api/users/${username}/events`);
   }
 
   deleteUserByUsername(username: string): void {

@@ -28,7 +28,7 @@ export class ReviewDialogComponent implements OnInit {
       content: '',
       postedBy: {
         username: this.data.user.username,
-        profileUrl: this.data.user.profileUrl,
+        profileURL: this.data.user.profileURL,
         role: this.data.user.role,
       },
       postDate: defaultPostDate,

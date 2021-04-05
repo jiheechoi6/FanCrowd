@@ -13,6 +13,7 @@ import EventDTO from 'src/app/shared/models/event-dto';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
+import UserIdentity from 'src/app/shared/models/user-identity';
 
 @Component({
   selector: 'app-event',
@@ -25,7 +26,7 @@ export class EventDetailComponent implements OnInit {
   today: Date = new Date();
   isAttending: boolean = false;
   id: number = NaN;
-  user: UserDTO | null = null;
+  user: UserIdentity | null = null;
   wroteReview: boolean = false;
   avgRating = 0;
   groupedReviews: { [key: number]: Review[] } = {};
@@ -45,18 +46,20 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.user = this._authService.getCurrentUser().value;
+    this.user = this._authService.getCurrentUser().value;
     if (this.user) {
       this.isAttending = false;
-      let index = this.user.attendingEvents.findIndex(
-        (event) => event.id === this.id
-      );
+      let index;
 
-      if (index >= 0) {
-        this.isAttending = true;
-      }
+      this._userService.getUserEventsByUsername(this.user.username).subscribe((events) => {
+        index = events.findIndex((event) => event.id === this.id);
+        if (index >= 0) {
+          this.isAttending = true;
+        }
+      });
     }
 
+    console.log("Details", this.id.toString());
     this._eventService.getEventById(this.id.toString()).subscribe((event) => {
       this.event = event;
     });
@@ -78,7 +81,7 @@ export class EventDetailComponent implements OnInit {
         id: this.id,
         user: {
           username: this.user?.username,
-          profileUrl: this.user?.profileUrl,
+          profileUrl: this.user?.profileURL,
           role: this.user?.role,
         },
       },

@@ -9,7 +9,11 @@ import Event from '../../shared/models/event';
 
 interface DialogData {
   eventBeingUpdated?: Event;
-  username: string;
+  user: {
+    username: string,
+    profileURL: string,
+    role: string
+  };
 }
 
 @Component({
@@ -53,8 +57,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.isEditingEvent = true;
       this.event = this.data.eventBeingUpdated;
       this.eventDateRange = [this.event.startDate, this.event.endDate];
-
-      this.fetchFandomsForCategory(this.event.fandomType.category);
+      this.fetchFandomsForCategory(this.event.fandom.category);
     } else {
       const defaultStartDate = new Date();
       defaultStartDate.setHours(new Date().getHours() + 1);
@@ -65,8 +68,12 @@ export class EventCreateDialogComponent implements OnInit {
       this.event = {
         _id: 1000,
         name: '',
-        fandomType: {
-          category: '',
+        fandom: {
+          category: {
+            _id: 1,
+            name: '',
+            backgroundURL: ''
+          },
           name: '',
           backgroundURL: '',
           createdAt: new Date(),
@@ -75,7 +82,11 @@ export class EventCreateDialogComponent implements OnInit {
         startDate: this.eventDateRange[0],
         endDate: this.eventDateRange[1],
         location: '',
-        postedBy: this.data.username,
+        postedBy: {
+          username: this.data.user.username,
+          profileURL: this.data.user.profileURL,
+          role: this.data.user.role
+        },
         totalAttendance: 0,
       };
     }
@@ -91,9 +102,9 @@ export class EventCreateDialogComponent implements OnInit {
     this.fetchFandomsForCategory(event.value);
   }
 
-  fetchFandomsForCategory(category: string) {
+  fetchFandomsForCategory(category: Category) {
     this._fandomService
-      .getFandomsByCategories(category)
+      .getFandomsByCategories(category.name)
       .subscribe((fandoms) => (this.fandomForCategory = fandoms));
   }
 

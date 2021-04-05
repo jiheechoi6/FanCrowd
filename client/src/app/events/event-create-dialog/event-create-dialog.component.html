@@ -49,7 +49,7 @@
             <mat-form-field color="accent">
                 <mat-label>Fandom Category</mat-label>
                 <mat-select id="category" name="category" (selectionChange)="categoryChange($event)"
-                    [(ngModel)]="event.fandomType.category" required>
+                    [(ngModel)]="event.fandom.category" required>
                     <mat-option>--Select Category--</mat-option>
                     <mat-option *ngFor="let category of categories" [value]="category.name">
                         {{category.name}}
@@ -62,8 +62,8 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Fandom</mat-label>
-                <mat-select name="fandom" [(ngModel)]="event.fandomType.name" required
-                    [disabled]="!event.fandomType.category">
+                <mat-select name="fandom" [(ngModel)]="event.fandom.name" required
+                    [disabled]="!event.fandom.category">
                     <mat-option>--Select Fandom--</mat-option>
                     <mat-option *ngFor="let fandom of fandomForCategory" [value]="fandom.name">
                         {{fandom.name}}

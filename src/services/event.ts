@@ -30,8 +30,13 @@ export default class EventService {
     );
 
     const event = await Event.findById(eventId)
-      .populate("postedBy")
-      .populate("fandom");
+      .populate("postedBy", ["username", "role", "profileURL"])
+      .populate({
+        path: "fandom",
+        populate: {
+          path: "category"
+        }
+      });
 
     if (!event) {
       throw new ErrorService(
@@ -50,8 +55,13 @@ export default class EventService {
     );
     const events: IEvent[] =
       (await Event.find({ fandom: fandom._id })
-        .populate("postedBy")
-        .populate("fandom")) || [];
+        .populate("postedBy", ["username", "role", "profileURL"])
+        .populate({
+          path: "fandom",
+          populate: {
+            path: "category"
+          }
+        })) || [];
 
     return events;
   }
@@ -133,7 +143,7 @@ export default class EventService {
     const eventDoc: IEvent = await this.getEventById(eventId);
     const reviews: IEventReview[] =
       (await EventReview.find({ event: eventDoc })
-        .populate("postedBy")
+        .populate("postedBy", ["username", "role", "profileURL"])
         .populate("event")) || [];
     return reviews;
   }

@@ -132,8 +132,13 @@ export default (app: Router) => {
   route.get("", async (req, res, next) => {
     try {
       const events: IEvent[] = await Event.find({})
-        .populate("postedBy")
-        .populate("fandom");
+        .populate("postedBy", ["username", "role", "profileURL"])
+        .populate({
+          path: "fandom",
+          populate: {
+            path: "category"
+          }
+        });
       res.status(200).send(events);
     } catch (err) {
       return next(err);
