@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription} from 'rxjs';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { AuthService } from '../services/auth.service';
+import UserIdentity from 'src/app/shared/models/user-identity';
 // import { userInfo } from 'os';
 
 @Component({
@@ -11,7 +12,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
-  user: UserDTO | null = null;
+  user: UserIdentity | null = null;
 
   constructor(private _authService: AuthService,) {}
 

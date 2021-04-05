@@ -5,6 +5,7 @@ import { EventCreateDialogComponent } from './event-create-dialog/event-create-d
 import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
+import UserIdentity from '../shared/models/user-identity';
 
 @Component({
   selector: 'app-events',
@@ -18,7 +19,7 @@ export class EventsComponent implements OnInit {
   pageSize: number = this.pageSizeOptions[1];
   pageIndex: number = 0;
   today: Date = new Date();
-  user: UserDTO | null = null;
+  user: UserDTO | UserIdentity |null = null;
 
   constructor(
     private _authService: AuthService,

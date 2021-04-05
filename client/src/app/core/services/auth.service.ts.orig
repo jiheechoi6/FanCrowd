@@ -9,13 +9,21 @@ import UserIdentityToken from 'src/app/shared/models/user-identity-token';
 import UserIdentity from 'src/app/shared/models/user-identity';
 import { UserService } from './user.service';
 import { map } from 'rxjs/operators';
+import { SingleKeyOptions } from 'nodemailer/lib/dkim';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', 
 })
 export class AuthService {
-  currentUser = new BehaviorSubject<UserIdentity | null>(null);
+  currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
+  // this is the variable that's updated during log in/sign up/ log out
+  currentUser = new BehaviorSubject<UserIdentity | null>(null);  
   token: string | null = null;
+  usernameToPassword = new Map([
+    ['user1', 'user1'],
+    ['user2', 'user2'],
+    ['admin', 'admin'],
+  ]);
 
   users: UserDTO[] = [
     {
@@ -144,17 +152,25 @@ export class AuthService {
   constructor(
     private _http: HttpClient,
     private _emailService: EmailService,
-
+<<<<<<< HEAD
+    private _userService: UserService,
+  ) {
+    if(localStorage.getItem('user')!= null){
+      const value:string = String(localStorage.getItem('user'));
+      this.currentUser = new BehaviorSubject<UserIdentity|null>(JSON.parse(value));
+    }
+=======
     private _userService: UserService
   ) {
-    this.autoLogin();
+    this.currentUser.next(this.users[0]);
+>>>>>>> dev
   }
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
     let headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-    return this._http.post<UserIdentityToken>('/api/auth/signin',
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signin', 
         {username, password}, {headers: headers, responseType: 'json'})
           .pipe(map(res => this.updateCurrentUser(res)));
   }
@@ -164,7 +180,9 @@ export class AuthService {
       return null;
     }
 
-    return this._http.post<UserIdentityToken>('/api/auth/signup', newUser, {responseType: 'json'})
+    let headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signup', newUser, {headers: headers, responseType: 'json'})
         .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
@@ -196,12 +214,7 @@ export class AuthService {
   }
 
   autoLogin(){
-    if(localStorage.getItem('token')){
-      this.token = localStorage.getItem('token');
-    }
 
-    this._http.get<UserIdentity>('/api/auth/currentUser',
-      {responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
   }
 
   resetPassword(
@@ -216,24 +229,24 @@ export class AuthService {
   }
 
   getCurrentLoggedInUserEvents() {
-    // return this.currentUserInfo.getValue()?.attendingEvents;
+    return this.currentUserInfo.getValue()?.attendingEvents;
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {
     // Update user info (Add event to events attending) on server,
     // code below requires server call
 
-    // let user = this.currentUserInfo.getValue();
+    let user = this.currentUserInfo.getValue();
 
-    // if (user) {
-    //   let index = user.attendingEvents.findIndex(
-    //     (userEvent) => userEvent.id === event.id
-    //   );
+    if (user) {
+      let index = user.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === event.id
+      );
 
-    //   if (index < 0) {
-    //     user.attendingEvents.push(event);
-    //   }
-    // }
+      if (index < 0) {
+        user.attendingEvents.push(event);
+      }
+    }
   }
 
   removeEventFromUserEvents(
@@ -243,16 +256,16 @@ export class AuthService {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
-    // let user = this.currentUserInfo.getValue();
-    // if (user) {
-    //   let eventIndex = user.attendingEvents.findIndex(
-    //     (userEvent) => userEvent.id === eventId
-    //   );
+    let user = this.currentUserInfo.getValue();
+    if (user) {
+      let eventIndex = user.attendingEvents.findIndex(
+        (userEvent) => userEvent.id === eventId
+      );
 
-    //   if (eventIndex >= 0) {
-    //     user.attendingEvents.splice(eventIndex, 1);
-    //   }
-    // }
+      if (eventIndex >= 0) {
+        user.attendingEvents.splice(eventIndex, 1);
+      }
+    }
   }
 
   removeEventFromAllUsersEvents(eventId: number | undefined): void {

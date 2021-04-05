@@ -31,7 +31,7 @@ export default (app: Router) => {
         );
         res.status(200).send(signedUpUser);
       } catch (err) {
-        return next(err);
+        next(err);
       }
     }
   );
