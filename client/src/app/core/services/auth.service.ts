@@ -14,15 +14,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  // this is the variable that's updated during log in/sign up/ log out
-  // currentUserInfo = new BehaviorSubject<UserDTO | null>(null);
   currentUser = new BehaviorSubject<UserIdentity | null>(null);
   token: string | null = null;
-  usernameToPassword = new Map([
-    ['user1', 'user1'],
-    ['user2', 'user2'],
-    ['admin', 'admin'],
-  ]);
 
   users: UserDTO[] = [
     {
@@ -171,7 +164,7 @@ export class AuthService {
       return null;
     }
 
-    return this._http.post<UserIdentityToken>('http://localhost:5000/api/auth/signup', newUser, {responseType: 'json'})
+    return this._http.post<UserIdentityToken>('/api/auth/signup', newUser, {responseType: 'json'})
         .pipe(map((res)=>this.updateCurrentUser(res)));
   }
 
@@ -207,7 +200,7 @@ export class AuthService {
       this.token = localStorage.getItem('token');
     }
 
-    this._http.get<UserIdentity>('http://localhost:5000/api/auth/currentUser',
+    this._http.get<UserIdentity>('/api/auth/currentUser',
       {responseType: 'json'}).pipe(map(res => this.currentUser.next({...res})));
   }
 
