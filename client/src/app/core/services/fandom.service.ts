@@ -399,10 +399,8 @@ export class FandomService {
     );
   }
 
-  deletePostFromFandom(postId: number | undefined) {
-    //Remove post with id postId in db, code below requires server call
-
-    return [];
+  deletePost(postId: string = '') {
+    return this._http.delete(`/api/fandoms/posts/${postId}`);
   }
 
   createPost(post: FandomPost) {
@@ -427,12 +425,15 @@ export class FandomService {
     );
   }
 
-  addCommentToPost(postId: string, comment: FandomPostComment) {
-    const fandomPost = this.getFandomPostById(postId);
+  createComment(comment: FandomPostComment) {
+    return this._http.post<FandomPostComment>(`/api/fandoms/comments`, comment);
+  }
 
-    // comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
-
-    return comment;
+  updateComment(commentId: string = '', updatedComment: FandomPostComment) {
+    return this._http.patch(
+      `/api/fandoms/comments/${commentId}`,
+      updatedComment
+    );
   }
 
   updateCategoryById(categoryId: string = '', updatedCategory: Category) {
@@ -464,11 +465,7 @@ export class FandomService {
     return this._http.post(`/api/fandoms/likes`, userLikeDTO);
   }
 
-  removeCommentFromPost(postId: string | undefined, commentId: number) {
-    if (typeof postId === 'undefined') return null;
-
-    const fandomPost = this.getFandomPostById(postId);
-
-    return fandomPost;
+  deleteCommentById(commentId: string = '') {
+    return this._http.delete(`/api/fandoms/comments/${commentId}`);
   }
 }

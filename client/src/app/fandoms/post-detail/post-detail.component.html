@@ -68,7 +68,7 @@
 
     <section class="comments" [class.loading]="isLoadingComments">
         <app-spinner *ngIf="isLoadingComments"></app-spinner>
-        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of comments">
+        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of comments; let i = index;">
             <mat-card-content>
                 <header class="username-container">
                     <div class="profile-img-wrapper">
@@ -102,13 +102,13 @@
                     </section>
                     <section
                         *ngIf="loggedInUser?.role === 'admin' || comment.postedBy!.username === loggedInUser?.username">
-                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment._id)"
+                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment._id, i)"
                             mat-flat-button color="warn">
                             <span>
                                 Delete <i class="fas fa-trash-alt"></i>
                             </span>
                         </button>
-                        <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment)">
+                        <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment, i)">
                             <span>
                                 Edit <i class="fas fa-edit"></i>
                             </span>
