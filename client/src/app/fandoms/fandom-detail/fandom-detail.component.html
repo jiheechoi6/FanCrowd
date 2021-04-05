@@ -15,14 +15,9 @@
         </span>
     </header>
     <div class="flex-row-container-space-between join-create-post-buttons-container">
-        <button mat-raised-button color="primary" (click)="joinFandom()" *ngIf="!hasUserJoinedFandom">
+        <button mat-raised-button color="primary" (click)="toggleFandomJoin()">
             <span>
-                Join Fandom
-            </span>
-        </button>
-        <button mat-raised-button color="primary" (click)="leaveFandom()" *ngIf="hasUserJoinedFandom">
-            <span>
-                Leave Fandom
+                {{hasUserJoinedFandom ? "Leave": "Join"}} Fandom
             </span>
         </button>
         <button mat-raised-button color="primary" (click)="openCreatePostDialog()">

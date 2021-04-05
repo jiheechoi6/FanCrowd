@@ -49,7 +49,6 @@ export class FandomDetailComponent implements OnInit {
     this._activatedRoute.params.subscribe((params) => {
       this.fandomCategory = params['category'];
       this.fandomName = params['fandom'];
-
       this.fetchComponentInfo();
     });
   }
@@ -58,7 +57,14 @@ export class FandomDetailComponent implements OnInit {
     this._fandomService
       .getFandomByName(this.fandomCategory, this.fandomName)
       .subscribe(
-        (fandom) => (this.fandom = fandom),
+        (fandom) => {
+          this.fandom = fandom;
+          this._fandomService
+            .isUserInFandom(this.fandom!._id)
+            .subscribe(
+              (hasJoinedFandom) => (this.hasUserJoinedFandom = hasJoinedFandom)
+            );
+        },
         (err) => {
           if (err.status === 404) {
             this._router.navigate(['/fandoms', this.fandomCategory]);
@@ -79,12 +85,13 @@ export class FandomDetailComponent implements OnInit {
       .subscribe((posts) => (this.posts = posts));
   }
 
-  joinFandom() {
-    this.hasUserJoinedFandom = true;
-  }
-
-  leaveFandom() {
-    this.hasUserJoinedFandom = false;
+  toggleFandomJoin() {
+    this.hasUserJoinedFandom = !this.hasUserJoinedFandom;
+    if (this.hasUserJoinedFandom) {
+      this._fandomService.joinFandom(this.fandom!._id).subscribe();
+    } else {
+      this._fandomService.leaveFandom(this.fandom!._id).subscribe();
+    }
   }
 
   openCreatePostDialog() {

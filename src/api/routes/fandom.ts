@@ -174,8 +174,8 @@ export default (app: Router) => {
    * }
    * description: checks if user has joined fandom with id fandomId
    */
-  route.post(
-    "/:fandomId/unjoin",
+  route.get(
+    "/:fandomId/hasJoined",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {

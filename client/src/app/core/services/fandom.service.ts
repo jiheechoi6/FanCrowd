@@ -372,6 +372,18 @@ export class FandomService {
     return this._http.delete(`/api/fandoms/${fandomId}`);
   }
 
+  joinFandom(fandomId: string = '') {
+    return this._http.post(`/api/fandoms/${fandomId}/join`, {});
+  }
+
+  leaveFandom(fandomId: string = '') {
+    return this._http.delete(`/api/fandoms/${fandomId}/unjoin`);
+  }
+
+  isUserInFandom(fandomId: string = '') {
+    return this._http.get<boolean>(`/api/fandoms/${fandomId}/hasJoined`);
+  }
+
   getPostsForFandom(categoryName: string, fandomName: string) {
     const dashedCategoryName = categoryName.split(' ').join('-');
     const dashedFandomName = fandomName.split(' ').join('-');
