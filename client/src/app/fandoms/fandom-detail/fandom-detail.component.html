@@ -5,16 +5,19 @@
         </ng-container>
     </xng-breadcrumb>
 
-    <header class="page-title">{{fandomName | hyphenToSpaces | titlecase}}</header>
+    <header>
+        <div class="margin-bottom-2 flex-row-container-space-between">
+            <i class="fas fa-trash-alt delete-icon" (click)="openDeleteFandomDialog()"></i>
+            <i class="fas fa-edit edit-icon" (click)="openEditFandomDialog()"></i>
+        </div>
+        <span class="page-title">
+            {{fandomName | hyphenToSpaces | titlecase}}
+        </span>
+    </header>
     <div class="flex-row-container-space-between join-create-post-buttons-container">
-        <button mat-raised-button color="primary" (click)="joinFandom()" *ngIf="!hasUserJoinedFandom">
+        <button mat-raised-button color="primary" (click)="toggleFandomJoin()">
             <span>
-                Join Fandom
-            </span>
-        </button>
-        <button mat-raised-button color="primary" (click)="removeFromFandom()" *ngIf="hasUserJoinedFandom">
-            <span>
-                Unjoin Fandom
+                {{hasUserJoinedFandom ? "Leave": "Join"}} Fandom
             </span>
         </button>
         <button mat-raised-button color="primary" (click)="openCreatePostDialog()">
@@ -28,11 +31,11 @@
         <div class="posts" [class.posts-loading]="isLoadingPosts">
 
             <app-spinner *ngIf="isLoadingPosts"></app-spinner>
-            <div *ngIf="!postsForFandom.length && !isLoadingPosts" class="no-posts-message">
-                <h1>It seems there are no posts yet. Join the fandom to create one!</h1>
+            <div *ngIf="!posts.length && !isLoadingPosts" class="no-posts-message">
+                <h1>No posts found. Create one using the button above!</h1>
             </div>
 
-            <mat-card class="rounded-corners box-shadow post" *ngFor="let post of postsForFandom">
+            <mat-card class="rounded-corners box-shadow post" *ngFor="let post of posts">
                 <mat-card-content>
                     <header class="username-container">
                         <div class="profile-img-wrapper">
@@ -53,15 +56,21 @@
                             <button mat-icon-button color="primary" class="like-post-button-container"
                                 (click)="updatePostLikes(post)">
                                 <span>
-                                    <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numLikes?.length}}</span>
+                                    <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"
+                                        *ngIf="!isUserInLikes(post!.likes!)"></mat-icon>
+                                    <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'fas'"
+                                        *ngIf="isUserInLikes(post!.likes!)"></mat-icon>
+                                    <span>{{post!.likes!.length}}</span>
                                 </span>
                             </button>
                             <button mat-icon-button color="warn" class="dislike-post-button-container"
                                 (click)="updatePostDislikes(post)">
                                 <span>
-                                    <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                    <span>{{post.numDislikes?.length}}</span>
+                                    <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"
+                                        *ngIf="!isUserInLikes(post!.dislikes!)"></mat-icon>
+                                    <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'fas'"
+                                        *ngIf="isUserInLikes(post!.dislikes!)"></mat-icon>
+                                    <span>{{post!.dislikes!?.length}}</span>
                                 </span>
                             </button>
                         </div>
@@ -78,13 +87,13 @@
         <mat-card class="events rounded-corners box-shadow">
             <mat-card-title>Upcoming Events</mat-card-title>
 
-            <mat-card-content class="no-events-message" *ngIf="!eventsForFandom.length && !isLoadingEvents">
+            <mat-card-content class="no-events-message" *ngIf="!events.length && !isLoadingEvents">
                 <h1>No events planned</h1>
             </mat-card-content>
 
             <mat-card-content class="event-items" [class.events-loading]="isLoadingEvents">
                 <app-spinner *ngIf="isLoadingEvents"></app-spinner>
-                <app-events-summary-card class="event-summary" [events]="eventsForFandom"></app-events-summary-card>
+                <app-events-summary-card class="event-summary" [events]="events"></app-events-summary-card>
             </mat-card-content>
         </mat-card>
 

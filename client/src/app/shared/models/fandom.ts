@@ -1,9 +1,9 @@
 interface Fandom {
-  _id?: number;
+  _id?: string;
   category: string;
   name: string;
   backgroundURL: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export default Fandom;

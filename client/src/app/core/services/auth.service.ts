@@ -19,6 +19,7 @@ export class AuthService {
 
   users: UserDTO[] = [
     {
+      _id: '1',
       username: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
@@ -58,33 +59,34 @@ export class AuthService {
       fandoms: [
         {
           name: 'Avengers',
-          id: 1,
+          _id: '14',
           activityLevel: 5,
           category: 'movies',
         },
         {
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson',
-          id: 10,
+          _id: '14',
           activityLevel: 1,
           category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
-          id: 20,
+          _id: '14',
           activityLevel: 4,
           category: 'games',
         },
       ],
     },
     {
+      _id: '2',
       username: 'user2',
       fullName: 'Raj Patel',
       city: 'Toronto',
@@ -107,27 +109,28 @@ export class AuthService {
         {
           // Movies Category
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
-          id: 25,
+          _id: '14',
           activityLevel: 3,
           category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
-          id: 14,
+          _id: '14',
           activityLevel: 5,
           category: 'shows',
         },
       ],
     },
     {
+      _id: '3',
       username: 'admin',
       fullName: 'Jihee',
       city: 'Toronto',

@@ -5,7 +5,10 @@ import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
-import { FandomPost } from 'src/app/shared/models/fandom-post';
+import {
+  FandomPost,
+  IUserLikeOnlyUser,
+} from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 import UserDTO from 'src/app/shared/models/user-dto';
 import { BreadcrumbService } from 'xng-breadcrumb';
@@ -78,52 +81,92 @@ export class PostDetailComponent implements OnInit {
       .subscribe((comments) => (this.comments = comments));
   }
 
+  isUserInLikes(likes: IUserLikeOnlyUser[]) {
+    return !!likes!.find((like) => like.user === this.loggedInUser!._id);
+  }
+
   updatePostLikes() {
-    if (this.post) {
-      // this.post.numLikes += 1;
-      // this._fandomService.updatePostForFandom(this.post.id, this.post);
-    }
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.dislikes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.likes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: true, fandomPost: this.post!._id })
+      .subscribe();
   }
 
   updatePostDislikes() {
-    if (this.post) {
-      // this.post.numDislikes += 1;
-      // this._fandomService.updatePostForFandom(this.post.id, this.post);
-    }
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.likes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      this.post!.dislikes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: false, fandomPost: this.post!._id })
+      .subscribe();
   }
 
   updateCommentLikes(comment: FandomPostComment) {
-    if (this.post) {
-      // comment.numLikes += 1;
-      // this.post = this._fandomService.editPostComment(
-      //   this.post?._id,
-      //   comment.id,
-      //   comment
-      // );
-    }
+    this._fandomService.toggleLikesOrDislikes(
+      comment.dislikes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      comment.likes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: true, fandomComment: comment!._id })
+      .subscribe();
   }
 
   updateCommentDislikes(comment: FandomPostComment) {
-    if (this.post) {
-      // comment.numDislikes += 1;
-      // this.post = this._fandomService.editPostComment(
-      //   this.post.id,
-      //   comment.id,
-      //   comment
-      // );
-    }
+    this._fandomService.toggleLikesOrDislikes(
+      comment.likes!,
+      false,
+      this.loggedInUser!._id!
+    );
+    this._fandomService.toggleLikesOrDislikes(
+      comment.dislikes!,
+      true,
+      this.loggedInUser!._id!
+    );
+    this._fandomService
+      .updateLikes({ isLike: false, fandomComment: comment!._id })
+      .subscribe();
   }
 
   deletePost() {
-    // this._fandomService.deletePostFromFandom(this.post?.id);
-    this._router.navigate(['/fandoms', this.fandomCategory, this.fandomName]);
+    this._fandomService
+      .deletePost(this.post!._id)
+      .subscribe(() =>
+        this._router.navigate([
+          '/fandoms',
+          this.fandomCategory,
+          this.fandomName,
+        ])
+      );
   }
 
   openDeletePostDialog() {
     this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Post Confirmation',
-        details: 'Are you sure you want to delete this post?',
+        details:
+          'Are you sure you want to delete this post? All associated comments will be removed as well',
         onConfirmCb: this.deletePost.bind(this),
       },
       autoFocus: false,
@@ -152,12 +195,7 @@ export class PostDetailComponent implements OnInit {
   openCreateCommentDialog() {
     const dialogRef = this._dialog.open(AddCommentDialogComponent, {
       data: {
-        userCreatingComment: {
-          role: this.loggedInUser?.role,
-          username: this.loggedInUser?.username,
-          profileURL: this.loggedInUser?.profileURL,
-        },
-        postId: this.post?._id,
+        postId: this.post!._id,
       },
       autoFocus: false,
       width: '450px',
@@ -171,20 +209,20 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  deleteComment(commentId: number) {
-    // this.post = this._fandomService.removeCommentFromPost(
-    //   this.post?.id,
-    //   commentId
-    // );
+  deleteComment(commentId: string, index: number) {
+    console.log(index, this.comments[index]);
+    this._fandomService.deleteCommentById(commentId).subscribe(() => {
+      this.comments.splice(index, 1);
+    });
   }
 
-  openDeleteCommentDialog(commentId: string | undefined) {
+  openDeleteCommentDialog(commentId: string | undefined, index: number) {
     this._dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Comment Confirmation',
         details: 'Are you sure you want to delete your comment?',
         onConfirmCb: this.deleteComment.bind(this),
-        params: [commentId],
+        params: [commentId, index],
       },
       autoFocus: false,
       width: '450px',
@@ -192,13 +230,12 @@ export class PostDetailComponent implements OnInit {
     });
   }
 
-  openEditCommentDialog(comment: FandomPostComment) {
+  openEditCommentDialog(comment: FandomPostComment, index: number) {
     const dialogRef = this._dialog.open(AddCommentDialogComponent, {
       data: {
         commentBeingEdited: {
           ...comment,
         },
-        postId: this.post?._id,
       },
       autoFocus: false,
       width: '450px',
@@ -206,8 +243,8 @@ export class PostDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((updatedComment: FandomPostComment) => {
-      if (updatedComment && this.postId) {
-        // this.post = this._fandomService.getCo(this.postId);
+      if (updatedComment) {
+        this.comments[index] = updatedComment;
       }
     });
   }
