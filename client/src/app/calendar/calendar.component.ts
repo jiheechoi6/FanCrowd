@@ -48,9 +48,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._authService.currentUser.subscribe((user) => {
-      this.userEvents = this._userService.getUserEventsByUsername(
-        user?.username || ''
-      );
+      this._userService.getUserEventsByUsername(user?.username || '').subscribe((events) => {
+        this.userEvents = events;
+      });
     });
   }
 

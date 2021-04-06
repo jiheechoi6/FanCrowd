@@ -31,10 +31,12 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
-      this.user = this._userService.getUserByUsername(username);
-      if (!this.user) {
-        this._router.navigate(['../']);
-      }
+      this._userService.getUserByUsername(username).subscribe((user) => {
+        this.user = user;
+        if (!this.user) {
+          this._router.navigate(['../']);
+        }
+      });
     });
 
     // this.userSubscription = this._authService.currentUserInfo.subscribe(
