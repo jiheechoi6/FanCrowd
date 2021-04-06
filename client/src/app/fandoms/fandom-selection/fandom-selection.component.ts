@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalService } from 'src/app/core/services/global.service';
 
 @Component({
   selector: 'app-fandom-selection',
@@ -30,7 +31,8 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     public _dialog: MatDialog,
     private _router: Router,
     private _authService: AuthService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _globalService: GlobalService
   ) {}
 
   ngOnInit() {
@@ -69,7 +71,7 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     const dialogRef = this._dialog.open(AddDialogComponent, {
       data: {
         title: 'Fandom',
-        categoryId: this.category?._id,
+        categoryId: this.category!._id,
         isCategory: false,
       },
       width: '360px',
@@ -81,19 +83,30 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((newFandom: Fandom) => {
       if (newFandom) {
         this.fandoms.push(newFandom);
-        this._snackBar.open(`${newFandom.name} fandom has been created!`, 'X', {
-          panelClass: ['snackbar'],
-          horizontalPosition: 'left',
-          duration: 2000,
-        });
+        this._snackBar.open(
+          `${this._globalService.toTitleCase(
+            newFandom.name
+          )} fandom has been created!`,
+          'X',
+          {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2500,
+          }
+        );
       }
     });
   }
 
   deleteCategory() {
-    this._fandomService
-      .deleteCategoryById(this.category?._id)
-      .subscribe(() => this._router.navigate(['/fandoms']));
+    this._fandomService.deleteCategoryById(this.category!._id).subscribe(() => {
+      this._snackBar.open(`${this.category.name} has been deleted`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 2500,
+      });
+      this._router.navigate(['/fandoms']);
+    });
   }
 
   openDeleteCategoryDialog() {
@@ -126,9 +139,14 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((updatedCategory: Category) => {
       if (updatedCategory) {
+        this._snackBar.open(`Category details have been updated`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 2500,
+        });
         this._router.navigate([
           '/fandoms',
-          updatedCategory.name.split(' ').join('-'),
+          this._globalService.convertSpacesToHyphen(updatedCategory.name),
         ]);
       }
     });

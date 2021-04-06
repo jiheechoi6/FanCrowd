@@ -26,7 +26,6 @@ export class DeleteDialogComponent implements OnInit {
     } else {
       this.data.onConfirmCb();
     }
-
     this.dialogRef.close();
   }
 }

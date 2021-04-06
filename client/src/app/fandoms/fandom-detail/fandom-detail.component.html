@@ -41,8 +41,8 @@
                         <div class="profile-img-wrapper">
                             <img class="profile-img" [src]="post!.postedBy!.profileURL" alt="Profile Picture">
                         </div>
-                        <span [routerLink]="['/users', post!.postedBy!.username]"
-                            class="username">{{post!.postedBy!.username | titlecase}}</span>
+                        <a [routerLink]="['/users', post!.postedBy!.username]"
+                            class="username">{{post!.postedBy!.username | titlecase}}</a>
                     </header>
                     <div class="title-post-date">
                         <span class="post-title">{{post.title}}</span>

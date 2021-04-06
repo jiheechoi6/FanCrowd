@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from '../core/services/auth.service';
 import { FandomService } from '../core/services/fandom.service';
+import { GlobalService } from '../core/services/global.service';
 import { AddDialogComponent } from '../shared/components/add-dialog/add-dialog.component';
 import Category from '../shared/models/category';
 
@@ -23,7 +24,8 @@ export class FandomsComponent implements OnInit, OnDestroy {
     private _fandomService: FandomService,
     private _authService: AuthService,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private _globalService: GlobalService
   ) {}
 
   ngOnInit() {
@@ -62,12 +64,14 @@ export class FandomsComponent implements OnInit, OnDestroy {
       if (newCategory) {
         this.categories.push(newCategory);
         this._snackBar.open(
-          `${newCategory.name} category has been created!`,
+          `${this._globalService.toTitleCase(
+            newCategory.name
+          )} category has been created!`,
           'X',
           {
             panelClass: ['snackbar'],
             horizontalPosition: 'left',
-            duration: 2000,
+            duration: 2500,
           }
         );
       }
