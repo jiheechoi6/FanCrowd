@@ -33,11 +33,10 @@ export class SignupComponent implements OnInit {
       password: this.password,
       username: this.username,
     };
-    
+
     this.isSigningUp = true;
 
     this._authService.createNewUser(newUser)?.subscribe((res)=>{
-      console.log(res);
       if (res.user) {
         // localStorage.setItem('id_token', res.token);
         // localStorage.setItem('user', JSON.stringify(res.user))

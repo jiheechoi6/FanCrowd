@@ -72,8 +72,6 @@ export class EventDetailComponent implements OnInit {
           this.groupReviewsByRating();
         });
       }
-
-      console.log("Event Details", this.event, this.event.fandom.category.name);
     });
   }
 

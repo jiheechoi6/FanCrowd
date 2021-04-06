@@ -170,13 +170,13 @@ export class FandomDetailComponent implements OnInit {
       false,
       this.loggedInUser!._id!
     );
-    console.log(this.loggedInUser?._id);
+
     this._fandomService.toggleLikesOrDislikes(
       post.likes!,
       true,
       this.loggedInUser!._id!
     );
-    console.log(post.likes);
+
     this._fandomService
       .updateLikes({ isLike: true, fandomPost: post!._id })
       .subscribe();

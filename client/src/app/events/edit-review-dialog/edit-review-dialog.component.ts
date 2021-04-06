@@ -22,9 +22,8 @@ export class EditReviewDialogComponent implements OnInit {
   onUpdateReview() {
     if (this.data.review) {
       this._eventService.updateReviewById(this.data.reviewId, this.data.review).subscribe((review) => {
-        console.log("Updated Review", review);
+        this.dialogRef.close(this.data.review);
       });
-      this.dialogRef.close(this.data.review);
     }
   }
 }

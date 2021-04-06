@@ -4,6 +4,7 @@ import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
 import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
 import UpdatedEventDTO from 'src/app/shared/models/update-event-dto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -222,12 +223,12 @@ export class EventService {
     return dateA > dateB ? 1 : -1;
   }
 
-  getEvents() {
+  getEvents(): Observable<Event[]> {
     // TODO: Return in sorted by startDate
     return this._http.get<Event[]>('/api/events');
   }
 
-  getEventsByCategoryAndFandom(categoryName: string, fandomName: string) {
+  getEventsByCategoryAndFandom(categoryName: string, fandomName: string): Observable<Event[]> {
     const dashedCategoryName = categoryName.split(' ').join('-');
     const dashedFandomName = fandomName.split(' ').join('-');
 
@@ -236,15 +237,14 @@ export class EventService {
     );
   }
 
-  getEventById(id: string | undefined) {
+  getEventById(id: string | undefined): Observable<Event> {
     return this._http.get<Event>(`/api/events/${id}`);
   }
 
-  createEvent(event: Event): void {
+  createEvent(event: Event): Observable<Event> {
     // Add event to server, code below requires server call
 
-    event._id = "9999";
-    this.events.push(event);
+    return this._http.post<Event>(`/api/events/`, event);
   }
 
   getAttendees() {
@@ -277,7 +277,7 @@ export class EventService {
     return false;
   }
 
-  getReviewsByEventId(eventId: string) {
+  getReviewsByEventId(eventId: string): Observable<Review[]> {
     return this._http.get<Review[]>(`/api/events/reviews/${eventId}`);
   }
 
@@ -285,17 +285,17 @@ export class EventService {
     // Add review to a specific event on server, code below requires server call
   }
 
-  updateReviewById(reviewId: string, updatedReview: UpdatedReviewDTO) {
+  updateReviewById(reviewId: string, updatedReview: UpdatedReviewDTO): Observable<UpdatedReviewDTO> {
     return this._http.patch<UpdatedReviewDTO>(
       `/api/events/reviews/${reviewId}`, updatedReview
     );
   }
 
-  deleteReview(reviewId: string) {
+  deleteReview(reviewId: string): Observable<Object> {
     return this._http.delete(`/api/events/review/${reviewId}`);
   }
 
-  updateEventById(eventId: string | undefined, updatedEvent: Event) {
+  updateEventById(eventId: string | undefined, updatedEvent: Event): Observable<Event> {
     return this._http.patch<Event>(
       `/api/events/${eventId}`, updatedEvent
     );

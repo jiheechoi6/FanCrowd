@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
 import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
-import UserDTO from '../shared/models/user-dto';
 import UserIdentity from '../shared/models/user-identity';
 
 @Component({
@@ -32,7 +31,6 @@ export class EventsComponent implements OnInit {
     this._eventService.getEvents().subscribe((events) => {
       this.allEvents = events;
       this.events = this.allEvents.slice(0, this.pageSize);
-      console.log("Events", this.events);
     });
   }
 
@@ -61,7 +59,7 @@ export class EventsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
         this._eventService.getEvents().subscribe((events) => {
-          this.events = events;
+          this.allEvents = events;
         });
       }
     });
