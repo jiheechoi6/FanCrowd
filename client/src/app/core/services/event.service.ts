@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
+import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
 
 @Injectable({
@@ -266,11 +267,11 @@ export class EventService {
     }
   }
 
-  deleteEvent(index: number): boolean {
+  deleteEvent(eventId: string): boolean {
     // Delete event from server, code below requires server call
 
-    if (index >= 0) {
-      this.events.splice(index, 1);
+    if (eventId) {
+      // this.events.splice(index, 1);
       return true;
     }
 
@@ -281,18 +282,20 @@ export class EventService {
     return this._http.get<Review[]>(`/api/events/reviews/${eventId}`);
   }
 
-  addReviewToEvent(eventId: number, review: Review): void {
+  addReviewToEvent(eventId: string, review: Review): void {
     // Add review to a specific event on server, code below requires server call
   }
 
-  updateReviewById(eventId: number | null, updatedReview: Review): void {
+  updateReviewById(reviewId: string, updatedReview: UpdatedReviewDTO) {
     // Update review to a specific review on server, code below requires server call
+    return this._http.patch<UpdatedReviewDTO>(
+      `/api/events/reviews/${reviewId}`, updatedReview
+    );
   }
 
   deleteReview(reviewId: string) {
     // Delete review from server, code below requires server call
-    console.log("Here-4", reviewId);
-    return this._http.delete(`/api/events/reviews/${reviewId}`);
+    return this._http.delete(`/api/events/review/${reviewId}`);
   }
 
   updateEventById(eventId: string | undefined, updatedEvent: Event) {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventService } from 'src/app/core/services/event.service';
+import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
 
 @Component({
   selector: 'app-edit-review-dialog',
@@ -12,15 +13,17 @@ export class EditReviewDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditReviewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { eventId: number; review: any },
-    private eventService: EventService
+    @Inject(MAT_DIALOG_DATA) public data: { reviewId: string; review: UpdatedReviewDTO },
+    private _eventService: EventService
   ) {}
 
   ngOnInit(): void {}
 
   onUpdateReview() {
     if (this.data.review) {
-      this.eventService.updateReviewById(this.data.eventId, this.data.review);
+      this._eventService.updateReviewById(this.data.reviewId, this.data.review).subscribe((review) => {
+        console.log("Updated Review", review);
+      });
       this.dialogRef.close(this.data.review);
     }
   }

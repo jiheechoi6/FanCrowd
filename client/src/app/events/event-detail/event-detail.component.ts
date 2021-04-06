@@ -14,6 +14,7 @@ import UserDTO from 'src/app/shared/models/user-dto';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import UserIdentity from 'src/app/shared/models/user-identity';
+import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
 
 @Component({
   selector: 'app-event',
@@ -148,13 +149,17 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openEditDialog(id: string | undefined) {
-    if (this.reviews) {
-      let index = this.reviews?.findIndex((review) => review._id === id);
-      let review = { ...this.reviews[index] };
+  openEditDialog(currentReview: Review) {
+    if (currentReview) {
+      let updatedReview: UpdatedReviewDTO = {
+        title: currentReview.title,
+        content: currentReview.content,
+        rating: currentReview.rating,
+        event: this.id
+      };
 
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
-        data: { eventId: this.id, review: review },
+        data: { reviewId: currentReview._id, review: updatedReview },
         autoFocus: false,
         width: '450px',
         disableClose: true,
@@ -249,7 +254,7 @@ export class EventDetailComponent implements OnInit {
       this._eventService.getEvents().subscribe((events) => {
         allEvents = events;
         index = allEvents.findIndex((event) => event._id === id);
-        this._eventService.deleteEvent(index);
+        this._eventService.deleteEvent(id);
       });
 
       if (this.user && this.event) {

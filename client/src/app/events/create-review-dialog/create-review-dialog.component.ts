@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import PartialUserDTO from 'src/app/shared/models/partial-user-dto';
-import { EventService } from '../../core/services/event.service';
-import Review from '../../shared/models/review';
+import { EventService } from 'src/app/core/services/event.service';
+import Review from 'src/app/shared/models/review';
 
 @Component({
   selector: 'add-review-dialog',
@@ -39,7 +39,7 @@ export class ReviewDialogComponent implements OnInit {
 
   addReview() {
     this.newReview.postDate = new Date();
-    this.eventService.addReviewToEvent(this.data.id, this.newReview);
+    this.eventService.addReviewToEvent(this.data.id.toString(), this.newReview);
     this.dialogRef.close(this.newReview);
   }
 }
