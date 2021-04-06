@@ -78,8 +78,8 @@ export interface IFandomPostDTOWithLikes {
   postedBy: IUserPostedBy;
   fandom: mongoose.Types._ObjectId;
   createdAt: Date;
-  numLikes: IUserLikeOnlyUser[];
-  numDislikes: IUserLikeOnlyUser[];
+  likes: IUserLikeOnlyUser[];
+  dislikes: IUserLikeOnlyUser[];
 }
 
 export interface INewFandomPostInputDTO {
@@ -112,8 +112,8 @@ export interface IFandomCommentDTOWithLikes {
   postedBy: IUserPostedBy;
   fandomPost: mongoose.Types._ObjectId;
   createdAt: Date;
-  numLikes: IUserLikeOnlyUser[];
-  numDislikes: IUserLikeOnlyUser[];
+  likes: IUserLikeOnlyUser[];
+  dislikes: IUserLikeOnlyUser[];
 }
 
 export interface IUpdateFandomDTO {

@@ -1,32 +1,45 @@
-<h1 mat-dialog-title>Add New {{data.title | titlecase}}</h1>
+<h1 mat-dialog-title>{{data.isEditing ? "Edit" : "Add New"}} {{data.title | titlecase}}</h1>
 
 <section mat-dialog-content class="mat-typography">
     <form (ngSubmit)="onConfirm()" #addForm="ngForm">
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Name</mat-label>
-                <input matInput [(ngModel)]="object.name" name="name" required pattern=".*\S+.*" autocomplete="off">
-                <mat-error>Name is a required field</mat-error>
+                <input matInput [(ngModel)]="entity.name" name="name" required pattern="^[a-zA-Z\d\'\s]+$"
+                    autocomplete="off" #name="ngModel">
+                <mat-error *ngIf="name.hasError('required')">Name is a required field</mat-error>
+                <mat-error *ngIf="name.hasError('pattern')">Name can only contain alphanumeric characters, spaces and '
+                </mat-error>
             </mat-form-field>
         </div>
 
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Image URL</mat-label>
-                <input matInput [(ngModel)]="object.backgroundUrl" name="title" required
+                <input matInput [(ngModel)]="entity.backgroundURL" name="title" required
                     pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #imageUrl="ngModel">
                 <mat-error *ngIf="imageUrl.errors?.required">Image URL is a required field</mat-error>
                 <mat-error *ngIf="imageUrl.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <div mat-dialog-actions align="end">
-    <button mat-flat-button type="button" mat-dialog-close color="basic">Cancel</button>
-    <button mat-flat-button color="primary" (click)="addForm.ngSubmit.emit()" [disabled]="!addForm.form.valid">
-        <span>
-            Add <i class="fas fa-plus"></i>
-        </span>
+    <button mat-flat-button type="button" mat-dialog-close color="basic" [disabled]="isLoading">Cancel</button>
+    <button mat-flat-button color="primary" (click)="addForm.ngSubmit.emit()"
+        [disabled]="!addForm.form.valid || isLoading">
+        <div class="flex-row-container-space-between" *ngIf="!data.isEditing">
+            <span *ngIf="!isLoading">Add <i class="fas fa-plus"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Adding</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
+        <div class="flex-row-container-space-between" *ngIf="data.isEditing">
+            <span *ngIf="!isLoading">Confirm <i class="fas fa-check"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Updating</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </div>

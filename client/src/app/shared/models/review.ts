@@ -1,7 +1,7 @@
 import PartialUserDTO from './partial-user-dto';
 
 interface Review {
-  id?: number;
+  _id?: string;
   title: string;
   rating: number;
   content: string;

@@ -1,7 +1,10 @@
-interface PartialUserDTO {
+export default interface PartialUserDTO {
   username: string;
-  profileUrl: string;
+  profileURL: string;
   role: string;
 }
 
-export default PartialUserDTO;
+export default interface PartialUserEventDTO {
+  username: string;
+  role: string;
+}

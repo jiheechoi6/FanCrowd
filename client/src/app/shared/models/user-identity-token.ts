@@ -1,10 +1,7 @@
+import UserIdentity from "./user-identity";
+
 interface UserIdentityToken{
     token: string;
-    user: {
-        _id: string;
-        role: string;
-        username: string;
-        profileURL: string;
-    }
+    user: UserIdentity;
 }
 export default UserIdentityToken

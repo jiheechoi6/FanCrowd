@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import UserDTO from 'src/app/shared/models/user-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Event from 'src/app/shared/models/event';
 import Fandom from 'src/app/shared/models/fandom';
 import FandomDTO from 'src/app/shared/models/fandom-dto';
 
@@ -26,51 +27,51 @@ export class UserService {
           name: 'Comic Con',
           date: new Date(2021, 10, 12),
           totalAttending: 2,
-          id: 1,
+          id: "1",
         },
         {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
         {
           name: 'J.K Rowling Meet & Greet',
           date: new Date(2021, 9, 12),
           totalAttending: 3,
-          id: 5,
+          id: "5",
         },
         {
           name: 'FIFA World Cup Party',
           date: new Date(2021, 11, 3),
           totalAttending: 1,
-          id: 7,
+          id: "7",
         },
       ],
       fandoms: [
         {
           name: 'Avengers',
-          id: 1,
+          _id: '14',
           activityLevel: 5,
           category: 'movies',
         },
         {
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson',
-          id: 10,
+          _id: '14',
           activityLevel: 1,
           category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
-          id: 20,
+          _id: '14',
           activityLevel: 4,
           category: 'games',
         },
@@ -92,28 +93,28 @@ export class UserService {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
       ],
       fandoms: [
         {
           // Movies Category
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
-          id: 25,
+          _id: '14',
           activityLevel: 3,
           category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
-          id: 14,
+          _id: '14',
           activityLevel: 5,
           category: 'shows',
         },
@@ -137,16 +138,17 @@ export class UserService {
 
   getUserByUsername(username: string){
     // Get user from server, code below requires server call
-    return this._http.get<UserDTO>(`/api/users/${username}`,
-      {responseType: 'json'});
+    // return this.users.find((user) => user.username === username) || null;
+    return this._http.get<UserDTO>(`/api/users/${username}`);
   }
 
   getUserEventsByUsername(username: string) {
     // Get User's events from server, code below requires server call
-    return (
-      this.users.find((user) => user.username === username)?.attendingEvents ||
-      []
-    );
+    // return (
+    //   this.users.find((user) => user.username === username)?.attendingEvents ||
+    //   []
+    // );
+    return this._http.get<EventDTO[]>(`/api/users/${username}/events`);
   }
 
   deleteUserByUsername(username: string): void {
@@ -193,7 +195,7 @@ export class UserService {
 
   removeEventFromUserEvents(
     username: string,
-    eventId: number | undefined
+    eventId: string | undefined
   ): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
@@ -210,7 +212,7 @@ export class UserService {
     }
   }
 
-  removeEventFromAllUsersEvents(eventId: number | undefined): void {
+  removeEventFromAllUsersEvents(eventId: string | undefined): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
@@ -260,7 +262,7 @@ export class UserService {
     const fandomDTO: FandomDTO = {
       activityLevel: 0,
       category: fandom.category,
-      id: fandom._id,
+      _id: fandom._id,
       name: fandom.name,
     };
 
@@ -269,16 +271,15 @@ export class UserService {
 
   removeFandomFromUser(username: string, fandomId: number | undefined) {
     //Remove a fandom with id fandomId from Users fandoms, code below requires server call
-
-    for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].username === username) {
-        for (let k = 0; k < this.users[i].fandoms.length; k++) {
-          this.users[i].fandoms = this.users[i].fandoms.filter(
-            (fandom) => fandom.id !== fandomId
-          );
-        }
-      }
-    }
+    // for (let i = 0; i < this.users.length; i++) {
+    //   if (this.users[i].username === username) {
+    //     for (let k = 0; k < this.users[i].fandoms.length; k++) {
+    //       this.users[i].fandoms = this.users[i].fandoms.filter(
+    //         (fandom) => fandom.id !== fandomId
+    //       );
+    //     }
+    //   }
+    // }
   }
 
   hasUserJoinedFandom(username: string, fandomName: string) {

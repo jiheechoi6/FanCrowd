@@ -19,6 +19,7 @@ export class AuthService {
 
   users: UserDTO[] = [
     {
+      _id: '1',
       username: 'user1',
       fullName: 'Chandra Panta Chhetri',
       city: 'Toronto',
@@ -34,57 +35,58 @@ export class AuthService {
           name: 'Comic Con',
           date: new Date(2021, 10, 12),
           totalAttending: 2,
-          id: 1,
+          id: "1",
         },
         {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
         {
           name: 'J.K Rowling Meet & Greet',
           date: new Date(2021, 9, 12),
           totalAttending: 3,
-          id: 5,
+          id: "5",
         },
         {
           name: 'FIFA World Cup Party',
           date: new Date(2021, 11, 3),
           totalAttending: 1,
-          id: 7,
+          id: "7",
         },
       ],
       fandoms: [
         {
           name: 'Avengers',
-          id: 1,
+          _id: '14',
           activityLevel: 5,
           category: 'movies',
         },
         {
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson',
-          id: 10,
+          _id: '14',
           activityLevel: 1,
           category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
-          id: 20,
+          _id: '14',
           activityLevel: 4,
           category: 'games',
         },
       ],
     },
     {
+      _id: '2',
       username: 'user2',
       fullName: 'Raj Patel',
       city: 'Toronto',
@@ -100,34 +102,35 @@ export class AuthService {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
       ],
       fandoms: [
         {
           // Movies Category
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
-          id: 25,
+          _id: '14',
           activityLevel: 3,
           category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
-          id: 14,
+          _id: '14',
           activityLevel: 5,
           category: 'shows',
         },
       ],
     },
     {
+      _id: '3',
       username: 'admin',
       fullName: 'Jihee',
       city: 'Toronto',
@@ -236,7 +239,7 @@ export class AuthService {
 
   removeEventFromUserEvents(
     username: string,
-    eventId: number | undefined
+    eventId: string | undefined
   ): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
@@ -253,7 +256,7 @@ export class AuthService {
     // }
   }
 
-  removeEventFromAllUsersEvents(eventId: number | undefined): void {
+  removeEventFromAllUsersEvents(eventId: string | undefined): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
