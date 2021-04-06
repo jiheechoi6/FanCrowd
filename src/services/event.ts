@@ -142,7 +142,7 @@ export default class EventService {
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
     const eventDoc: IEvent = await this.getEventById(eventId);
     const reviews: IEventReview[] =
-      (await EventReview.find({ event: eventDoc })
+      (await EventReview.find({ event: eventDoc }).sort({updatedAt: 'ascending'})
         .populate("postedBy", ["username", "role", "profileURL"])
         .populate("event")) || [];
     return reviews;

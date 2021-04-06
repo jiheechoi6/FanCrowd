@@ -131,7 +131,7 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) => {
     try {
-      const events: IEvent[] = await Event.find({})
+      const events: IEvent[] = await Event.find({}).sort({startDate: 'ascending'})
         .populate("postedBy", ["username", "role", "profileURL"])
         .populate({
           path: "fandom",

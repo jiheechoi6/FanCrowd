@@ -14,7 +14,7 @@ import UserDTO from 'src/app/shared/models/user-dto';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import UserIdentity from 'src/app/shared/models/user-identity';
-import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
+import ReviewDTO from 'src/app/shared/models/review-dto';
 
 @Component({
   selector: 'app-event',
@@ -78,12 +78,7 @@ export class EventDetailComponent implements OnInit {
   openAddReviewDialog(): void {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       data: {
-        id: this.id,
-        user: {
-          username: this.user?.username,
-          profileUrl: this.user?.profileURL,
-          role: this.user?.role,
-        },
+        eventId: this.id
       },
       width: '800px',
       maxHeight: '90vh',
@@ -148,7 +143,7 @@ export class EventDetailComponent implements OnInit {
 
   openEditDialog(currentReview: Review) {
     if (currentReview) {
-      let updatedReview: UpdatedReviewDTO = {
+      let updatedReview: ReviewDTO = {
         title: currentReview.title,
         content: currentReview.content,
         rating: currentReview.rating,

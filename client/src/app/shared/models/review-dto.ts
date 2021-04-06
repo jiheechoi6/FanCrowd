@@ -1,8 +1,8 @@
-interface UpdatedReviewDTO {
+interface ReviewDTO {
   title: string;
   rating: number;
   content: string;
   event: string;      // Event id
 }
 
-export default UpdatedReviewDTO;
+export default ReviewDTO;

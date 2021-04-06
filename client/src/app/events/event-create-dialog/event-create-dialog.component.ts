@@ -128,14 +128,14 @@ export class EventCreateDialogComponent implements OnInit {
   createEvent() {
     this.setStartDateAndEndDate();
     this._eventService.createEvent(this.event).subscribe((newEvent) => {
-      this.dialogRef.close(this.event);
+      this.dialogRef.close(newEvent);
     });
   }
 
   updateEvent() {
     this.setStartDateAndEndDate();
     this._eventService.updateEventById(this.event._id, this.event).subscribe((updatedEvent) => {
-      this.dialogRef.close(this.event);
+      this.dialogRef.close(updatedEvent);
     });
   }
 }
