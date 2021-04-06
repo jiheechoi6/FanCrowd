@@ -178,7 +178,7 @@ export class UserService {
         country: updatedUser.country,
         email: updatedUser.email,
         fullName: updatedUser.fullName,
-        profileURL: updatedUser.profileUrl
+        profileURL: updatedUser.profileURL
       }).subscribe();
   }
 
@@ -247,7 +247,7 @@ export class UserService {
   getUserProfilePhotos() {
     let photos: Map<string, string> = new Map<string, string>();
     this.users.forEach((user) => {
-      photos.set(user.username, user.profileUrl);
+      photos.set(user.username, user.profileURL);
     });
     return photos;
   }

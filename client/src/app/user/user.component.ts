@@ -88,7 +88,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this._authService.currentUser.next({
           ...this._authService.currentUser.value,
           username: updatedUser.username,
-          profileURL: updatedUser.profileUrl
+          profileURL: updatedUser.profileURL
         });
       }
     });
@@ -137,7 +137,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this._authService.currentUser.next({
           ...this._authService.currentUser.value,
           username: updatedUser.username,
-          profileURL: updatedUser.profileUrl
+          profileURL: updatedUser.profileURL
         });
       }
     });
