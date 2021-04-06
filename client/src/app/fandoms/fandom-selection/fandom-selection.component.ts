@@ -65,7 +65,7 @@ export class FandomSelectionComponent implements OnInit, OnDestroy {
       );
   }
 
-  openCreateFandomDialog(): void {
+  openCreateFandomDialog() {
     const dialogRef = this._dialog.open(AddDialogComponent, {
       data: {
         title: 'Fandom',

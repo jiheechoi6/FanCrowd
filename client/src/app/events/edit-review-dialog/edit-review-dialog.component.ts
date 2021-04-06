@@ -13,17 +13,20 @@ export class EditReviewDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditReviewDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { reviewId: string; review: ReviewDTO },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { reviewId: string; review: ReviewDTO },
     private _eventService: EventService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onUpdateReview() {
     if (this.data.review) {
-      this._eventService.updateReviewById(this.data.reviewId, this.data.review).subscribe((review) => {
-        this.dialogRef.close(review);
-      });
+      this._eventService
+        .updateReviewById(this.data.reviewId, this.data.review)
+        .subscribe((review) => {
+          this.dialogRef.close(review);
+        });
     }
   }
 }

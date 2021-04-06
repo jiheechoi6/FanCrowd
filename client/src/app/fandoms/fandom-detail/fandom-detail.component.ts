@@ -44,7 +44,7 @@ export class FandomDetailComponent implements OnInit {
     private _router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     // this._authService.currentUserInfo.subscribe(
     //   (user) => (this.loggedInUser = user)
     // );

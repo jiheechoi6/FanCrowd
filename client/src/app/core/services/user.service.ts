@@ -27,25 +27,25 @@ export class UserService {
           name: 'Comic Con',
           date: new Date(2021, 10, 12),
           totalAttending: 2,
-          id: "1",
+          id: '1',
         },
         {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: "2",
+          id: '2',
         },
         {
           name: 'J.K Rowling Meet & Greet',
           date: new Date(2021, 9, 12),
           totalAttending: 3,
-          id: "5",
+          id: '5',
         },
         {
           name: 'FIFA World Cup Party',
           date: new Date(2021, 11, 3),
           totalAttending: 1,
-          id: "7",
+          id: '7',
         },
       ],
       fandoms: [
@@ -93,7 +93,7 @@ export class UserService {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: "2",
+          id: '2',
         },
       ],
       fandoms: [
@@ -136,7 +136,7 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
-  getUserByUsername(username: string){
+  getUserByUsername(username: string) {
     // Get user from server, code below requires server call
 
     // return this.users.find((user) => user.username === username) || null;
@@ -152,22 +152,19 @@ export class UserService {
     return this._http.get<EventDTO[]>(`/api/users/${username}/events`);
   }
 
-  deleteUserByUsername(username: string): void {
+  deleteUserByUsername(username: string) {
     // Delete user from server, code below requires server call
   }
 
-  banUserByUsername(username: string): void {
+  banUserByUsername(username: string) {
     // Delete user from server, code below requires server call
   }
 
-  updateUserByUsername(
-    updatedUser: UserDTO,
-    usernameBeforeUpdate: string
-  ): void {
+  updateUserByUsername(updatedUser: UserDTO, usernameBeforeUpdate: string) {
     // Update user info on server, code below requires server call
   }
 
-  updateUserEventsByUsername(username: string, event: EventDTO): void {
+  updateUserEventsByUsername(username: string, event: EventDTO) {
     // Update user info (Add event to events attending) on server,
     // code below requires server call
 
@@ -184,10 +181,7 @@ export class UserService {
     }
   }
 
-  removeEventFromUserEvents(
-    username: string,
-    eventId: string | undefined
-  ): void {
+  removeEventFromUserEvents(username: string, eventId: string | undefined) {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 
@@ -203,7 +197,7 @@ export class UserService {
     }
   }
 
-  removeEventFromAllUsersEvents(eventId: string | undefined): void {
+  removeEventFromAllUsersEvents(eventId: string | undefined) {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 

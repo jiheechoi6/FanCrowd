@@ -5,9 +5,7 @@
         <div class="profile-info-container" *ngIf="user">
             <section class="profile-img-info-container">
                 <div class="profile-img-wrapper">
-                    <img class="profile-img" src="{{user.profileUrl}}"
-                        onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'"
-                        alt="Profile Picture">
+                    <img class="profile-img" src="{{user.profileUrl}}" alt="Profile Picture">
                 </div>
 
                 <mat-card class="user-info rounded-corners box-shadow">

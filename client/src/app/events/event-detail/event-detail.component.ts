@@ -9,11 +9,10 @@ import { EditReviewDialogComponent } from '../edit-review-dialog/edit-review-dia
 import { UserService } from 'src/app/core/services/user.service';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
-import UserIdentity from 'src/app/shared/models/user-identity';
+import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import ReviewDTO from 'src/app/shared/models/review-dto';
 import Event from '../../shared/models/event';
 import Review from '../../shared/models/review';
-import EventDTO from 'src/app/shared/models/event-dto';
 import Attendee from 'src/app/shared/models/attendee';
 
 @Component({
@@ -27,7 +26,7 @@ export class EventDetailComponent implements OnInit {
   attendees: Attendee[] = [];
   today: Date = new Date();
   isAttending: boolean = false;
-  id: string = "";
+  id: string = '';
   user: UserIdentity | null = null;
   wroteReview: boolean = false;
   avgRating = 0;
@@ -40,21 +39,21 @@ export class EventDetailComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _breadcrumbService: BreadcrumbService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this._activatedRoute.params.subscribe((params) => {
       this.id = params['id'];
     });
   }
 
-  ngOnInit(): void {
-    this.user = this._authService.getCurrentUser().value;
+  ngOnInit() {
+    this._authService.currentUser.subscribe((user) => (this.user = user));
     if (this.user) {
       this._eventService.getAttendees(this.id).subscribe((attendees) => {
         this.isAttending = false;
         this.attendees = attendees;
         this.attendees.forEach((attendee) => {
-          if (this.user?._id === attendee.user){
+          if (this.user?._id === attendee.user) {
             this.isAttending = true;
           }
         });
@@ -77,10 +76,10 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openAddReviewDialog(): void {
+  openAddReviewDialog() {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
       data: {
-        eventId: this.id
+        eventId: this.id,
       },
       width: '800px',
       maxHeight: '90vh',
@@ -90,14 +89,12 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newReview: Review) => {
       if (newReview) {
-        this._eventService.getReviewsByEventId(this.id).subscribe(
-          (reviews) => {
-            this.reviews = reviews;
-            this.alreadyWroteReview(this.reviews);
-            this.calculateAvgRating();
-            this.groupReviewsByRating();
-          }
-        );
+        this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
+          this.reviews = reviews;
+          this.alreadyWroteReview(this.reviews);
+          this.calculateAvgRating();
+          this.groupReviewsByRating();
+        });
       }
     });
   }
@@ -132,14 +129,12 @@ export class EventDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this._eventService.getReviewsByEventId(this.id).subscribe(
-        (reviews) => {
-          this.reviews = reviews;
-          this.alreadyWroteReview(this.reviews);
-          this.calculateAvgRating();
-          this.groupReviewsByRating();
-        }
-      );
+      this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
+        this.reviews = reviews;
+        this.alreadyWroteReview(this.reviews);
+        this.calculateAvgRating();
+        this.groupReviewsByRating();
+      });
     });
   }
 
@@ -149,7 +144,7 @@ export class EventDetailComponent implements OnInit {
         title: currentReview.title,
         content: currentReview.content,
         rating: currentReview.rating,
-        event: this.id
+        event: this.id,
       };
 
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
@@ -161,20 +156,20 @@ export class EventDetailComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe((updatedReview: Review) => {
         if (updatedReview) {
-          this._eventService.getReviewsByEventId(this.id).subscribe(
-            (reviews) => {
+          this._eventService
+            .getReviewsByEventId(this.id)
+            .subscribe((reviews) => {
               this.reviews = reviews;
               this.alreadyWroteReview(this.reviews);
               this.calculateAvgRating();
               this.groupReviewsByRating();
-            }
-          );
+            });
         }
       });
     }
   }
 
-  alreadyWroteReview(reviews: Review[] | null): void {
+  alreadyWroteReview(reviews: Review[] | null) {
     this.wroteReview = false;
 
     if (reviews) {
@@ -187,27 +182,29 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  addEventToProfile(): void {
+  addEventToProfile() {
     this.isAttending = true;
 
     if (this.event && this.user) {
       let newAttendee: Attendee = {
         user: this.user?._id,
-        event: this.id
+        event: this.id,
       };
 
-      this._eventService.createAttendee(this.id, newAttendee).subscribe((attendee) => {
-        if (attendee){
-          this.isAttending = true;
-        }
-      });
+      this._eventService
+        .createAttendee(this.id, newAttendee)
+        .subscribe((attendee) => {
+          if (attendee) {
+            this.isAttending = true;
+          }
+        });
     }
   }
 
-  removeEventFromProfile(eventId: string | undefined): void {
+  removeEventFromProfile(eventId: string | undefined) {
     if (this.user && this.event) {
       this.attendees.forEach((attendee: Attendee) => {
-        if (attendee.user === this.user?._id && this.event?._id === eventId){
+        if (attendee.user === this.user?._id && this.event?._id === eventId) {
           if (attendee._id) {
             this._eventService.deleteAttendee(attendee._id).subscribe(() => {
               this.isAttending = false;
@@ -218,7 +215,7 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  deleteEvent(id: string | undefined): void {
+  deleteEvent(id: string | undefined) {
     if (id) {
       this._eventService.deleteReviews(id).subscribe(() => {
         this._eventService.deleteAttendees(id).subscribe(() => {
@@ -237,8 +234,8 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  deleteReview(id: string | undefined): void {
-    if (id){
+  deleteReview(id: string | undefined) {
+    if (id) {
       this._eventService.deleteReview(id).subscribe(() => {});
     }
   }
@@ -253,9 +250,11 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
       if (updatedEvent) {
-        this._eventService.getEventById(updatedEvent._id).subscribe((updatedEvent) => {
-          this.event = updatedEvent;
-        });
+        this._eventService
+          .getEventById(updatedEvent._id)
+          .subscribe((updatedEvent) => {
+            this.event = updatedEvent;
+          });
       }
     });
   }

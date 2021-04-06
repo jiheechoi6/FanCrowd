@@ -10,9 +10,9 @@ import Event from '../../shared/models/event';
 interface DialogData {
   eventBeingUpdated?: Event;
   user: {
-    username: string,
-    profileURL: string,
-    role: string
+    username: string;
+    profileURL: string;
+    role: string;
   };
 }
 
@@ -71,7 +71,7 @@ export class EventCreateDialogComponent implements OnInit {
           category: {
             _id: '',
             name: '',
-            backgroundURL: ''
+            backgroundURL: '',
           },
           _id: '',
           name: '',
@@ -85,14 +85,14 @@ export class EventCreateDialogComponent implements OnInit {
         postedBy: {
           username: this.data.user.username,
           profileURL: this.data.user.profileURL,
-          role: this.data.user.role
+          role: this.data.user.role,
         },
         totalAttendance: 0,
       };
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._fandomService.getCategories().subscribe((res) => {
       this.categories = res;
     });
@@ -105,11 +105,9 @@ export class EventCreateDialogComponent implements OnInit {
   fetchFandomsForCategory(categoryName: string) {
     this._fandomService
       .getFandomsByCategories(categoryName)
-      .subscribe(
-        (categoryFandoms) => {
-          (this.fandomsForCategory = categoryFandoms.fandoms);
-        }
-      );
+      .subscribe((categoryFandoms) => {
+        this.fandomsForCategory = categoryFandoms.fandoms;
+      });
   }
 
   fandomChange(event: any) {
@@ -134,8 +132,10 @@ export class EventCreateDialogComponent implements OnInit {
 
   updateEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.updateEventById(this.event._id, this.event).subscribe((updatedEvent) => {
-      this.dialogRef.close(updatedEvent);
-    });
+    this._eventService
+      .updateEventById(this.event._id, this.event)
+      .subscribe((updatedEvent) => {
+        this.dialogRef.close(updatedEvent);
+      });
   }
 }

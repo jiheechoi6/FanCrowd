@@ -36,7 +36,7 @@ export class CreatePostDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onCreatePost() {
     this.isLoading = true;

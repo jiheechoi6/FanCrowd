@@ -19,7 +19,7 @@ export class EditUserDialogComponent implements OnInit {
     this.usernameBeforeUpdate = user.username;
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onUpdateUser() {
     this.userService.updateUserByUsername(this.user, this.usernameBeforeUpdate);

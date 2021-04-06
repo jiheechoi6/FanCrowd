@@ -40,7 +40,7 @@ export class PostDetailComponent implements OnInit {
     private _breadcrumbService: BreadcrumbService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._activatedRoute.params.subscribe((params) => {
       this.postId = params['postId'] || '';
       this.fandomCategory = params['category'];

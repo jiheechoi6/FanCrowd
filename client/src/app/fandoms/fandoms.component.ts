@@ -46,7 +46,7 @@ export class FandomsComponent implements OnInit, OnDestroy {
       });
   }
 
-  openCreateCategoryDialog(): void {
+  openCreateCategoryDialog() {
     const dialogRef = this.dialog.open(AddDialogComponent, {
       data: {
         title: 'Category',

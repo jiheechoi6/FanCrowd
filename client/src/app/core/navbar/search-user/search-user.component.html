@@ -1,24 +1,18 @@
 <section>
     <mat-form-field class="user-search" appearance="standard" floatLabel="never" color="primary">
-        <input class="input-field" type="text" 
-            matInput
-            placeholder="Search for user"
-            aria-label="userForSearch"
-            [formControl]="myControl"
-            [matAutocomplete]="auto"
-            highlight=""
-            [(ngModel)]="userToSearch"
-            >
+        <input class="input-field" type="text" matInput placeholder="Search for user" aria-label="userForSearch"
+            [formControl]="myControl" [matAutocomplete]="auto" highlight="" [(ngModel)]="userToSearch">
         <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngIf="(filteredOptions | async | keyvalue)?.length==0" color="warn">
                 no users with this username
             </mat-option>
-            <mat-option *ngFor="let option of filteredOptions | async | keyvalue; let i=index" [value]="option.value" (click)="searchUser()">
+            <mat-option *ngFor="let option of filteredOptions | async | keyvalue; let i=index" [value]="option.value"
+                (click)="searchUser()">
                 <div class="profile-img-wrapper">
                     <img class="profile-img" width="30" height="30" src={{userProfilePhotos.get(option.value)}}
-                    onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'">
+                        alt="Profile">
                 </div>
-                <span id="name">{{option.key}}</span> 
+                <span id="name">{{option.key}}</span>
                 <span id="username">({{option.value}})</span>
             </mat-option>
         </mat-autocomplete>

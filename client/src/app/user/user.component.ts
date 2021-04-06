@@ -28,7 +28,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private _authService: AuthService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
       this._userService.getUserByUsername(username).subscribe((user) => {
@@ -44,7 +44,7 @@ export class UserComponent implements OnInit, OnDestroy {
     // );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     // this.userSubscription.unsubscribe();
   }
 
