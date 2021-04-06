@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import UserDTO from 'src/app/shared/models/user-dto';
 import EventDTO from 'src/app/shared/models/event-dto';
+import Event from 'src/app/shared/models/event';
 import Fandom from 'src/app/shared/models/fandom';
 import FandomDTO from 'src/app/shared/models/fandom-dto';
 
@@ -26,25 +27,25 @@ export class UserService {
           name: 'Comic Con',
           date: new Date(2021, 10, 12),
           totalAttending: 2,
-          id: 1,
+          id: "1",
         },
         {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
         {
           name: 'J.K Rowling Meet & Greet',
           date: new Date(2021, 9, 12),
           totalAttending: 3,
-          id: 5,
+          id: "5",
         },
         {
           name: 'FIFA World Cup Party',
           date: new Date(2021, 11, 3),
           totalAttending: 1,
-          id: 7,
+          id: "7",
         },
       ],
       fandoms: [
@@ -92,7 +93,7 @@ export class UserService {
           name: 'World Expo',
           date: new Date(2021, 5, 12),
           totalAttending: 2,
-          id: 2,
+          id: "2",
         },
       ],
       fandoms: [
@@ -135,22 +136,20 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
-  getAllUsers(){
-    return this._http.get<UserDTO[]>('/api/users/', {responseType: 'json'});
-  }
-
   getUserByUsername(username: string){
     // Get user from server, code below requires server call
-    return this._http.get<UserDTO>('/api/users/username',
-      {responseType: 'json'});
+
+    // return this.users.find((user) => user.username === username) || null;
+    return this._http.get<UserDTO>(`/api/users/${username}`);
   }
 
   getUserEventsByUsername(username: string) {
     // Get User's events from server, code below requires server call
-    return (
-      this.users.find((user) => user.username === username)?.attendingEvents ||
-      []
-    );
+    // return (
+    //   this.users.find((user) => user.username === username)?.attendingEvents ||
+    //   []
+    // );
+    return this._http.get<EventDTO[]>(`/api/users/${username}/events`);
   }
 
   deleteUserByUsername(username: string): void {
@@ -187,7 +186,7 @@ export class UserService {
 
   removeEventFromUserEvents(
     username: string,
-    eventId: number | undefined
+    eventId: string | undefined
   ): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
@@ -204,7 +203,7 @@ export class UserService {
     }
   }
 
-  removeEventFromAllUsersEvents(eventId: number | undefined): void {
+  removeEventFromAllUsersEvents(eventId: string | undefined): void {
     // Update user info (remove event from events attending) on server,
     // code below requires server call
 

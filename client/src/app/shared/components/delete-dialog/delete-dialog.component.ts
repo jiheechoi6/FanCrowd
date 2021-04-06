@@ -5,7 +5,7 @@ interface DialogData {
   title: string;
   details: string;
   onConfirmCb: Function;
-  params?: any[];
+  params?: any;
 }
 
 @Component({

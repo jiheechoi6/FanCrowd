@@ -140,9 +140,12 @@ export default class UserService {
 
   public async getUserFandoms(username: string) {
     const user = await this.getUserByUsername(username);
-    const fandoms = await FandomMember.find({ user: user._id }).populate(
-      "fandom"
-    );
+    const fandoms = await FandomMember.find({ user: user._id }).populate({
+      path: "fandom",
+      populate: {
+        path: "category"
+      }
+    });
 
     return fandoms;
   }

@@ -210,7 +210,6 @@ export class PostDetailComponent implements OnInit {
   }
 
   deleteComment(commentId: string, index: number) {
-    console.log(index, this.comments[index]);
     this._fandomService.deleteCommentById(commentId).subscribe(() => {
       this.comments.splice(index, 1);
     });
