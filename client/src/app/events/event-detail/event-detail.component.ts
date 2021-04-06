@@ -7,14 +7,14 @@ import { DeleteDialogComponent } from '../../shared/components/delete-dialog/del
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EditReviewDialogComponent } from '../edit-review-dialog/edit-review-dialog.component';
 import { UserService } from 'src/app/core/services/user.service';
-import Event from '../../shared/models/event';
-import Review from '../../shared/models/review';
-import EventDTO from 'src/app/shared/models/event-dto';
-import UserDTO from 'src/app/shared/models/user-dto';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import UserIdentity from 'src/app/shared/models/user-identity';
 import ReviewDTO from 'src/app/shared/models/review-dto';
+import Event from '../../shared/models/event';
+import Review from '../../shared/models/review';
+import EventDTO from 'src/app/shared/models/event-dto';
+import Attendee from 'src/app/shared/models/attendee';
 
 @Component({
   selector: 'app-event',
@@ -24,6 +24,7 @@ import ReviewDTO from 'src/app/shared/models/review-dto';
 export class EventDetailComponent implements OnInit {
   event: Event | null = null;
   reviews: Review[] = [];
+  attendees: Attendee[] = [];
   today: Date = new Date();
   isAttending: boolean = false;
   id: string = "";
@@ -37,9 +38,9 @@ export class EventDetailComponent implements OnInit {
     private _userService: UserService,
     private _eventService: EventService,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
     private _router: Router,
-    private _breadcrumbService: BreadcrumbService
+    private _breadcrumbService: BreadcrumbService,
+    public dialog: MatDialog,
   ) {
     this._activatedRoute.params.subscribe((params) => {
       this.id = params['id'];
@@ -49,20 +50,21 @@ export class EventDetailComponent implements OnInit {
   ngOnInit(): void {
     this.user = this._authService.getCurrentUser().value;
     if (this.user) {
-      this.isAttending = false;
-      let index;
-
-      this._userService.getUserEventsByUsername(this.user.username).subscribe((events) => {
-        index = events.findIndex((event) => event.id === this.id);
-        if (index >= 0) {
-          this.isAttending = true;
-        }
+      this._eventService.getAttendees(this.id).subscribe((attendees) => {
+        this.isAttending = false;
+        this.attendees = attendees;
+        this.attendees.forEach((attendee) => {
+          if (this.user?._id === attendee.user){
+            this.isAttending = true;
+          }
+        });
       });
     }
 
     this._eventService.getEventById(this.id).subscribe((event) => {
       this.event = event;
       this.reviews = [];
+
       if (this.event) {
         this._breadcrumbService.set('@eventName', this.event.name);
         this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
@@ -187,53 +189,31 @@ export class EventDetailComponent implements OnInit {
 
   addEventToProfile(): void {
     this.isAttending = true;
-    let eventDTO: EventDTO;
 
-    if (this.event) {
-      eventDTO = {
-        name: this.event?.name,
-        date: this.event.startDate,
-        totalAttending: this.event.totalAttendance + 1,
-        id: this.event._id!,
+    if (this.event && this.user) {
+      let newAttendee: Attendee = {
+        user: this.user?._id,
+        event: this.id
       };
 
-      if (this.user) {
-        this._userService.updateUserEventsByUsername(
-          this.user.username,
-          eventDTO
-        );
-        this._authService.updateUserEventsByUsername(
-          this.user.username,
-          eventDTO
-        );
-        this._eventService.updateEventAttendance(
-          this.event._id,
-          this.isAttending
-        );
-        this._eventService.getEventById(this.id.toString()).subscribe((event) => {
-          this.event = event;
-        });
-      }
+      this._eventService.createAttendee(this.id, newAttendee).subscribe((attendee) => {
+        if (attendee){
+          this.isAttending = true;
+        }
+      });
     }
   }
 
   removeEventFromProfile(eventId: string | undefined): void {
-    this.isAttending = false;
     if (this.user && this.event) {
-      this._userService.removeEventFromUserEvents(
-        this.user.username,
-        this.event._id
-      );
-      this._authService.removeEventFromUserEvents(
-        this.user.username,
-        this.event._id
-      );
-      this._eventService.updateEventAttendance(
-        this.event._id,
-        this.isAttending
-      );
-      this._eventService.getEventById(this.id.toString()).subscribe((event) => {
-        this.event = event;
+      this.attendees.forEach((attendee: Attendee) => {
+        if (attendee.user === this.user?._id && this.event?._id === eventId){
+          if (attendee._id) {
+            this._eventService.deleteAttendee(attendee._id).subscribe(() => {
+              this.isAttending = false;
+            });
+          }
+        }
       });
     }
   }

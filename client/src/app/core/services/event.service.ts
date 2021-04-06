@@ -5,6 +5,7 @@ import Review from 'src/app/shared/models/review';
 import ReviewDTO from 'src/app/shared/models/review-dto';
 import UpdatedEventDTO from 'src/app/shared/models/update-event-dto';
 import { Observable } from 'rxjs';
+import Attendee from 'src/app/shared/models/attendee';
 
 @Injectable({
   providedIn: 'root',
@@ -225,8 +226,6 @@ export class EventService {
 
   getEvents(): Observable<Event[]> {
     // Get all events matching a category and fandom
-
-    // TODO: Return in sorted by startDate
     return this._http.get<Event[]>('/api/events');
   }
 
@@ -250,23 +249,19 @@ export class EventService {
     return this._http.post<Event>(`/api/events/`, event);
   }
 
-  getAttendees() {
-    // return this.events.sort((a, b) => this.sortFunction(a, b));
-    return this._http.get<Event[]>('/api/events');
+  getAttendees(eventId: string): Observable<Attendee[]> {
+    // Get all attendees
+    return this._http.get<Attendee[]>(`/api/events/attend/${eventId}`);
   }
 
-  updateEventAttendance(id: string | undefined, isAttending: boolean): void {
-    // Update event attendance on server, code below requires server call
+  createAttendee(eventId: string, newAttendee: Attendee): Observable<Attendee> {
+    // Create an attendee
+    return this._http.post<Attendee>(`/api/events/attend/${eventId}`, newAttendee);
+  }
 
-    let event = this.events.find((event) => event._id === id);
-
-    if (event) {
-      if (isAttending) {
-        event.totalAttendance = event.totalAttendance + 1;
-      } else {
-        event.totalAttendance = event.totalAttendance - 1;
-      }
-    }
+  deleteAttendee(attendeeId: string): Observable<Object> {
+    // Delete user as an attendee for an event
+    return this._http.delete(`/api/events/attend/${attendeeId}`);
   }
 
   deleteEvent(eventId: string): boolean {
