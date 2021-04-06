@@ -1,7 +1,7 @@
 import Category from "./category";
 
 interface FandomEvent {
-  _id?: number;
+  _id?: string;
   category: Category;
   name: string;
   backgroundURL: string;

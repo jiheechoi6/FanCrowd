@@ -70,7 +70,7 @@ export class EventCreateDialogComponent implements OnInit {
         name: '',
         fandom: {
           category: {
-            _id: 1,
+            _id: "1",
             name: '',
             backgroundURL: ''
           },
@@ -105,7 +105,10 @@ export class EventCreateDialogComponent implements OnInit {
   fetchFandomsForCategory(category: Category) {
     this._fandomService
       .getFandomsByCategories(category.name)
-      .subscribe((fandoms) => (this.fandomForCategory = fandoms));
+      .subscribe(
+        (fandomsAndCategory) =>
+          (this.fandomForCategory = fandomsAndCategory.fandoms)
+      );
   }
 
   setStartDateAndEndDate() {

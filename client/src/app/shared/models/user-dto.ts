@@ -2,6 +2,7 @@ import FandomDTO from './fandom-dto';
 import EventDTO from './event-dto';
 
 interface UserDTO {
+  _id?: string;
   username: string;
   fullName: string;
   email: string;

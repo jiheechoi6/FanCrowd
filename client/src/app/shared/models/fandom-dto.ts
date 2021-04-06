@@ -1,9 +1,7 @@
-import Category from "./category";
-
 interface FandomDTO {
   name: string;
   activityLevel: number;
-  id?: number;
+  _id?: string;
   category: string;
 }
 

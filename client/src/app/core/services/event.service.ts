@@ -14,9 +14,9 @@ export class EventService {
     {
       _id: "1",
       fandom: {
-        _id: 11,
+        _id: "11",
         category: {
-          _id: 1,
+          _id: "1",
           name: "Books",
           backgroundURL: ""
         },
@@ -39,9 +39,9 @@ export class EventService {
     {
       _id: "2",
       fandom: {
-        _id: 30,
+        _id: "30",
         category: {
-          _id: 5,
+          _id: "5",
           name: "Technology",
           backgroundURL: ""
         },
@@ -64,9 +64,9 @@ export class EventService {
     {
       _id: "3",
       fandom: {
-        _id: 1,
+        _id: '1',
         category: {
-          _id: 2,
+          _id: '2',
           name: "Movies",
           backgroundURL: ""
         },
@@ -89,9 +89,9 @@ export class EventService {
     {
       _id: "4",
       fandom: {
-        _id: 21,
+        _id: '21',
         category: {
-          _id: 3,
+          _id: '3',
           name: "Games",
           backgroundURL: ""
         },
@@ -114,9 +114,9 @@ export class EventService {
     {
       _id: "5",
       fandom: {
-        _id: 9,
+        _id: '9',
         category: {
-          _id: 1,
+          _id: '1',
           name: "Books",
           backgroundURL: ""
         },
@@ -139,9 +139,9 @@ export class EventService {
     {
       _id: "6",
       fandom: {
-        _id: 17,
+        _id: '17',
         category: {
-          _id: 4,
+          _id: '4',
           name: "Anime",
           backgroundURL: ""
         },
@@ -164,11 +164,11 @@ export class EventService {
     {
       _id: "7",
       fandom: {
-        _id: 26,
+        _id: '26',
         category: {
-          _id: 6,
+          _id: '6',
           name: "Sports",
-          backgroundURL: ""
+          backgroundURL: "https://wallpaperaccess.com/full/552032.jpg"
         },
         name: 'Soccer',
         backgroundURL: '',
@@ -189,11 +189,11 @@ export class EventService {
     {
       _id: "8",
       fandom: {
-        _id: 15,
+        _id: '15',
         category: {
-          _id: 3,
-          name: "Games",
-          backgroundURL: ""
+          _id: '3',
+          name: "Shows",
+          backgroundURL: "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg"
         },
         name: 'Game of Thrones',
         backgroundURL: '',

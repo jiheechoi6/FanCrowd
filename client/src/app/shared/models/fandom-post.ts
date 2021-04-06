@@ -5,8 +5,8 @@ export interface FandomPost {
   postedBy?: IUserPostedBy;
   fandom: string;
   createdAt?: Date;
-  numLikes?: IUserLikeOnlyUser[];
-  numDislikes?: IUserLikeOnlyUser[];
+  likes?: IUserLikeOnlyUser[];
+  dislikes?: IUserLikeOnlyUser[];
 }
 
 export interface IUserPostedBy {
@@ -15,6 +15,12 @@ export interface IUserPostedBy {
 }
 
 export interface IUserLikeOnlyUser {
-  _id: string;
+  _id?: string;
   user: string;
+}
+
+export interface IUserLikeDTO {
+  fandomPost?: string;
+  fandomComment?: string;
+  isLike: boolean;
 }
