@@ -118,4 +118,8 @@ export class UserComponent implements OnInit, OnDestroy {
   isEventsEmpty(): boolean{
     return !this.user?.attendingEvents;
   }
+
+  isSelf(): boolean{
+    return this.user?.username == this.loggedInUser?.username;
+  }
 }

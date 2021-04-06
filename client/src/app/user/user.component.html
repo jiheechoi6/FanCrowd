@@ -49,14 +49,16 @@
             <section class="bio-fandom-container">
                 <mat-card class="bio rounded-corners box-shadow">
                     <mat-card-title>Bio</mat-card-title>
-                    <p *ngIf="isBioEmpty()" class="bio-empty-message">Add a Bio to describe yourself!</p>
+                    <p *ngIf="isBioEmpty()&&isSelf()" class="bio-empty-message">Add a Bio to describe yourself!</p>
+                    <p *ngIf="isBioEmpty()&&!isSelf()" class="bio-empty-message">No bio added</p>
                     <mat-card-content>
                         <p>{{user?.bio}}</p>
                     </mat-card-content>
                 </mat-card>
                 <mat-card class="fandom-container rounded-corners box-shadow">
                     <mat-card-title>Fandoms</mat-card-title>
-                    <p *ngIf="isFandomEmpty()" class="empty-message">You don't have any fandoms yet</p>
+                    <p *ngIf="isFandomEmpty()&&isSelf()" class="empty-message">You don't have any fandoms yet</p>
+                    <p *ngIf="isFandomEmpty()&&!isSelf()" class="empty-message">No fandoms added</p>
                     <section class="fandoms">
                         <mat-card-content>
                             <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity Level</span></p>
@@ -78,7 +80,8 @@
             </section>
             <mat-card class="events-container rounded-corners box-shadow">
                 <mat-card-title>Events Attending</mat-card-title>
-                <p *ngIf="isEventsEmpty()" class="empty-message">You didn't sign up for any events yet</p>
+                <p *ngIf="isEventsEmpty()&&isSelf()" class="empty-message">You didn't sign up for any events yet</p>
+                <p *ngIf="isEventsEmpty()&&!isSelf()" class="empty-message">No events to display</p>
                 <section class="events">
                     <app-events-summary-card [events]="events"></app-events-summary-card>
                 </section>
