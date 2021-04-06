@@ -7,8 +7,8 @@ interface FandomPostComment {
   postedBy?: IUserPostedBy;
   fandomPost: string;
   createdAt?: Date;
-  numLikes?: IUserLikeOnlyUser[];
-  numDislikes?: IUserLikeOnlyUser[];
+  likes?: IUserLikeOnlyUser[];
+  dislikes?: IUserLikeOnlyUser[];
 }
 
 export default FandomPostComment;

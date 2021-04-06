@@ -6,7 +6,7 @@ const FandomCategorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Fandom category title is required"],
+      required: [true, "Category name is required"],
       unique: true,
       lowercase: true,
       validate(value: string) {
@@ -20,7 +20,8 @@ const FandomCategorySchema = new mongoose.Schema(
     },
     backgroundURL: {
       type: String,
-      required: [true, "Fandom category background URL is required"]
+      required: [true, "Fandom category background URL is required"],
+      default: "https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg"
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

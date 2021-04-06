@@ -27,15 +27,21 @@
                         <button mat-icon-button color="primary" class="like-post-button-container"
                             (click)="updatePostLikes()">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.numLikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(post!.likes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(post!.likes!)"></mat-icon>
+                                <span>{{post!.likes!.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updatePostDislikes()">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{post.numDislikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(post!.dislikes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(post!.dislikes!)"></mat-icon>
+                                <span>{{post!.dislikes!?.length}}</span>
                             </span>
                         </button>
                     </section>
@@ -68,7 +74,7 @@
 
     <section class="comments" [class.loading]="isLoadingComments">
         <app-spinner *ngIf="isLoadingComments"></app-spinner>
-        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of comments">
+        <mat-card class="comment rounded-corners box-shadow" *ngFor="let comment of comments; let i = index;">
             <mat-card-content>
                 <header class="username-container">
                     <div class="profile-img-wrapper">
@@ -88,27 +94,33 @@
                         <button mat-icon-button color="primary" class="like-post-button-container"
                             (click)="updateCommentLikes(comment)">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numLikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(comment.likes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-up'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(comment!.likes!)"></mat-icon>
+                                <span>{{comment.likes?.length}}</span>
                             </span>
                         </button>
                         <button mat-icon-button color="warn" class="dislike-post-button-container"
                             (click)="updateCommentDislikes(comment)">
                             <span>
-                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"></mat-icon>
-                                <span>{{comment.numDislikes?.length}}</span>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'far'"
+                                    *ngIf="!isUserInLikes(comment!.dislikes!)"></mat-icon>
+                                <mat-icon [fontIcon]="'fa-thumbs-down'" [fontSet]="'fas'"
+                                    *ngIf="isUserInLikes(comment!.dislikes!)"></mat-icon>
+                                <span>{{comment!.dislikes!.length}}</span>
                             </span>
                         </button>
                     </section>
                     <section
                         *ngIf="loggedInUser?.role === 'admin' || comment.postedBy!.username === loggedInUser?.username">
-                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment._id)"
+                        <button class="delete-post-button" (click)="openDeleteCommentDialog(comment._id, i)"
                             mat-flat-button color="warn">
                             <span>
                                 Delete <i class="fas fa-trash-alt"></i>
                             </span>
                         </button>
-                        <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment)">
+                        <button mat-flat-button color="primary" (click)="openEditCommentDialog(comment, i)">
                             <span>
                                 Edit <i class="fas fa-edit"></i>
                             </span>

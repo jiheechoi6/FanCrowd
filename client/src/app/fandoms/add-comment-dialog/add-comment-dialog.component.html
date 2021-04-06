@@ -20,22 +20,28 @@
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="basic" type="button">
+    <button mat-flat-button mat-dialog-close color="basic" type="button" [disabled]="isLoading">
         Cancel
     </button>
     <button mat-flat-button color="primary" (click)="createCommentForm.ngSubmit.emit()"
-        [disabled]="!createCommentForm.form.valid" *ngIf="!isEditing">
-        <span>
-            Add <i class="fas fa-plus"></i>
-        </span>
+        [disabled]="!createCommentForm.form.valid || isLoading" *ngIf="!isEditing">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isLoading">Add <i class="fas fa-plus"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Adding</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
     </button>
-    <button mat-flat-button color="primary" (click)="onEditComment()" [disabled]="!createCommentForm.form.valid"
-        *ngIf="isEditing">
-        <span>
-            Confirm <i class="fas fa-check"></i>
-        </span>
+    <button mat-flat-button color="primary" (click)="onEditComment()"
+        [disabled]="!createCommentForm.form.valid || isLoading" *ngIf="isEditing">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isLoading">Confirm <i class="fas fa-check"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Updating</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </div>

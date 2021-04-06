@@ -50,27 +50,27 @@ export class UserService {
       fandoms: [
         {
           name: 'Avengers',
-          id: 1,
+          _id: '14',
           activityLevel: 5,
           category: 'movies',
         },
         {
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Books Category
           name: 'Percy Jackson',
-          id: 10,
+          _id: '14',
           activityLevel: 1,
           category: 'books',
         },
         {
           // Games Category
           name: 'Call of Duty',
-          id: 20,
+          _id: '14',
           activityLevel: 4,
           category: 'games',
         },
@@ -99,21 +99,21 @@ export class UserService {
         {
           // Movies Category
           name: 'Harry Potter',
-          id: 2,
+          _id: '14',
           activityLevel: 2,
           category: 'movies',
         },
         {
           // Sports Category
           name: 'Basketball',
-          id: 25,
+          _id: '14',
           activityLevel: 3,
           category: 'sports',
         },
         {
           // Shows Category
           name: 'The Big Bang Theory',
-          id: 14,
+          _id: '14',
           activityLevel: 5,
           category: 'shows',
         },
@@ -250,7 +250,7 @@ export class UserService {
     const fandomDTO: FandomDTO = {
       activityLevel: 0,
       category: fandom.category,
-      id: fandom._id,
+      _id: fandom._id,
       name: fandom.name,
     };
 
@@ -259,16 +259,15 @@ export class UserService {
 
   removeFandomFromUser(username: string, fandomId: number | undefined) {
     //Remove a fandom with id fandomId from Users fandoms, code below requires server call
-
-    for (let i = 0; i < this.users.length; i++) {
-      if (this.users[i].username === username) {
-        for (let k = 0; k < this.users[i].fandoms.length; k++) {
-          this.users[i].fandoms = this.users[i].fandoms.filter(
-            (fandom) => fandom.id !== fandomId
-          );
-        }
-      }
-    }
+    // for (let i = 0; i < this.users.length; i++) {
+    //   if (this.users[i].username === username) {
+    //     for (let k = 0; k < this.users[i].fandoms.length; k++) {
+    //       this.users[i].fandoms = this.users[i].fandoms.filter(
+    //         (fandom) => fandom.id !== fandomId
+    //       );
+    //     }
+    //   }
+    // }
   }
 
   hasUserJoinedFandom(username: string, fandomName: string) {

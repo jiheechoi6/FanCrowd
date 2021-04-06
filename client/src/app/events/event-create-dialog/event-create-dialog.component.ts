@@ -94,7 +94,10 @@ export class EventCreateDialogComponent implements OnInit {
   fetchFandomsForCategory(category: string) {
     this._fandomService
       .getFandomsByCategories(category)
-      .subscribe((fandoms) => (this.fandomForCategory = fandoms));
+      .subscribe(
+        (fandomsAndCategory) =>
+          (this.fandomForCategory = fandomsAndCategory.fandoms)
+      );
   }
 
   setStartDateAndEndDate() {

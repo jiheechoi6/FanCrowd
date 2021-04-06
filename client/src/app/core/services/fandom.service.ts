@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import Fandom from 'src/app/shared/models/fandom';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Category from 'src/app/shared/models/category';
-import { FandomPost } from 'src/app/shared/models/fandom-post';
+import {
+  FandomPost,
+  IUserLikeDTO,
+  IUserLikeOnlyUser,
+} from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 
 @Injectable({
@@ -11,41 +15,41 @@ import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
 export class FandomService {
   category: Category[] = [
     {
-      _id: 1,
+      _id: '1',
       name: 'Movies',
       backgroundURL:
         'https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg',
     },
     {
-      _id: 2,
+      _id: '2',
       name: 'Books',
       backgroundURL:
         'https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80',
     },
     {
-      _id: 3,
+      _id: '3',
       name: 'Shows',
       backgroundURL:
         'https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg',
     },
     {
-      _id: 4,
+      _id: '4',
       name: 'Anime',
       backgroundURL:
         'https://wallpaper-house.com/data/out/7/wallpaper2you_191367.jpg',
     },
     {
-      _id: 5,
+      _id: '5',
       name: 'Games',
       backgroundURL: 'https://wallpaperaccess.com/full/242347.jpg',
     },
     {
-      _id: 6,
+      _id: '6',
       name: 'Sports',
       backgroundURL: 'https://wallpaperaccess.com/full/552032.jpg',
     },
     {
-      _id: 7,
+      _id: '7',
       name: 'Technology',
       backgroundURL: 'https://wallpaperaccess.com/full/249743.png',
     },
@@ -53,28 +57,28 @@ export class FandomService {
 
   fandoms: Fandom[] = [
     {
-      _id: 1,
+      _id: '1',
       category: this.category[0].name,
       name: 'Avengers',
       backgroundURL: 'https://wallpaperaccess.com/full/311206.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 2,
+      _id: '2',
       category: this.category[0].name,
       name: 'Harry Potter',
       backgroundURL: 'https://wallpapercave.com/wp/wp2763337.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 3,
+      _id: '3',
       category: this.category[0].name,
       name: 'Avengers: Age of Ultron',
       backgroundURL: 'https://wallpaperaccess.com/full/1117133.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 4,
+      _id: '4',
       category: this.category[0].name,
       name: 'Maze Runner: The Death Cure',
       backgroundURL:
@@ -82,28 +86,28 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 5,
+      _id: '5',
       category: this.category[0].name,
       name: 'Journey to the Mysterious Island',
       backgroundURL: 'https://images2.alphacoders.com/805/805700.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 7,
+      _id: '7',
       category: this.category[1].name,
       name: 'Divergent',
       backgroundURL: 'https://wallpapercave.com/wp/wp1826730.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 8,
+      _id: '8',
       category: this.category[1].name,
       name: 'The Chronicles of Narnia',
       backgroundURL: 'https://wallpaperaccess.com/full/1715646.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 9,
+      _id: '9',
       category: this.category[1].name,
       name: 'Harry Potter',
       backgroundURL:
@@ -111,35 +115,35 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 10,
+      _id: '10',
       category: this.category[1].name,
       name: 'Percy Jackson',
       backgroundURL: 'https://wallpapercave.com/wp/wp2961879.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 12,
+      _id: '12',
       category: this.category[2].name,
       name: 'Game of Thrones',
       backgroundURL: 'https://cdn.wallpapersafari.com/26/33/Fbx3ci.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 13,
+      _id: '13',
       category: this.category[2].name,
       name: "The Queen's Gambit",
       backgroundURL: 'https://wallpaperaccess.com/full/4722410.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 14,
+      _id: '14',
       category: this.category[2].name,
       name: 'The Big Bang Theory',
       backgroundURL: 'https://wallpapercave.com/wp/Htvtugs.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 16,
+      _id: '16',
       category: this.category[3].name,
       name: 'Yu-Gi-Oh!',
       backgroundURL:
@@ -147,14 +151,14 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 17,
+      _id: '17',
       category: this.category[3].name,
       name: 'One Punch Man',
       backgroundURL: 'https://cdn.wallpapersafari.com/51/10/9A6JeS.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 18,
+      _id: '18',
       category: this.category[3].name,
       name: 'Beyblade',
       backgroundURL:
@@ -162,7 +166,7 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 20,
+      _id: '20',
       category: this.category[4].name,
       name: 'Call of Duty',
       backgroundURL:
@@ -170,14 +174,14 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 21,
+      _id: '21',
       category: this.category[4].name,
       name: 'God of War',
       backgroundURL: 'https://wallpapercave.com/wp/T4xxWSN.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 22,
+      _id: '22',
       category: this.category[4].name,
       name: "Assassin's Creed",
       backgroundURL:
@@ -185,14 +189,14 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 23,
+      _id: '23',
       category: this.category[4].name,
       name: 'NBA 2020',
       backgroundURL: 'https://wallpaperaccess.com/full/103114.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 25,
+      _id: '25',
       category: this.category[5].name,
       name: 'Basketball',
       backgroundURL:
@@ -200,21 +204,21 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 26,
+      _id: '26',
       category: this.category[5].name,
       name: 'Soccer',
       backgroundURL: 'https://wallpapercave.com/wp/4dqP3rn.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 27,
+      _id: '27',
       category: this.category[5].name,
       name: 'Golf',
       backgroundURL: 'https://cdn.hipwallpaper.com/i/91/94/rFjELC.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 28,
+      _id: '28',
       category: this.category[5].name,
       name: 'Cricket',
       backgroundURL:
@@ -222,14 +226,14 @@ export class FandomService {
       createdAt: new Date(),
     },
     {
-      _id: 29,
+      _id: '29',
       category: this.category[6].name,
       name: 'Apple',
       backgroundURL: 'https://wallpapercave.com/wp/8duz5Ir.jpg',
       createdAt: new Date(),
     },
     {
-      _id: 30,
+      _id: '30',
       category: this.category[6].name,
       name: 'OnePlus',
       createdAt: new Date(),
@@ -243,8 +247,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 17),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -258,8 +262,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 1),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
@@ -273,8 +277,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 19),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
@@ -288,8 +292,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 1, 5),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -303,8 +307,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 14),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user1',
         profileURL:
@@ -318,8 +322,8 @@ export class FandomService {
       content:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       createdAt: new Date(2021, 2, 12),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: 'user2',
         profileURL:
@@ -339,41 +343,20 @@ export class FandomService {
     return dateA > dateB ? 1 : -1;
   }
 
-  addCategory(category: Category): void {
-    // Add fandom to server, code below requires server call
-
-    let exists = false;
-
-    this.category.forEach((x) => {
-      if (x.name.toLowerCase() === category.name.toLowerCase()) {
-        exists = true;
-      }
-    });
-
-    if (!exists) {
-      this.category.push(category);
-    }
+  addCategory(category: Category) {
+    return this._http.post<Category>(`/api/fandoms/categories`, category);
   }
 
   getCategories() {
-    // Get categories from server, code below requires server call
     return this._http.get<Category[]>('/api/fandoms/categories');
   }
 
-  addFandom(fandom: Fandom): void {
-    // Add fandom to server, code below requires server call
-    let exists = false;
-    let fandoms = this.getFandomsByCategories(fandom.category);
+  addFandom(fandom: Fandom) {
+    return this._http.post<Fandom>(`/api/fandoms`, fandom);
+  }
 
-    // fandoms.forEach((x) => {
-    //   if (x.name.toLowerCase() === fandom.name.toLowerCase()) {
-    //     exists = true;
-    //   }
-    // });
-
-    if (!exists) {
-      this.fandoms.push(fandom);
-    }
+  deleteCategoryById(categoryId: string = '') {
+    return this._http.delete(`/api/fandoms/categories/${categoryId}`);
   }
 
   getFandoms(): Fandom[] {
@@ -383,18 +366,26 @@ export class FandomService {
   }
 
   getFandomsByCategories(categoryName: string = '') {
-    return this._http.get<Fandom[]>(`/api/fandoms/categories/${categoryName}`);
+    const dashedCategoryName = categoryName.split(' ').join('-');
+    return this._http.get<{ fandoms: Fandom[]; category: Category }>(
+      `/api/fandoms/categories/${dashedCategoryName}`
+    );
   }
 
-  deleteFandom(index: number): boolean {
-    // Delete fandom from server, code below requires server call
+  deleteFandomById(fandomId: string = '') {
+    return this._http.delete(`/api/fandoms/${fandomId}`);
+  }
 
-    if (index >= 0) {
-      this.fandoms.splice(index, 1);
-      return true;
-    }
+  joinFandom(fandomId: string = '') {
+    return this._http.post(`/api/fandoms/${fandomId}/join`, {});
+  }
 
-    return false;
+  leaveFandom(fandomId: string = '') {
+    return this._http.delete(`/api/fandoms/${fandomId}/unjoin`);
+  }
+
+  isUserInFandom(fandomId: string = '') {
+    return this._http.get<boolean>(`/api/fandoms/${fandomId}/hasJoined`);
   }
 
   getPostsForFandom(categoryName: string, fandomName: string) {
@@ -405,22 +396,19 @@ export class FandomService {
     );
   }
 
-  updatePostForFandom(postId: number | undefined, updatedPost: FandomPost) {
-    //Update post with id postId in db, code below requires server call
-
-    return [];
+  updatePost(postId: string = '', updatedPost: FandomPost) {
+    return this._http.patch<FandomPost>(
+      `/api/fandoms/posts/${postId}`,
+      updatedPost
+    );
   }
 
-  deletePostFromFandom(postId: number | undefined) {
-    //Remove post with id postId in db, code below requires server call
-
-    return [];
+  deletePost(postId: string = '') {
+    return this._http.delete(`/api/fandoms/posts/${postId}`);
   }
 
-  createPostForFandom(post: FandomPost) {
-    //Add post to a fandom, code below requires server call
-
-    return post;
+  createPost(post: FandomPost) {
+    return this._http.post<FandomPost>(`/api/fandoms/posts`, post);
   }
 
   getFandomByName(categoryName: string, fandomName: string) {
@@ -441,12 +429,26 @@ export class FandomService {
     );
   }
 
-  addCommentToPost(postId: string, comment: FandomPostComment) {
-    const fandomPost = this.getFandomPostById(postId);
+  createComment(comment: FandomPostComment) {
+    return this._http.post<FandomPostComment>(`/api/fandoms/comments`, comment);
+  }
 
-    // comment.id = Math.floor(Math.random() * (10000 - 12) + 12);
+  updateComment(commentId: string = '', updatedComment: FandomPostComment) {
+    return this._http.patch(
+      `/api/fandoms/comments/${commentId}`,
+      updatedComment
+    );
+  }
 
-    return comment;
+  updateCategoryById(categoryId: string = '', updatedCategory: Category) {
+    return this._http.patch<Category>(
+      `/api/fandoms/categories/${categoryId}`,
+      updatedCategory
+    );
+  }
+
+  updateFandomById(fandomId: string = '', updatedFandom: Fandom) {
+    return this._http.patch<Fandom>(`/api/fandoms/${fandomId}`, updatedFandom);
   }
 
   editPostComment(
@@ -463,11 +465,25 @@ export class FandomService {
     return fandomPost;
   }
 
-  removeCommentFromPost(postId: string | undefined, commentId: number) {
-    if (typeof postId === 'undefined') return null;
+  updateLikes(userLikeDTO: IUserLikeDTO) {
+    return this._http.post(`/api/fandoms/likes`, userLikeDTO);
+  }
 
-    const fandomPost = this.getFandomPostById(postId);
+  deleteCommentById(commentId: string = '') {
+    return this._http.delete(`/api/fandoms/comments/${commentId}`);
+  }
 
-    return fandomPost;
+  toggleLikesOrDislikes(
+    likesOrDislikes: IUserLikeOnlyUser[],
+    addNew: boolean,
+    userId: string
+  ) {
+    const index = likesOrDislikes.findIndex((like) => like.user === userId);
+    if (index === -1 && addNew) {
+      likesOrDislikes?.push({ user: userId });
+    } else if (index !== -1) {
+      likesOrDislikes?.splice(index, 1);
+    }
+    return likesOrDislikes;
   }
 }
