@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
 import Review from 'src/app/shared/models/review';
 import UpdatedReviewDTO from 'src/app/shared/models/update-review-dto';
-import EventDTO from 'src/app/shared/models/event-dto';
+import UpdatedEventDTO from 'src/app/shared/models/update-event-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -223,7 +223,7 @@ export class EventService {
   }
 
   getEvents() {
-    // return this.events.sort((a, b) => this.sortFunction(a, b));
+    // TODO: Return in sorted by startDate
     return this._http.get<Event[]>('/api/events');
   }
 
@@ -236,8 +236,7 @@ export class EventService {
     );
   }
 
-  getEventById(id: string) {
-    // return this.events.find((event) => event._id === id) || null;
+  getEventById(id: string | undefined) {
     return this._http.get<Event>(`/api/events/${id}`);
   }
 
@@ -287,23 +286,18 @@ export class EventService {
   }
 
   updateReviewById(reviewId: string, updatedReview: UpdatedReviewDTO) {
-    // Update review to a specific review on server, code below requires server call
     return this._http.patch<UpdatedReviewDTO>(
       `/api/events/reviews/${reviewId}`, updatedReview
     );
   }
 
   deleteReview(reviewId: string) {
-    // Delete review from server, code below requires server call
     return this._http.delete(`/api/events/review/${reviewId}`);
   }
 
   updateEventById(eventId: string | undefined, updatedEvent: Event) {
-    //Update event in db, code below requires server call
-
-    if (!eventId) return;
-
-    const eventIndex = this.events.findIndex((event) => event._id === eventId);
-    this.events[eventIndex] = updatedEvent;
+    return this._http.patch<Event>(
+      `/api/events/${eventId}`, updatedEvent
+    );
   }
 }

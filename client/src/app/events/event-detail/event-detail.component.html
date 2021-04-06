@@ -39,7 +39,7 @@
                         <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
                             Attend
                         </button>
-                        <div *ngIf="user?.role === 'admin' || user?.username === event?.postedBy">
+                        <div *ngIf="user?.role === 'admin' || user?.username === event?.postedBy.username">
                             <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
                                 mat-flat-button color="warn">
                                 <span>

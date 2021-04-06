@@ -25,7 +25,7 @@ export class EventCreateDialogComponent implements OnInit {
   event: Event;
   minDate: Date;
   categories: Category[] = [];
-  fandomForCategory: Fandom[] = [];
+  fandomsForCategory: Fandom[] = [];
   eventDateRange: Date[];
   isEditingEvent = false;
 
@@ -57,7 +57,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.isEditingEvent = true;
       this.event = this.data.eventBeingUpdated;
       this.eventDateRange = [this.event.startDate, this.event.endDate];
-      this.fetchFandomsForCategory(this.event.fandom.category);
+      this.fetchFandomsForCategory(this.event.fandom.category.name);
     } else {
       const defaultStartDate = new Date();
       defaultStartDate.setHours(new Date().getHours() + 1);
@@ -66,14 +66,14 @@ export class EventCreateDialogComponent implements OnInit {
       this.eventDateRange = [defaultStartDate, defaultEndDate];
 
       this.event = {
-        _id: "1000",
         name: '',
         fandom: {
           category: {
-            _id: "1",
+            _id: '',
             name: '',
             backgroundURL: ''
           },
+          _id: '',
           name: '',
           backgroundURL: '',
           createdAt: new Date(),
@@ -102,13 +102,22 @@ export class EventCreateDialogComponent implements OnInit {
     this.fetchFandomsForCategory(event.value);
   }
 
-  fetchFandomsForCategory(category: Category) {
+  fetchFandomsForCategory(categoryName: string) {
     this._fandomService
-      .getFandomsByCategories(category.name)
+      .getFandomsByCategories(categoryName)
       .subscribe(
-        (fandomsAndCategory) =>
-          (this.fandomForCategory = fandomsAndCategory.fandoms)
+        (categoryFandoms) => {
+          (this.fandomsForCategory = categoryFandoms.fandoms);
+        }
       );
+  }
+
+  fandomChange(event: any) {
+    this.fandomsForCategory.forEach((fandom) => {
+      if (fandom.name === event.value) {
+        this.event.fandom._id = fandom._id;
+      }
+    });
   }
 
   setStartDateAndEndDate() {
@@ -124,7 +133,9 @@ export class EventCreateDialogComponent implements OnInit {
 
   updateEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.updateEventById(this.event._id, this.event);
+    this._eventService.updateEventById(this.event._id, this.event).subscribe((updatedEvent) => {
+      console.log("Updated Event", updatedEvent);
+    });
     this.dialogRef.close(this.event);
   }
 }

@@ -68,13 +68,12 @@ export class EventDetailComponent implements OnInit {
         this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
           this.reviews = reviews;
           this.alreadyWroteReview(this.reviews);
-          console.log("Reviews-1", this.reviews);
           this.calculateAvgRating();
           this.groupReviewsByRating();
         });
       }
 
-      console.log("Reviews-2", this.reviews);
+      console.log("Event Details", this.event, this.event.fandom.category.name);
     });
   }
 
@@ -282,8 +281,9 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
       if (updatedEvent) {
-        this._eventService.updateEventById(updatedEvent._id, updatedEvent);
-        this.event = updatedEvent;
+        this._eventService.getEventById(updatedEvent._id).subscribe((updatedEvent) => {
+          this.event = updatedEvent;
+        });
       }
     });
   }
