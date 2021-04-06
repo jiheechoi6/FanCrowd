@@ -49,18 +49,21 @@
             <section class="bio-fandom-container">
                 <mat-card class="bio rounded-corners box-shadow">
                     <mat-card-title>Bio</mat-card-title>
+                    <p *ngIf="isBioEmpty()" class="bio-empty-message">Add a Bio to describe yourself!</p>
                     <mat-card-content>
                         <p>{{user?.bio}}</p>
                     </mat-card-content>
                 </mat-card>
                 <mat-card class="fandom-container rounded-corners box-shadow">
                     <mat-card-title>Fandoms</mat-card-title>
+                    <p *ngIf="isFandomEmpty()" class="empty-message">You don't have any fandoms yet</p>
                     <section class="fandoms">
                         <mat-card-content>
-                            <p class="fandom-header"><span>Name</span><span>Activity Level</span></p>
+                            <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity Level</span></p>
                             <mat-card class="fandom-item-container"
-                                [routerLink]="['/fandoms', fandom.category | lowercase, fandom.name | spacesToHyphen | lowercase]"
-                                *ngFor="let fandom of user?.fandoms">
+                            [routerLink]="['/fandoms', fandom.category | lowercase, fandom.name | spacesToHyphen | lowercase]"
+                            *ngFor="let fandom of user?.fandoms">
+                                <p>??</p>
                                 <section class="fandom-item">
                                     <div class="fandom-info-container">
                                         <span>{{fandom.name | titlecase}}</span>
@@ -75,6 +78,7 @@
             </section>
             <mat-card class="events-container rounded-corners box-shadow">
                 <mat-card-title>Events Attending</mat-card-title>
+                <p *ngIf="isEventsEmpty()" class="empty-message">You didn't sign up for any events yet</p>
                 <section class="events">
                     <app-events-summary-card [events]="events"></app-events-summary-card>
                 </section>

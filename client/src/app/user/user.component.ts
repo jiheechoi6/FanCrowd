@@ -106,4 +106,16 @@ export class UserComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
   }
+
+  isFandomEmpty(): boolean{
+    return !this.user?.fandoms;
+  }
+
+  isBioEmpty(): boolean{
+    return !this.user?.bio;
+  }
+
+  isEventsEmpty(): boolean{
+    return !this.user?.attendingEvents;
+  }
 }
