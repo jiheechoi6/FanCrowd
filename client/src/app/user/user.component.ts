@@ -8,6 +8,7 @@ import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete
 import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import UserIdentity from '../shared/models/user-identity';
 
 @Component({
@@ -104,6 +105,28 @@ export class UserComponent implements OnInit, OnDestroy {
       width: '360px',
       height: '180px',
       autoFocus: false,
+    });
+  }
+
+  openEditBioDialog() {
+    const dialogRef = this._dialog.open(BioEditDialogComponent, {
+      data: { ...this.user },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
+      if (updatedUser) {
+        this.user = updatedUser;
+        if(!this._authService.currentUser.value){
+          return;
+        }
+        this._authService.currentUser.next({
+          ...this._authService.currentUser.value,
+          username: updatedUser.username,
+          profileURL: updatedUser.profileUrl
+        });
+      }
     });
   }
 
