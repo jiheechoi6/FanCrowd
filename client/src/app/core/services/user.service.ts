@@ -135,10 +135,10 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
-  getUserByUsername(username: string): UserDTO | null {
+  getUserByUsername(username: string){
     // Get user from server, code below requires server call
-
-    return this.users.find((user) => user.username === username) || null;
+    return this._http.get<UserDTO>(`/api/users/${username}`,
+      {responseType: 'json'});
   }
 
   getUserEventsByUsername(username: string) {
@@ -151,10 +151,12 @@ export class UserService {
 
   deleteUserByUsername(username: string): void {
     // Delete user from server, code below requires server call
+    this._http.delete(`/api/users/${username}`).subscribe();
   }
 
   banUserByUsername(username: string): void {
     // Delete user from server, code below requires server call
+    this._http.delete(`/api/users/${username}`).subscribe();
   }
 
   updateUserByUsername(
@@ -162,6 +164,14 @@ export class UserService {
     usernameBeforeUpdate: string
   ): void {
     // Update user info on server, code below requires server call
+    this._http.patch(`/api/users/${usernameBeforeUpdate}`, 
+      {bio: updatedUser.bio,
+        city: updatedUser.city,
+        country: updatedUser.country,
+        email: updatedUser.email,
+        fullName: updatedUser.fullName,
+        profileURL: updatedUser.profileUrl
+      }).subscribe();
   }
 
   updateUserEventsByUsername(username: string, event: EventDTO): void {

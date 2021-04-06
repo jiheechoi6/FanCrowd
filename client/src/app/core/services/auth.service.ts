@@ -152,10 +152,8 @@ export class AuthService {
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
-    let headers = new HttpHeaders({'Content-Type': 'application/json'});
-
     return this._http.post<UserIdentityToken>('/api/auth/signin',
-        {username, password}, {headers: headers, responseType: 'json'})
+        {username, password}, {responseType: 'json'})
           .pipe(map(res => this.updateCurrentUser(res)));
   }
 

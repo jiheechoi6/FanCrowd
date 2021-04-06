@@ -8,6 +8,7 @@ import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete
 import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import UserIdentity from '../shared/models/user-identity';
 
 @Component({
   selector: 'app-user',
@@ -17,7 +18,7 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
 export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserDTO | null = null;
-  loggedInUser: UserDTO | null = null;
+  loggedInUser: UserIdentity | null = null;
   events: Event[] = [];
 
   constructor(
@@ -31,19 +32,19 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
-      this.user = this._userService.getUserByUsername(username);
+      this._userService.getUserByUsername(username).subscribe( (user) => this.user = user );
       if (!this.user) {
         this._router.navigate(['../']);
       }
     });
 
-    // this.userSubscription = this._authService.currentUserInfo.subscribe(
-    //   (user) => (this.loggedInUser = user)
-    // );
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
   }
 
   ngOnDestroy(): void {
-    // this.userSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   deleteUser() {
@@ -67,7 +68,14 @@ export class UserComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        // this._authService.currentUserInfo.next(updatedUser);
+        if(!this._authService.currentUser.value){
+          return;
+        }
+        this._authService.currentUser.next({
+          ...this._authService.currentUser.value,
+          username: updatedUser.username,
+          profileURL: updatedUser.profileUrl
+        });
       }
     });
   }
