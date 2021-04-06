@@ -220,21 +220,20 @@ export class EventDetailComponent implements OnInit {
 
   deleteEvent(id: string | undefined): void {
     if (id) {
-      let allEvents;
-      let index;
-
-      this._eventService.getEvents().subscribe((events) => {
-        allEvents = events;
-        index = allEvents.findIndex((event) => event._id === id);
-        this._eventService.deleteEvent(id);
+      this._eventService.deleteReviews(id).subscribe(() => {
+        this._eventService.deleteAttendees(id).subscribe(() => {
+          this._eventService.deleteEvent(id).subscribe(() => {
+            this._router.navigate(['events']);
+          });
+        });
       });
 
-      if (this.user && this.event) {
-        this._userService.removeEventFromAllUsersEvents(this.event._id);
-        this._authService.removeEventFromAllUsersEvents(this.event._id);
-      }
+      // if (this.user && this.event) {
+      //   this._userService.removeEventFromAllUsersEvents(this.event._id);
+      //   this._authService.removeEventFromAllUsersEvents(this.event._id);
+      // }
 
-      this._router.navigate(['events']);
+      // this._router.navigate(['events']);
     }
   }
 

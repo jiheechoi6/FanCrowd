@@ -264,15 +264,14 @@ export class EventService {
     return this._http.delete(`/api/events/attend/${attendeeId}`);
   }
 
-  deleteEvent(eventId: string): boolean {
-    // Delete the event from server, code below requires server call
+  deleteAttendees(eventId: string): Observable<Object> {
+    // Delete all attendees for an event
+    return this._http.delete(`/api/events/attends/${eventId}`);
+  }
 
-    if (eventId) {
-      // this.events.splice(index, 1);
-      return true;
-    }
-
-    return false;
+  deleteEvent(eventId: string): Observable<Object> {
+    // Delete event
+    return this._http.delete(`/api/events/${eventId}`);
   }
 
   getReviewsByEventId(eventId: string): Observable<Review[]> {
@@ -299,7 +298,7 @@ export class EventService {
 
   deleteReviews(eventId: string): Observable<Object> {
     // Delete all reviews of an event
-    return this._http.delete(`/api/events/review/${eventId}`);
+    return this._http.delete(`/api/events/reviews/${eventId}`);
   }
 
   updateEventById(eventId: string | undefined, updatedEvent: Event): Observable<Event> {
