@@ -22,7 +22,7 @@ export class ReviewDialogComponent implements OnInit {
   ) {
     const defaultPostDate = new Date();
     this.newReview = {
-      id: 1000,
+      _id: "1000",
       title: '',
       rating: 0,
       content: '',

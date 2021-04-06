@@ -25,7 +25,7 @@
                         <p>{{ event?.description }}</p>
                     </article>
                     <p class="created-by">Created By: <a
-                            [routerLink]="['/users', event?.postedBy.username]">{{event?.postedBy.username | titlecase}}</a>
+                            [routerLink]="['/users', event.postedBy.username]">{{event.postedBy.username | titlecase}}</a>
                     </p>
                     <p>
                         Fandom: <a
@@ -110,13 +110,13 @@
                     <div class="flex-row-container-right">
                         <button mat-flat-button color="warn" class="delete-button"
                             *ngIf="user?.role === 'admin' || user?.username === review.postedBy.username"
-                            (click)="openDeleteReviewDialog(review.id)">
+                            (click)="openDeleteReviewDialog(review._id)">
                             <span>
                                 Delete <i class="fas fa-trash-alt"></i>
                             </span>
                         </button>
                         <button *ngIf="user?.username === review.postedBy.username" mat-flat-button color="primary"
-                            (click)="openEditDialog(review.id)">
+                            (click)="openEditDialog(review._id)">
                             <span>
                                 Edit <i class="fas fa-edit"></i>
                             </span>

@@ -222,8 +222,6 @@ export class EventService {
   }
 
   getEvents() {
-    // Get events from server, code below requires server call
-
     // return this.events.sort((a, b) => this.sortFunction(a, b));
     return this._http.get<Event[]>('/api/events');
   }
@@ -238,8 +236,6 @@ export class EventService {
   }
 
   getEventById(id: string) {
-    // Get event from server, code below requires server call
-
     // return this.events.find((event) => event._id === id) || null;
     return this._http.get<Event>(`/api/events/${id}`);
   }
@@ -252,8 +248,6 @@ export class EventService {
   }
 
   getAttendees() {
-    // Get events from server, code below requires server call
-
     // return this.events.sort((a, b) => this.sortFunction(a, b));
     return this._http.get<Event[]>('/api/events');
   }
@@ -284,8 +278,6 @@ export class EventService {
   }
 
   getReviewsByEventId(eventId: string) {
-    // Get reviews of a specific event from server, code below requires server call
-
     return this._http.get<Review[]>(`/api/events/reviews/${eventId}`);
   }
 
@@ -297,10 +289,10 @@ export class EventService {
     // Update review to a specific review on server, code below requires server call
   }
 
-  deleteReview(eventIndex: number, reviewIndex: number): boolean {
+  deleteReview(reviewId: string) {
     // Delete review from server, code below requires server call
-
-    return false;
+    console.log("Here-4", reviewId);
+    return this._http.delete(`/api/events/reviews/${reviewId}`);
   }
 
   updateEventById(eventId: string | undefined, updatedEvent: Event) {

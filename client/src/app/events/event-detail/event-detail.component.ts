@@ -59,20 +59,21 @@ export class EventDetailComponent implements OnInit {
       });
     }
 
-    this._eventService.getEventById(this.id.toString()).subscribe((event) => {
+    this._eventService.getEventById(this.id).subscribe((event) => {
       this.event = event;
+      this.reviews = [];
       if (this.event) {
         this._breadcrumbService.set('@eventName', this.event.name);
         this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
           this.reviews = reviews;
           this.alreadyWroteReview(this.reviews);
-        })
-      } else {
-        this.reviews = [];
+          console.log("Reviews-1", this.reviews);
+          this.calculateAvgRating();
+          this.groupReviewsByRating();
+        });
       }
 
-      this.calculateAvgRating();
-      this.groupReviewsByRating();
+      console.log("Reviews-2", this.reviews);
     });
   }
 
@@ -106,7 +107,7 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openDeleteEventDialog(id: number | undefined) {
+  openDeleteEventDialog(id: string | undefined) {
     this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
@@ -121,13 +122,13 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openDeleteReviewDialog(id: number | undefined) {
+  openDeleteReviewDialog(id: string | undefined) {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Review Confirmation',
         details: 'Are you sure you want to delete your review?',
         onConfirmCb: this.deleteReview.bind(this),
-        params: id,
+        params: [id],
       },
       width: '360px',
       height: '180px',
@@ -147,9 +148,9 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openEditDialog(id: number | undefined) {
+  openEditDialog(id: string | undefined) {
     if (this.reviews) {
-      let index = this.reviews?.findIndex((review) => review.id === id);
+      let index = this.reviews?.findIndex((review) => review._id === id);
       let review = { ...this.reviews[index] };
 
       const dialogRef = this.dialog.open(EditReviewDialogComponent, {
@@ -219,7 +220,7 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  removeEventFromProfile(eventId: number | undefined): void {
+  removeEventFromProfile(eventId: string | undefined): void {
     this.isAttending = false;
     if (this.user && this.event) {
       this._userService.removeEventFromUserEvents(
@@ -260,19 +261,10 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  deleteReview(id: number | undefined): void {
-    let allEvents;
-    let eventIndex;
-    this._eventService.getEvents().subscribe((events) => {
-      allEvents = events;
-      eventIndex = allEvents.findIndex((event) => event._id === this.id);
-
-      if (eventIndex >= 0) {
-        let event = allEvents[eventIndex];
-        // let reviewIndex = event.reviews.findIndex((review) => review.id === id);
-        // this._eventService.deleteReview(eventIindex, reviewIndex);
-      }
-    });
+  deleteReview(id: string | undefined): void {
+    if (id){
+      this._eventService.deleteReview(id).subscribe(() => {});
+    }
   }
 
   openEditEventDialog() {
