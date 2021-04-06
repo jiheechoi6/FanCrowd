@@ -78,7 +78,7 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/users/username
+   * path: /api/users/:username
    * method: GET
    * body: None
    * params:
@@ -91,7 +91,9 @@ export default (app: Router) => {
     try {
       const username = req.params.username;
       const userService = new UserService();
-      const user = await userService.getUserByUsername(username);
+      const userDoc = await userService.getUserByUsername(username);
+      const user = userDoc.toObject();
+      Reflect.deleteProperty(user, "password");
       res.status(200).send(user);
     } catch (err) {
       return next(err);
