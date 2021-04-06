@@ -2,7 +2,8 @@ interface EventDTO {
   name: string;
   totalAttending: number;
   date: Date;
-  id?: string;
+  _id?: string;
+
 }
 
 export default EventDTO;

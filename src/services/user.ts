@@ -147,7 +147,12 @@ export default class UserService {
       }
     });
 
-    return fandoms;
+    let fandomList: any[] = [];
+    fandoms.forEach((fandom)=> {
+      fandomList.push(fandom.fandom)
+    });
+
+    return fandomList;
   }
 
   private generateVerificationCode() {

@@ -5,7 +5,7 @@
         <div class="profile-info-container" *ngIf="user">
             <section class="profile-img-info-container">
                 <div class="profile-img-wrapper">
-                    <img class="profile-img" src="{{user.profileUrl}}"
+                    <img class="profile-img" src="{{user.profileURL}}"
                         onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'"
                         alt="Profile Picture">
                 </div>
@@ -63,15 +63,14 @@
                         <mat-card-content>
                             <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity Level</span></p>
                             <mat-card class="fandom-item-container"
-                            [routerLink]="['/fandoms', fandom.category | lowercase, fandom.name | spacesToHyphen | lowercase]"
-                            *ngFor="let fandom of user?.fandoms">
-                                <p>??</p>
+                            [routerLink]="['/fandoms', fandom.category.name | lowercase, fandom.name | spacesToHyphen | lowercase]"
+                            *ngFor="let fandom of fandoms">
                                 <section class="fandom-item">
                                     <div class="fandom-info-container">
                                         <span>{{fandom.name | titlecase}}</span>
-                                        <span class="category">{{fandom.category | titlecase}}</span>
+                                        <span class="category">{{fandom.category.name | titlecase}}</span>
                                     </div>
-                                    <span>{{fandom.activityLevel}}</span>
+                                    <!-- <span>{{fandom.activityLevel}}</span> -->
                                 </section>
                             </mat-card>
                         </mat-card-content>

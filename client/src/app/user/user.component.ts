@@ -10,6 +10,7 @@ import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import UserIdentity from '../shared/models/user-identity';
+import UserFandomRes from '../shared/models/user-fandom-res';
 
 @Component({
   selector: 'app-user',
@@ -21,6 +22,7 @@ export class UserComponent implements OnInit, OnDestroy {
   user: UserDTO | null = null;
   loggedInUser: UserIdentity | null = null;
   events: Event[] = [];
+  fandoms: UserFandomRes[] = [];
 
   constructor(
     private _userService: UserService,
@@ -33,8 +35,18 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
+      this._userService.getUserByUsername(username).subscribe( (user) => {
+        this.user = user 
+      });
 
-      this._userService.getUserByUsername(username).subscribe( (user) => this.user = user );
+      this._userService.getUserEventsByUsername(username).subscribe( (events) =>{
+        if(this.user) this.events = events;
+      })
+
+      this._userService.getUserFandomsByUsername(username).subscribe( (fandoms) =>{
+        this.fandoms = fandoms;
+      })
+
       if (!this.user) {
         this._router.navigate(['../']);
       }
@@ -132,7 +144,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   isFandomEmpty(): boolean{
-    return !this.user?.fandoms;
+    return !this.fandoms;
   }
 
   isBioEmpty(): boolean{
@@ -140,10 +152,11 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   isEventsEmpty(): boolean{
-    return !this.user?.attendingEvents;
+    return !this.events;
   }
 
   isSelf(): boolean{
     return this.user?.username == this.loggedInUser?.username;
   }
 }
+
