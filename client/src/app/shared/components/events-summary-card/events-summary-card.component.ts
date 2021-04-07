@@ -11,5 +11,5 @@ export class EventsSummaryCardComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 }

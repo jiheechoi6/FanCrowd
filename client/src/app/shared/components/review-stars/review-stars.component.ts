@@ -11,7 +11,7 @@ export class ReviewStarsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   counter(i: number) {
     return new Array(i);

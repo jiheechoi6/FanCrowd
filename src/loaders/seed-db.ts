@@ -615,66 +615,66 @@ const fandomComments: IFandomComment[] = [
 const attends: IAttendEvent[] = [
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[1],
-    user: users[1]
+    event: events[1]._id,
+    user: users[1]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[1],
-    user: users[0]
+    event: events[1]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[0],
-    user: users[0]
+    event: events[0]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[4],
-    user: users[0]
+    event: events[4]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[6],
-    user: users[1]
+    event: events[6]._id,
+    user: users[1]._id
   }
 ];
 
 const fandomMembers: IFandomMember[] = [
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[0],
-    user: users[0]
+    fandom: fandoms[0]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[2],
-    user: users[0]
+    fandom: fandoms[2]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[5],
-    user: users[0]
+    fandom: fandoms[5]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[4],
-    user: users[0]
+    fandom: fandoms[4]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[1],
-    user: users[1]
+    fandom: fandoms[1]._id,
+    user: users[1]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[2],
-    user: users[1]
+    fandom: fandoms[2]._id,
+    user: users[1]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    fandom: fandoms[3],
-    user: users[1]
+    fandom: fandoms[3]._id,
+    user: users[1]._id
   }
 ];
 

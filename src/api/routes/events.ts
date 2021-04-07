@@ -131,9 +131,8 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) => {
     try {
-      const events: IEvent[] = await Event.find({})
-        .populate("postedBy")
-        .populate("fandom");
+      const eventService = new EventService();
+      const events = await eventService.getEvents();
       res.status(200).send(events);
     } catch (err) {
       return next(err);
@@ -148,14 +147,13 @@ export default (app: Router) => {
    * {
    *  eventId: string
    * }
-   * description: gets events by id or [] if no event
+   * description: gets event by id
    */
   route.get("/:eventId", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
       const event = await eventService.getEventById(eventId);
-
       res.status(200).send(event);
     } catch (err) {
       return next(err);
@@ -323,7 +321,7 @@ export default (app: Router) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
-      const event: IEvent = await eventService.getEventById(eventId);
+      const event: IEvent = await eventService.getEventDocById(eventId);
       const reviews: IEventReview[] = await eventService.getEventReviewsById(
         event._id
       );
@@ -462,7 +460,7 @@ export default (app: Router) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
-      const event: IEvent = await eventService.getEventById(eventId);
+      const event: IEvent = await eventService.getEventDocById(eventId);
       const attendees: IAttendEvent[] = await eventService.getEventAttendeesById(
         eventId
       );
@@ -488,8 +486,8 @@ export default (app: Router) => {
     try {
       const categoryName = req.params.categoryName;
       const fandomName = req.params.fandomName;
-      const category = categoryName.split("-").join(" ");
-      const fandom = fandomName.split("-").join(" ");
+      const category = categoryName.split("-").join(" ").toLowerCase();
+      const fandom = fandomName.split("-").join(" ").toLowerCase();
 
       const eventService = new EventService();
       const events = await eventService.getEventsByFandom(category, fandom);

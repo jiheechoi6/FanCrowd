@@ -18,5 +18,5 @@ export class DateEventDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 }

@@ -9,7 +9,11 @@ import Event from '../../shared/models/event';
 
 interface DialogData {
   eventBeingUpdated?: Event;
-  username: string;
+  user: {
+    username: string;
+    profileURL: string;
+    role: string;
+  };
 }
 
 @Component({
@@ -21,7 +25,7 @@ export class EventCreateDialogComponent implements OnInit {
   event: Event;
   minDate: Date;
   categories: Category[] = [];
-  fandomForCategory: Fandom[] = [];
+  fandomsForCategory: Fandom[] = [];
   eventDateRange: Date[];
   isEditingEvent = false;
 
@@ -53,8 +57,7 @@ export class EventCreateDialogComponent implements OnInit {
       this.isEditingEvent = true;
       this.event = this.data.eventBeingUpdated;
       this.eventDateRange = [this.event.startDate, this.event.endDate];
-
-      this.fetchFandomsForCategory(this.event.fandomType.category);
+      this.fetchFandomsForCategory(this.event.fandom.category.name);
     } else {
       const defaultStartDate = new Date();
       defaultStartDate.setHours(new Date().getHours() + 1);
@@ -63,10 +66,14 @@ export class EventCreateDialogComponent implements OnInit {
       this.eventDateRange = [defaultStartDate, defaultEndDate];
 
       this.event = {
-        _id: 1000,
         name: '',
-        fandomType: {
-          category: '',
+        fandom: {
+          category: {
+            _id: '',
+            name: '',
+            backgroundURL: '',
+          },
+          _id: '',
           name: '',
           backgroundURL: '',
           createdAt: new Date(),
@@ -75,13 +82,17 @@ export class EventCreateDialogComponent implements OnInit {
         startDate: this.eventDateRange[0],
         endDate: this.eventDateRange[1],
         location: '',
-        postedBy: this.data.username,
+        postedBy: {
+          username: this.data.user.username,
+          profileURL: this.data.user.profileURL,
+          role: this.data.user.role,
+        },
         totalAttendance: 0,
       };
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._fandomService.getCategories().subscribe((res) => {
       this.categories = res;
     });
@@ -91,10 +102,20 @@ export class EventCreateDialogComponent implements OnInit {
     this.fetchFandomsForCategory(event.value);
   }
 
-  fetchFandomsForCategory(category: string) {
+  fetchFandomsForCategory(categoryName: string) {
     this._fandomService
-      .getFandomsByCategories(category)
-      .subscribe((fandoms) => (this.fandomForCategory = fandoms));
+      .getFandomsByCategories(categoryName)
+      .subscribe((categoryFandoms) => {
+        this.fandomsForCategory = categoryFandoms.fandoms;
+      });
+  }
+
+  fandomChange(event: any) {
+    this.fandomsForCategory.forEach((fandom) => {
+      if (fandom.name === event.value) {
+        this.event.fandom._id = fandom._id;
+      }
+    });
   }
 
   setStartDateAndEndDate() {
@@ -104,13 +125,17 @@ export class EventCreateDialogComponent implements OnInit {
 
   createEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.createEvent(this.event);
-    this.dialogRef.close(this.event);
+    this._eventService.createEvent(this.event).subscribe((newEvent) => {
+      this.dialogRef.close(newEvent);
+    });
   }
 
   updateEvent() {
     this.setStartDateAndEndDate();
-    this._eventService.updateEventById(this.event._id, this.event);
-    this.dialogRef.close(this.event);
+    this._eventService
+      .updateEventById(this.event._id, this.event)
+      .subscribe((updatedEvent) => {
+        this.dialogRef.close(updatedEvent);
+      });
   }
 }

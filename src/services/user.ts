@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 import {
   IUser,
   INewUserInputDTO,
-  IUpdateUserDTO,
+  IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO,
-  IRequestUser
+  IRequestUser,
+  IAttendEventFilter
 } from "../interfaces/IUser";
 import User from "../models/user";
 import Event from "../models/event";
@@ -15,6 +16,8 @@ import ErrorService from "./error";
 import crypto from "crypto";
 import EmailService from "./email";
 import config from "../config";
+import Attend from "../models/attend";
+import { IEventSummary } from "../interfaces/IEvent";
 
 export default class UserService {
   /**
@@ -23,13 +26,12 @@ export default class UserService {
    */
 
   public async SignUp(userInputDTO: INewUserInputDTO) {
-    const usernameCheck = await User.findOne({ username: userInputDTO.username });
+    const usernameCheck = await User.findOne({
+      username: userInputDTO.username
+    });
 
     if (usernameCheck) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Username is already taken"
-      );
+      throw new ErrorService("UnauthorizedError", "Username is already taken");
     }
 
     const emailCheck = await User.findOne({ email: userInputDTO.email });
@@ -61,19 +63,13 @@ export default class UserService {
     const userRecord = await User.findOne({ username: username });
 
     if (!userRecord) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Username is incorrect"
-      );
+      throw new ErrorService("UnauthorizedError", "Username is incorrect");
     }
 
     const isPasswordValid = await bcrypt.compare(password, userRecord.password);
 
     if (!isPasswordValid) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Password is incorrect"
-      );
+      throw new ErrorService("UnauthorizedError", "Password is incorrect");
     }
 
     const user: IRequestUser = {
@@ -108,7 +104,10 @@ export default class UserService {
     await user.delete();
   }
 
-  public async updateUser(username: string, updatedUser: IUpdateUserDTO) {
+  public async updateUser(
+    username: string,
+    updatedUser: IUpdateUserProfileDTO
+  ) {
     const userDoc = await this.getUserByUsername(username);
 
     userDoc.fullName = updatedUser.fullName || userDoc.fullName;
@@ -124,27 +123,89 @@ export default class UserService {
     return user;
   }
 
+  public async getUserEventsMatchingFilters(attendFilter: IAttendEventFilter) {
+    const events: IEventSummary[] = await Attend.aggregate([
+      {
+        $match: attendFilter
+      },
+      {
+        $lookup: {
+          from: "events",
+          as: "event",
+          let: {
+            eventId: "$event"
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$_id", "$$eventId"]
+                }
+              }
+            },
+            {
+              $lookup: {
+                from: "attends",
+                as: "attendees",
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $eq: ["$event", "$$eventId"]
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              $project: {
+                name: 1,
+                description: 1,
+                location: 1,
+                startDate: 1,
+                endDate: 1,
+                totalAttendance: {
+                  $size: "$attendees"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        $unwind: "$event"
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$event"
+        }
+      }
+    ]);
+    return events;
+  }
+
   public async getUserEvents(username: string) {
     const user = await this.getUserByUsername(username);
-    const events = await Event.find({ postedBy: user._id });
-
-    if (!events) {
-      throw new ErrorService(
-        "NotFoundError",
-        `Events for User with username ${username} do not exist`
-      );
-    }
-
+    const events = await this.getUserEventsMatchingFilters({ user: user._id });
     return events;
   }
 
   public async getUserFandoms(username: string) {
     const user = await this.getUserByUsername(username);
-    const fandoms = await FandomMember.find({ user: user._id }).populate(
-      "fandom"
-    );
+    const fandoms = await FandomMember.find({ user: user._id }).populate({
+      path: "fandom",
+      populate: {
+        path: "category"
+      }
+    });
 
-    return fandoms;
+    let fandomList: any[] = [];
+    fandoms.forEach((fandom) => {
+      fandomList.push(fandom.fandom);
+    });
+
+    return fandomList;
   }
 
   private generateVerificationCode() {

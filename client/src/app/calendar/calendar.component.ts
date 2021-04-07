@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
-import EventDTO from '../shared/models/event-dto';
+import Event from 'src/app/shared/models/event'
 import { UserService } from '../core/services/user.service';
+import { EditReviewDialogComponent } from '../events/edit-review-dialog/edit-review-dialog.component';
 
 @Component({
   selector: 'app-calendar',
@@ -37,7 +38,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     0
   ).getDate();
   prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
-  userEvents: EventDTO[] = [];
+  userEvents: Event[] = [];
   private _eventDialogRef: MatDialogRef<DateEventDialogComponent> | null = null;
 
   constructor(
@@ -46,15 +47,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private _userService: UserService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._authService.currentUser.subscribe((user) => {
-      this.userEvents = this._userService.getUserEventsByUsername(
-        user?.username || ''
-      );
+      this._userService.getUserEventsByUsername(user?.username || '').subscribe((events) => {
+        this.userEvents = events;
+      });
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     if (this._eventDialogRef) {
       this._eventDialogRef.close();
     }
@@ -92,23 +93,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.changeShownCalendarDates();
   }
 
-  getEventsForDate(month: number, date: number) {
-    const selectedDate = this.getDateFromshownYearMonthDate(
-      month,
-      date
-    ).toDateString();
+  getEventsForDate(year: number, month: number, date: number) {
     const eventsForDate = this.userEvents.filter(
-      (event) => event.date.toDateString() === selectedDate
+      (event) => {
+        let eventDate = new Date(event.startDate);
+        let selectedDate = new Date(year, month, date);
+        return (eventDate.getFullYear() == selectedDate.getFullYear()) &&
+              (eventDate.getMonth() == selectedDate.getMonth()) &&
+              (eventDate.getDate() == selectedDate.getDate());
+      }
     );
     return eventsForDate;
   }
 
   openDateEventDialog(date: number) {
-    const selectedDate = this.getDateFromshownYearMonthDate(
-      this.shownMonth,
-      date
-    );
-    const eventsForDate = this.getEventsForDate(this.shownMonth, date);
+    const selectedDate = new Date(this.shownYear, this.shownMonth, date)
+    const eventsForDate = this.getEventsForDate(this.shownYear, this.shownMonth, date);
+    console.log(this.getEventsForDate(2021, 5, 8));
     this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,

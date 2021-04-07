@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription} from 'rxjs';
-import UserDTO from 'src/app/shared/models/user-dto';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import UserIdentity from 'src/app/shared/models/user-identity';
-// import { userInfo } from 'os';
+import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 
 @Component({
   selector: 'app-navbar',
@@ -14,15 +12,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserIdentity | null = null;
 
-  constructor(private _authService: AuthService,) {}
+  constructor(private _authService: AuthService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.userSubscription = this._authService.currentUser.subscribe(
       (user) => (this.user = user)
     );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
 

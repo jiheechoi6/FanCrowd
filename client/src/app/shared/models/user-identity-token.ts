@@ -1,10 +1,11 @@
-interface UserIdentityToken{
-    token: string;
-    user: {
-        _id: string;
-        role: string;
-        username: string;
-        profileURL: string;
-    }
+export interface UserIdentityToken {
+  token: string;
+  user: UserIdentity;
 }
-export default UserIdentityToken
+
+export interface UserIdentity {
+  _id: string;
+  username: string;
+  role: string;
+  profileURL: string;
+}

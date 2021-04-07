@@ -1,42 +1,63 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FandomService } from '../../core/services/fandom.service';
 import Fandom from 'src/app/shared/models/fandom';
 import { AddDialogComponent } from 'src/app/shared/components/add-dialog/add-dialog.component';
 import { finalize } from 'rxjs/operators';
+import Category from 'src/app/shared/models/category';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalService } from 'src/app/core/services/global.service';
 
 @Component({
   selector: 'app-fandom-selection',
   templateUrl: './fandom-selection.component.html',
   styleUrls: ['./fandom-selection.component.sass'],
 })
-export class FandomSelectionComponent implements OnInit {
-  category: string = '';
+export class FandomSelectionComponent implements OnInit, OnDestroy {
+  categoryName: string = '';
   fandoms: Fandom[] = [];
   isLoading = true;
+  category!: Category;
+  userSubscription!: Subscription;
+  isAdmin = false;
 
   constructor(
     private _fandomService: FandomService,
     private _activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
-    private _router: Router
+    public _dialog: MatDialog,
+    private _router: Router,
+    private _authService: AuthService,
+    private _snackBar: MatSnackBar,
+    private _globalService: GlobalService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._activatedRoute.params.subscribe((params) => {
-      this.category = params['category'];
-      this.fetchFandoms();
+      this.categoryName = params['category'];
+      this.fetchComponentInfo();
     });
+
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.isAdmin = user?.role === 'admin')
+    );
   }
 
-  fetchFandoms() {
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
+  }
+
+  fetchComponentInfo() {
     this._fandomService
-      .getFandomsByCategories(this.category)
+      .getFandomsByCategories(this.categoryName)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(
-        (fandoms) => {
-          this.fandoms = fandoms;
+        (fandomsAndCategory) => {
+          this.fandoms = fandomsAndCategory.fandoms;
+          this.category = fandomsAndCategory.category;
         },
         (err) => {
           if (err.status === 404) {
@@ -46,21 +67,87 @@ export class FandomSelectionComponent implements OnInit {
       );
   }
 
-  openCreateFandomDialog(): void {
-    const dialogRef = this.dialog.open(AddDialogComponent, {
+  openCreateFandomDialog() {
+    const dialogRef = this._dialog.open(AddDialogComponent, {
       data: {
-        title: 'Fandom in ' + this.category,
-        categoryName: this.category,
+        title: 'Fandom',
+        categoryId: this.category!._id,
         isCategory: false,
       },
       width: '360px',
       height: '300px',
       autoFocus: false,
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((newFandom: Fandom) => {
       if (newFandom) {
-        this.fetchFandoms();
+        this.fandoms.push(newFandom);
+        this._snackBar.open(
+          `${this._globalService.toTitleCase(
+            newFandom.name
+          )} fandom has been created!`,
+          'X',
+          {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2500,
+          }
+        );
+      }
+    });
+  }
+
+  deleteCategory() {
+    this._fandomService.deleteCategoryById(this.category!._id).subscribe(() => {
+      this._snackBar.open(`${this.category.name} has been deleted`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 2500,
+      });
+      this._router.navigate(['/fandoms']);
+    });
+  }
+
+  openDeleteCategoryDialog() {
+    this._dialog.open(DeleteDialogComponent, {
+      data: {
+        title: 'Delete Category Confirmation',
+        details:
+          'Are you sure you want to delete this category? All associated fandoms, posts and comments will be removed as well',
+        onConfirmCb: this.deleteCategory.bind(this),
+      },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+  }
+
+  openEditCategoryDialog() {
+    const dialogRef = this._dialog.open(AddDialogComponent, {
+      data: {
+        title: 'Category',
+        isCategory: true,
+        isEditing: true,
+        category: this.category,
+      },
+      width: '360px',
+      height: '300px',
+      autoFocus: false,
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((updatedCategory: Category) => {
+      if (updatedCategory) {
+        this._snackBar.open(`Category details have been updated`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 2500,
+        });
+        this._router.navigate([
+          '/fandoms',
+          this._globalService.convertSpacesToHyphen(updatedCategory.name),
+        ]);
       }
     });
   }

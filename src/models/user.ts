@@ -48,7 +48,8 @@ const UserSchema = new mongoose.Schema(
     profileURL: {
       type: String,
       // required: [isNotAdmin, "Profile URL is required"],
-      default: ""
+      default:
+        "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png"
     },
     city: {
       type: String,

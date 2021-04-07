@@ -22,7 +22,8 @@ const FandomSchema = new mongoose.Schema(
     },
     backgroundURL: {
       type: String,
-      required: [true, "Fandom background URL is required"]
+      required: [true, "Fandom background URL is required"],
+      default: "https://cdn.hipwallpaper.com/i/96/43/B7R52d.jpg"
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,

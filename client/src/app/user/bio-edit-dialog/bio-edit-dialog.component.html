@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Edit Info</h1>
+<section mat-dialog-content>
+    <form (ngSubmit)="onUpdateUser()" #editUserForm="ngForm">
+        <div class="form-group">
+            <mat-form-field color="accent">
+                <mat-label>Bio</mat-label>
+                <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+                    cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*"
+                    autocomplete="off"></textarea>
+                <!-- <mat-error>Bio is a required field</mat-error> -->
+            </mat-form-field>
+        </div>
+    </form>
+</section>
+<div mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close color="basic" type="button">
+        Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="editUserForm.ngSubmit.emit()"
+        [disabled]="!editUserForm.form.valid">
+        <span>
+            Confirm <i class="fas fa-check"></i>
+        </span>
+    </button>
+</div>

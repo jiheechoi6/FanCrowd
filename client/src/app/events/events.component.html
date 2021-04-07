@@ -34,11 +34,11 @@
                     </p>
                 </article>
                 <p class="created-by">Created By: <a
-                        [routerLink]="['/users', event.postedBy]">{{event.postedBy | titlecase}}</a>
+                        [routerLink]="['/users', event.postedBy.username]">{{event.postedBy.username | titlecase}}</a>
                 </p>
                 <p>
                     Fandom: <a
-                        [routerLink]="['/fandoms', event.fandomType.category | lowercase, event.fandomType.name | spacesToHyphen | lowercase]">{{event.fandomType.name | titlecase}}</a>
+                        [routerLink]="['/fandoms', event.fandom.category.name | lowercase, event.fandom.name | spacesToHyphen | lowercase]">{{event.fandom.name | titlecase}}</a>
                 </p>
                 <div class="flex-row-container-right">
                     <button mat-flat-button color="primary" [routerLink]="['/events', event._id]">

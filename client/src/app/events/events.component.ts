@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
 import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
-import UserDTO from '../shared/models/user-dto';
+import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 
 @Component({
   selector: 'app-events',
@@ -18,7 +18,7 @@ export class EventsComponent implements OnInit {
   pageSize: number = this.pageSizeOptions[1];
   pageIndex: number = 0;
   today: Date = new Date();
-  user: UserDTO | null = null;
+  user: UserIdentity | null = null;
 
   constructor(
     private _authService: AuthService,
@@ -26,10 +26,12 @@ export class EventsComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
-    // this.user = this._authService.getCurrentUser().value;
-    this.allEvents = this._eventService.getEvents();
-    this.events = this.allEvents.slice(0, this.pageSize);
+  ngOnInit() {
+    this._authService.currentUser.subscribe((user) => (this.user = user));
+    this._eventService.getEvents().subscribe((events) => {
+      this.allEvents = events;
+      this.events = this.allEvents.slice(0, this.pageSize);
+    });
   }
 
   selectPage(event: any) {
@@ -40,9 +42,15 @@ export class EventsComponent implements OnInit {
     this.events = this.allEvents.slice(startIndex, endIndex);
   }
 
-  openCreateEventDialog(): void {
+  openCreateEventDialog() {
     const dialogRef = this.dialog.open(EventCreateDialogComponent, {
-      data: { username: this.user?.username },
+      data: {
+        user: {
+          username: this.user?.username,
+          profileURL: this.user?.profileURL,
+          role: this.user?.role,
+        },
+      },
       width: '800px',
       autoFocus: false,
       disableClose: true,
@@ -50,7 +58,9 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this.events = this._eventService.getEvents();
+        this._eventService.getEvents().subscribe((events) => {
+          this.allEvents = events;
+        });
       }
     });
   }

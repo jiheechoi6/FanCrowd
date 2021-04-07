@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import { FandomPost } from 'src/app/shared/models/fandom-post';
-import PartialUserDTO from 'src/app/shared/models/partial-user-dto';
 
 interface DialogData {
   postBeingUpdated?: FandomPost;
-  userCreatingEvent: PartialUserDTO;
   fandomId: string;
 }
 
@@ -17,6 +16,8 @@ interface DialogData {
 export class CreatePostDialogComponent implements OnInit {
   post: FandomPost;
   isEditing = false;
+  isLoading = false;
+  errorMsg: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<CreatePostDialogComponent>,
@@ -35,16 +36,27 @@ export class CreatePostDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onCreatePost() {
-    this.post.createdAt = new Date();
-    const newPost = this._fandomService.createPostForFandom(this.post);
-    this.dialogRef.close(newPost);
+    this.isLoading = true;
+    this._fandomService
+      .createPost(this.post)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (post) => this.dialogRef.close(post),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 
   onEditPost() {
-    //this._fandomService.updatePostForFandom(this.post._id, this.post);
-    this.dialogRef.close(this.post);
+    this.isLoading = true;
+    this._fandomService
+      .updatePost(this.post!._id, this.post)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        () => this.dialogRef.close(this.post),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 }

@@ -1,13 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { FandomService } from 'src/app/core/services/fandom.service';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
-import PartialUserDTO from 'src/app/shared/models/partial-user-dto';
 
 interface DialogData {
   commentBeingEdited?: FandomPostComment;
-  userCreatingComment: PartialUserDTO;
-  postId: number;
+  postId: string;
 }
 
 @Component({
@@ -17,6 +16,8 @@ interface DialogData {
 export class AddCommentDialogComponent implements OnInit {
   comment: FandomPostComment;
   isEditing = false;
+  isLoading = false;
+  errorMsg: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<AddCommentDialogComponent>,
@@ -30,27 +31,32 @@ export class AddCommentDialogComponent implements OnInit {
       this.comment = {
         content: '',
         title: '',
-        fandomPost: '',
+        fandomPost: this.data.postId,
       };
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onCreateComment() {
-    // const newComment = this._fandomService.addCommentToPost(
-    //   this.data.postId,
-    //   this.comment
-    // );
-    this.dialogRef.close();
+    this.isLoading = true;
+    this._fandomService
+      .createComment(this.comment)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (comment) => this.dialogRef.close(comment),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 
   onEditComment() {
-    // this._fandomService.editPostComment(
-    //   this.data.postId,
-    //   this.comment.id,
-    //   this.comment
-    // );
-    this.dialogRef.close(this.comment);
+    this.isLoading = true;
+    this._fandomService
+      .updateComment(this.comment._id, this.comment)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        () => this.dialogRef.close(this.comment),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 }

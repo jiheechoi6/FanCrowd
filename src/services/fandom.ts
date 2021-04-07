@@ -3,6 +3,7 @@ import FandomCategory from "../models/fandom-category";
 import Fandom from "../models/fandom";
 import FandomPost from "../models/fandom-post";
 import FandomComment from "../models/fandom-comment";
+import FandomMember from "../models/fandom-member";
 import UserLike from "../models/user-like";
 import {
   IFandomCategoryDTO,
@@ -22,7 +23,12 @@ import {
 } from "../interfaces/IFandom";
 import ErrorService from "./error";
 import GlobalService from "./global";
-import { INewUserLikeInputDTO, IRequestUser, IUser } from "../interfaces/IUser";
+import {
+  INewFandomMemberInputDTO,
+  INewUserLikeInputDTO,
+  IRequestUser,
+  IUser
+} from "../interfaces/IUser";
 
 export default class FandomService {
   private static _globalService = new GlobalService();
@@ -188,7 +194,7 @@ export default class FandomService {
 
   public async getFandomsInCategory(categoryName: string) {
     const category = await FandomCategory.findOne({
-      name: categoryName.toLowerCase()
+      name: categoryName.toLowerCase().split("-").join(" ")
     });
 
     if (!category) {
@@ -202,7 +208,7 @@ export default class FandomService {
       category: category._id
     }).select("-createdBy");
 
-    return fandoms;
+    return { fandoms, category };
   }
 
   public async createCategory(newCategory: INewFandomCategoryInputDTO) {
@@ -211,6 +217,29 @@ export default class FandomService {
     Reflect.deleteProperty(category, "createdBy");
 
     return category;
+  }
+
+  public async joinFandom(newMember: INewFandomMemberInputDTO) {
+    FandomService._globalService.checkValidObjectId(
+      newMember.fandom,
+      `Fandom with id ${newMember.fandom} not found`
+    );
+    await this.getFandomById(newMember.fandom);
+    await FandomMember.create(newMember);
+  }
+
+  public async leaveFandom(
+    userId: mongoose.Types._ObjectId,
+    fandomId: mongoose.Types._ObjectId | string
+  ) {
+    await FandomMember.deleteOne({ user: userId, fandom: fandomId });
+  }
+
+  public async isUserInFandom(
+    userId: mongoose.Types._ObjectId,
+    fandomId: mongoose.Types._ObjectId | string
+  ) {
+    return await FandomMember.exists({ user: userId, fandom: fandomId });
   }
 
   public async deleteCategoryById(
@@ -270,7 +299,7 @@ export default class FandomService {
       {
         $lookup: {
           from: "userlikes",
-          as: "numLikes",
+          as: "likes",
           let: {
             fandomPostId: "$_id"
           },
@@ -298,7 +327,7 @@ export default class FandomService {
       {
         $lookup: {
           from: "userlikes",
-          as: "numDislikes",
+          as: "dislikes",
           let: {
             fandomPostId: "$_id"
           },
@@ -340,8 +369,8 @@ export default class FandomService {
             username: 1,
             profileURL: 1
           },
-          numLikes: 1,
-          numDislikes: 1,
+          likes: 1,
+          dislikes: 1,
           title: 1,
           content: 1,
           createdAt: 1,
@@ -362,7 +391,7 @@ export default class FandomService {
         {
           $lookup: {
             from: "userlikes",
-            as: "numLikes",
+            as: "likes",
             let: {
               fandomCommentId: "$_id"
             },
@@ -390,7 +419,7 @@ export default class FandomService {
         {
           $lookup: {
             from: "userlikes",
-            as: "numDislikes",
+            as: "dislikes",
             let: {
               fandomCommentId: "$_id"
             },
@@ -432,8 +461,8 @@ export default class FandomService {
               username: 1,
               profileURL: 1
             },
-            numLikes: 1,
-            numDislikes: 1,
+            likes: 1,
+            dislikes: 1,
             title: 1,
             content: 1,
             createdAt: 1,
@@ -492,8 +521,8 @@ export default class FandomService {
     const newPostDoc = await FandomPost.create(newPost);
     const post: IFandomPostDTOWithLikes = {
       ...newPostDoc.toObject(),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: createdByUser.username,
         profileURL: createdByUser.profileURL
@@ -578,8 +607,8 @@ export default class FandomService {
     const newCommentDoc = await FandomComment.create(newComment);
     const comment: IFandomCommentDTOWithLikes = {
       ...newCommentDoc.toObject(),
-      numDislikes: [],
-      numLikes: [],
+      dislikes: [],
+      likes: [],
       postedBy: {
         username: createdByUser.username,
         profileURL: createdByUser.profileURL
@@ -631,7 +660,7 @@ export default class FandomService {
     comment.content = updatedComment.content || comment.content;
 
     if (updatedComment.fandomPost) {
-      const post = await this.getFandomById(updatedComment.fandomPost);
+      const post = await this.getPostDocById(updatedComment.fandomPost);
       comment.fandomPost = post._id;
     }
 
