@@ -21,13 +21,7 @@ export class SearchUserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
-    // this.userList = this.userService.getUsernameNameMap();
-    // this.filteredOptions = this.myControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => this._filterName(value))
-    // );
-    // this.userProfilePhotos = this.userService.getUserProfilePhotos();
-    // this.loadUsers();
+    this.loadUsers();
   }
 
   searchUser() {
