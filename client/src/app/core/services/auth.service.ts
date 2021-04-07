@@ -18,131 +18,132 @@ export class AuthService {
   token: string | null = null;
 
   users: UserDTO[] = [
-    {
-      _id: '1',
-      username: 'user1',
-      fullName: 'Chandra Panta Chhetri',
-      city: 'Toronto',
-      country: 'Canada',
-      email: 'chandra@gmail.com',
-      profileURL:
-        'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
-      role: 'user',
-      bio:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      attendingEvents: [
-        {
-          name: 'Comic Con',
-          date: new Date(2021, 10, 12),
-          totalAttending: 2,
-          id: "1",
-        },
-        {
-          name: 'World Expo',
-          date: new Date(2021, 5, 12),
-          totalAttending: 2,
-          id: "2",
-        },
-        {
-          name: 'J.K Rowling Meet & Greet',
-          date: new Date(2021, 9, 12),
-          totalAttending: 3,
-          id: "5",
-        },
-        {
-          name: 'FIFA World Cup Party',
-          date: new Date(2021, 11, 3),
-          totalAttending: 1,
-          id: "7",
-        },
-      ],
-      fandoms: [
-        {
-          name: 'Avengers',
-          _id: '14',
-          activityLevel: 5,
-          category: 'movies',
-        },
-        {
-          name: 'Harry Potter',
-          _id: '14',
-          activityLevel: 2,
-          category: 'movies',
-        },
-        {
-          // Books Category
-          name: 'Percy Jackson',
-          _id: '14',
-          activityLevel: 1,
-          category: 'books',
-        },
-        {
-          // Games Category
-          name: 'Call of Duty',
-          _id: '14',
-          activityLevel: 4,
-          category: 'games',
-        },
-      ],
-    },
-    {
-      _id: '2',
-      username: 'user2',
-      fullName: 'Raj Patel',
-      city: 'Toronto',
-      country: 'Canada',
-      email: 'raj@gmail.com',
-      profileURL:
-        'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
-      role: 'user',
-      bio:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-      attendingEvents: [
-        {
-          name: 'World Expo',
-          date: new Date(2021, 5, 12),
-          totalAttending: 2,
-          id: "2",
-        },
-      ],
-      fandoms: [
-        {
-          // Movies Category
-          name: 'Harry Potter',
-          _id: '14',
-          activityLevel: 2,
-          category: 'movies',
-        },
-        {
-          // Sports Category
-          name: 'Basketball',
-          _id: '14',
-          activityLevel: 3,
-          category: 'sports',
-        },
-        {
-          // Shows Category
-          name: 'The Big Bang Theory',
-          _id: '14',
-          activityLevel: 5,
-          category: 'shows',
-        },
-      ],
-    },
-    {
-      _id: '3',
-      username: 'admin',
-      fullName: 'Jihee',
-      city: 'Toronto',
-      country: 'Canada',
-      email: 'jihee@gmail.com',
-      profileURL: 'https://dummyimage.com/250.jpg',
-      role: 'admin',
-      bio: '',
-      attendingEvents: [],
-      fandoms: [],
-    },
-  ];
+
+    // {
+    //   _id: '1',
+    //   username: 'user1',
+    //   fullName: 'Chandra Panta Chhetri',
+    //   city: 'Toronto',
+    //   country: 'Canada',
+    //   email: 'chandra@gmail.com',
+    //   profileUrl:
+    //     'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
+    //   role: 'user',
+    //   bio:å
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    //   attendingEvents: [
+    //     {
+    //       name: 'Comic Con',
+    //       date: new Date(2021, 10, 12),
+    //       totalAttending: 2,
+    //       _id: "1",
+    //     },
+    //     {
+    //       name: 'World Expo',
+    //       date: new Date(2021, 5, 12),
+    //       totalAttending: 2,
+    //       _id: "2",
+    //     },
+    //     {
+    //       name: 'J.K Rowling Meet & Greet',
+    //       date: new Date(2021, 9, 12),
+    //       totalAttending: 3,
+    //       _id: "5",
+    //     },
+    //     {
+    //       name: 'FIFA World Cup Party',
+    //       date: new Date(2021, 11, 3),
+    //       totalAttending: 1,
+    //       _id: "7",
+    //     },
+    //   ],
+    //   fandoms: [
+    //     {
+    //       name: 'Avengers',
+    //       _id: '14',
+    //       activityLevel: 5,
+    //       category: 'movies',
+    //     },
+    //     {
+    //       name: 'Harry Potter',
+    //       _id: '14',
+    //       activityLevel: 2,
+    //       category: 'movies',
+    //     },
+    //     {
+    //       // Books Category
+    //       name: 'Percy Jackson',
+    //       _id: '14',
+    //       activityLevel: 1,
+    //       category: 'books',
+    //     },
+    //     {
+    //       // Games Category
+    //       name: 'Call of Duty',
+    //       _id: '14',
+    //       activityLevel: 4,
+    //       category: 'games',
+    //     },
+    //   ],
+    // },
+    // {
+    //   _id: '2',
+    //   username: 'user2',
+    //   fullName: 'Raj Patel',
+    //   city: 'Toronto',
+    //   country: 'Canada',
+    //   email: 'raj@gmail.com',
+    //   profileUrl:
+    //     'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
+    //   role: 'user',
+    //   bio:
+    //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    //   attendingEvents: [
+    //     {
+    //       name: 'World Expo',
+    //       date: new Date(2021, 5, 12),
+    //       totalAttending: 2,
+    //       _id: "2",
+    //     },
+    //   ],
+    //   fandoms: [
+    //     {
+    //       // Movies Category
+    //       name: 'Harry Potter',
+    //       _id: '14',
+    //       activityLevel: 2,
+    //       category: 'movies',
+    //     },
+    //     {
+    //       // Sports Category
+    //       name: 'Basketball',
+    //       _id: '14',
+    //       activityLevel: 3,
+    //       category: 'sports',
+    //     },
+    //     {
+    //       // Shows Category
+    //       name: 'The Big Bang Theory',
+    //       _id: '14',
+    //       activityLevel: 5,
+    //       category: 'shows',
+    //     },
+    //   ],
+    // },
+    // {
+    //   _id: '3',
+    //   username: 'admin',
+    //   fullName: 'Jihee',
+    //   city: 'Toronto',
+    //   country: 'Canada',
+    //   email: 'jihee@gmail.com',
+    //   profileUrl: 'https://dummyimage.com/250.jpg',
+    //   role: 'admin',
+    //   bio: '',
+    //   attendingEvents: [],
+    //   fandoms: [],
+    // },
+];
 
   constructor(
     private _http: HttpClient,
@@ -155,10 +156,8 @@ export class AuthService {
 
   loginUser(username: string, password: string) {
     //API request to auth endpoint
-    let headers = new HttpHeaders({'Content-Type': 'application/json'});
-
     return this._http.post<UserIdentityToken>('/api/auth/signin',
-        {username, password}, {headers: headers, responseType: 'json'})
+        {username, password}, {responseType: 'json'})
           .pipe(map(res => this.updateCurrentUser(res)));
   }
 
@@ -265,7 +264,7 @@ export class AuthService {
     this.users.forEach((user) => {
       if (user) {
         let eventIndex = user.attendingEvents.findIndex(
-          (userEvent) => userEvent.id === eventId
+          (userEvent) => userEvent._id === eventId
         );
 
         if (eventIndex >= 0) {

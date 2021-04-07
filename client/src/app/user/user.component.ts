@@ -8,6 +8,9 @@ import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete
 import Event from '../shared/models/event';
 import UserDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
+import UserIdentity from '../shared/models/user-identity';
+import UserFandomRes from '../shared/models/user-fandom-res';
 
 @Component({
   selector: 'app-user',
@@ -17,8 +20,9 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
 export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserDTO | null = null;
-  loggedInUser: UserDTO | null = null;
+  loggedInUser: UserIdentity | null = null;
   events: Event[] = [];
+  fandoms: UserFandomRes[] = [];
 
   constructor(
     private _userService: UserService,
@@ -31,21 +35,30 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
-      this._userService.getUserByUsername(username).subscribe((user) => {
-        this.user = user;
-        if (!this.user) {
-          this._router.navigate(['../']);
-        }
+      this._userService.getUserByUsername(username).subscribe( (user) => {
+        this.user = user 
       });
+
+      this._userService.getUserEventsByUsername(username).subscribe( (events) =>{
+        if(this.user) this.events = events;
+      })
+
+      this._userService.getUserFandomsByUsername(username).subscribe( (fandoms) =>{
+        this.fandoms = fandoms;
+      })
+
+      if (!this.user) {
+        this._router.navigate(['../']);
+      }
     });
 
-    // this.userSubscription = this._authService.currentUserInfo.subscribe(
-    //   (user) => (this.loggedInUser = user)
-    // );
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
   }
 
   ngOnDestroy(): void {
-    // this.userSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
   }
 
   deleteUser() {
@@ -69,7 +82,14 @@ export class UserComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        // this._authService.currentUserInfo.next(updatedUser);
+        if(!this._authService.currentUser.value){
+          return;
+        }
+        this._authService.currentUser.next({
+          ...this._authService.currentUser.value,
+          username: updatedUser.username,
+          profileURL: updatedUser.profileURL
+        });
       }
     });
   }
@@ -100,4 +120,43 @@ export class UserComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
   }
+
+  openEditBioDialog() {
+    const dialogRef = this._dialog.open(BioEditDialogComponent, {
+      data: { ...this.user },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
+      if (updatedUser) {
+        this.user = updatedUser;
+        if(!this._authService.currentUser.value){
+          return;
+        }
+        this._authService.currentUser.next({
+          ...this._authService.currentUser.value,
+          username: updatedUser.username,
+          profileURL: updatedUser.profileURL
+        });
+      }
+    });
+  }
+
+  isFandomEmpty(): boolean{
+    return !this.fandoms;
+  }
+
+  isBioEmpty(): boolean{
+    return !this.user?.bio;
+  }
+
+  isEventsEmpty(): boolean{
+    return !this.events;
+  }
+
+  isSelf(): boolean{
+    return this.user?.username == this.loggedInUser?.username;
+  }
 }
+

@@ -15,6 +15,7 @@ import ErrorService from "./error";
 import crypto from "crypto";
 import EmailService from "./email";
 import config from "../config";
+import Attend from "../models/attend";
 
 export default class UserService {
   /**
@@ -126,7 +127,12 @@ export default class UserService {
 
   public async getUserEvents(username: string) {
     const user = await this.getUserByUsername(username);
-    const events = await Event.find({ postedBy: user._id });
+    // const events = await Event.find({ postedBy: user._id });
+    const events = await Attend.find({ user: user._id }).populate( "event" );
+    let eventList: any[] = [];
+    events.forEach((event)=> {
+      eventList.push(event.event);
+    });
 
     if (!events) {
       throw new ErrorService(
@@ -135,7 +141,7 @@ export default class UserService {
       );
     }
 
-    return events;
+    return eventList;
   }
 
   public async getUserFandoms(username: string) {
@@ -147,7 +153,12 @@ export default class UserService {
       }
     });
 
-    return fandoms;
+    let fandomList: any[] = [];
+    fandoms.forEach((fandom)=> {
+      fandomList.push(fandom.fandom)
+    });
+
+    return fandomList;
   }
 
   private generateVerificationCode() {
