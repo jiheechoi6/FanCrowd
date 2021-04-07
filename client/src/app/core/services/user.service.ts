@@ -137,6 +137,10 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
+  getAllUsers(){
+    return this._http.get<UserDTO[]>(`/api/users/`);
+  }
+
   getUserByUsername(username: string){
     // Get user from server, code below requires server call
     // return this.users.find((user) => user.username === username) || null;
@@ -235,23 +239,6 @@ export class UserService {
     });
   }
 
-  getUsernameNameMap() {
-    let usermap: Map<string, string> = new Map();
-    this.users.forEach((user) => {
-      usermap.set(user.fullName, user.username);
-    });
-
-    return usermap;
-  }
-
-  getUserProfilePhotos() {
-    let photos: Map<string, string> = new Map<string, string>();
-    this.users.forEach((user) => {
-      photos.set(user.username, user.profileURL);
-    });
-    return photos;
-  }
-
   addFandomToUser(username: string, fandom: Fandom | null) {
     //Add a fandom with id fandomId to Users fandoms, code below requires server call
 
@@ -305,3 +292,4 @@ export class UserService {
     return false;
   }
 }
+

@@ -18,6 +18,7 @@ export class AuthService {
   token: string | null = null;
 
   users: UserDTO[] = [
+
     // {
     //   _id: '1',
     //   username: 'user1',
@@ -142,7 +143,7 @@ export class AuthService {
     //   attendingEvents: [],
     //   fandoms: [],
     // },
-  ];
+];
 
   constructor(
     private _http: HttpClient,

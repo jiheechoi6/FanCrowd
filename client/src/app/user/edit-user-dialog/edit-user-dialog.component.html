@@ -51,7 +51,6 @@
                 <mat-label>Profile Image URL</mat-label>
                 <input matInput [(ngModel)]="user.profileURL" name="profileurl"
                     pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileURL="ngModel" />
-                <!-- <mat-error *ngIf="profileUrl.errors?.required">Profile Image URL is a required field</mat-error> -->
                 <mat-error *ngIf="profileURL.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
