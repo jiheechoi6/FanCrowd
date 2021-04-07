@@ -120,7 +120,7 @@ export class ForgotPasswordComponent implements OnInit {
     const email = this.firstStepForm.value['email'];
     const username = this.firstStepForm.value['username'];
     const verificationCode = this.secondStepForm.value['verificationCode'];
-    const newPassword = this.secondStepForm.value['newPassword'];
+    const newPassword = this.secondStepForm.value.passwords.newPassword;
 
     this.resettingPassword = true;
     this._userService
