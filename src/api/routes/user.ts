@@ -108,7 +108,7 @@ export default (app: Router) => {
    * {
    *  username: string
    * }
-   * description: deletes an event
+   * description: deletes a user
    */
   route.delete("/:username", async (req, res, next) => {
     try {

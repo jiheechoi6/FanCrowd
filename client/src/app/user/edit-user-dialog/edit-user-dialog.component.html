@@ -34,36 +34,34 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Country</mat-label>
-                <input matInput [(ngModel)]="user.country" name="country" required pattern=".*\S+.*"
+                <input matInput [(ngModel)]="user.country" name="country" pattern=".*\S+.*"
                     autocomplete="off" />
-                <mat-error>Country is a required field</mat-error>
+                <!-- <mat-error>Country is a required field</mat-error> -->
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>City</mat-label>
-                <input matInput [(ngModel)]="user.city" name="city" required pattern=".*\S+.*" autocomplete="off" />
-                <mat-error>City is a required field</mat-error>
+                <input matInput [(ngModel)]="user.city" name="city" pattern=".*\S+.*" autocomplete="off" />
+                <!-- <mat-error>City is a required field</mat-error> -->
             </mat-form-field>
         </div>
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Profile Image URL</mat-label>
-                <input matInput [(ngModel)]="user.profileUrl" name="profileurl" required
-                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileUrl="ngModel" />
-                <mat-error *ngIf="profileUrl.errors?.required">Profile Image URL is a required field</mat-error>
-                <mat-error *ngIf="profileUrl.errors?.pattern">Please enter a valid image url</mat-error>
+                <input matInput [(ngModel)]="user.profileURL" name="profileurl"
+                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileURL="ngModel" />
+                <mat-error *ngIf="profileURL.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Bio</mat-label>
                 <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-                    cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*" required
+                    cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*"
                     autocomplete="off"></textarea>
-                <mat-error>Bio is a required field</mat-error>
             </mat-form-field>
-        </div>
+        </div> -->
     </form>
 </section>
 <div mat-dialog-actions align="end">

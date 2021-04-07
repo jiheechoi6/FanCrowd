@@ -1,5 +1,6 @@
-import FandomDTO from './fandom-dto';
 import EventDTO from './event-dto';
+import FandomDTO from './fandom-dto';
+import Fandom from './fandom';
 
 interface UserDTO {
   _id?: string;
@@ -9,10 +10,10 @@ interface UserDTO {
   country: string;
   city: string;
   bio: string;
-  profileUrl: string;
+  profileURL: string;
   role: string;
   attendingEvents: EventDTO[];
-  fandoms: FandomDTO[];
+  fandoms: Fandom[];
 }
 
 export default UserDTO;
