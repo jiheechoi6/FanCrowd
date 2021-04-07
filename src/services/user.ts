@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import {
   IUser,
   INewUserInputDTO,
-  IUpdateUserDTO,
+  IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO,
   IRequestUser
@@ -24,13 +24,12 @@ export default class UserService {
    */
 
   public async SignUp(userInputDTO: INewUserInputDTO) {
-    const usernameCheck = await User.findOne({ username: userInputDTO.username });
+    const usernameCheck = await User.findOne({
+      username: userInputDTO.username
+    });
 
     if (usernameCheck) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Username is already taken"
-      );
+      throw new ErrorService("UnauthorizedError", "Username is already taken");
     }
 
     const emailCheck = await User.findOne({ email: userInputDTO.email });
@@ -62,19 +61,13 @@ export default class UserService {
     const userRecord = await User.findOne({ username: username });
 
     if (!userRecord) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Username is incorrect"
-      );
+      throw new ErrorService("UnauthorizedError", "Username is incorrect");
     }
 
     const isPasswordValid = await bcrypt.compare(password, userRecord.password);
 
     if (!isPasswordValid) {
-      throw new ErrorService(
-        "UnauthorizedError",
-        "Password is incorrect"
-      );
+      throw new ErrorService("UnauthorizedError", "Password is incorrect");
     }
 
     const user: IRequestUser = {
@@ -109,7 +102,10 @@ export default class UserService {
     await user.delete();
   }
 
-  public async updateUser(username: string, updatedUser: IUpdateUserDTO) {
+  public async updateUser(
+    username: string,
+    updatedUser: IUpdateUserProfileDTO
+  ) {
     const userDoc = await this.getUserByUsername(username);
 
     userDoc.fullName = updatedUser.fullName || userDoc.fullName;
@@ -128,9 +124,9 @@ export default class UserService {
   public async getUserEvents(username: string) {
     const user = await this.getUserByUsername(username);
     // const events = await Event.find({ postedBy: user._id });
-    const events = await Attend.find({ user: user._id }).populate( "event" );
+    const events = await Attend.find({ user: user._id }).populate("event");
     let eventList: any[] = [];
-    events.forEach((event)=> {
+    events.forEach((event) => {
       eventList.push(event.event);
     });
 
@@ -154,8 +150,8 @@ export default class UserService {
     });
 
     let fandomList: any[] = [];
-    fandoms.forEach((fandom)=> {
-      fandomList.push(fandom.fandom)
+    fandoms.forEach((fandom) => {
+      fandomList.push(fandom.fandom);
     });
 
     return fandomList;

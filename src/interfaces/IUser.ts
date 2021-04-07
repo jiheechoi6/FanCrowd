@@ -76,7 +76,7 @@ export interface INewUserLikeInputDTO {
   isLike: boolean;
 }
 
-export interface IUpdateUserDTO {
+export interface IUpdateUserProfileDTO {
   fullName: string;
   email: string;
   bio: string;

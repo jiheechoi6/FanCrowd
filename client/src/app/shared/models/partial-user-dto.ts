@@ -1,4 +1,4 @@
-export default interface PartialUserDTO {
+export default interface PartialUserProfileDTO {
   username: string;
   profileURL: string;
   role: string;

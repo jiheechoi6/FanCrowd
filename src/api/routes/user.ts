@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
 import {
   IUser,
-  IUpdateUserDTO,
+  IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO
 } from "../../interfaces/IUser";
@@ -143,7 +143,7 @@ export default (app: Router) => {
     try {
       const username = req.params.username;
       const userService = new UserService();
-      const reqBody = req.body as IUpdateUserDTO;
+      const reqBody = req.body as IUpdateUserProfileDTO;
 
       //Should be passing in req.user.id instead of undefined
       const user = await userService.updateUser(username, reqBody);
