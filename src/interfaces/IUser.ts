@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-import { IEvent } from "./IEvent";
-import { IFandom, IFandomComment, IFandomPost } from "./IFandom";
+import { IFandomComment, IFandomPost } from "./IFandom";
 
 export interface IUser {
   _id: mongoose.Types._ObjectId;
@@ -37,8 +36,8 @@ export interface INewUserInputDTO {
 
 export interface IAttendEvent {
   _id: mongoose.Types._ObjectId;
-  user: IUser;
-  event: IEvent;
+  user: mongoose.Types._ObjectId;
+  event: mongoose.Types._ObjectId;
 }
 
 export interface INewAttendEventDTO {

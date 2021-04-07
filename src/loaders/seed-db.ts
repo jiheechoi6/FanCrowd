@@ -615,28 +615,28 @@ const fandomComments: IFandomComment[] = [
 const attends: IAttendEvent[] = [
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[1],
-    user: users[1]
+    event: events[1]._id,
+    user: users[1]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[1],
-    user: users[0]
+    event: events[1]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[0],
-    user: users[0]
+    event: events[0]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[4],
-    user: users[0]
+    event: events[4]._id,
+    user: users[0]._id
   },
   {
     _id: new mongoose.Types.ObjectId(),
-    event: events[6],
-    user: users[1]
+    event: events[6]._id,
+    user: users[1]._id
   }
 ];
 

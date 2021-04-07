@@ -434,7 +434,6 @@ export default (app: Router) => {
       const postId = req.params.postId;
       const fandomService = new FandomService();
       const post = await fandomService.getPostById(postId);
-
       res.status(200).send(post);
     } catch (err) {
       return next(err);

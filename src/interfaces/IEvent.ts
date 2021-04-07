@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { IFandom } from "./IFandom";
-import { IUser } from "./IUser";
+import { IFandom, IPopulatedFandomCategory } from "./IFandom";
+import { IUser, IUserPostedBy } from "./IUser";
 
 export interface IEvent {
   _id: mongoose.Types._ObjectId;
@@ -23,7 +23,19 @@ export interface IFandomEvent {
   totalAttendance: number;
 }
 
-export interface IFandomEventFilter {
+export interface IPopulatedEventDTO {
+  _id: mongoose.Types._ObjectId;
+  name: string;
+  description: string;
+  location: string;
+  postedBy: IUserPostedBy;
+  startDate: Date;
+  endDate: Date;
+  fandom: IPopulatedFandomCategory;
+  totalAttendance: number;
+}
+
+export interface IEventFilter {
   _id?: mongoose.Types._ObjectId;
   name?: string;
   description?: string;
