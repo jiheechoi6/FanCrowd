@@ -13,6 +13,27 @@ export interface IEvent {
   fandom: IFandom;
 }
 
+export interface IFandomEvent {
+  _id: mongoose.Types._ObjectId;
+  name: string;
+  description: string;
+  location: string;
+  startDate: Date;
+  endDate: Date;
+  totalAttendance: number;
+}
+
+export interface IFandomEventFilter {
+  _id?: mongoose.Types._ObjectId;
+  name?: string;
+  description?: string;
+  location?: string;
+  startDate?: Date;
+  endDate?: Date;
+  fandom?: mongoose.Types._ObjectId;
+  postedBy?: mongoose.Types._ObjectId;
+}
+
 export interface INewEventInputDTO {
   name: string;
   description: string;

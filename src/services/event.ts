@@ -8,7 +8,9 @@ import {
   IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
-  IUpdateEventReviewDTO
+  IUpdateEventReviewDTO,
+  IFandomEvent,
+  IFandomEventFilter
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -48,21 +50,57 @@ export default class EventService {
     return event;
   }
 
+  public async getFandomEventsMatchingFilters(
+    fandomEventFilter: IFandomEventFilter
+  ) {
+    const events: IFandomEvent[] = await Event.aggregate([
+      {
+        $match: fandomEventFilter
+      },
+      {
+        $lookup: {
+          from: "attends",
+          as: "attendees",
+          let: {
+            eventId: "$_id"
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$event", "$$eventId"]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          location: 1,
+          startDate: 1,
+          endDate: 1,
+          totalAttendance: {
+            $size: "$attendees"
+          }
+        }
+      }
+    ]);
+
+    return events;
+  }
+
   public async getEventsByFandom(categoryName: string, fandomName: string) {
     const fandom = await EventService._fandomService.getFandomByName(
       categoryName,
       fandomName
     );
-    const events: IEvent[] =
-      (await Event.find({ fandom: fandom._id })
-        .populate("postedBy", ["username", "role", "profileURL"])
-        .populate({
-          path: "fandom",
-          populate: {
-            path: "category"
-          }
-        })) || [];
-
+    const events = await this.getFandomEventsMatchingFilters({
+      fandom: fandom._id
+    });
     return events;
   }
 
@@ -142,7 +180,8 @@ export default class EventService {
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
     const eventDoc: IEvent = await this.getEventById(eventId);
     const reviews: IEventReview[] =
-      (await EventReview.find({ event: eventDoc }).sort({updatedAt: 'ascending'})
+      (await EventReview.find({ event: eventDoc })
+        .sort({ updatedAt: "ascending" })
         .populate("postedBy", ["username", "role", "profileURL"])
         .populate("event")) || [];
     return reviews;

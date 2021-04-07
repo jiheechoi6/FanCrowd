@@ -131,7 +131,8 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) => {
     try {
-      const events: IEvent[] = await Event.find({}).sort({startDate: 'ascending'})
+      const events: IEvent[] = await Event.find({})
+        .sort({ startDate: "ascending" })
         .populate("postedBy", ["username", "role", "profileURL"])
         .populate({
           path: "fandom",
@@ -493,8 +494,8 @@ export default (app: Router) => {
     try {
       const categoryName = req.params.categoryName;
       const fandomName = req.params.fandomName;
-      const category = categoryName.split("-").join(" ");
-      const fandom = fandomName.split("-").join(" ");
+      const category = categoryName.split("-").join(" ").toLowerCase();
+      const fandom = fandomName.split("-").join(" ").toLowerCase();
 
       const eventService = new EventService();
       const events = await eventService.getEventsByFandom(category, fandom);
