@@ -25,7 +25,7 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'chandra@gmail.com',
-      profileUrl:
+      profileURL:
         'https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg',
       role: 'user',
       bio:
@@ -92,7 +92,7 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'raj@gmail.com',
-      profileUrl:
+      profileURL:
         'https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg',
       role: 'user',
       bio:
@@ -136,7 +136,7 @@ export class AuthService {
       city: 'Toronto',
       country: 'Canada',
       email: 'jihee@gmail.com',
-      profileUrl: 'https://dummyimage.com/250.jpg',
+      profileURL: 'https://dummyimage.com/250.jpg',
       role: 'admin',
       bio: '',
       attendingEvents: [],
