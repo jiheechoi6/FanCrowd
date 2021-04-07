@@ -136,6 +136,10 @@ export class UserService {
 
   constructor(private _http: HttpClient) {}
 
+  getAllUsers(){
+    return this._http.get<UserDTO[]>(`/api/users/`);
+  }
+
   getUserByUsername(username: string){
     // Get user from server, code below requires server call
 
