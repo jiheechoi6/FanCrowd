@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import NewUser from 'src/app/shared/models/new-user';
-import { EmailService } from './email.service';
 import {
   UserIdentityToken,
   UserIdentity,
@@ -17,11 +16,7 @@ export class AuthService {
   currentUser = new BehaviorSubject<UserIdentity | null>(null);
   token: string | null = null;
 
-  constructor(
-    private _http: HttpClient,
-    private _emailService: EmailService,
-    private _router: Router
-  ) {}
+  constructor(private _http: HttpClient, private _router: Router) {}
 
   loginUser(username: string, password: string) {
     return this._http
@@ -60,19 +55,8 @@ export class AuthService {
       this.currentUser.next(userData);
       this._http.get<UserIdentity>('/api/auth/currentUser').subscribe(
         (res) => this.updateCurrentUser({ token: this.token!, user: res }),
-        (err) => this.logOut()
+        () => this.logOut()
       );
     }
-  }
-
-  resetPassword(
-    emailVerficationCodeSentTo: string,
-    newPassword: string,
-    verficationCode: number
-  ) {
-    //API request to reset password endpoint
-    //Only change password for user with email emailVerficationCodeSentTo and matching verficationCode
-    //Send password was recently changed email, once successfully changed
-    this._emailService.sendPasswordChangedEmail(emailVerficationCodeSentTo);
   }
 }

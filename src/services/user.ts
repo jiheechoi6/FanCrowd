@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {
-  IUser,
   INewUserInputDTO,
   IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
@@ -10,7 +9,6 @@ import {
   IAttendEventFilter
 } from "../interfaces/IUser";
 import User from "../models/user";
-import Event from "../models/event";
 import FandomMember from "../models/fandom-member";
 import ErrorService from "./error";
 import crypto from "crypto";
@@ -20,10 +18,7 @@ import Attend from "../models/attend";
 import { IEventSummary } from "../interfaces/IEvent";
 
 export default class UserService {
-  /**
-   * helper function for authentication
-   * @param userInputDTO new user
-   */
+  private static _emailService = new EmailService();
 
   public async SignUp(userInputDTO: INewUserInputDTO) {
     const usernameCheck = await User.findOne({
@@ -233,7 +228,6 @@ export default class UserService {
       );
     }
 
-    const emailService = new EmailService();
     const user = await User.findOne({
       email: resetEmailInfo.email,
       username: resetEmailInfo.username
@@ -251,7 +245,7 @@ export default class UserService {
     user.resetPasswordToken!.expiresIn = expiresIn;
 
     await user.save();
-    await emailService.sendEmail({
+    await UserService._emailService.sendEmail({
       subject: "FanCrowd - Password Reset Verification Code",
       text: `Here is the verification code needed to reset your password: ${verificationCode}. Please note that it will expire in 10 mins.`,
       to: user.email
@@ -287,5 +281,10 @@ export default class UserService {
     user.resetPasswordToken = undefined;
 
     await user.save();
+    await UserService._emailService.sendEmail({
+      subject: "FanCrowd - Password Reset Successful",
+      text: `Your password for FanCrowd has been successfully reset`,
+      to: user.email
+    });
   }
 }

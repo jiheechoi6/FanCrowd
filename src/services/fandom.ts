@@ -26,8 +26,7 @@ import GlobalService from "./global";
 import {
   INewFandomMemberInputDTO,
   INewUserLikeInputDTO,
-  IRequestUser,
-  IUser
+  IRequestUser
 } from "../interfaces/IUser";
 
 export default class FandomService {

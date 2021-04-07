@@ -23,6 +23,7 @@ export default class EmailService {
     const accessToken = await new Promise((resolve, reject) => {
       oauth2Client.getAccessToken((err, token) => {
         if (err) {
+          console.log(err);
           reject("Failed to create access token :(");
         }
         resolve(token);

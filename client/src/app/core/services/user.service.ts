@@ -6,6 +6,7 @@ import Event from 'src/app/shared/models/event';
 import Fandom from 'src/app/shared/models/fandom';
 import FandomDTO from 'src/app/shared/models/fandom-dto';
 import UserFandomRes from 'src/app/shared/models/user-fandom-res';
+import { ResetPasswordInfo } from 'src/app/shared/models/reset-password';
 
 @Injectable({
   providedIn: 'root',
@@ -55,5 +56,9 @@ export class UserService {
     this._http
       .patch(`/api/users/${usernameBeforeUpdate}`, updatedUser)
       .subscribe();
+  }
+
+  resetPassword(resetPasswordInfo: ResetPasswordInfo) {
+    return this._http.post(`/api/users/reset-password`, resetPasswordInfo);
   }
 }

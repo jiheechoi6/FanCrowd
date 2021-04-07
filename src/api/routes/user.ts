@@ -70,7 +70,6 @@ export default (app: Router) => {
       const reqBody = req.body as IResetPasswordInputDTO;
       const userService = new UserService();
       await userService.resetPassword(reqBody);
-
       res.status(200).send();
     } catch (err) {
       return next(err);
