@@ -9,7 +9,7 @@
                                         class="fas fa-sign-in-alt"></i></span>
                         <span *ngIf="!user" class="nav-item" [routerLink]="'/signup'" routerLinkActive="active">Signup
                                 <i class="fas fa-user-plus"></i></span>
-                        <span *ngIf="user" class="nav-item" [routerLink]="['/users', user?.username || '']"
+                        <span *ngIf="user" class="nav-item" [routerLink]="['/users', user!.username]"
                                 routerLinkActive="active"><i class="fas fa-user"></i>
                                 {{user?.username | titlecase}}</span>
                         <span *ngIf="user" class="nav-item" [routerLink]="'/events'"

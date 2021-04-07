@@ -6,10 +6,10 @@ import { AuthService } from '../core/services/auth.service';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import Event from '../shared/models/event';
-import UserDTO from '../shared/models/user-dto';
+import UserProfileDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
-import UserIdentity from '../shared/models/user-identity';
+import { UserIdentity } from '../shared/models/user-identity-token';
 import UserFandomRes from '../shared/models/user-fandom-res';
 
 @Component({
@@ -19,7 +19,7 @@ import UserFandomRes from '../shared/models/user-fandom-res';
 })
 export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
-  user: UserDTO | null = null;
+  user: UserProfileDTO | null = null;
   loggedInUser: UserIdentity | null = null;
   events: Event[] = [];
   fandoms: UserFandomRes[] = [];
@@ -32,20 +32,24 @@ export class UserComponent implements OnInit, OnDestroy {
     private _authService: AuthService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._activatedRoute.params.subscribe((params) => {
       const username = params['username'];
-      this._userService.getUserByUsername(username).subscribe( (user) => {
-        this.user = user 
+      this._userService.getUserByUsername(username).subscribe((user) => {
+        this.user = user;
       });
 
-      this._userService.getUserEventsByUsername(username).subscribe( (events) =>{
-        if(this.user) this.events = events;
-      })
+      this._userService
+        .getUserEventsByUsername(username)
+        .subscribe((events) => {
+          if (this.user) this.events = events;
+        });
 
-      this._userService.getUserFandomsByUsername(username).subscribe( (fandoms) =>{
-        this.fandoms = fandoms;
-      })
+      this._userService
+        .getUserFandomsByUsername(username)
+        .subscribe((fandoms) => {
+          this.fandoms = fandoms;
+        });
 
       if (!this.user) {
         this._router.navigate(['../']);
@@ -57,7 +61,7 @@ export class UserComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.userSubscription.unsubscribe();
   }
 
@@ -79,16 +83,16 @@ export class UserComponent implements OnInit, OnDestroy {
       width: '450px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
+    dialogRef.afterClosed().subscribe((updatedUser: UserProfileDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        if(!this._authService.currentUser.value){
+        if (!this._authService.currentUser.value) {
           return;
         }
         this._authService.currentUser.next({
           ...this._authService.currentUser.value,
           username: updatedUser.username,
-          profileURL: updatedUser.profileURL
+          profileURL: updatedUser.profileURL,
         });
       }
     });
@@ -111,7 +115,7 @@ export class UserComponent implements OnInit, OnDestroy {
   openBanUserAccountDialog() {
     this._dialog.open(DeleteDialogComponent, {
       data: {
-        title: 'Ban UserDTO Confirmation',
+        title: 'Ban UserProfileDTO Confirmation',
         details: `Are you sure you want to ban ${this.user?.username}?`,
         onConfirmCb: this.banUser.bind(this),
       },
@@ -128,35 +132,34 @@ export class UserComponent implements OnInit, OnDestroy {
       width: '450px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((updatedUser: UserDTO) => {
+    dialogRef.afterClosed().subscribe((updatedUser: UserProfileDTO) => {
       if (updatedUser) {
         this.user = updatedUser;
-        if(!this._authService.currentUser.value){
+        if (!this._authService.currentUser.value) {
           return;
         }
         this._authService.currentUser.next({
           ...this._authService.currentUser.value,
           username: updatedUser.username,
-          profileURL: updatedUser.profileURL
+          profileURL: updatedUser.profileURL,
         });
       }
     });
   }
 
-  isFandomEmpty(): boolean{
+  isFandomEmpty(): boolean {
     return !this.fandoms;
   }
 
-  isBioEmpty(): boolean{
+  isBioEmpty(): boolean {
     return !this.user?.bio;
   }
 
-  isEventsEmpty(): boolean{
+  isEventsEmpty(): boolean {
     return !this.events;
   }
 
-  isSelf(): boolean{
+  isSelf(): boolean {
     return this.user?.username == this.loggedInUser?.username;
   }
 }
-

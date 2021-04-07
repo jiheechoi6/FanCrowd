@@ -5,11 +5,8 @@
         <div class="profile-info-container" *ngIf="user">
             <section class="profile-img-info-container">
                 <div class="profile-img-wrapper">
-                    <img class="profile-img" src="{{user.profileURL}}"
-                        onError="this.src='https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg'"
-                        alt="Profile Picture">
+                    <img class="profile-img" src="{{user.profileURL}}" alt="Profile Picture">
                 </div>
-
                 <mat-card class="user-info rounded-corners box-shadow">
                     <mat-card-content>
                         <p class="user-info-item"><span class="user-info-label">Username
@@ -48,7 +45,9 @@
             </section>
             <section class="bio-fandom-container">
                 <mat-card class="bio rounded-corners box-shadow">
-                    <mat-card-title>Bio<p class="bio-edit-button" *ngIf="isSelf()" (click)="openEditBioDialog()"> edit</p></mat-card-title>
+                    <mat-card-title>Bio<p class="bio-edit-button" *ngIf="isSelf()" (click)="openEditBioDialog()"> edit
+                        </p>
+                    </mat-card-title>
                     <p *ngIf="isBioEmpty()&&isSelf()" class="bio-empty-message">Add a Bio to describe yourself!</p>
                     <p *ngIf="isBioEmpty()&&!isSelf()" class="bio-empty-message">No bio added</p>
                     <mat-card-content>
@@ -61,10 +60,11 @@
                     <p *ngIf="isFandomEmpty()&&!isSelf()" class="empty-message">No fandoms added</p>
                     <section class="fandoms">
                         <mat-card-content>
-                            <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity Level</span></p>
+                            <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity
+                                    Level</span></p>
                             <mat-card class="fandom-item-container"
-                            [routerLink]="['/fandoms', fandom.category.name | lowercase, fandom.name | spacesToHyphen | lowercase]"
-                            *ngFor="let fandom of fandoms">
+                                [routerLink]="['/fandoms', fandom.category.name | lowercase, fandom.name | spacesToHyphen | lowercase]"
+                                *ngFor="let fandom of fandoms">
                                 <section class="fandom-item">
                                     <div class="fandom-info-container">
                                         <span>{{fandom.name | titlecase}}</span>

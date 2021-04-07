@@ -238,7 +238,7 @@ export default (app: Router) => {
    * }
    * description: removes a user from a fandom
    */
-  route.post(
+  route.delete(
     "/:fandomId/unjoin",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
@@ -434,7 +434,6 @@ export default (app: Router) => {
       const postId = req.params.postId;
       const fandomService = new FandomService();
       const post = await fandomService.getPostById(postId);
-
       res.status(200).send(post);
     } catch (err) {
       return next(err);

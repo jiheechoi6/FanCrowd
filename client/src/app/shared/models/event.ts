@@ -1,12 +1,12 @@
 import FandomEvent from './fandom-event';
-import PartialUserDTO from './partial-user-dto';
+import PartialUserProfileDTO from './partial-user-dto';
 
 interface Event {
   _id?: string;
   fandom: FandomEvent;
   name: string;
   description: string;
-  postedBy: PartialUserDTO;
+  postedBy: PartialUserProfileDTO;
   location: string;
   startDate: Date;
   endDate: Date;

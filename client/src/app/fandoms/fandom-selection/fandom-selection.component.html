@@ -1,7 +1,7 @@
 <app-layout>
     <xng-breadcrumb class="breadcrumb" [separator]="breadcrumbSeparator">
         <ng-container *xngBreadcrumbItem="let breadcrumb">
-            <ng-container>{{ breadcrumb | titlecase }}</ng-container>
+            <ng-container>{{ breadcrumb | hyphenToSpaces | titlecase }}</ng-container>
         </ng-container>
     </xng-breadcrumb>
 
@@ -12,7 +12,7 @@
                 <i class="fas fa-edit edit-icon" (click)="openEditCategoryDialog()"></i>
             </div>
             <span class="page-title">
-                {{categoryName | titlecase}}
+                {{categoryName | hyphenToSpaces | titlecase}}
             </span>
         </header>
         <button (click)="openCreateFandomDialog()" mat-raised-button color="primary">

@@ -660,7 +660,7 @@ export default class FandomService {
     comment.content = updatedComment.content || comment.content;
 
     if (updatedComment.fandomPost) {
-      const post = await this.getFandomById(updatedComment.fandomPost);
+      const post = await this.getPostDocById(updatedComment.fandomPost);
       comment.fandomPost = post._id;
     }
 

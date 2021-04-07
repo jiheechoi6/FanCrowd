@@ -8,7 +8,10 @@ import {
   IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
-  IUpdateEventReviewDTO
+  IUpdateEventReviewDTO,
+  IEventSummary,
+  IEventFilter,
+  IPopulatedEventDTO
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -18,25 +21,19 @@ import {
   IRequestUser
 } from "../interfaces/IUser";
 import FandomService from "./fandom";
+import FandomCategory from "../models/fandom-category";
 
 export default class EventService {
   private static _globalService = new GlobalService();
   private static _fandomService = new FandomService();
 
-  public async getEventById(eventId: mongoose.Types._ObjectId | string) {
+  public async getEventDocById(eventId: mongoose.Types._ObjectId | string) {
     EventService._globalService.checkValidObjectId(
       eventId,
       `Event with id ${eventId} does not exist`
     );
 
-    const event = await Event.findById(eventId)
-      .populate("postedBy", ["username", "role", "profileURL"])
-      .populate({
-        path: "fandom",
-        populate: {
-          path: "category"
-        }
-      });
+    const event = await Event.findById(eventId);
 
     if (!event) {
       throw new ErrorService(
@@ -48,21 +45,173 @@ export default class EventService {
     return event;
   }
 
+  public async getEventById(eventId: string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+
+    const events = await this.getEventsMatchingFilters({
+      _id: mongoose.Types.ObjectId(eventId)
+    });
+
+    const eventWithId = events[0];
+
+    if (!eventWithId) {
+      throw new ErrorService(
+        "NotFoundError",
+        `Event with id ${eventId} does not exist`
+      );
+    }
+
+    return eventWithId;
+  }
+
+  public async getEvents() {
+    return await this.getEventsMatchingFilters({});
+  }
+
+  public async getEventsMatchingFilters(eventFilter: IEventFilter) {
+    const events: IPopulatedEventDTO[] = await Event.aggregate([
+      {
+        $match: eventFilter
+      },
+      {
+        $lookup: {
+          from: "attends",
+          as: "attendees",
+          let: {
+            eventId: "$_id"
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$event", "$$eventId"]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          as: "postedBy",
+          localField: "postedBy",
+          foreignField: "_id"
+        }
+      },
+      {
+        $unwind: "$postedBy"
+      },
+      {
+        $lookup: {
+          from: "fandoms",
+          as: "fandom",
+          let: {
+            eventFandom: "$fandom"
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$_id", "$$eventFandom"]
+                }
+              }
+            },
+            {
+              $lookup: {
+                from: FandomCategory.collection.name,
+                as: "category",
+                localField: "category",
+                foreignField: "_id"
+              }
+            },
+            {
+              $unwind: "$category"
+            }
+          ]
+        }
+      },
+      {
+        $unwind: "$fandom"
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          location: 1,
+          startDate: 1,
+          endDate: 1,
+          totalAttendance: {
+            $size: "$attendees"
+          },
+          postedBy: {
+            username: 1,
+            profileURL: 1
+          },
+          fandom: 1
+        }
+      },
+      {
+        $sort: {
+          startDate: 1
+        }
+      }
+    ]);
+    return events;
+  }
+
+  public async getFandomEventsMatchingFilters(eventFilter: IEventFilter) {
+    const events: IEventSummary[] = await Event.aggregate([
+      {
+        $match: eventFilter
+      },
+      {
+        $lookup: {
+          from: "attends",
+          as: "attendees",
+          let: {
+            eventId: "$_id"
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$event", "$$eventId"]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          location: 1,
+          startDate: 1,
+          endDate: 1,
+          totalAttendance: {
+            $size: "$attendees"
+          }
+        }
+      }
+    ]);
+    return events;
+  }
+
   public async getEventsByFandom(categoryName: string, fandomName: string) {
     const fandom = await EventService._fandomService.getFandomByName(
       categoryName,
       fandomName
     );
-    const events: IEvent[] =
-      (await Event.find({ fandom: fandom._id })
-        .populate("postedBy", ["username", "role", "profileURL"])
-        .populate({
-          path: "fandom",
-          populate: {
-            path: "category"
-          }
-        })) || [];
-
+    const events = await this.getFandomEventsMatchingFilters({
+      fandom: fandom._id
+    });
     return events;
   }
 
@@ -90,7 +239,7 @@ export default class EventService {
       `Event with id ${eventId} does not exist`
     );
 
-    const eventDoc = await this.getEventById(eventId);
+    const eventDoc = await this.getEventDocById(eventId);
 
     EventService._globalService.hasPermission(
       eventDoc.postedBy._id,
@@ -128,7 +277,7 @@ export default class EventService {
       `Event with id ${eventId} does not exist`
     );
 
-    const event = await this.getEventById(eventId);
+    const event = await this.getEventDocById(eventId);
 
     EventService._globalService.hasPermission(
       event.postedBy._id,
@@ -140,11 +289,11 @@ export default class EventService {
   }
 
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
-    const eventDoc: IEvent = await this.getEventById(eventId);
-    const reviews: IEventReview[] =
-      (await EventReview.find({ event: eventDoc }).sort({updatedAt: 'ascending'})
-        .populate("postedBy", ["username", "role", "profileURL"])
-        .populate("event")) || [];
+    const eventDoc: IEvent = await this.getEventDocById(eventId);
+    const reviews: IEventReview[] = await EventReview.find({ event: eventDoc })
+      .sort({ updatedAt: "ascending" })
+      .populate("postedBy", ["username", "role", "profileURL"])
+      .populate("event");
     return reviews;
   }
 
@@ -175,7 +324,7 @@ export default class EventService {
       `Event with id ${eventId} does not exist`
     );
 
-    this.getEventById(eventId);
+    this.getEventDocById(eventId);
     const newReviewDoc = await EventReview.create(newReview);
     const review = newReviewDoc.toObject();
     Reflect.deleteProperty(review, "postedBy");
@@ -232,7 +381,7 @@ export default class EventService {
     reviewDoc.rating = updatedReview.rating || reviewDoc.rating;
 
     if (eventId) {
-      const event = await this.getEventById(eventId);
+      const event = await this.getEventDocById(eventId);
       reviewDoc.event = event;
     }
 
@@ -246,9 +395,10 @@ export default class EventService {
   public async getEventAttendeesById(
     eventId: mongoose.Types._ObjectId | string
   ) {
-    const eventDoc: IEvent = await this.getEventById(eventId);
-    const attendees: IAttendEvent[] =
-      (await Attend.find({ event: eventDoc })) || [];
+    const eventDoc: IEvent = await this.getEventDocById(eventId);
+    const attendees: IAttendEvent[] = await Attend.find({
+      event: eventDoc._id
+    });
 
     return attendees;
   }
@@ -280,7 +430,7 @@ export default class EventService {
       `Event with id ${eventId} does not exist`
     );
 
-    this.getEventById(eventId);
+    this.getEventDocById(eventId);
     const newAttendeeDoc = await Attend.create(newAttendee);
     const attendee = newAttendeeDoc.toObject();
     Reflect.deleteProperty(attendee, "user");
@@ -300,7 +450,7 @@ export default class EventService {
     const attendee = await this.getAttendeeById(attendeeId);
 
     EventService._globalService.hasPermission(
-      attendee.user._id,
+      attendee.user,
       reqUser,
       `Only the attendee or an admin may delete attendee with id ${attendeeId}`
     );

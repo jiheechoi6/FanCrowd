@@ -23,15 +23,17 @@ export class ReviewDialogComponent implements OnInit {
       title: '',
       rating: 0,
       content: '',
-      event: this.data.eventId
+      event: this.data.eventId,
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   addReview() {
-    this.eventService.addReviewToEvent(this.data.eventId, this.newReview).subscribe((newReview) => {
-      this.dialogRef.close(newReview);
-    });
+    this.eventService
+      .addReviewToEvent(this.data.eventId, this.newReview)
+      .subscribe((newReview) => {
+        this.dialogRef.close(newReview);
+      });
   }
 }

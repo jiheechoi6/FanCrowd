@@ -1,11 +1,20 @@
 import mongoose from "mongoose";
-import { IUser, IUserLikeOnlyUser, IUserPostedBy } from "./IUser";
+import { IUserLikeOnlyUser, IUserPostedBy } from "./IUser";
 
 export interface IFandom {
   _id: mongoose.Types._ObjectId;
   name: string;
   backgroundURL: string;
   category: mongoose.Types._ObjectId;
+  createdBy: mongoose.Types._ObjectId;
+  createdAt: Date;
+}
+
+export interface IPopulatedFandomCategory {
+  _id: mongoose.Types._ObjectId;
+  name: string;
+  backgroundURL: string;
+  category: IFandomCategory;
   createdBy: mongoose.Types._ObjectId;
   createdAt: Date;
 }

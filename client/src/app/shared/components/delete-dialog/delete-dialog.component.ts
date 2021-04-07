@@ -18,7 +18,7 @@ export class DeleteDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   onConfirm() {
     if (this.data.params?.length) {
@@ -26,7 +26,6 @@ export class DeleteDialogComponent implements OnInit {
     } else {
       this.data.onConfirmCb();
     }
-
     this.dialogRef.close();
   }
 }

@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import middlewares from "../middlewares";
 import {
   IUser,
-  IUpdateUserDTO,
+  IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO
 } from "../../interfaces/IUser";
@@ -78,7 +78,7 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/users/username
+   * path: /api/users/:username
    * method: GET
    * body: None
    * params:
@@ -91,7 +91,9 @@ export default (app: Router) => {
     try {
       const username = req.params.username;
       const userService = new UserService();
-      const user = await userService.getUserByUsername(username);
+      const userDoc = await userService.getUserByUsername(username);
+      const user = userDoc.toObject();
+      Reflect.deleteProperty(user, "password");
       res.status(200).send(user);
     } catch (err) {
       return next(err);
@@ -141,7 +143,7 @@ export default (app: Router) => {
     try {
       const username = req.params.username;
       const userService = new UserService();
-      const reqBody = req.body as IUpdateUserDTO;
+      const reqBody = req.body as IUpdateUserProfileDTO;
 
       //Should be passing in req.user.id instead of undefined
       const user = await userService.updateUser(username, reqBody);
@@ -153,7 +155,7 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/users/username/events
+   * path: /api/users/:username/events
    * method: GET
    * body: None
    * params:
@@ -167,7 +169,6 @@ export default (app: Router) => {
       const username = req.params.username;
       const userService = new UserService();
       const events = await userService.getUserEvents(username);
-
       res.status(200).send(events);
     } catch (err) {
       return next(err);
