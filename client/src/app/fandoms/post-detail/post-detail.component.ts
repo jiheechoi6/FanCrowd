@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { FandomService } from 'src/app/core/services/fandom.service';
@@ -10,7 +12,7 @@ import {
   IUserLikeOnlyUser,
 } from 'src/app/shared/models/fandom-post';
 import FandomPostComment from 'src/app/shared/models/fandom-post-comment';
-import UserDTO from 'src/app/shared/models/user-dto';
+import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { AddCommentDialogComponent } from '../add-comment-dialog/add-comment-dialog.component';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
@@ -23,10 +25,12 @@ import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dia
 export class PostDetailComponent implements OnInit {
   postId: string = '';
   post: FandomPost | null = null;
-  loggedInUser: UserDTO | null = null;
+  loggedInUser: UserIdentity | null = null;
   fandomCategory: string = '';
   fandomName: string = '';
   comments: FandomPostComment[] = [];
+
+  userSubscription!: Subscription;
 
   isLoadingComments = true;
   isLoadingPost = true;
@@ -37,7 +41,8 @@ export class PostDetailComponent implements OnInit {
     private _authService: AuthService,
     private _router: Router,
     private _dialog: MatDialog,
-    private _breadcrumbService: BreadcrumbService
+    private _breadcrumbService: BreadcrumbService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -45,14 +50,17 @@ export class PostDetailComponent implements OnInit {
       this.postId = params['postId'] || '';
       this.fandomCategory = params['category'];
       this.fandomName = params['fandom'];
-
       this._breadcrumbService.set('@postName', '...');
       this.fetchComponentInfo();
     });
 
-    // this._authService.currentUserInfo.subscribe(
-    //   (user) => (this.loggedInUser = user)
-    // );
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.loggedInUser = user)
+    );
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
   fetchComponentInfo() {
@@ -150,15 +158,14 @@ export class PostDetailComponent implements OnInit {
   }
 
   deletePost() {
-    this._fandomService
-      .deletePost(this.post!._id)
-      .subscribe(() =>
-        this._router.navigate([
-          '/fandoms',
-          this.fandomCategory,
-          this.fandomName,
-        ])
-      );
+    this._fandomService.deletePost(this.post!._id).subscribe(() => {
+      this._snackBar.open(`Post has been deleted!`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 1000,
+      });
+      this._router.navigate(['/fandoms', this.fandomCategory, this.fandomName]);
+    });
   }
 
   openDeletePostDialog() {
@@ -188,6 +195,11 @@ export class PostDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((updatedPost: FandomPost) => {
       if (updatedPost) {
         this.post = updatedPost;
+        this._snackBar.open(`Post details has been updated!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 1000,
+        });
       }
     });
   }
@@ -203,8 +215,13 @@ export class PostDetailComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((newComment: FandomPostComment) => {
-      if (newComment && this.postId) {
+      if (newComment) {
         this.comments.push(newComment);
+        this._snackBar.open(`Comment has been added!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 1000,
+        });
       }
     });
   }
@@ -212,6 +229,11 @@ export class PostDetailComponent implements OnInit {
   deleteComment(commentId: string, index: number) {
     this._fandomService.deleteCommentById(commentId).subscribe(() => {
       this.comments.splice(index, 1);
+      this._snackBar.open(`Comment has been deleted!`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 1000,
+      });
     });
   }
 
@@ -244,6 +266,11 @@ export class PostDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((updatedComment: FandomPostComment) => {
       if (updatedComment) {
         this.comments[index] = updatedComment;
+        this._snackBar.open(`Comment details has been updated!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 1000,
+        });
       }
     });
   }

@@ -51,7 +51,6 @@ export class AddCommentDialogComponent implements OnInit {
 
   onEditComment() {
     this.isLoading = true;
-    this.isLoading = true;
     this._fandomService
       .updateComment(this.comment._id, this.comment)
       .pipe(finalize(() => (this.isLoading = false)))
