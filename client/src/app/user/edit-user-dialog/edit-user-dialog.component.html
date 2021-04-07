@@ -55,15 +55,14 @@
                 <mat-error *ngIf="profileURL.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Bio</mat-label>
                 <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
                     cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*"
                     autocomplete="off"></textarea>
-                <!-- <mat-error>Bio is a required field</mat-error> -->
             </mat-form-field>
-        </div>
+        </div> -->
     </form>
 </section>
 <div mat-dialog-actions align="end">

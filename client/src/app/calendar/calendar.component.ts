@@ -108,10 +108,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   openDateEventDialog(date: number) {
-    console.log(this.shownYear, this.shownMonth+1, date)
-
     const selectedDate = new Date(this.shownYear, this.shownMonth, date)
-    const eventsForDate = this.getEventsForDate(this.shownYear, this.shownMonth+1, date);
+    const eventsForDate = this.getEventsForDate(this.shownYear, this.shownMonth, date);
+    console.log(this.getEventsForDate(2021, 5, 8));
     this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,
