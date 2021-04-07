@@ -107,7 +107,7 @@ export class AddDialogComponent implements OnInit {
   updateFandom(updatedFandom: Fandom) {
     this.isLoading = true;
     this._fandomService
-      .updateCategoryById(updatedFandom._id, updatedFandom)
+      .updateFandomById(updatedFandom._id, updatedFandom)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe(
         () => this.dialogRef.close(updatedFandom),

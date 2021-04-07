@@ -6,7 +6,8 @@
     </xng-breadcrumb>
 
     <header>
-        <div class="margin-bottom-2 flex-row-container-space-between">
+        <div class="margin-bottom-2 flex-row-container-space-between"
+            *ngIf="loggedInUser?.role === 'admin' || loggedInUser?._id === fandom?.createdBy">
             <i class="fas fa-trash-alt delete-icon" (click)="openDeleteFandomDialog()"></i>
             <i class="fas fa-edit edit-icon" (click)="openEditFandomDialog()"></i>
         </div>

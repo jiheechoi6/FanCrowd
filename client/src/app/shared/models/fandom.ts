@@ -4,6 +4,7 @@ interface Fandom {
   name: string;
   backgroundURL: string;
   createdAt?: Date;
+  createdBy?: string;
 }
 
 export default Fandom;
