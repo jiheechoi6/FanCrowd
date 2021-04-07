@@ -13,7 +13,7 @@ export interface IEvent {
   fandom: IFandom;
 }
 
-export interface IFandomEvent {
+export interface IEventSummary {
   _id: mongoose.Types._ObjectId;
   name: string;
   description: string;

@@ -9,7 +9,7 @@ import {
   INewEventReviewInputDTO,
   IUpdateEventDTO,
   IUpdateEventReviewDTO,
-  IFandomEvent,
+  IEventSummary,
   IEventFilter,
   IPopulatedEventDTO
 } from "../interfaces/IEvent";
@@ -165,7 +165,7 @@ export default class EventService {
   }
 
   public async getFandomEventsMatchingFilters(eventFilter: IEventFilter) {
-    const events: IFandomEvent[] = await Event.aggregate([
+    const events: IEventSummary[] = await Event.aggregate([
       {
         $match: eventFilter
       },

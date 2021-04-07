@@ -155,7 +155,7 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/users/username/events
+   * path: /api/users/:username/events
    * method: GET
    * body: None
    * params:
@@ -169,7 +169,6 @@ export default (app: Router) => {
       const username = req.params.username;
       const userService = new UserService();
       const events = await userService.getUserEvents(username);
-
       res.status(200).send(events);
     } catch (err) {
       return next(err);

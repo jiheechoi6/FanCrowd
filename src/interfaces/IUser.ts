@@ -40,6 +40,12 @@ export interface IAttendEvent {
   event: mongoose.Types._ObjectId;
 }
 
+export interface IAttendEventFilter {
+  _id?: mongoose.Types._ObjectId;
+  user?: mongoose.Types._ObjectId;
+  event?: mongoose.Types._ObjectId;
+}
+
 export interface INewAttendEventDTO {
   user: mongoose.Types._ObjectId;
   event: mongoose.Types._ObjectId;
