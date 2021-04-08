@@ -52,7 +52,7 @@
                     [(ngModel)]="event.fandom.category.name" required>
                     <mat-option>--Select Category--</mat-option>
                     <mat-option *ngFor="let category of categories" [value]="category.name">
-                        {{category.name}}
+                        {{category.name | titlecase}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Fandom Category is a required field</mat-error>
@@ -67,7 +67,7 @@
                     [disabled]="!event.fandom.category">
                     <mat-option>--Select Fandom--</mat-option>
                     <mat-option *ngFor="let fandom of fandomsForCategory" [value]="fandom.name">
-                        {{fandom.name}}
+                        {{fandom.name | titlecase}}
                     </mat-option>
                 </mat-select>
                 <mat-error>Fandom is a required field</mat-error>
