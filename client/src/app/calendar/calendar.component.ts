@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
 import { UserService } from '../core/services/user.service';
 import { IEventSummary } from '../shared/models/event-summar';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar',
@@ -38,7 +40,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ).getDate();
   prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
   userEvents: IEventSummary[] = [];
-  private _eventDialogRef: MatDialogRef<DateEventDialogComponent> | null = null;
+  isLoadingEvents = true;
+
+  userSubscription!: Subscription;
 
   constructor(
     private _authService: AuthService,
@@ -47,9 +51,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this._authService.currentUser.subscribe((user) => {
+    this.userSubscription = this._authService.currentUser.subscribe((user) => {
       this._userService
         .getUserEventsByUsername(user?.username || '')
+        .pipe(finalize(() => (this.isLoadingEvents = false)))
         .subscribe((events) => {
           this.userEvents = events;
         });
@@ -57,9 +62,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this._eventDialogRef) {
-      this._eventDialogRef.close();
-    }
+    this.userSubscription.unsubscribe();
   }
 
   changeShownCalendarDates() {
@@ -114,8 +117,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.shownMonth,
       date
     );
-    console.log(this.getEventsForDate(2021, 5, 8));
-    this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
+    this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,
         selectedDate,
@@ -127,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   isCurrentDate(date: number) {
     const todayDate = new Date().toDateString();
-    const selectedDate = this.getDateFromshownYearMonthDate(
+    const selectedDate = this.getDateFromShownYearMonthDate(
       this.shownMonth,
       date
     ).toDateString();
@@ -138,7 +140,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return new Array(i);
   }
 
-  private getDateFromshownYearMonthDate(month: number, date: number) {
+  private getDateFromShownYearMonthDate(month: number, date: number) {
     return new Date(this.shownYear, month, date);
   }
 }

@@ -1,34 +1,37 @@
 <app-layout>
     <header class="page-title">Calendar</header>
     <section class="calendar-container box-shadow rounded-corners">
-        <div class='month-container'>
-            <i class="fas fa-angle-left prev-month-arrow" (click)='prevMonth()'></i>
-            <h1 class="selected-month-year">{{shownMonthAsText}} {{shownYear}}</h1>
-            <i class="fas fa-angle-right next-month-arrow" (click)='nextMonth()'></i>
-        </div>
-        <div class='days-of-week-container'>
-            <div class="day-of-week" *ngFor="let dayOfWeek of daysOfWeek">{{dayOfWeek}}</div>
-        </div>
-        <div class='days-container'>
-            <div class="prev-month-day day" *ngFor='let in of counter(firstDayOfShownMonth); let date = index'>
-                <span>{{prevMonthLastDay - firstDayOfShownMonth + date + 1}}</span>
-                <span class="num-events not-now" 
-                    *ngIf="getEventsForDate(shownYear, shownMonth - 1, prevMonthLastDay - firstDayOfShownMonth + date + 1).length">{{getEventsForDate(shownYear, shownMonth - 1, prevMonthLastDay - firstDayOfShownMonth + date + 1).length}}</span>
+        <app-spinner *ngIf="isLoadingEvents"></app-spinner>
+        <ng-container *ngIf="userEvents.length || !isLoadingEvents">
+            <div class='month-container'>
+                <i class="fas fa-angle-left prev-month-arrow" (click)='prevMonth()'></i>
+                <h1 class="selected-month-year">{{shownMonthAsText}} {{shownYear}}</h1>
+                <i class="fas fa-angle-right next-month-arrow" (click)='nextMonth()'></i>
             </div>
-            <div class="day day-of-selected-month" *ngFor='let in of counter(lastDateOfShownMonth); let date = index'>
-                <span class="calendar-day" [class.current-day]="isCurrentDate(date + 1)"
-                    (click)='openDateEventDialog(date + 1)'>{{date + 1}}</span>
-                <span class="num-events"
-                    *ngIf="getEventsForDate(shownYear, shownMonth, date + 1).length"
-                    (click)='openDateEventDialog(date+1)'>
-                    {{getEventsForDate(shownYear, shownMonth, date + 1).length}}</span>
+            <div class='days-of-week-container'>
+                <div class="day-of-week" *ngFor="let dayOfWeek of daysOfWeek">{{dayOfWeek}}</div>
             </div>
-            <div class="next-month-day day"
-                *ngFor='let in of counter(42 - lastDateOfShownMonth - firstDayOfShownMonth); let date = index'>
-                <span>{{date + 1}}</span>
-                <span class="num-events not-now opacity-2"
-                    *ngIf="getEventsForDate(shownYear, shownMonth + 1, date + 1).length">{{getEventsForDate(shownYear, shownMonth + 1, date + 1).length}}</span>
+            <div class='days-container'>
+                <div class="prev-month-day day" *ngFor='let in of counter(firstDayOfShownMonth); let date = index'>
+                    <span>{{prevMonthLastDay - firstDayOfShownMonth + date + 1}}</span>
+                    <span class="num-events not-now"
+                        *ngIf="getEventsForDate(shownYear, shownMonth - 1, prevMonthLastDay - firstDayOfShownMonth + date + 1).length">{{getEventsForDate(shownYear, shownMonth - 1, prevMonthLastDay - firstDayOfShownMonth + date + 1).length}}</span>
+                </div>
+                <div class="day day-of-selected-month"
+                    *ngFor='let in of counter(lastDateOfShownMonth); let date = index'>
+                    <span class="calendar-day" [class.current-day]="isCurrentDate(date + 1)"
+                        (click)='openDateEventDialog(date + 1)'>{{date + 1}}</span>
+                    <span class="num-events" *ngIf="getEventsForDate(shownYear, shownMonth, date + 1).length"
+                        (click)='openDateEventDialog(date+1)'>
+                        {{getEventsForDate(shownYear, shownMonth, date + 1).length}}</span>
+                </div>
+                <div class="next-month-day day"
+                    *ngFor='let in of counter(42 - lastDateOfShownMonth - firstDayOfShownMonth); let date = index'>
+                    <span>{{date + 1}}</span>
+                    <span class="num-events not-now opacity-2"
+                        *ngIf="getEventsForDate(shownYear, shownMonth + 1, date + 1).length">{{getEventsForDate(shownYear, shownMonth + 1, date + 1).length}}</span>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </section>
 </app-layout>
