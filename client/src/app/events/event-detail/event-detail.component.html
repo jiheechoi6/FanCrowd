@@ -103,7 +103,7 @@
                     </div>
                     <div class="rating-date-posted">
                         <app-review-stars [outOf]="5" [rating]="review.rating"></app-review-stars>
-                        <span>{{review.postDate | date: 'MMM d y, h:mm a'}}</span>
+                        <span>{{review.createdAt | date: 'MMM d y, h:mm a'}}</span>
                     </div>
                     <span class="review-title">{{review.title}}</span>
                     <p>{{review.content}}</p>

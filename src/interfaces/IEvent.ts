@@ -61,8 +61,8 @@ export interface IEventReview {
   title: string;
   content: string;
   rating: number;
-  postedBy: IUser;
-  event: IEvent;
+  postedBy: mongoose.Types._ObjectId;
+  event: mongoose.Types._ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }

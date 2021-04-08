@@ -45,6 +45,22 @@ export default class EventService {
     return event;
   }
 
+  public async deleteAllReviews(eventId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+    await EventReview.deleteMany({ event: eventId });
+  }
+
+  public async deleteAllAttendees(eventId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+    await Attend.deleteMany({ event: eventId });
+  }
+
   public async getEventById(eventId: string) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -65,10 +81,6 @@ export default class EventService {
     }
 
     return eventWithId;
-  }
-
-  public async getEvents() {
-    return await this.getEventsMatchingFilters({});
   }
 
   public async getEventsMatchingFilters(eventFilter: IEventFilter) {
@@ -223,9 +235,9 @@ export default class EventService {
 
     EventService._fandomService.getFandomById(newEvent.fandom);
     const newEventDoc = await Event.create(newEvent);
+
     const event = newEventDoc.toObject();
     Reflect.deleteProperty(event, "postedBy");
-
     return event;
   }
 
@@ -267,7 +279,6 @@ export default class EventService {
     return event;
   }
 
-  // TODO: Create two more methods to delete all reviews and attendees
   public async deleteEventById(
     eventId: mongoose.Types._ObjectId | string,
     reqUser: IRequestUser
@@ -288,12 +299,16 @@ export default class EventService {
     await event.delete();
   }
 
+  public async getReviewSummary(eventId: mongoose.Types._ObjectId | string) {}
+
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
-    const eventDoc: IEvent = await this.getEventDocById(eventId);
-    const reviews: IEventReview[] = await EventReview.find({ event: eventDoc })
+    const reviews = await EventReview.find({ event: eventId })
       .sort({ updatedAt: "ascending" })
-      .populate("postedBy", ["username", "role", "profileURL"])
-      .populate("event");
+      .populate({
+        path: "postedBy",
+        select: "username profileURL -_id"
+      })
+      .select("-event");
     return reviews;
   }
 
@@ -344,7 +359,7 @@ export default class EventService {
     const review = await this.getReviewById(reviewId);
 
     EventService._globalService.hasPermission(
-      review.postedBy._id,
+      review.postedBy,
       reqUser,
       `Only the creator or an admin may delete review with id ${reviewId}`
     );
@@ -371,7 +386,7 @@ export default class EventService {
     const reviewDoc = await this.getReviewById(reviewId);
 
     EventService._globalService.hasPermission(
-      reviewDoc.postedBy._id,
+      reviewDoc.postedBy,
       reqUser,
       `Only the creator or an admin may update review with id ${reviewId}`
     );
@@ -382,7 +397,7 @@ export default class EventService {
 
     if (eventId) {
       const event = await this.getEventDocById(eventId);
-      reviewDoc.event = event;
+      reviewDoc.event = event._id;
     }
 
     const updatedReviewDoc = await reviewDoc.save();

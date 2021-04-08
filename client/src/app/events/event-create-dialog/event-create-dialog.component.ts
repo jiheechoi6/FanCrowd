@@ -82,11 +82,6 @@ export class EventCreateDialogComponent implements OnInit {
         startDate: this.eventDateRange[0],
         endDate: this.eventDateRange[1],
         location: '',
-        postedBy: {
-          username: this.data.user.username,
-          profileURL: this.data.user.profileURL,
-          role: this.data.user.role,
-        },
         totalAttendance: 0,
       };
     }
