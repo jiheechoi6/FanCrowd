@@ -7,6 +7,7 @@ import {
 import UserService from "../../services/user";
 import ErrorService from "../../services/error";
 import passport from "passport";
+import middlewares from "../middlewares";
 
 const route = Router();
 
@@ -101,6 +102,7 @@ export default (app: Router) => {
       Reflect.deleteProperty(user, "password");
       Reflect.deleteProperty(user, "resetPasswordToken");
       Reflect.deleteProperty(user, "role");
+      Reflect.deleteProperty(user, "isBanned");
       res.status(200).send(user);
     } catch (err) {
       return next(err);
@@ -133,6 +135,36 @@ export default (app: Router) => {
   );
 
   /**
+   * path: /api/users/:username/update-ban
+   * method: PATCH
+   * body:
+   * {
+   *  isBanned: boolean
+   * }
+   * params:
+   * {
+   *  username: string
+   * }
+   * description: bans or unbans a user
+   */
+  route.patch(
+    "/:username/update-ban",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    middlewares.isAdmin,
+    async (req, res, next) => {
+      try {
+        const username = req.params.username;
+        const isBanned = req.body.isBanned;
+        const userService = new UserService();
+        await userService.updateUserBan(username, isBanned, req.user!);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  /**
    * path: /api/users/:userId
    * method: PATCH
    * body:
@@ -143,6 +175,7 @@ export default (app: Router) => {
    *  email: string,
    *  fullName: string,
    *  profileURL: string,
+   *  username: string
    * }
    * params:
    * {

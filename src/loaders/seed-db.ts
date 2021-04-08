@@ -39,7 +39,8 @@ const users: IUser[] = [
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "user",
-    username: "user1"
+    username: "user1",
+    isBanned: false
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -53,7 +54,8 @@ const users: IUser[] = [
     profileURL:
       "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
     role: "user",
-    username: "user2"
+    username: "user2",
+    isBanned: false
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -67,7 +69,8 @@ const users: IUser[] = [
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "admin",
-    username: "admin"
+    username: "admin",
+    isBanned: false
   }
 ];
 

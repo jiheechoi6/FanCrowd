@@ -69,6 +69,13 @@ export default class UserService {
       throw new ErrorService("UnauthorizedError", "Password is incorrect");
     }
 
+    if (userRecord.isBanned) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "An admin has banned your account. You can only login after being unbanned"
+      );
+    }
+
     const user: IRequestUser = {
       _id: userRecord._id,
       role: userRecord.role,
@@ -129,6 +136,23 @@ export default class UserService {
     return user;
   }
 
+  public async updateUserBan(
+    username: string,
+    isBanned: boolean,
+    reqUser: IRequestUser
+  ) {
+    const userDoc = await this.getUserByUsername(username);
+
+    if (userDoc.role === "admin") {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "Cannot ban or unban other admins"
+      );
+    }
+    userDoc.isBanned = isBanned || userDoc.isBanned;
+    await userDoc.save();
+  }
+
   public async updateUser(
     userId: mongoose.Types._ObjectId | string,
     updatedUser: IUpdateUserProfileDTO,
@@ -155,6 +179,7 @@ export default class UserService {
     Reflect.deleteProperty(user, "password");
     Reflect.deleteProperty(user, "resetPasswordToken");
     Reflect.deleteProperty(user, "role");
+    Reflect.deleteProperty(user, "isBanned");
     return user;
   }
 

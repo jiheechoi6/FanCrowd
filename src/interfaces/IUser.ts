@@ -13,6 +13,7 @@ export interface IUser {
   city: string;
   country: string;
   resetPasswordToken?: IResetPasswordToken;
+  isBanned: boolean;
 }
 
 export interface ISearchUser {
