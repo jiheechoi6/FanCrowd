@@ -10,4 +10,11 @@ interface UserProfileDTO {
   role: string;
 }
 
+export interface UserSearchDTO {
+  _id: string;
+  fullName: string;
+  username: string;
+  profileURL: string;
+}
+
 export default UserProfileDTO;

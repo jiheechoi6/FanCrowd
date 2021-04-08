@@ -15,6 +15,13 @@ export interface IUser {
   resetPasswordToken?: IResetPasswordToken;
 }
 
+export interface ISearchUser {
+  _id: mongoose.Types._ObjectId;
+  fullName: string;
+  username: string;
+  profileURL: string;
+}
+
 export interface IRequestUser {
   _id: mongoose.Types._ObjectId;
   username: string;
@@ -89,6 +96,7 @@ export interface IUpdateUserProfileDTO {
   profileURL: string;
   city: string;
   country: string;
+  username: string;
 }
 
 export interface IResetPasswordEmailDTO {
