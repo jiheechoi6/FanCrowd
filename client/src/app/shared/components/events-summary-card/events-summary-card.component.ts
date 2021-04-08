@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import Event from '../../models/event';
+import { IEventSummary } from '../../models/event-summar';
 
 @Component({
   selector: 'app-events-summary-card',
@@ -7,7 +7,7 @@ import Event from '../../models/event';
   styleUrls: ['./events-summary-card.component.sass'],
 })
 export class EventsSummaryCardComponent implements OnInit {
-  @Input() events: Event[] = [];
+  @Input() events: IEventSummary[] = [];
 
   constructor() {}
 

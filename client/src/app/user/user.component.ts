@@ -5,12 +5,12 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../core/services/auth.service';
 import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
-import Event from '../shared/models/event';
 import UserProfileDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import { UserIdentity } from '../shared/models/user-identity-token';
 import UserFandomRes from '../shared/models/user-fandom-res';
+import { IEventSummary } from '../shared/models/event-summar';
 
 @Component({
   selector: 'app-user',
@@ -21,7 +21,7 @@ export class UserComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   user: UserProfileDTO | null = null;
   loggedInUser: UserIdentity | null = null;
-  events: Event[] = [];
+  events: IEventSummary[] = [];
   fandoms: UserFandomRes[] = [];
 
   constructor(
@@ -42,7 +42,7 @@ export class UserComponent implements OnInit, OnDestroy {
       this._userService
         .getUserEventsByUsername(username)
         .subscribe((events) => {
-          if (this.user) this.events = events;
+          this.events = events;
         });
 
       this._userService

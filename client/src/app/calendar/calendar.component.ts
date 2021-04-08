@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../core/services/auth.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
-import Event from 'src/app/shared/models/event'
 import { UserService } from '../core/services/user.service';
-import { EditReviewDialogComponent } from '../events/edit-review-dialog/edit-review-dialog.component';
+import { IEventSummary } from '../shared/models/event-summar';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar',
@@ -38,8 +39,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     0
   ).getDate();
   prevMonthLastDay = new Date(this.shownYear, this.shownMonth, 0).getDate();
-  userEvents: Event[] = [];
-  private _eventDialogRef: MatDialogRef<DateEventDialogComponent> | null = null;
+  userEvents: IEventSummary[] = [];
+  isLoadingEvents = true;
+
+  userSubscription!: Subscription;
 
   constructor(
     private _authService: AuthService,
@@ -48,17 +51,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this._authService.currentUser.subscribe((user) => {
-      this._userService.getUserEventsByUsername(user?.username || '').subscribe((events) => {
-        this.userEvents = events;
-      });
+    this.userSubscription = this._authService.currentUser.subscribe((user) => {
+      this._userService
+        .getUserEventsByUsername(user?.username || '')
+        .pipe(finalize(() => (this.isLoadingEvents = false)))
+        .subscribe((events) => {
+          this.userEvents = events;
+        });
     });
   }
 
   ngOnDestroy() {
-    if (this._eventDialogRef) {
-      this._eventDialogRef.close();
-    }
+    this.userSubscription.unsubscribe();
   }
 
   changeShownCalendarDates() {
@@ -94,23 +98,26 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getEventsForDate(year: number, month: number, date: number) {
-    const eventsForDate = this.userEvents.filter(
-      (event) => {
-        let eventDate = new Date(event.startDate);
-        let selectedDate = new Date(year, month, date);
-        return (eventDate.getFullYear() == selectedDate.getFullYear()) &&
-              (eventDate.getMonth() == selectedDate.getMonth()) &&
-              (eventDate.getDate() == selectedDate.getDate());
-      }
-    );
+    const eventsForDate = this.userEvents.filter((event) => {
+      let eventDate = new Date(event.startDate);
+      let selectedDate = new Date(year, month, date);
+      return (
+        eventDate.getFullYear() == selectedDate.getFullYear() &&
+        eventDate.getMonth() == selectedDate.getMonth() &&
+        eventDate.getDate() == selectedDate.getDate()
+      );
+    });
     return eventsForDate;
   }
 
   openDateEventDialog(date: number) {
-    const selectedDate = new Date(this.shownYear, this.shownMonth, date)
-    const eventsForDate = this.getEventsForDate(this.shownYear, this.shownMonth, date);
-    console.log(this.getEventsForDate(2021, 5, 8));
-    this._eventDialogRef = this._dialog.open(DateEventDialogComponent, {
+    const selectedDate = new Date(this.shownYear, this.shownMonth, date);
+    const eventsForDate = this.getEventsForDate(
+      this.shownYear,
+      this.shownMonth,
+      date
+    );
+    this._dialog.open(DateEventDialogComponent, {
       data: {
         events: eventsForDate,
         selectedDate,
@@ -122,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   isCurrentDate(date: number) {
     const todayDate = new Date().toDateString();
-    const selectedDate = this.getDateFromshownYearMonthDate(
+    const selectedDate = this.getDateFromShownYearMonthDate(
       this.shownMonth,
       date
     ).toDateString();
@@ -133,7 +140,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return new Array(i);
   }
 
-  private getDateFromshownYearMonthDate(month: number, date: number) {
+  private getDateFromShownYearMonthDate(month: number, date: number) {
     return new Date(this.shownYear, month, date);
   }
 }
