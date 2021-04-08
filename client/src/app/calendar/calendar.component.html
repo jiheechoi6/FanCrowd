@@ -23,7 +23,7 @@
                         (click)='openDateEventDialog(date + 1)'>{{date + 1}}</span>
                     <span class="num-events" *ngIf="getEventsForDate(shownYear, shownMonth, date + 1).length"
                         (click)='openDateEventDialog(date+1)'>
-                        {{getEventsForDate(shownYear, shownMonth, date + 1).length}}</span>
+                        {{getEventsForDate(shownYear, shownMonth, date + 1).length}} Event(s)</span>
                 </div>
                 <div class="next-month-day day"
                     *ngFor='let in of counter(42 - lastDateOfShownMonth - firstDayOfShownMonth); let date = index'>

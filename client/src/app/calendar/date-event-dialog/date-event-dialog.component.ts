@@ -19,4 +19,10 @@ export class DateEventDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+
+  closeDialog(event: boolean) {
+    if (event) {
+      this.dialogRef.close();
+    }
+  }
 }

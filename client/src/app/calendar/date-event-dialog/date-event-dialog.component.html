@@ -2,7 +2,7 @@
     <h3 class="mat-headline selected-date">{{data.selectedDate | date:'fullDate'}}</h3>
     <p class="mat-subheading-1" *ngIf="!data.events.length">Nothing scheduled!</p>
     <div class="events">
-        <app-events-summary-card [events]="data.events"></app-events-summary-card>
+        <app-events-summary-card [events]="data.events" (closeCalenderDialog)="closeDialog($event)"></app-events-summary-card>
     </div>
 </section>
 
