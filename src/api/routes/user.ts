@@ -8,6 +8,7 @@ import {
 } from "../../interfaces/IUser";
 import User from "../../models/user";
 import UserService from "../../services/user";
+import ErrorService from "../../services/error";
 
 const route = Router();
 
@@ -70,10 +71,14 @@ export default (app: Router) => {
       const reqBody = req.body as IResetPasswordInputDTO;
       const userService = new UserService();
       await userService.resetPassword(reqBody);
-
       res.status(200).send();
     } catch (err) {
-      return next(err);
+      return next(
+        new ErrorService(
+          "UnauthorizedError",
+          "The verification code is incorrect or has expired"
+        )
+      );
     }
   });
 

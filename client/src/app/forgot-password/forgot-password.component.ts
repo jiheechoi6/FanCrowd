@@ -9,8 +9,9 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatStepper } from '@angular/material/stepper';
-import { AuthService } from '../core/services/auth.service';
+import { finalize } from 'rxjs/operators';
 import { EmailService } from '../core/services/email.service';
+import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -36,8 +37,8 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
-    private _emailService: EmailService,
-    private _authService: AuthService
+    private _userService: UserService,
+    private _emailService: EmailService
   ) {}
 
   ngOnInit() {
@@ -51,7 +52,7 @@ export class ForgotPasswordComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
+          Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
         ],
       ],
     });
@@ -80,61 +81,77 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   sendVerificationCode(stepper: MatStepper) {
-    const email = this.firstStepForm.controls['email'].value;
+    const email = this.firstStepForm.value['email'];
+    const username = this.firstStepForm.value['username'];
+
     this.sendingVerificationCode = true;
-    this._emailService.sendVerficationCode(email);
-
-    //Below lines will go in the subscription callback above
-    this._snackBar.open(
-      `An email has been sent to ${email} with a verification code!`,
-      'X',
-      {
-        panelClass: ['snackbar'],
-        horizontalPosition: 'left',
-        duration: 3500,
-      }
-    );
-    stepper.next();
-
-    //Below lines if email cannot be sent for some reason
-    // this._snackBar.open(
-    //   `An error occured when sending a verification code to ${email}! Please try a different email`,
-    //   'X',
-    //   {
-    //     panelClass: ['snackbar'],
-    //     horizontalPosition: 'left',
-    //     duration: 3500,
-    //   }
-    // );
-    this.sendingVerificationCode = false;
+    this._emailService
+      .sendVerficationCode({ email, username })
+      .pipe(finalize(() => (this.sendingVerificationCode = false)))
+      .subscribe(
+        () => {
+          this._snackBar.open(
+            `An email has been sent to ${email} with a verification code!`,
+            'X',
+            {
+              panelClass: ['snackbar'],
+              horizontalPosition: 'left',
+              duration: 3500,
+            }
+          );
+          stepper.selected.completed = true;
+          stepper.next();
+        },
+        () => {
+          this._snackBar.open(
+            `An error occured when sending a verification code to ${email}. Please try again later`,
+            'X',
+            {
+              panelClass: ['snackbar'],
+              horizontalPosition: 'left',
+              duration: 3500,
+            }
+          );
+        }
+      );
   }
 
   resetPassword(stepper: MatStepper) {
-    const verificationCode = +this.secondStepForm.value['verificationCode'];
-    const newPassword = this.secondStepForm.value['newPassword'];
-    const email = this.firstStepForm.controls['email'].value;
+    const email = this.firstStepForm.value['email'];
+    const username = this.firstStepForm.value['username'];
+    const verificationCode = this.secondStepForm.value['verificationCode'];
+    const newPassword = this.secondStepForm.value.passwords.newPassword;
 
     this.resettingPassword = true;
-    this._authService.resetPassword(email, newPassword, verificationCode);
-    //Below lines will go in the subscription callback above
-    this._snackBar.open(`Your password has been successfully reset`, 'X', {
-      panelClass: ['snackbar'],
-      horizontalPosition: 'left',
-      duration: 3500,
-    });
-    stepper.next();
-
-    //Below lines if password reset failed
-    // this._snackBar.open(
-    //   `There was a problem resetting your password! Please ensure verification code is correct and try again`,
-    //   'X',
-    //   {
-    //     panelClass: ['snackbar'],
-    //     horizontalPosition: 'left',
-    //     duration: 3500,
-    //   }
-    // );
-
-    this.resettingPassword = false;
+    this._userService
+      .resetPassword({
+        email,
+        password: newPassword,
+        verificationCode,
+        username,
+      })
+      .pipe(finalize(() => (this.resettingPassword = false)))
+      .subscribe(
+        () => {
+          this._snackBar.open(
+            `Your password has been successfully reset`,
+            'X',
+            {
+              panelClass: ['snackbar'],
+              horizontalPosition: 'left',
+              duration: 3500,
+            }
+          );
+          stepper.selected.completed = true;
+          stepper.next();
+        },
+        (err) => {
+          this._snackBar.open(`${err.error.message}`, 'X', {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 3500,
+          });
+        }
+      );
   }
 }
