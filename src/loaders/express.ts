@@ -9,14 +9,6 @@ export default async ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
   app.use(express.json());
-
-  if (config.env === "production") {
-    app.use(express.static(path.join(__dirname, "client/dist")));
-    app.get("/", (req, res) =>
-      res.sendFile(path.join(__dirname, "client/dist/index.html"))
-    );
-  }
-
   app.use(config.api.prefix, routes());
 
   // Passport Middleware
@@ -33,6 +25,13 @@ export default async ({ app }: { app: express.Application }) => {
     err.name = "NotFoundError";
     next(err);
   });
+
+  if (config.env === "production") {
+    app.use(express.static(path.join(__dirname, "client/dist")));
+    app.get("*", (req, res) =>
+      res.sendFile(path.join(__dirname, "client/dist/index.html"))
+    );
+  }
 
   //Handles errors in endpoints
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
