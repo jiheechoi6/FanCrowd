@@ -11,8 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/app.js",
     "dev": "nodemon -L -e ts --exec \"npm run build && npm start\"",
-    "heroku-postbuild": "npm i --prefix client && npm run build --prefix client && npm run build",
-    "build": "tsc"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm i --prefix client && npm run build --prefix client && npm run dev-build",
+    "dev-build": "tsc"
   },
   "repository": {
     "type": "git",
