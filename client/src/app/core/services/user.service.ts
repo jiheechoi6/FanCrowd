@@ -37,13 +37,11 @@ export class UserService {
     return this._http.patch(`/api/users/${username}/update-ban`, {});
   }
 
-  updateUserByUsername(
-    updatedUser: UserProfileDTO,
-    usernameBeforeUpdate: string
-  ) {
-    this._http
-      .patch(`/api/users/${usernameBeforeUpdate}`, updatedUser)
-      .subscribe();
+  updateUserById(updatedUser: UserProfileDTO, userId: string) {
+    return this._http.patch<UserProfileDTO>(
+      `/api/users/${userId}`,
+      updatedUser
+    );
   }
 
   resetPassword(resetPasswordInfo: ResetPasswordInfo) {

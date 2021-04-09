@@ -46,11 +46,7 @@
       </section>
       <section class="bio-fandom-container">
         <mat-card class="bio rounded-corners box-shadow">
-          <mat-card-title>Bio
-            <p class="bio-edit-button" *ngIf="isSelf()" (click)="openEditBioDialog()">
-              edit
-            </p>
-          </mat-card-title>
+          <mat-card-title>Bio</mat-card-title>
           <p *ngIf="isBioEmpty() && isSelf()" class="bio-empty-message">
             Add a Bio to describe yourself!
           </p>

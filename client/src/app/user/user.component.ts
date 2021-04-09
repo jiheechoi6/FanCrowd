@@ -7,7 +7,6 @@ import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import UserProfileDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
-import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import { UserIdentity } from '../shared/models/user-identity-token';
 import UserFandomRes from '../shared/models/user-fandom-res';
 import { IEventSummary } from '../shared/models/event-summary';
@@ -133,28 +132,6 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
-  openEditBioDialog() {
-    const dialogRef = this._dialog.open(BioEditDialogComponent, {
-      data: { ...this.user },
-      autoFocus: false,
-      width: '450px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((updatedUser: UserProfileDTO) => {
-      if (updatedUser) {
-        this.user = updatedUser;
-        if (!this._authService.currentUser.value) {
-          return;
-        }
-        this._authService.currentUser.next({
-          ...this._authService.currentUser.value,
-          username: updatedUser.username,
-          profileURL: updatedUser.profileURL,
-        });
-      }
-    });
-  }
-
   isFandomEmpty(): boolean {
     return !this.fandoms;
   }
@@ -164,7 +141,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   isEventsEmpty(): boolean {
-    return !this.events;
+    return !this.events.length;
   }
 
   isSelf(): boolean {

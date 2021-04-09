@@ -34,8 +34,7 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Country</mat-label>
-                <input matInput [(ngModel)]="user.country" name="country" pattern=".*\S+.*"
-                    autocomplete="off" />
+                <input matInput [(ngModel)]="user.country" name="country" pattern=".*\S+.*" autocomplete="off" />
                 <!-- <mat-error>Country is a required field</mat-error> -->
             </mat-form-field>
         </div>
@@ -49,29 +48,33 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Profile Image URL</mat-label>
-                <input matInput [(ngModel)]="user.profileURL" name="profileurl"
-                    pattern="(https?:\/\/.*\.(?:png|jpg))" autocomplete="off" #profileURL="ngModel" />
+                <input matInput [(ngModel)]="user.profileURL" name="profileurl" pattern="(https?:\/\/.*\.(?:png|jpg))"
+                    autocomplete="off" #profileURL="ngModel" />
                 <mat-error *ngIf="profileURL.errors?.pattern">Please enter a valid image url</mat-error>
             </mat-form-field>
         </div>
-        <!-- <div class="form-group">
+        <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Bio</mat-label>
                 <textarea #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
                     cdkTextareaAutosize matInput [(ngModel)]="user.bio" name="bio" pattern=".*\S+.*"
                     autocomplete="off"></textarea>
             </mat-form-field>
-        </div> -->
+        </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="basic" type="button">
+    <button mat-flat-button mat-dialog-close color="basic" type="button" [disabled]="isUpdating">
         Cancel
     </button>
     <button mat-flat-button color="primary" (click)="editUserForm.ngSubmit.emit()"
-        [disabled]="!editUserForm.form.valid">
-        <span>
-            Confirm <i class="fas fa-check"></i>
-        </span>
+        [disabled]="!editUserForm.form.valid || isUpdating">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isUpdating">Confirm <i class="fas fa-check"></i></span>
+            <span class="margin-right-2" *ngIf="isUpdating">Updating</span>
+            <app-spinner *ngIf="isUpdating" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </div>
