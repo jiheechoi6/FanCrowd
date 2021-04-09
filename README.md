@@ -19,17 +19,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Clone the repository to your local machine, then follow the steps to run the backend and frontend:
 
 ### Backend
-**1.)** Open `Docker Desktop`, and then open a new terminal as administrator\
-**2.)** Run `docker-compose build`, it will say **Successfully built ...** on completion\
-**3.)** Run `docker-compose up`, it will say **Done seeding db** and **Server running on port 5000** on completion\
+**1.)** Open `Docker Desktop`, and then open a new terminal in the `team09/src` directory as administrator\
+**2.)** Run `docker-compose build`, it will say `Successfully built ...` on completion\
+**3.)** Run `docker-compose up`, it will say `Done seeding db` and `Server running on port 5000` on completion\
 **4.)** Open `MongoDB Compass` and connect to localhost `27018`
 **5.)** API can be accessed with `http://localhost:5000/api/` on Postman
 
 ### Frontend
-**1.)** Open a new terminal in the `team09` directory administrator\ 
+**1.)** Open a new terminal in the `team09/client` directory as administrator\
 **2.)** Run `npm install`\
 **3.)** Run `npm install -g @angular/cli`\
-**4.)** run `ng serve` or `npm start`\ 
+**4.)** Run `npm start`\
 **5.)** Navigate to `http://localhost:4200/` in your preferred choice of a browser
 
 
@@ -92,4 +92,9 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 ## Routes
 | REST Method | Route Name | Route Link | Request Body | Request Response |
-| ------------| ---------- | ---------- | ------------ | ---------------- |
+| ----------- | ---------- | ---------- | ------------ | ---------------- |
+| `GET` | CurrentUser | `/auth/currentUser` | N/A | Details of logged in user |
+| `POST` | SignIn | `/auth/signin` | {
+   "username": "user1",
+   "password": "User1234"
+} | Token and user details |
