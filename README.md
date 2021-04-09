@@ -763,6 +763,57 @@ Status code of `200`
 <tr>
 <td> 
   
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/{fandomId}/unjoin` 
+  <br>
+  <br>
+  Unjoin a fandom
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/categories/{categoryName}/{fandomName}` 
+  <br>
+  <br>
+  Get a fandom of a category
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+{
+    "backgroundURL": "https://i.pinimg.com/originals/dc/eb/80/dceb80db40569f060a1197d7f8c58916.jpg",
+    "_id": "607051e3f4587500516bf1ad",
+    "name": "basketball",
+    "category": "607051e3f4587500516bf198",
+    "createdBy": "607051e3f4587500516bf191",
+    "createdAt": "2021-04-09T13:08:51.505Z"
+}
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
   `GET`
   
 </td>
@@ -849,7 +900,7 @@ true
 </tr>
 </table>
 
-### FANDOM Category Endpoints
+### FANDOM CATEGORY Endpoints
 <table>
 <tr>
 <td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
@@ -1003,6 +1054,356 @@ true
         "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
         "_id": "60706e79f4587500516bf234",
         "name": "testing post category"
+    }
+]
+ ```
+</td>
+</tr>
+</table>
+
+### FANDOM POSTS Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms/posts` 
+  <br>
+  <br>
+  Create a post on fandom
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_POST_Fandom_Post",
+    "content": "Test creating a new post",
+    "fandom": "607051e3f4587500516bf19f"
+}
+```
+"fandom" is a fandom id which can be obtained from the database
+</td>
+<td>
+  
+```json
+{
+    "_id": "6070ac8e167f3c00a143dbca",
+    "title": "Testing_POST_Fandom_Post",
+    "content": "Test creating a new post",
+    "fandom": "607051e3f4587500516bf19f",
+    "postedBy": {
+        "username": "user1",
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+    },
+    "createdAt": "2021-04-09T19:35:42.636Z",
+    "dislikes": [],
+    "likes": []
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/fandoms/posts/{postId}` 
+  <br>
+  <br>
+  Update a post
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_PATCH_Fandom_Post",
+    "content": "Test updating a post",
+    "fandom": "607051e3f4587500516bf19f"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "_id": "607093cd167f3c00a143dbc6",
+    "title": "Testing_PATCH_Fandom_Post",
+    "content": "Test updating a post",
+    "fandom": "607051e3f4587500516bf19f",
+    "postedBy": "607051e3f4587500516bf190",
+    "createdAt": "2021-04-09T17:50:05.730Z"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/posts/{postId}` 
+  <br>
+  <br>
+  Delete a post
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/categories/{categoryName}/{fandomName}/posts` 
+  <br>
+  <br>
+  Get all posts of a fandom in a category
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+[
+    {
+        "_id": "607051e3f4587500516bf1c0",
+        "title": "Lorem ipsum dolor sit amet",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "fandom": "607051e3f4587500516bf1a7",
+        "createdAt": "2021-04-09T13:08:51.534Z",
+        "likes": [
+            {
+                "_id": "607051e3f4587500516bf1db",
+                "user": "607051e3f4587500516bf190"
+            },
+            {
+                "_id": "607051e3f4587500516bf1dd",
+                "user": "607051e3f4587500516bf191"
+            }
+        ],
+        "dislikes": []
+    },
+    {
+        "_id": "607051e3f4587500516bf1c1",
+        "title": "Lorem ipsum dolor",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "postedBy": {
+            "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+            "username": "user2"
+        },
+        "fandom": "607051e3f4587500516bf1a7",
+        "createdAt": "2021-04-09T13:08:51.536Z",
+        "likes": [],
+        "dislikes": [
+            {
+                "_id": "607051e3f4587500516bf1dc",
+                "user": "607051e3f4587500516bf190"
+            },
+            {
+                "_id": "607051e3f4587500516bf1de",
+                "user": "607051e3f4587500516bf191"
+            }
+        ]
+    }
+]
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/posts/{postId}` 
+  <br>
+  <br>
+  Get a post
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+{
+    "_id": "607093cd167f3c00a143dbc6",
+    "title": "Testing_PATCH_Fandom_Post",
+    "content": "Test updating a post",
+    "fandom": "607051e3f4587500516bf19f",
+    "postedBy": {
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+        "username": "user1"
+    },
+    "createdAt": "2021-04-09T17:50:05.730Z",
+    "likes": [],
+    "dislikes": []
+}
+ ```
+</td>
+</tr>
+</table>
+
+### FANDOM POST COMMENTS Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms/comments` 
+  <br>
+  <br>
+  Create a comment on a fandom
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_POST_Fandom_Comment",
+    "content": "Test creating a new comment",
+    "fandomPost": "6070ac8e167f3c00a143dbca"
+}
+```
+"fandom" is a fandom id which can be obtained from the database
+</td>
+<td>
+  
+```json
+{
+    "_id": "6070af2f167f3c00a143dbcc",
+    "title": "Testing_POST_Fandom_Comment",
+    "content": "Test creating a new comment",
+    "fandomPost": "6070ac8e167f3c00a143dbca",
+    "postedBy": {
+        "username": "user1",
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+    },
+    "createdAt": "2021-04-09T19:46:55.356Z",
+    "dislikes": [],
+    "likes": []
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/fandoms/comments/{commentId}` 
+  <br>
+  <br>
+  Update a post
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_PATCH_Fandom_Comment",
+    "content": "Test updating a comment",
+    "fandomPost": "6070ac8e167f3c00a143dbca"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "_id": "6070af2f167f3c00a143dbcc",
+    "title": "Testing_PATCH_Fandom_Comment",
+    "content": "Test updating a comment",
+    "fandomPost": "6070ac8e167f3c00a143dbca",
+    "postedBy": "607051e3f4587500516bf190",
+    "createdAt": "2021-04-09T19:46:55.356Z"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/comments/{commentId}` 
+  <br>
+  <br>
+  Delete a comment
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/posts/{postId}/comments` 
+  <br>
+  <br>
+  Get all comments of a post
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+[
+    {
+        "_id": "6070aed4167f3c00a143dbcb",
+        "title": "Testing_PATCH_Fandom_Comment",
+        "content": "Test updating a comment",
+        "fandomPost": "6070ac8e167f3c00a143dbca",
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "createdAt": "2021-04-09T19:45:24.180Z",
+        "likes": [],
+        "dislikes": []
     }
 ]
  ```
