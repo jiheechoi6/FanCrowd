@@ -90,8 +90,75 @@ When a user/admin is on the fandom page, they have the ability to join the fando
 Notice, for each fandom on it's page on the right side, it displays all the events for that fandom. By clicking an event in that box you can navigate to that event's detail page. 
 
 
-## Routes
-| REST Method | Route Name | Route Link | Request Body | Request Response |
-| ----------- | ---------- | ---------- | ------------ | ---------------- |
-| `GET` | CurrentUser | `/auth/currentUser` | N/A | Details of logged in user |
-| `POST` | SignIn | `/auth/signin` | `{<br>"username": "user1", "password": "User1234"}` | Token and user details |
+## API Routes
+**API**: `http://localhost:5000/api/`\
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin endpoint of the form `JWT {tokenValue}`.
+
+<table>
+<tr>
+<td> Method </td> <td> Name </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td> <td> Current User </td> 
+<td> 
+  
+  `/auth/currentUser` 
+  
+</td> <td> N/A </td>
+<td> 
+  
+ ```json
+ {
+   "_id": "606fea08ff91ae003b57ce26",
+   "role": "user",
+   "username": "user1",
+   "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
+ }
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> <td> SignIn </td> 
+
+<td> 
+  
+  `/auth/signin` 
+  
+</td>
+<td>
+  
+```json
+{
+    "username": "user1",
+    "password": "user1"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZmZWEwOGZmOTFhZTAwM2I1N2NlMjYiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9tb2NhaC5vcmcvdXBsb2Fkcy9wb3N0cy81NDIwNjQxLW1vb24tbmlnaHQtYmxhY2stc3BhY2UtaGFsbG93ZWVuLXN0YXItc3VwZXJtb29uLW5hdHVyZS1zdGVybmUtc3VwZXItbW9vbi1nYWxheHktdW5pdmVyc2Utc2t5LW5pZ2h0aW1lLWNyZWF0aXZlLWNvbW1vbnMtaW1hZ2VzLmpwZyIsImlhdCI6MTYxNzk0ODExMH0.fjCFHyV8-tyKdtc1M96PLYXo7fr4iDPbBMaljyOsqjo",
+    "user": {
+        "_id": "606fea08ff91ae003b57ce26",
+        "role": "user",
+        "username": "user1",
+        "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
+    }
+}
+```
+
+</td>
+</tr>
+<tr>
+</tr>
+</table>
