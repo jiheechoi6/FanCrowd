@@ -10,6 +10,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 | `"xng-breadcrumb": "^6.6.1"`  | xng-breadcrumb |
 | `"nodemailer": "^6.5.0"` | Nodemailer |
 | `"passport-jwt": "^4.0.0"` | Passport.JS |
+| `"googleapis": "^68.0.0"` | Google API |
+| `"cors": "^2.8.5"` | CORS |
+| `"bcryptjs": "^2.4.3"` | bcrypt.js |
 
 ## App Link
 **FanCrowd Site:** https://fan-crowd.herokuapp.com/
@@ -22,7 +25,7 @@ Clone the repository to your local machine, then follow the steps to run the bac
 **1.)** Open `Docker Desktop`, and then open a new terminal in the `team09/src` directory as administrator\
 **2.)** Run `docker-compose build`, it will say `Successfully built ...` on completion\
 **3.)** Run `docker-compose up`, it will say `Done seeding db` and `Server running on port 5000` on completion\
-**4.)** Open `MongoDB Compass` and connect to localhost `27018`\
+**4.)** Open `MongoDB Compass` and connect to `localhost:27018`\
 **5.)** API can be accessed with `http://localhost:5000/api/` on Postman
 
 ### Frontend
