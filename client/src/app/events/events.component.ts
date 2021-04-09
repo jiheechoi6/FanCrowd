@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
@@ -8,13 +8,14 @@ import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalService } from '../core/services/global.service';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.sass'],
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
   events: Array<Event> = [];
   allEvents: Array<Event> = [];
   pageSizeOptions: number[] = [5, 10, 20];
@@ -24,6 +25,7 @@ export class EventsComponent implements OnInit {
   user: UserIdentity | null = null;
 
   isLoadingEvents = true;
+  userSubscription!: Subscription;
 
   constructor(
     private _authService: AuthService,
@@ -34,7 +36,9 @@ export class EventsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._authService.currentUser.subscribe((user) => (this.user = user));
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.user = user)
+    );
     this._eventService
       .getEvents()
       .pipe(finalize(() => (this.isLoadingEvents = false)))
@@ -42,6 +46,10 @@ export class EventsComponent implements OnInit {
         this.allEvents = events;
         this.events = this.allEvents.slice(0, this.pageSize);
       });
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
   selectPage(event: any) {

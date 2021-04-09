@@ -3,7 +3,7 @@ import { AuthService } from '../core/services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DateEventDialogComponent } from './date-event-dialog/date-event-dialog.component';
 import { UserService } from '../core/services/user.service';
-import { IEventSummary } from '../shared/models/event-summar';
+import { IEventSummary } from '../shared/models/event-summary';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 

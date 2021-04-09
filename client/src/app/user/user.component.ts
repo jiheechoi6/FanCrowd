@@ -10,7 +10,7 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
 import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import { UserIdentity } from '../shared/models/user-identity-token';
 import UserFandomRes from '../shared/models/user-fandom-res';
-import { IEventSummary } from '../shared/models/event-summar';
+import { IEventSummary } from '../shared/models/event-summary';
 
 @Component({
   selector: 'app-user',

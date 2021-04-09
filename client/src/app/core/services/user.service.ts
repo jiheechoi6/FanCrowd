@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import UserProfileDTO, { UserSearchDTO } from 'src/app/shared/models/user-dto';
 import UserFandomRes from 'src/app/shared/models/user-fandom-res';
-import { IEventSummary } from 'src/app/shared/models/event-summar';
+import { IEventSummary } from 'src/app/shared/models/event-summary';
 import { ResetPasswordInfo } from 'src/app/shared/models/reset-password';
 
 @Injectable({

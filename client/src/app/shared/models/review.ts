@@ -9,4 +9,11 @@ interface Review {
   createdAt: Date;
 }
 
+export interface IEventReviewSummary {
+  avgRating: number;
+  numOfEachRating: {
+    [key: string]: number;
+  };
+}
+
 export default Review;

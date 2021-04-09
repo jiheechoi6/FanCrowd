@@ -176,7 +176,8 @@ export default (app: Router) => {
 
         const eventService = new EventService();
         const review = await eventService.createReview(eventId, newReview);
-        res.status(200).send(review);
+        const reviewSummary = await eventService.getReviewSummary(review.event);
+        res.status(200).send({ review, reviewSummary });
       } catch (err) {
         return next(err);
       }
@@ -391,25 +392,32 @@ export default (app: Router) => {
   );
 
   /**
-   * path: /api/events/attend/:eventId
+   * path: /api/events/:eventId/is-attending
    * method: GET
    * body: None
    * params:
    * {
    *  eventId: string
    * }
-   * description: gets all the attendees for an event or [] if no attendees
+   * description: checks if currently signed in user is attending event with eventId
    */
-  route.get("/attend/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-      const eventService = new EventService();
-      const attendees = await eventService.getEventAttendeesById(eventId);
-      res.status(200).send(attendees);
-    } catch (err) {
-      return next(err);
+  route.get(
+    "/:eventId/is-attending",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        const isAttendingEvent = await eventService.isUserAttendingEvent(
+          eventId,
+          req.user!._id!
+        );
+        res.status(200).send(isAttendingEvent);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/:categoryName/:fandomName

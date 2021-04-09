@@ -7,74 +7,79 @@
 
     <section class="event-details-reviews">
         <section class="event-detail-review-summary">
-            <mat-card class="event-card rounded-corners box-shadow" *ngIf="event">
-                <mat-card-title>{{event?.name}}</mat-card-title>
-                <mat-card-content>
-                    <div class="location-date-range">
-                        <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
-                            {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
-                        <div class="location-num-people-attending">
-                            <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
-                            <span class="num-people-attending">{{event?.totalAttendance}}
-                                {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
-                                    class="fas fa-user-friends"></i></span>
+            <mat-card class="event-card rounded-corners box-shadow" [class.loading]="isLoadingEvent">
+                <app-spinner *ngIf="isLoadingEvent"></app-spinner>
+                <ng-container *ngIf="event">
+                    <mat-card-title>{{event?.name}}</mat-card-title>
+                    <mat-card-content>
+                        <div class="location-date-range">
+                            <span>{{event?.startDate | date: 'MMM d y, h:mm a'}} -
+                                {{event?.endDate | date: 'MMM d y, h:mm a'}} <i class="fas fa-clock"></i></span>
+                            <div class="location-num-people-attending">
+                                <span>{{event?.location}} <i class="fas fa-map-marked-alt"></i></span>
+                                <span class="num-people-attending">{{event?.totalAttendance}}
+                                    {{event?.totalAttendance === 1 ? 'Person' : 'People'}} Attending <i
+                                        class="fas fa-user-friends"></i></span>
+                            </div>
                         </div>
-                    </div>
-                    <article>
-                        <header class="about-title">About</header>
-                        <p>{{ event?.description }}</p>
-                    </article>
-                    <p class="created-by">Created By: <a
-                            [routerLink]="['/users', event!.postedBy!.username]">{{event!.postedBy!.username | titlecase}}</a>
-                    </p>
-                    <p>
-                        Fandom: <a
-                            [routerLink]="['/fandoms', event.fandom.category.name | lowercase, event.fandom.name | spacesToHyphen | lowercase]">{{event.fandom.name | titlecase}}</a>
-                    </p>
-                    <div class="flex-row-container-space-between">
-                        <button *ngIf="isAttending" (click)="removeEventFromProfile(event?._id)" mat-flat-button
-                            color="primary">
-                            Unattend
-                        </button>
-                        <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
-                            Attend
-                        </button>
-                        <div *ngIf="user?.role === 'admin' || user?.username === event!.postedBy!.username">
-                            <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
-                                mat-flat-button color="warn">
-                                <span>
-                                    Delete <i class="fas fa-trash-alt"></i>
-                                </span>
+                        <article>
+                            <header class="about-title">About</header>
+                            <p>{{ event?.description }}</p>
+                        </article>
+                        <p class="created-by">Created By: <a
+                                [routerLink]="['/users', event!.postedBy!.username]">{{event!.postedBy!.username | titlecase}}</a>
+                        </p>
+                        <p>
+                            Fandom: <a
+                                [routerLink]="['/fandoms', event.fandom.category.name | lowercase, event.fandom.name | spacesToHyphen | lowercase]">{{event.fandom.name | titlecase}}</a>
+                        </p>
+                        <div class="flex-row-container-space-between">
+                            <button *ngIf="isAttending" (click)="removeEventFromProfile(event?._id)" mat-flat-button
+                                color="primary">
+                                Unattend
                             </button>
-                            <button mat-flat-button color="primary" (click)="openEditEventDialog()">
-                                <span>
-                                    Edit <i class="fas fa-edit"></i>
-                                </span>
+                            <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
+                                Attend
                             </button>
+                            <div *ngIf="user?.role === 'admin' || user?.username === event!.postedBy!.username">
+                                <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
+                                    mat-flat-button color="warn">
+                                    <span>
+                                        Delete <i class="fas fa-trash-alt"></i>
+                                    </span>
+                                </button>
+                                <button mat-flat-button color="primary" (click)="openEditEventDialog()">
+                                    <span>
+                                        Edit <i class="fas fa-edit"></i>
+                                    </span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </mat-card-content>
+                    </mat-card-content>
+                </ng-container>
             </mat-card>
 
-            <mat-card class="rounded-corners box-shadow">
-                <mat-card-content class="rating-summary">
+            <mat-card class="rounded-corners box-shadow rating-summary-container" [class.loading]="isLoadingReviews">
+                <app-spinner *ngIf="isLoadingReviews"></app-spinner>
+                <mat-card-content class="rating-summary" *ngIf="reviewSummary">
                     <div class="avg-rating">
-                        <span class="number">{{avgRating}}</span>
-                        <app-review-stars [outOf]="5" [rating]="avgRating"></app-review-stars>
+                        <span class="number">{{reviewSummary!.avgRating}}</span>
+                        <app-review-stars [outOf]="5" [rating]="reviewSummary!.avgRating"></app-review-stars>
                         <span>Average Rating</span>
                         <span class="total-reviews"><i class="fas fa-user"></i> {{reviews.length}} total</span>
                     </div>
                     <div class="rating-progress-bars">
-                        <mat-progress-bar class="progress-bar" *ngFor="let ratingGroup of groupedReviews | keyvalue"
-                            color="accent" mode="determinate"
-                            [value]="roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)">
+                        <mat-progress-bar class="progress-bar"
+                            *ngFor="let ratingGroup of reviewSummary!.numOfEachRating | keyvalue" color="accent"
+                            mode="determinate"
+                            [value]="roundPercent(reviews.length === 0 ? 0 : (+ratingGroup.value / reviews.length) * 100)">
                         </mat-progress-bar>
                     </div>
                     <div class="rating-group-by-summary">
-                        <div *ngFor="let ratingGroup of groupedReviews | keyvalue">
+                        <div *ngFor="let ratingGroup of reviewSummary!.numOfEachRating | keyvalue">
                             <app-review-stars class="rating-summary-group" [outOf]="5" [rating]="+ratingGroup.key">
                             </app-review-stars>
-                            {{roundPercent(reviews.length === 0 ? 0 : (ratingGroup.value.length / reviews.length) * 100)}}
+                            {{roundPercent(reviews.length === 0 ? 0 : (+ratingGroup.value / reviews.length) * 100)}}
                             %
                         </div>
                     </div>
@@ -91,6 +96,8 @@
                     </span>
                 </button>
             </div>
+
+            <app-spinner *ngIf="isLoadingReviews"></app-spinner>
 
             <mat-card class="review-card rounded-corners box-shadow" *ngFor="let review of reviews">
                 <mat-card-content>

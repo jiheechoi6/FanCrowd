@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Event from 'src/app/shared/models/event';
-import Review from 'src/app/shared/models/review';
+import Review, { IEventReviewSummary } from 'src/app/shared/models/review';
 import ReviewDTO from 'src/app/shared/models/review-dto';
 import { Observable } from 'rxjs';
 import Attendee from 'src/app/shared/models/attendee';
-import { IEventSummary } from 'src/app/shared/models/event-summar';
+import { IEventSummary } from 'src/app/shared/models/event-summary';
 
 @Injectable({
   providedIn: 'root',
@@ -45,9 +45,8 @@ export class EventService {
     return this._http.post<Event>(`/api/events/`, event);
   }
 
-  getAttendees(eventId: string): Observable<Attendee[]> {
-    // Get all attendees
-    return this._http.get<Attendee[]>(`/api/events/attend/${eventId}`);
+  isUserAttendingEvent(eventId: string) {
+    return this._http.get<boolean>(`/api/events/${eventId}/is-attending`);
   }
 
   createAttendee(eventId: string, newAttendee: Attendee): Observable<Attendee> {
@@ -73,9 +72,10 @@ export class EventService {
     return this._http.delete(`/api/events/${eventId}`);
   }
 
-  getReviewsByEventId(eventId: string): Observable<Review[]> {
-    // Get all reviews for an event
-    return this._http.get<Review[]>(`/api/events/${eventId}/reviews`);
+  getReviewsByEventId(eventId: string) {
+    return this._http.get<{ reviews: Review[]; summary: IEventReviewSummary }>(
+      `/api/events/${eventId}/reviews`
+    );
   }
 
   addReviewToEvent(eventId: string, review: ReviewDTO): Observable<ReviewDTO> {
@@ -94,9 +94,10 @@ export class EventService {
     );
   }
 
-  deleteReview(reviewId: string): Observable<Object> {
-    // Delete one review of an event
-    return this._http.delete(`/api/events/reviews/${reviewId}`);
+  deleteReview(reviewId: string) {
+    return this._http.delete<IEventReviewSummary>(
+      `/api/events/reviews/${reviewId}`
+    );
   }
 
   deleteReviews(eventId: string): Observable<Object> {

@@ -466,15 +466,11 @@ export default class EventService {
     return review;
   }
 
-  public async getEventAttendeesById(
-    eventId: mongoose.Types._ObjectId | string
+  public async isUserAttendingEvent(
+    eventId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | string
   ) {
-    const eventDoc: IEvent = await this.getEventDocById(eventId);
-    const attendees: IAttendEvent[] = await Attend.find({
-      event: eventDoc._id
-    });
-
-    return attendees;
+    return await Attend.exists({ event: eventId, user: userId });
   }
 
   public async getAttendeeById(attendeeId: mongoose.Types._ObjectId | string) {
