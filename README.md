@@ -1,19 +1,39 @@
 # CSC309 Group Project - FanCrowd
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5. This project uses 2 external libraries called _Font Awesome_ and _ng-pick-datetime_.
+## Libraries Used
+| Dependency in package.json | Library Name |
+| -------------------------- | ------------ |
+| `"@fortawesome/fontawesome-free": "^5.15.2"` | Font Awesome  |
+| `"@shtian/ng-pick-datetime": "^11.0.0"` | ng-pick-datetime |
+| `"rxjs": "~6.6.0"` | RxJS  |
+| `"xng-breadcrumb": "^6.6.1"`  | xng-breadcrumb |
+| `"nodemailer": "^6.5.0"` | Nodemailer |
+| `"passport-jwt": "^4.0.0"` | Passport.JS |
 
+## App Link
+**FanCrowd Site:** 
 
 ## Running the App
+**Note:** You will need `Docker` and `MongoDB` installed correctly to run the backend.
+Clone the repository to your local machine, then follow the steps to run the backend and frontend:
 
-Clone the repository to your local machine, then follow the next 4 steps:
+### Backend
+**1.)** Open `Docker Desktop`, and then open a new terminal as administrator\
+**2.)** Run `docker-compose build`, it will say **Successfully built ...** on completion\
+**3.)** Run `docker-compose up`, it will say **Done seeding db** and **Server running on port 5000** on completion\
+**4.)** Open `MongoDB Compass` and connect to localhost `27018`
+**5.)** API can be accessed with `http://localhost:5000/api/` on Postman
 
-**1.)** Open a new terminal in the `team09` directory and run `npm install`\
-**2.)** Run `npm install ng-pick-datetime --save`\
+### Frontend
+**1.)** Open a new terminal in the `team09` directory administrator\ 
+**2.)** Run `npm install`\
 **3.)** Run `npm install -g @angular/cli`\
-**4.)** run `ng serve` or `npm start` and navigate to `http://localhost:4200/` in your preferred choice of a browser
+**4.)** run `ng serve` or `npm start`\ 
+**5.)** Navigate to `http://localhost:4200/` in your preferred choice of a browser
+
 
 ## Login Credentials
-
 **User 1**; username: `user1`, password: `user1`\
 **User 2**; username: `user2`, password: `user2`\
 **Admin**; username: `admin`, password: `admin`
@@ -24,7 +44,6 @@ The instructions to test as a user and admin are given below in the **Features**
 ## Features and How to Use
 #### Login/Signup
 This feature gives the user access to our web application. It has validation on all it's forms to ensure the data entered is correct. It will only allow the user to click login/signup if the data is valid. We have also included a reset password feature to allow the user to reset their password, it is a two step process where the user will first recieve a verification code on their email and they must enter that code only then will their new password become active.\
-**Note**: The reset password right now will not actually reset the password of any users this will be made complete in Phase 2 with the backend.
 
 When the user/admin navigates to the login page, they will be asked to give their credentials (given above). If their credentials are entered incorrectly, the form will display a message saying something is invalid. If the information is valid it will enable the login button and allow the user to login in which will take them to the profile page. When users signup they will also be redirected to the profile page. Admins cannot sign up, their accounts must be pre-populated or someone with access to the backend must create one for them.
 
@@ -71,8 +90,6 @@ When a user/admin is on the fandom page, they have the ability to join the fando
 Notice, for each fandom on it's page on the right side, it displays all the events for that fandom. By clicking an event in that box you can navigate to that event's detail page. 
 
 
-## Things to Keep in Mind
-
-When a new event, Fandom category, or fandom is added the app uses an id of 1000. The id is hardcoded so if you add multiple of these objects when deleting or updating, the app will choose the first one in the list that matches the id of 1000. This will be addressed in phase 2 when we build the backend because in the database we will only allow unique ids.
-
-Also please don't pay too much attention to the images or the content of the features. Some categories for example: Apple fandom in the Technology category has an image of a sports item, this is incorrect but it will be addressed in our final submission.
+## Routes
+| REST Method | Route Name | Route Link | Request Body | Request Response |
+| ------------| ---------- | ---------- | ------------ | ---------------- |
