@@ -219,13 +219,12 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 <td> 
   
   `POST`
-  <br>
-  <br>
-  Sends a reset password email to a user
 <td> 
   
   `/users/reset-password-email` 
-  
+  <br>
+  <br>
+  Sends a reset password email to a user
 </td>
 <td>
   
@@ -247,13 +246,13 @@ Status code of `200`
 <td> 
   
   `POST`
-  <br>
-  <br>
-  Sends a reset password email to a user
+  
 <td> 
   
   `/users/reset-password` 
-  
+  <br>
+  <br>
+  Resets user's password
 </td>
 <td>
   
@@ -281,7 +280,9 @@ Status code of `200`
 <td> 
   
   `/users/{username}` 
-  
+  <br>
+  <br>
+  Updates an user's profile information
 </td>
 <td>
   
@@ -328,6 +329,9 @@ Status code of `200`
   <br>
   <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  <br>
+  Toggles user's ban
 </td>
 <td>
   N/A
@@ -346,7 +350,9 @@ Status code of `200`
 <td> 
   
   `/users/{username}` 
-  
+  <br>
+  <br>
+  Deletes a user
 </td>
 <td> N/A </td>
 <td> 
@@ -364,7 +370,9 @@ Status code of `200`
 <td> 
   
   `/users` 
-  
+  <br>
+  <br>
+  Get all users
 </td> <td> N/A </td>
 <td> 
   
@@ -435,7 +443,9 @@ Status code of `200`
 <td> 
   
   `/users/{username}` 
-  
+  <br>
+  <br>
+  Get a user with username
 </td> 
 <td> 
   
@@ -469,7 +479,9 @@ Status code of `200`
 <td> 
   
   `/users/{username}/events` 
-  
+  <br>
+  <br>
+  Get a user's events
 </td> 
 <td> 
   
@@ -520,7 +532,9 @@ Status code of `200`
 <td> 
   
   `/users/{username}/fandoms` 
-  
+  <br>
+  <br>
+  Get a user's fandoms
 </td> 
 <td> 
   
@@ -607,6 +621,9 @@ Status code of `200`
   <br>
   <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  <br>
+  Add a category
 </td>
 <td>
   
@@ -638,8 +655,66 @@ Status code of `200`
 </td> 
 <td> 
   
+  `/fandoms/{fandomId}/join` 
+  <br>
+  <br>
+  Join a fandom
+</td>
+<td>
+  
+N/A
+
+</td>
+<td>
+  
+Status code of `200`
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms/likes` 
+  <br>
+  <br>
+  Toggles like for a post or a comment or both
+</td>
+<td>
+  
+```json
+{
+    "fandomPost": "607051e3f4587500516bf1c3",
+    "fandomComment": "607051e3f4587500516bf1c6",
+    "isLike": true
+}
+```
+"fandomPost" is a post id which can be obtained from the database.
+"fandomComment" is a comment id which can be obtained from the database.
+Note: You need either one or the other
+</td>
+<td>
+  
+Status code of `200`
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
   `/fandoms` 
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  <br>
+  Add a fandom
 </td>
 <td>
   
@@ -676,7 +751,11 @@ Status code of `200`
   
   `/fandoms/categories/{categoryId}` 
   <br>
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
+  <br>
+  <br>
+  Update a category
 </td>
 <td>
   
@@ -703,13 +782,54 @@ Status code of `200`
 <tr>
 <td> 
   
+  `PATCH`
+
+<td> 
+  
+  `/fandoms/{fandomId}` 
+  <br>
+  <br>
+  Update a fandom
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing PATCH Fandom",
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "category": "607051e3f4587500516bf193"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "_id": "607051e3f4587500516bf1a2",
+    "name": "testing patch fandom",
+    "category": "607051e3f4587500516bf194",
+    "createdAt": "2021-04-09T13:08:51.482Z"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
   `DELETE`
 
 <td> 
   
   `/fandoms/categories/{categoryId}` 
   <br>
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
+  <br>
+  <br>
+  Delete a category
 </td>
 <td> N/A </td>
 <td> 
@@ -726,7 +846,9 @@ Status code of `200`
 <td> 
   
   `/fandoms/{fandomId}` 
-  
+  <br>
+  <br>
+  Delete a fandom
 </td>
 <td> N/A </td>
 <td> 
@@ -744,7 +866,9 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories` 
-  
+  <br>
+  <br>
+  Get all categories
 </td>
 <td> N/A </td>
 <td> 
@@ -799,7 +923,9 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories/{categoryName}` 
-  
+  <br>
+  <br>
+  Get all fandoms of a category
 </td> 
 <td> 
   
@@ -847,6 +973,31 @@ Status code of `200`
         "name": "sports"
     }
 }
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/{fandomId}/hasJoined` 
+  <br>
+  <br>
+  Get if user has joined fandom
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+true
  ```
 </td>
 </tr>
