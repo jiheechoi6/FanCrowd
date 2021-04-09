@@ -30,11 +30,11 @@ export class UserService {
   }
 
   deleteUserByUsername(username: string) {
-    this._http.delete(`/api/users/${username}`).subscribe();
+    return this._http.delete(`/api/users/${username}`);
   }
 
   banUserByUsername(username: string) {
-    this._http.delete(`/api/users/${username}`).subscribe();
+    return this._http.patch(`/api/users/${username}/update-ban`, {});
   }
 
   updateUserByUsername(

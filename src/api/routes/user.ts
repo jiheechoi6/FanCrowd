@@ -102,7 +102,6 @@ export default (app: Router) => {
       Reflect.deleteProperty(user, "password");
       Reflect.deleteProperty(user, "resetPasswordToken");
       Reflect.deleteProperty(user, "role");
-      Reflect.deleteProperty(user, "isBanned");
       res.status(200).send(user);
     } catch (err) {
       return next(err);
@@ -137,15 +136,12 @@ export default (app: Router) => {
   /**
    * path: /api/users/:username/update-ban
    * method: PATCH
-   * body:
-   * {
-   *  isBanned: boolean
-   * }
+   * body: None
    * params:
    * {
    *  username: string
    * }
-   * description: bans or unbans a user
+   * description: toggles user's ban
    */
   route.patch(
     "/:username/update-ban",
@@ -154,9 +150,8 @@ export default (app: Router) => {
     async (req, res, next) => {
       try {
         const username = req.params.username;
-        const isBanned = req.body.isBanned;
         const userService = new UserService();
-        await userService.updateUserBan(username, isBanned, req.user!);
+        await userService.toggleUserBan(username);
         res.status(200).send();
       } catch (err) {
         return next(err);

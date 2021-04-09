@@ -136,11 +136,7 @@ export default class UserService {
     return user;
   }
 
-  public async updateUserBan(
-    username: string,
-    isBanned: boolean,
-    reqUser: IRequestUser
-  ) {
+  public async toggleUserBan(username: string) {
     const userDoc = await this.getUserByUsername(username);
 
     if (userDoc.role === "admin") {
@@ -149,7 +145,7 @@ export default class UserService {
         "Cannot ban or unban other admins"
       );
     }
-    userDoc.isBanned = isBanned || userDoc.isBanned;
+    userDoc.isBanned = !userDoc.isBanned;
     await userDoc.save();
   }
 

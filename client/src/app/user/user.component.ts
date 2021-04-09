@@ -24,6 +24,8 @@ export class UserComponent implements OnInit, OnDestroy {
   events: IEventSummary[] = [];
   fandoms: UserFandomRes[] = [];
 
+  isUserBanned = false;
+
   constructor(
     private _userService: UserService,
     private _activatedRoute: ActivatedRoute,
@@ -66,14 +68,18 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   deleteUser() {
-    this._userService.deleteUserByUsername(this.user?.username || '');
-    this._authService.logOut();
-    this._router.navigate(['../']);
+    this._userService
+      .deleteUserByUsername(this.user!.username)
+      .subscribe(() => {
+        this._authService.logOut();
+        this._router.navigate(['/login']);
+      });
   }
 
-  banUser() {
-    this._userService.banUserByUsername(this.user?.username || '');
-    this._router.navigate(['../']);
+  toggleUserBan() {
+    this._userService
+      .banUserByUsername(this.user!.username)
+      .subscribe(() => (this.user!.isBanned = !this.user!.isBanned));
   }
 
   openEditAccountDialog() {
@@ -115,9 +121,11 @@ export class UserComponent implements OnInit, OnDestroy {
   openBanUserAccountDialog() {
     this._dialog.open(DeleteDialogComponent, {
       data: {
-        title: 'Ban UserProfileDTO Confirmation',
-        details: `Are you sure you want to ban ${this.user?.username}?`,
-        onConfirmCb: this.banUser.bind(this),
+        title: `${this.user!.isBanned ? 'Unban' : 'Ban'} User Confirmation`,
+        details: `Are you sure you want to ${
+          this.user!.isBanned ? 'unban' : 'ban'
+        } ${this.user!.username}?`,
+        onConfirmCb: this.toggleUserBan.bind(this),
       },
       width: '360px',
       height: '180px',

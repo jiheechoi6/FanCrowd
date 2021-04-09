@@ -8,6 +8,7 @@ interface UserProfileDTO {
   bio: string;
   profileURL: string;
   role: string;
+  isBanned: boolean;
 }
 
 export interface UserSearchDTO {
