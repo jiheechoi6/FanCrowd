@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IEventSummary } from 'src/app/shared/models/event-summar';
+import { IEventSummary } from 'src/app/shared/models/event-summary';
 
 interface DialogData {
   events: IEventSummary[];

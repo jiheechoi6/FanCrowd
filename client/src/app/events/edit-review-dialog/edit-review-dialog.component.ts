@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { EventService } from 'src/app/core/services/event.service';
 import ReviewDTO from 'src/app/shared/models/review-dto';
 
@@ -10,6 +11,9 @@ import ReviewDTO from 'src/app/shared/models/review-dto';
 })
 export class EditReviewDialogComponent implements OnInit {
   ratings: number[] = [1, 2, 3, 4, 5];
+
+  isUpdating = false;
+  errorMsg: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<EditReviewDialogComponent>,
@@ -22,11 +26,14 @@ export class EditReviewDialogComponent implements OnInit {
 
   onUpdateReview() {
     if (this.data.review) {
+      this.isUpdating = true;
       this._eventService
         .updateReviewById(this.data.reviewId, this.data.review)
-        .subscribe((review) => {
-          this.dialogRef.close(review);
-        });
+        .pipe(finalize(() => (this.isUpdating = false)))
+        .subscribe(
+          (review) => this.dialogRef.close(review),
+          (err) => (this.errorMsg = err.error.message)
+        );
     }
   }
 }

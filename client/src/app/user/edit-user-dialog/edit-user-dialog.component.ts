@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import { UserService } from 'src/app/core/services/user.service';
 import UserProfileDTO from 'src/app/shared/models/user-dto';
 
@@ -10,6 +11,9 @@ import UserProfileDTO from 'src/app/shared/models/user-dto';
 })
 export class EditUserDialogComponent implements OnInit {
   usernameBeforeUpdate: string;
+
+  isUpdating = false;
+  errorMsg: string | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
@@ -22,7 +26,13 @@ export class EditUserDialogComponent implements OnInit {
   ngOnInit() {}
 
   onUpdateUser() {
-    this.userService.updateUserByUsername(this.user, this.usernameBeforeUpdate);
-    this.dialogRef.close(this.user);
+    this.isUpdating = true;
+    this.userService
+      .updateUserById(this.user, this.user._id!)
+      .pipe(finalize(() => (this.isUpdating = false)))
+      .subscribe(
+        (updatedUser) => this.dialogRef.close(updatedUser),
+        (err) => (this.errorMsg = err.error.message)
+      );
   }
 }

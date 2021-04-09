@@ -39,7 +39,8 @@ const users: IUser[] = [
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "user",
-    username: "user1"
+    username: "user1",
+    isBanned: false
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -53,7 +54,8 @@ const users: IUser[] = [
     profileURL:
       "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
     role: "user",
-    username: "user2"
+    username: "user2",
+    isBanned: false
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -67,7 +69,8 @@ const users: IUser[] = [
     profileURL:
       "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
     role: "admin",
-    username: "admin"
+    username: "admin",
+    isBanned: false
   }
 ];
 
@@ -418,8 +421,8 @@ const eventReviews: IEventReview[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
-    event: events[0],
-    postedBy: users[0],
+    event: events[0]._id,
+    postedBy: users[0]._id,
     rating: 4,
     title: "Great Event",
     createdAt: new Date(2021, 1, 15),
@@ -429,8 +432,8 @@ const eventReviews: IEventReview[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
-    event: events[0],
-    postedBy: users[1],
+    event: events[0]._id,
+    postedBy: users[1]._id,
     rating: 5,
     title: "Amazing, Lot's of fun",
     createdAt: new Date(2021, 1, 15),
@@ -440,8 +443,8 @@ const eventReviews: IEventReview[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
-    event: events[1],
-    postedBy: users[0],
+    event: events[1]._id,
+    postedBy: users[0]._id,
     rating: 5,
     title: "Cool tech!",
     createdAt: new Date(2021, 1, 15),
@@ -451,8 +454,8 @@ const eventReviews: IEventReview[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
-    event: events[1],
-    postedBy: users[1],
+    event: events[1]._id,
+    postedBy: users[1]._id,
     rating: 3,
     title: "Nice things to see",
     createdAt: new Date(2021, 1, 15),
@@ -462,8 +465,8 @@ const eventReviews: IEventReview[] = [
     _id: new mongoose.Types.ObjectId(),
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
-    event: events[3],
-    postedBy: users[1],
+    event: events[3]._id,
+    postedBy: users[1]._id,
     rating: 5,
     title: "Great Release Party!!!",
     createdAt: new Date(2021, 1, 15),

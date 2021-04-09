@@ -13,6 +13,14 @@ export interface IUser {
   city: string;
   country: string;
   resetPasswordToken?: IResetPasswordToken;
+  isBanned: boolean;
+}
+
+export interface ISearchUser {
+  _id: mongoose.Types._ObjectId;
+  fullName: string;
+  username: string;
+  profileURL: string;
 }
 
 export interface IRequestUser {
@@ -48,7 +56,7 @@ export interface IAttendEventFilter {
 
 export interface INewAttendEventDTO {
   user: mongoose.Types._ObjectId;
-  event: mongoose.Types._ObjectId;
+  event: mongoose.Types._ObjectId | string;
 }
 
 export interface IFandomMember {
@@ -89,6 +97,7 @@ export interface IUpdateUserProfileDTO {
   profileURL: string;
   city: string;
   country: string;
+  username: string;
 }
 
 export interface IResetPasswordEmailDTO {

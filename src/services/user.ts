@@ -1,12 +1,14 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import {
   INewUserInputDTO,
   IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO,
   IRequestUser,
-  IAttendEventFilter
+  IAttendEventFilter,
+  ISearchUser
 } from "../interfaces/IUser";
 import User from "../models/user";
 import FandomMember from "../models/fandom-member";
@@ -16,9 +18,11 @@ import EmailService from "./email";
 import config from "../config";
 import Attend from "../models/attend";
 import { IEventSummary } from "../interfaces/IEvent";
+import GlobalService from "./global";
 
 export default class UserService {
   private static _emailService = new EmailService();
+  private static _globalService = new GlobalService();
 
   public async SignUp(userInputDTO: INewUserInputDTO) {
     const usernameCheck = await User.findOne({
@@ -48,9 +52,7 @@ export default class UserService {
       profileURL: userRecord.profileURL
     };
 
-    // automatically log in user that signed up
     const token = jwt.sign(user, config.jwtSecret);
-
     return { user, token: "JWT " + token };
   }
 
@@ -65,6 +67,13 @@ export default class UserService {
 
     if (!isPasswordValid) {
       throw new ErrorService("UnauthorizedError", "Password is incorrect");
+    }
+
+    if (userRecord.isBanned) {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "An admin has banned your account. You can only login after being unbanned"
+      );
     }
 
     const user: IRequestUser = {
@@ -82,6 +91,13 @@ export default class UserService {
     };
   }
 
+  public async getAllUsers() {
+    const users: ISearchUser[] = await User.find({}).select(
+      "fullName username profileURL"
+    );
+    return users;
+  }
+
   public async getUserByUsername(username: string) {
     const user = await User.findOne({ username: username });
     if (!user) {
@@ -90,20 +106,55 @@ export default class UserService {
         `User with username ${username} does not exist`
       );
     }
+    return user;
+  }
+
+  public async deleteUserByUsername(username: string, reqUser: IRequestUser) {
+    const user = await this.getUserByUsername(username);
+    UserService._globalService.hasPermission(
+      user._id,
+      reqUser,
+      `Only the creator or an admin may delete user with username ${username}`
+    );
+    await user.delete();
+  }
+
+  public async getUserById(userId: mongoose.Types._ObjectId | string) {
+    UserService._globalService.checkValidObjectId(
+      userId,
+      `User with id ${userId} does not exist`
+    );
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new ErrorService(
+        "NotFoundError",
+        `User with id ${userId} does not exist`
+      );
+    }
 
     return user;
   }
 
-  public async deleteUserByUsername(username: string) {
-    const user = await this.getUserByUsername(username);
-    await user.delete();
+  public async toggleUserBan(username: string) {
+    const userDoc = await this.getUserByUsername(username);
+
+    if (userDoc.role === "admin") {
+      throw new ErrorService(
+        "UnauthorizedError",
+        "Cannot ban or unban other admins"
+      );
+    }
+    userDoc.isBanned = !userDoc.isBanned;
+    await userDoc.save();
   }
 
   public async updateUser(
-    username: string,
-    updatedUser: IUpdateUserProfileDTO
+    userId: mongoose.Types._ObjectId | string,
+    updatedUser: IUpdateUserProfileDTO,
+    reqUser: IRequestUser
   ) {
-    const userDoc = await this.getUserByUsername(username);
+    const userDoc = await this.getUserById(userId);
 
     userDoc.fullName = updatedUser.fullName || userDoc.fullName;
     userDoc.email = updatedUser.email || userDoc.email;
@@ -111,10 +162,20 @@ export default class UserService {
     userDoc.profileURL = updatedUser.profileURL || userDoc.profileURL;
     userDoc.city = updatedUser.city || userDoc.city;
     userDoc.country = updatedUser.country || userDoc.country;
+    userDoc.username = updatedUser.username || userDoc.username;
+
+    UserService._globalService.hasPermission(
+      userDoc._id,
+      reqUser,
+      `Only the creator or an admin may update the user with id ${userId}`
+    );
 
     const updatedUserDoc = await userDoc.save();
     const user = updatedUserDoc.toObject();
-
+    Reflect.deleteProperty(user, "password");
+    Reflect.deleteProperty(user, "resetPasswordToken");
+    Reflect.deleteProperty(user, "role");
+    Reflect.deleteProperty(user, "isBanned");
     return user;
   }
 

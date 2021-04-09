@@ -8,11 +8,12 @@
         </button>
     </div>
 
-    <div *ngIf="!events.length" class="no-events-message">
+    <div *ngIf="!events.length && !isLoadingEvents" class="no-events-message">
         <h1>It seems there are no events. Create one using the button above!</h1>
     </div>
 
-    <section *ngIf="events.length">
+    <section class="events-container" [class.events-loading]="isLoadingEvents">
+        <app-spinner *ngIf="isLoadingEvents"></app-spinner>
         <mat-card class="event-card rounded-corners box-shadow" *ngFor="let event of events">
             <mat-card-title>
                 <span>{{event.name}}</span>
@@ -34,7 +35,7 @@
                     </p>
                 </article>
                 <p class="created-by">Created By: <a
-                        [routerLink]="['/users', event.postedBy.username]">{{event.postedBy.username | titlecase}}</a>
+                        [routerLink]="['/users', event.postedBy!.username]">{{event.postedBy!.username | titlecase}}</a>
                 </p>
                 <p>
                     Fandom: <a
@@ -50,8 +51,8 @@
             </mat-card-content>
         </mat-card>
 
-        <mat-paginator class="paginator" [length]="allEvents.length" [pageSize]="pageSize" [pageIndex]="pageIndex"
-            [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
+        <mat-paginator *ngIf="events.length" class="paginator" [length]="allEvents.length" [pageSize]="pageSize"
+            [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="selectPage($event)" color="accent">
         </mat-paginator>
     </section>
 </app-layout>
