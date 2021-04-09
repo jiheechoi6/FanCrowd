@@ -22,7 +22,7 @@ Clone the repository to your local machine, then follow the steps to run the bac
 **1.)** Open `Docker Desktop`, and then open a new terminal in the `team09/src` directory as administrator\
 **2.)** Run `docker-compose build`, it will say `Successfully built ...` on completion\
 **3.)** Run `docker-compose up`, it will say `Done seeding db` and `Server running on port 5000` on completion\
-**4.)** Open `MongoDB Compass` and connect to localhost `27018`
+**4.)** Open `MongoDB Compass` and connect to localhost `27018`\
 **5.)** API can be accessed with `http://localhost:5000/api/` on Postman
 
 ### Frontend
@@ -38,7 +38,7 @@ Clone the repository to your local machine, then follow the steps to run the bac
 **User 2**; username: `user2`, password: `user2`\
 **Admin**; username: `admin`, password: `admin`
 
-The instructions to test as a user and admin are given below in the **Features** section. It explains what happens if you click on certain buttons or items and how some features differ for users and admins. Some things may not have any instructions as we believe those are trivial for example; Create/Delete buttons, or how to navigate the naveigation bar.
+The instructions to test as a user and admin are given below in the **Features** section. It explains what happens if you click on certain buttons or items and how some features differ for users and admins. Some things may not have any instructions as we believe those are trivial for example; Create/Delete buttons, or how to navigate the navigation bar.
 
 
 ## Features and How to Use
@@ -94,6 +94,7 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 **API**: `http://localhost:5000/api/`\
 **Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin endpoint of the form `JWT {token}`.
 
+### AUTH Endpoints
 <table>
 <tr>
 <td> Method </td> <td> Name </td> <td> Route </td> <td> Body </td> <td> Response </td>
@@ -114,8 +115,8 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
 ```json
 {
-    "username": "user1",
-    "password": "user1"
+    "username": string,
+    "password": string
 }
 ```
 
@@ -124,12 +125,12 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
 ```json
 {
-    "token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZmZWEwOGZmOTFhZTAwM2I1N2NlMjYiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9tb2NhaC5vcmcvdXBsb2Fkcy9wb3N0cy81NDIwNjQxLW1vb24tbmlnaHQtYmxhY2stc3BhY2UtaGFsbG93ZWVuLXN0YXItc3VwZXJtb29uLW5hdHVyZS1zdGVybmUtc3VwZXItbW9vbi1nYWxheHktdW5pdmVyc2Utc2t5LW5pZ2h0aW1lLWNyZWF0aXZlLWNvbW1vbnMtaW1hZ2VzLmpwZyIsImlhdCI6MTYxNzk0ODExMH0.fjCFHyV8-tyKdtc1M96PLYXo7fr4iDPbBMaljyOsqjo",
+    "token": token,
     "user": {
-        "_id": "606fea08ff91ae003b57ce26",
-        "role": "user",
-        "username": "user1",
-        "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
+        "_id": ObjectId as string,
+        "role": string,
+        "username": string,
+        "profileURL": string
     }
 }
 ```
@@ -151,10 +152,10 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
  ```json
  {
-   "_id": "606fea08ff91ae003b57ce26",
-   "role": "user",
-   "username": "user1",
-   "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
+   "_id": ObjectId as string,
+   "role": string,
+   "username": string,
+   "profileURL": string
  }
  ```
 </td>
