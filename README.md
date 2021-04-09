@@ -617,44 +617,6 @@ Status code of `200`
 </td> 
 <td> 
   
-  `/fandoms/categories` 
-  <br>
-  <br>
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
-  <br>
-  <br>
-  Add a category
-</td>
-<td>
-  
-```json
-{
-    "name": "Testing_POST_Fandom_Category",
-    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg"
-}
-```
-
-</td>
-<td>
-  
-```json
-{
-    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
-    "_id": "60706e79f4587500516bf234",
-    "name": "testing post category"
-}
-```
-
-</td>
-</tr>
-<tr>
-<td> 
-  
-  `POST`
-  
-</td> 
-<td> 
-  
   `/fandoms/{fandomId}/join` 
   <br>
   <br>
@@ -749,43 +711,6 @@ Status code of `200`
 
 <td> 
   
-  `/fandoms/categories/{categoryId}` 
-  <br>
-  <br>
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
-  <br>
-  <br>
-  Update a category
-</td>
-<td>
-  
-```json
-{
-    "name": "Testing Patch Category",
-    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg"
-}
-```
-
-</td>
-<td>
-  
-```json
-{
-    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg",
-    "_id": "607051e3f4587500516bf193",
-    "name": "testing patch category"
-}
-```
-
-</td>
-</tr>
-<tr>
-<td> 
-  
-  `PATCH`
-
-<td> 
-  
   `/fandoms/{fandomId}` 
   <br>
   <br>
@@ -823,28 +748,6 @@ Status code of `200`
 
 <td> 
   
-  `/fandoms/categories/{categoryId}` 
-  <br>
-  <br>
-  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
-  <br>
-  <br>
-  Delete a category
-</td>
-<td> N/A </td>
-<td> 
-  
-  Status code of `200` 
-  
-</td>
-</tr>
-<tr>
-<td> 
-  
-  `DELETE`
-
-<td> 
-  
   `/fandoms/{fandomId}` 
   <br>
   <br>
@@ -855,63 +758,6 @@ Status code of `200`
   
   Status code of `200` 
   
-</td>
-</tr>
-<tr>
-<td> 
-  
-  `GET`
-  
-</td>
-<td> 
-  
-  `/fandoms/categories` 
-  <br>
-  <br>
-  Get all categories
-</td>
-<td> N/A </td>
-<td> 
-  
- ```json
- [
-    {
-        "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
-        "_id": "607051e3f4587500516bf194",
-        "name": "books"
-    },
-    {
-        "backgroundURL": "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
-        "_id": "607051e3f4587500516bf195",
-        "name": "shows"
-    },
-    {
-        "backgroundURL": "https://cdn.wallpapersafari.com/28/72/eMnp5F.jpg",
-        "_id": "607051e3f4587500516bf196",
-        "name": "anime"
-    },
-    {
-        "backgroundURL": "https://wallpaperaccess.com/full/242347.jpg",
-        "_id": "607051e3f4587500516bf197",
-        "name": "games"
-    },
-    {
-        "backgroundURL": "https://wallpaperaccess.com/full/552032.jpg",
-        "_id": "607051e3f4587500516bf198",
-        "name": "sports"
-    },
-    {
-        "backgroundURL": "https://wallpaperaccess.com/full/249743.png",
-        "_id": "607051e3f4587500516bf199",
-        "name": "technology"
-    },
-    {
-        "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
-        "_id": "60706e79f4587500516bf234",
-        "name": "testing post category"
-    }
-]
- ```
 </td>
 </tr>
 <tr>
@@ -1003,6 +849,166 @@ true
 </tr>
 </table>
 
+### FANDOM Category Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms/categories` 
+  <br>
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+  <br>
+  <br>
+  Add a category
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing_POST_Fandom_Category",
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "_id": "60706e79f4587500516bf234",
+    "name": "testing post category"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/fandoms/categories/{categoryId}` 
+  <br>
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
+  <br>
+  <br>
+  Update a category
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing Patch Category",
+    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg",
+    "_id": "607051e3f4587500516bf193",
+    "name": "testing patch category"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/categories/{categoryId}` 
+  <br>
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header.
+  <br>
+  <br>
+  Delete a category
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/categories` 
+  <br>
+  <br>
+  Get all categories
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+ [
+    {
+        "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+        "_id": "607051e3f4587500516bf194",
+        "name": "books"
+    },
+    {
+        "backgroundURL": "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
+        "_id": "607051e3f4587500516bf195",
+        "name": "shows"
+    },
+    {
+        "backgroundURL": "https://cdn.wallpapersafari.com/28/72/eMnp5F.jpg",
+        "_id": "607051e3f4587500516bf196",
+        "name": "anime"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/242347.jpg",
+        "_id": "607051e3f4587500516bf197",
+        "name": "games"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/552032.jpg",
+        "_id": "607051e3f4587500516bf198",
+        "name": "sports"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/249743.png",
+        "_id": "607051e3f4587500516bf199",
+        "name": "technology"
+    },
+    {
+        "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+        "_id": "60706e79f4587500516bf234",
+        "name": "testing post category"
+    }
+]
+ ```
+</td>
+</tr>
+</table>
 
 ### EVENTS Endpoints
 <table>
