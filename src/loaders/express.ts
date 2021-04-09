@@ -27,9 +27,11 @@ export default async ({ app }: { app: express.Application }) => {
   });
 
   if (config.env === "production") {
-    app.use(express.static(path.join(__dirname, "client/dist")));
+    app.use(express.static(path.join(__dirname, "client/dist/csc309-project")));
     app.get("*", (req, res) =>
-      res.sendFile(path.join(__dirname, "client/dist/index.html"))
+      res.sendFile(
+        path.join(__dirname, "client/dist/csc309-project/index.html")
+      )
     );
   }
 
