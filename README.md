@@ -92,34 +92,11 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 ## API Routes
 **API**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin endpoint of the form `JWT {tokenValue}`.
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin endpoint of the form `JWT {token}`.
 
 <table>
 <tr>
 <td> Method </td> <td> Name </td> <td> Route </td> <td> Body </td> <td> Response </td>
-</tr>
-<tr>
-<td> 
-  
-  `GET`
-  
-</td> <td> Current User </td> 
-<td> 
-  
-  `/auth/currentUser` 
-  
-</td> <td> N/A </td>
-<td> 
-  
- ```json
- {
-   "_id": "606fea08ff91ae003b57ce26",
-   "role": "user",
-   "username": "user1",
-   "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
- }
- ```
-</td>
 </tr>
 <tr>
 <td> 
@@ -157,6 +134,29 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 }
 ```
 
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td> <td> Current User </td> 
+<td> 
+  
+  `/auth/currentUser` 
+  
+</td> <td> N/A </td>
+<td> 
+  
+ ```json
+ {
+   "_id": "606fea08ff91ae003b57ce26",
+   "role": "user",
+   "username": "user1",
+   "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
+ }
+ ```
 </td>
 </tr>
 <tr>
