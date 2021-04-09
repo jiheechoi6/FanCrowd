@@ -66,8 +66,7 @@ const users: IUser[] = [
     email: "jihee@gmail.com",
     fullName: "Jihee",
     password: "admin",
-    profileURL:
-      "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
+    profileURL: "https://wallpaperstock.net/wallpapers/thumbs1/22313wide.jpg",
     role: "admin",
     username: "admin",
     isBanned: false
