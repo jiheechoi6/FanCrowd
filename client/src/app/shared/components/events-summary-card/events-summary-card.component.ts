@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import Event from '../../models/event';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IEventSummary } from '../../models/event-summary';
 
 @Component({
   selector: 'app-events-summary-card',
@@ -7,9 +7,14 @@ import Event from '../../models/event';
   styleUrls: ['./events-summary-card.component.sass'],
 })
 export class EventsSummaryCardComponent implements OnInit {
-  @Input() events: Event[] = [];
+  @Input() events: IEventSummary[] = [];
+  @Output() closeCalenderDialog = new EventEmitter<boolean>();
 
   constructor() {}
 
   ngOnInit() {}
+
+  closeDialog() {
+    this.closeCalenderDialog.emit(true);
+  }
 }

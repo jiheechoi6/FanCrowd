@@ -1,90 +1,100 @@
 <app-layout>
-    <app-spinner *ngIf="!user"></app-spinner>
-    <ng-container *ngIf="user">
-        <header class="page-title">Profile</header>
-        <div class="profile-info-container" *ngIf="user">
-            <section class="profile-img-info-container">
-                <div class="profile-img-wrapper">
-                    <img class="profile-img" src="{{user.profileURL}}" alt="Profile Picture">
-                </div>
-                <mat-card class="user-info rounded-corners box-shadow">
-                    <mat-card-content>
-                        <p class="user-info-item"><span class="user-info-label">Username
-                            </span><span>{{user?.username}}</span></p>
-                        <p class="user-info-item"><span class="user-info-label">Full Name
-                            </span><span>{{user?.fullName | titlecase}}</span></p>
-                        <p class="user-info-item"><span class="user-info-label">E-mail
-                            </span><span>{{user?.email}}</span>
-                        </p>
-                        <p class="user-info-item"><span class="user-info-label">Country
-                            </span><span>{{user?.country}}</span></p>
-                        <p class="user-info-item"><span class="user-info-label">City </span><span>{{user?.city}}</span>
-                        </p>
-                        <div class="profile-action-button-container">
-                            <button mat-flat-button color="primary" *ngIf="loggedInUser?.username === user?.username"
-                                (click)="openEditAccountDialog()">
-                                <span>
-                                    Edit Info <i class="fas fa-user-edit"></i>
-                                </span>
-                            </button>
-                            <button mat-flat-button color="warn" *ngIf="loggedInUser?.username === user?.username"
-                                (click)="openDeleteAccountDialog()">
-                                <span>
-                                    Delete Account <i class="fas fa-user-times"></i>
-                                </span>
-                            </button>
-                            <button mat-flat-button color="warn" *ngIf="loggedInUser?.role === 'admin'"
-                                (click)="openBanUserAccountDialog()">
-                                <span>
-                                    Ban User <i class="fas fa-ban"></i>
-                                </span>
-                            </button>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </section>
-            <section class="bio-fandom-container">
-                <mat-card class="bio rounded-corners box-shadow">
-                    <mat-card-title>Bio<p class="bio-edit-button" *ngIf="isSelf()" (click)="openEditBioDialog()"> edit
-                        </p>
-                    </mat-card-title>
-                    <p *ngIf="isBioEmpty()&&isSelf()" class="bio-empty-message">Add a Bio to describe yourself!</p>
-                    <p *ngIf="isBioEmpty()&&!isSelf()" class="bio-empty-message">No bio added</p>
-                    <mat-card-content>
-                        <p>{{user?.bio}}</p>
-                    </mat-card-content>
-                </mat-card>
-                <mat-card class="fandom-container rounded-corners box-shadow">
-                    <mat-card-title>Fandoms</mat-card-title>
-                    <p *ngIf="isFandomEmpty()&&isSelf()" class="empty-message">You don't have any fandoms yet</p>
-                    <p *ngIf="isFandomEmpty()&&!isSelf()" class="empty-message">No fandoms added</p>
-                    <section class="fandoms">
-                        <mat-card-content>
-                            <p *ngIf="!isFandomEmpty()" class="fandom-header"><span>Name</span><span>Activity
-                                    Level</span></p>
-                            <mat-card class="fandom-item-container"
-                                [routerLink]="['/fandoms', fandom.category.name | lowercase, fandom.name | spacesToHyphen | lowercase]"
-                                *ngFor="let fandom of fandoms">
-                                <section class="fandom-item">
-                                    <div class="fandom-info-container">
-                                        <span>{{fandom.name | titlecase}}</span>
-                                        <span class="category">{{fandom.category.name | titlecase}}</span>
-                                    </div>
-                                    <!-- <span>{{fandom.activityLevel}}</span> -->
-                                </section>
-                            </mat-card>
-                        </mat-card-content>
-                    </section>
-                </mat-card>
-            </section>
-            <mat-card class="events-container rounded-corners box-shadow">
-                <mat-card-title>Events Attending</mat-card-title>
-                <p *ngIf="isEventsEmpty()&&isSelf()" class="empty-message">You didn't sign up for any events yet</p>
-                <p *ngIf="isEventsEmpty()&&!isSelf()" class="empty-message">No events to display</p>
-                <section class="events">
-                    <app-events-summary-card [events]="events"></app-events-summary-card>
-                </section>
-            </mat-card>
+  <app-spinner *ngIf="!user"></app-spinner>
+  <ng-container *ngIf="user">
+    <header class="page-title">Profile</header>
+    <div class="profile-info-container" *ngIf="user">
+      <section class="profile-img-info-container">
+        <div class="profile-img-container">
+          <div class="profile-img-wrapper">
+            <img class="profile-img" src="{{ user.profileURL }}" alt="Profile Picture" />
+          </div>
         </div>
-    </ng-container>
+        <mat-card class="user-info rounded-corners box-shadow">
+          <mat-card-content>
+            <p class="user-info-item">
+              <span class="user-info-label">Username </span><span>{{ user?.username }}</span>
+            </p>
+            <p class="user-info-item">
+              <span class="user-info-label">Full Name </span><span>{{ user?.fullName | titlecase }}</span>
+            </p>
+            <p class="user-info-item">
+              <span class="user-info-label">E-mail </span><span>{{ user?.email }}</span>
+            </p>
+            <p class="user-info-item">
+              <span class="user-info-label">Country </span><span>{{ user?.country }}</span>
+            </p>
+            <p class="user-info-item">
+              <span class="user-info-label">City </span><span>{{ user?.city }}</span>
+            </p>
+            <div class="profile-action-button-container">
+              <button mat-flat-button color="primary" *ngIf="loggedInUser?.username === user?.username"
+                (click)="openEditAccountDialog()">
+                <span> Edit Info <i class="fas fa-user-edit"></i> </span>
+              </button>
+              <button mat-flat-button color="warn" *ngIf="loggedInUser?.username === user?.username"
+                (click)="openDeleteAccountDialog()">
+                <span> Delete Account <i class="fas fa-user-times"></i> </span>
+              </button>
+              <button mat-flat-button color="warn"
+                *ngIf="loggedInUser?.role === 'admin' && loggedInUser?._id !== user?._id"
+                (click)="openBanUserAccountDialog()">
+                <span> {{this.user!.isBanned ? "Unban" : "Ban"}} User <i class="fas fa-ban"></i> </span>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </section>
+      <section class="bio-fandom-container">
+        <mat-card class="bio rounded-corners box-shadow">
+          <mat-card-title>Bio</mat-card-title>
+          <p *ngIf="isBioEmpty() && isSelf()" class="bio-empty-message">
+            Add a Bio to describe yourself!
+          </p>
+          <p *ngIf="isBioEmpty() && !isSelf()" class="bio-empty-message">
+            No bio added
+          </p>
+          <mat-card-content>
+            <p>{{ user?.bio }}</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="fandom-container rounded-corners box-shadow">
+          <mat-card-title>Fandoms</mat-card-title>
+          <p *ngIf="isFandomEmpty() && isSelf()" class="empty-message">
+            You don't have any fandoms yet
+          </p>
+          <p *ngIf="isFandomEmpty() && !isSelf()" class="empty-message">
+            No fandoms added
+          </p>
+          <section class="fandoms">
+            <mat-card-content>
+              <mat-card class="fandom-item-container" [routerLink]="[
+                  '/fandoms',
+                  fandom.category.name | lowercase,
+                  fandom.name | spacesToHyphen | lowercase
+                ]" *ngFor="let fandom of fandoms">
+                <section class="fandom-item">
+                  <div class="fandom-info-container">
+                    <span>{{ ((fandom.name.length > 15) ? (fandom.name | slice : 0 : 15) + '...': (fandom.name))  | titlecase }}</span>
+                  </div>
+                  <span class="category">{{fandom.category.name | titlecase}}</span>
+                </section>
+              </mat-card>
+            </mat-card-content>
+          </section>
+        </mat-card>
+      </section>
+      <mat-card class="events-container rounded-corners box-shadow">
+        <mat-card-title>Events Attending</mat-card-title>
+        <p *ngIf="isEventsEmpty() && isSelf()" class="empty-message">
+          You didn't sign up for any events yet
+        </p>
+        <p *ngIf="isEventsEmpty() && !isSelf()" class="empty-message">
+          No events to display
+        </p>
+        <section class="events">
+          <app-events-summary-card [events]="events"></app-events-summary-card>
+        </section>
+      </mat-card>
+    </div>
+  </ng-container>
 </app-layout>

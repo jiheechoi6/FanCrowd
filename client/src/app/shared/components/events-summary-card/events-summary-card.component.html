@@ -1,5 +1,5 @@
 <mat-card class="event-item-container rounded-corners" *ngFor="let event of events"
-    [routerLink]="[ '/events', event._id ]">
+    [routerLink]="[ '/events', event._id ]" (click)="closeDialog()">
     <mat-card-content>
         <p class="event-header">
             <span class="event-name">{{event.name | titlecase}}</span>

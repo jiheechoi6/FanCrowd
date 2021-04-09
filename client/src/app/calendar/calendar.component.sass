@@ -1,5 +1,9 @@
 .calendar-container
     background: #CFEAEE
+    min-height: 590px
+    display: flex
+    flex-direction: column
+    justify-content: center
 
     .month-container
         height: 90px
@@ -63,6 +67,7 @@
             color: magenta
 
         .num-events
+            cursor: pointer
             display: flex
             justify-content: center
             align-items: center
@@ -70,10 +75,10 @@
             border-radius: 10px
             background-color: #040618
             padding: 7px
-            height: 4px
-            width: 10px
+            height: fit-content
+            width: fit-content
             margin: 5px 0 0
             font-size: 12px
 
         .not-now:
-                opacity: 0.3 !important
+            opacity: 0.3 !important

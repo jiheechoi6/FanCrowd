@@ -1,21 +1,12 @@
-import { Router, Request, Response } from "express";
-import middlewares from "../middlewares";
-import { isValidObjectId } from "mongoose";
-import EventReview from "../../models/event-review";
-import Event from "../../models/event";
-import User from "../../models/user";
-import Attend from "../../models/attend";
+import { Router } from "express";
 import passport from "passport";
 import {
-  IEvent,
-  IEventReview,
   INewEventReviewInputDTO,
   INewEventInputDTO,
   IUpdateEventDTO,
   IUpdateEventReviewDTO
 } from "../../interfaces/IEvent";
-import { IAttendEvent, INewAttendEventDTO } from "../../interfaces/IUser";
-import ErrorService from "../../services/error";
+import { INewAttendEventDTO } from "../../interfaces/IUser";
 import EventService from "../../services/event";
 
 const route = Router();
@@ -45,9 +36,8 @@ export default (app: Router) => {
       try {
         const newEvent: INewEventInputDTO = {
           ...req.body,
-          postedBy: req.user!
+          postedBy: req.user!._id!
         };
-
         const eventService = new EventService();
         const event = await eventService.createEvent(newEvent);
         res.status(200).send(event);
@@ -132,7 +122,7 @@ export default (app: Router) => {
   route.get("", async (req, res, next) => {
     try {
       const eventService = new EventService();
-      const events = await eventService.getEvents();
+      const events = await eventService.getEventsMatchingFilters({});
       res.status(200).send(events);
     } catch (err) {
       return next(err);
@@ -161,7 +151,7 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/events/reviews/:eventId
+   * path: /api/events/:eventId/reviews
    * method: POST
    * body:
    * {
@@ -171,10 +161,10 @@ export default (app: Router) => {
    *  event: string
    * }
    * params: None
-   * description: creates a new review on an event
+   * description: creates a new review for event with eventId
    */
   route.post(
-    "/reviews/:eventId",
+    "/:eventId/reviews",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
@@ -185,8 +175,14 @@ export default (app: Router) => {
         };
 
         const eventService = new EventService();
-        const review = await eventService.createReview(eventId, newReview);
-        res.status(200).send(review);
+        const review = await eventService.createReview(
+          eventId,
+          newReview,
+          req.user!
+        );
+        const reviewSummary = await eventService.getReviewSummary(review.event);
+        Reflect.deleteProperty(review, "event");
+        res.status(200).send({ review, reviewSummary });
       } catch (err) {
         return next(err);
       }
@@ -194,7 +190,7 @@ export default (app: Router) => {
   );
 
   /**
-   * path: /api/events/reviews/:eventId
+   * path: /api/events/:eventId/reviews
    * method: DELETE
    * body: None
    * params:
@@ -203,42 +199,20 @@ export default (app: Router) => {
    * }
    * description: deletes all reviews of an event
    */
-  route.delete("/reviews/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
+  route.delete(
+    "/:eventId/reviews",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        await eventService.deleteAllReviews(eventId);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
       }
-
-      const event = await Event.findById(eventId);
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const reviews = await EventReview.find({ event: event._id });
-
-      if (!reviews) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Reviews in Event with id ${eventId} do not exist`
-        );
-      }
-
-      reviews.forEach(async (review) => {
-        review.remove();
-      });
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
     }
-  });
+  );
 
   /**
    * path: /api/events/reviews/:reviewId
@@ -248,18 +222,23 @@ export default (app: Router) => {
    * {
    *  reviewId: string
    * }
-   * description: deletes a review
+   * description: deletes a review by id
    */
   route.delete(
-    "/review/:reviewId",
+    "/reviews/:reviewId",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
         const reviewId = req.params.reviewId;
         const eventService = new EventService();
-
-        await eventService.deleteReviewById(reviewId, req.user!);
-        res.status(200).send();
+        const deletedReview = await eventService.deleteReviewById(
+          reviewId,
+          req.user!
+        );
+        const updatedSummary = await eventService.getReviewSummary(
+          deletedReview.event
+        );
+        res.status(200).send(updatedSummary);
       } catch (err) {
         return next(err);
       }
@@ -288,19 +267,20 @@ export default (app: Router) => {
     async (req, res, next) => {
       try {
         const reviewId = req.params.reviewId;
-        const eventId = req.body.event;
 
         const eventService = new EventService();
         const reqBody = req.body as IUpdateEventReviewDTO;
 
         const updatedReview = await eventService.updateReviewById(
-          eventId,
           reviewId,
           reqBody,
           req.user!
         );
-
-        res.status(200).send(updatedReview);
+        const updatedSummary = await eventService.getReviewSummary(
+          updatedReview.event
+        );
+        Reflect.deleteProperty(updatedReview, "event");
+        res.status(200).send({ updatedReview, updatedSummary });
       } catch (err) {
         return next(err);
       }
@@ -308,62 +288,51 @@ export default (app: Router) => {
   );
 
   /**
-   * path: /api/events/reviews/:eventId
+   * path: /api/events/:eventId/reviews
    * method: GET
    * body: None
    * params:
    * {
    *  eventId: string
    * }
-   * description: gets all the reviews of an event or [] if no reviews exist
+   * description: gets all the reviews of an event or [] if no reviews
    */
-  route.get("/reviews/:eventId", async (req, res, next) => {
+  route.get("/:eventId/reviews", async (req, res, next) => {
     try {
       const eventId = req.params.eventId;
       const eventService = new EventService();
-      const event: IEvent = await eventService.getEventDocById(eventId);
-      const reviews: IEventReview[] = await eventService.getEventReviewsById(
-        event._id
-      );
-
-      res.status(200).send(reviews);
+      const reviews = await eventService.getEventReviewsById(eventId);
+      const reviewSummary = await eventService.getReviewSummary(eventId);
+      res.status(200).send({ reviews, summary: reviewSummary });
     } catch (err) {
       return next(err);
     }
   });
 
   /**
-   * path: /api/events/attend/:eventId
+   * path: /api/events/:eventId/attends
    * method: POST
-   * body:
-   * {
-   *  event: string,
-   *  user: string
-   * }
+   * body: None
    * params:
    * {
    *  eventId: string
    * }
-   * description: user attends an event
+   * description: adds a new attendee to event with id eventId
    */
   route.post(
-    "/attend/:eventId",
+    "/:eventId/attends",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
-        const eventId = req.params.eventId;
         const newAttendee: INewAttendEventDTO = {
-          ...req.body,
-          user: req.user!
+          event: req.params.eventId,
+          user: req.user!._id!
         };
 
         const eventService = new EventService();
-        const attendee = await eventService.createAttendee(
-          eventId,
-          newAttendee
-        );
+        await eventService.createAttendee(newAttendee);
 
-        res.status(200).send(attendee);
+        res.status(200).send();
       } catch (err) {
         return next(err);
       }
@@ -371,25 +340,23 @@ export default (app: Router) => {
   );
 
   /**
-   * path: /api/events/attend/:attendId
+   * path: /api/events/:eventId/unattend
    * method: DELETE
    * body: None
    * params:
    * {
-   *  attendId: string
+   *  eventId: string
    * }
-   * description: deletes an attendance
+   * description: deletes an attendee from an event
    */
   route.delete(
-    "/attend/:attendId",
+    "/:eventId/unattend",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
-        const attendeeId = req.params.attendId;
+        const eventId = req.params.eventId;
         const eventService = new EventService();
-
-        // Should check if user who attended is the one deleting or admin
-        eventService.deleteAttendeeById(attendeeId, req.user!);
+        await eventService.removeUserFromEvent(eventId, req.user!._id!);
         res.status(200).send();
       } catch (err) {
         return next(err);
@@ -405,71 +372,50 @@ export default (app: Router) => {
    * {
    *  eventId: string
    * }
-   * description: deletes all attendances of an event
+   * description: deletes all attendees of an event
    */
-  route.delete("/attends/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-
-      if (!isValidObjectId(eventId)) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
+  route.delete(
+    "/attends/:eventId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        await eventService.deleteAllAttendees(eventId);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
       }
-
-      const event = await Event.findById(eventId);
-      if (!event) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Event with id ${eventId} does not exist`
-        );
-      }
-
-      const attendees = await Attend.find({ event: event._id });
-
-      if (!attendees) {
-        throw new ErrorService(
-          "NotFoundError",
-          `Attendees of Event with id ${eventId} does not exist`
-        );
-      }
-
-      // Should check if user who attended is the one deleting or admin
-
-      attendees.forEach(async (attendee) => {
-        attendee.remove();
-      });
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
     }
-  });
+  );
 
   /**
-   * path: /api/events/attend/:eventId
+   * path: /api/events/:eventId/is-attending
    * method: GET
    * body: None
    * params:
    * {
    *  eventId: string
    * }
-   * description: gets all the attendees by eventId or [] if no event/attendees exist
+   * description: checks if currently signed in user is attending event with eventId
    */
-  route.get("/attend/:eventId", async (req, res, next) => {
-    try {
-      const eventId = req.params.eventId;
-      const eventService = new EventService();
-      const event: IEvent = await eventService.getEventDocById(eventId);
-      const attendees: IAttendEvent[] = await eventService.getEventAttendeesById(
-        eventId
-      );
-
-      res.status(200).send(attendees);
-    } catch (err) {
-      return next(err);
+  route.get(
+    "/:eventId/is-attending",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const eventId = req.params.eventId;
+        const eventService = new EventService();
+        const isAttendingEvent = await eventService.isUserAttendingEvent(
+          eventId,
+          req.user!._id!
+        );
+        res.status(200).send(isAttendingEvent);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/events/:categoryName/:fandomName

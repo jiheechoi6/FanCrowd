@@ -6,14 +6,14 @@ import { ReviewDialogComponent } from '../create-review-dialog/create-review-dia
 import { DeleteDialogComponent } from '../../shared/components/delete-dialog/delete-dialog.component';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { EditReviewDialogComponent } from '../edit-review-dialog/edit-review-dialog.component';
-import { UserService } from 'src/app/core/services/user.service';
 import { EventCreateDialogComponent } from '../event-create-dialog/event-create-dialog.component';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import ReviewDTO from 'src/app/shared/models/review-dto';
 import Event from '../../shared/models/event';
-import Review from '../../shared/models/review';
-import Attendee from 'src/app/shared/models/attendee';
+import Review, { IEventReviewSummary } from '../../shared/models/review';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event',
@@ -23,57 +23,65 @@ import Attendee from 'src/app/shared/models/attendee';
 export class EventDetailComponent implements OnInit {
   event: Event | null = null;
   reviews: Review[] = [];
-  attendees: Attendee[] = [];
   today: Date = new Date();
   isAttending: boolean = false;
   id: string = '';
   user: UserIdentity | null = null;
   wroteReview: boolean = false;
-  avgRating = 0;
-  groupedReviews: { [key: number]: Review[] } = {};
+  reviewSummary: IEventReviewSummary | null = null;
+
+  isLoadingEvent = true;
+  isLoadingReviews = true;
 
   constructor(
     private _authService: AuthService,
-    private _userService: UserService,
     private _eventService: EventService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _breadcrumbService: BreadcrumbService,
-    public dialog: MatDialog
-  ) {
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit() {
+    this._authService.currentUser.subscribe((user) => {
+      this.user = user;
+    });
+
     this._activatedRoute.params.subscribe((params) => {
       this.id = params['id'];
+      this.fetchComponentInfo();
     });
   }
 
-  ngOnInit() {
-    this._authService.currentUser.subscribe((user) => (this.user = user));
-    if (this.user) {
-      this._eventService.getAttendees(this.id).subscribe((attendees) => {
-        this.isAttending = false;
-        this.attendees = attendees;
-        this.attendees.forEach((attendee) => {
-          if (this.user?._id === attendee.user) {
-            this.isAttending = true;
+  fetchComponentInfo() {
+    this._eventService
+      .isUserAttendingEvent(this.id)
+      .subscribe((isAttending) => (this.isAttending = isAttending));
+
+    this._eventService
+      .getEventById(this.id)
+      .pipe(finalize(() => (this.isLoadingEvent = false)))
+      .subscribe(
+        (event) => {
+          this.event = event;
+          this._breadcrumbService.set('@eventName', this.event.name);
+
+          this._eventService
+            .getReviewsByEventId(this.event!._id!)
+            .pipe(finalize(() => (this.isLoadingReviews = false)))
+            .subscribe((reviewsAndSummary) => {
+              this.reviews = reviewsAndSummary.reviews;
+              this.reviewSummary = reviewsAndSummary.summary;
+              this.hasWrittenReview();
+            });
+        },
+        (err) => {
+          if (err.status === 404) {
+            this._router.navigate(['/events']);
           }
-        });
-      });
-    }
-
-    this._eventService.getEventById(this.id).subscribe((event) => {
-      this.event = event;
-      this.reviews = [];
-
-      if (this.event) {
-        this._breadcrumbService.set('@eventName', this.event.name);
-        this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
-          this.reviews = reviews;
-          this.alreadyWroteReview(this.reviews);
-          this.calculateAvgRating();
-          this.groupReviewsByRating();
-        });
-      }
-    });
+        }
+      );
   }
 
   openAddReviewDialog() {
@@ -87,25 +95,35 @@ export class EventDetailComponent implements OnInit {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((newReview: Review) => {
-      if (newReview) {
-        this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
-          this.reviews = reviews;
-          this.alreadyWroteReview(this.reviews);
-          this.calculateAvgRating();
-          this.groupReviewsByRating();
-        });
-      }
-    });
+    dialogRef
+      .afterClosed()
+      .subscribe(
+        (reviewAndSummary: {
+          review: Review;
+          reviewSummary: IEventReviewSummary;
+        }) => {
+          if (reviewAndSummary) {
+            this.reviewSummary = reviewAndSummary.reviewSummary;
+            this.reviews.push(reviewAndSummary.review);
+            this.wroteReview = true;
+            this._snackBar.open(`Review has been created!`, 'X', {
+              panelClass: ['snackbar'],
+              horizontalPosition: 'left',
+              duration: 2500,
+            });
+          }
+        }
+      );
   }
 
-  openDeleteEventDialog(id: string | undefined) {
+  openDeleteEventDialog() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Event Confirmation',
-        details: 'Are you sure you want to delete the event?',
+        details:
+          'Are you sure you want to delete the event? All associated reviews will also be deleted',
         onConfirmCb: this.deleteEvent.bind(this),
-        params: [id],
+        params: [this.event!._id],
       },
       width: '360px',
       height: '180px',
@@ -114,130 +132,114 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  openDeleteReviewDialog(id: string | undefined) {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+  openDeleteReviewDialog(id: string, index: number) {
+    this.dialog.open(DeleteDialogComponent, {
       data: {
         title: 'Delete Review Confirmation',
         details: 'Are you sure you want to delete your review?',
         onConfirmCb: this.deleteReview.bind(this),
-        params: [id],
+        params: [id, index],
       },
       width: '360px',
       height: '180px',
       autoFocus: false,
       disableClose: true,
     });
+  }
 
-    dialogRef.afterClosed().subscribe(() => {
-      this._eventService.getReviewsByEventId(this.id).subscribe((reviews) => {
-        this.reviews = reviews;
-        this.alreadyWroteReview(this.reviews);
-        this.calculateAvgRating();
-        this.groupReviewsByRating();
+  openEditReviewDialog(currentReview: Review, index: number) {
+    let updatedReview: ReviewDTO = {
+      title: currentReview.title,
+      content: currentReview.content,
+      rating: currentReview.rating,
+      event: this.id,
+    };
+
+    const dialogRef = this.dialog.open(EditReviewDialogComponent, {
+      data: { reviewId: currentReview._id, review: updatedReview },
+      autoFocus: false,
+      width: '450px',
+      disableClose: true,
+    });
+
+    dialogRef
+      .afterClosed()
+      .subscribe(
+        (updatedReviewAndSummary: {
+          updatedReview: Review;
+          updatedSummary: IEventReviewSummary;
+        }) => {
+          if (updatedReviewAndSummary) {
+            this.reviews[index] = updatedReviewAndSummary.updatedReview;
+            this.reviewSummary = updatedReviewAndSummary.updatedSummary;
+            this._snackBar.open(`Review has been updated!`, 'X', {
+              panelClass: ['snackbar'],
+              horizontalPosition: 'left',
+              duration: 2500,
+            });
+          }
+        }
+      );
+  }
+
+  hasWrittenReview() {
+    this.wroteReview = !!this.reviews.find(
+      (review) => review.postedBy.username === this.user!.username
+    );
+  }
+
+  attendEvent() {
+    this._eventService.createAttendee(this.event!._id).subscribe(() => {
+      this.isAttending = true;
+      this.event!.totalAttendance += 1;
+      this._snackBar.open(`Event has been added to your calendar!`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 2500,
       });
     });
   }
 
-  openEditDialog(currentReview: Review) {
-    if (currentReview) {
-      let updatedReview: ReviewDTO = {
-        title: currentReview.title,
-        content: currentReview.content,
-        rating: currentReview.rating,
-        event: this.id,
-      };
-
-      const dialogRef = this.dialog.open(EditReviewDialogComponent, {
-        data: { reviewId: currentReview._id, review: updatedReview },
-        autoFocus: false,
-        width: '450px',
-        disableClose: true,
+  unattendEvent() {
+    this._eventService.deleteAttendee(this.event!._id!).subscribe(() => {
+      this.isAttending = false;
+      this.event!.totalAttendance -= 1;
+      this._snackBar.open(`Event has been removed from your calendar!`, 'X', {
+        panelClass: ['snackbar'],
+        horizontalPosition: 'left',
+        duration: 2500,
       });
-
-      dialogRef.afterClosed().subscribe((updatedReview: Review) => {
-        if (updatedReview) {
-          this._eventService
-            .getReviewsByEventId(this.id)
-            .subscribe((reviews) => {
-              this.reviews = reviews;
-              this.alreadyWroteReview(this.reviews);
-              this.calculateAvgRating();
-              this.groupReviewsByRating();
-            });
-        }
-      });
-    }
+    });
   }
 
-  alreadyWroteReview(reviews: Review[] | null) {
-    this.wroteReview = false;
-
-    if (reviews) {
-      let reviewIndex = reviews.findIndex(
-        (review) => review.postedBy.username === this.user?.username
-      );
-      if (reviewIndex >= 0) {
-        this.wroteReview = true;
-      }
-    }
-  }
-
-  addEventToProfile() {
-    this.isAttending = true;
-
-    if (this.event && this.user) {
-      let newAttendee: Attendee = {
-        user: this.user?._id,
-        event: this.id,
-      };
-
-      this._eventService
-        .createAttendee(this.id, newAttendee)
-        .subscribe((attendee) => {
-          if (attendee) {
-            this.isAttending = true;
-          }
-        });
-    }
-  }
-
-  removeEventFromProfile(eventId: string | undefined) {
-    if (this.user && this.event) {
-      this.attendees.forEach((attendee: Attendee) => {
-        if (attendee.user === this.user?._id && this.event?._id === eventId) {
-          if (attendee._id) {
-            this._eventService.deleteAttendee(attendee._id).subscribe(() => {
-              this.isAttending = false;
-            });
-          }
-        }
-      });
-    }
-  }
-
-  deleteEvent(id: string | undefined) {
-    if (id) {
-      this._eventService.deleteReviews(id).subscribe(() => {
-        this._eventService.deleteAttendees(id).subscribe(() => {
-          this._eventService.deleteEvent(id).subscribe(() => {
-            this._router.navigate(['events']);
+  deleteEvent(id: string) {
+    this._eventService.deleteReviews(id).subscribe(() => {
+      this._eventService.deleteAttendees(id).subscribe(() => {
+        this._eventService.deleteEvent(id).subscribe(() => {
+          this._snackBar.open(`Event has been deleted!`, 'X', {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2500,
           });
+          this._router.navigate(['/events']);
         });
       });
-
-      // if (this.user && this.event) {
-      //   this._userService.removeEventFromAllUsersEvents(this.event._id);
-      //   this._authService.removeEventFromAllUsersEvents(this.event._id);
-      // }
-
-      // this._router.navigate(['events']);
-    }
+    });
   }
 
-  deleteReview(id: string | undefined) {
-    if (id) {
-      this._eventService.deleteReview(id).subscribe(() => {});
-    }
+  deleteReview(id: string, index: number) {
+    this._eventService
+      .deleteReview(id)
+      .subscribe((updatedReviewSummary: IEventReviewSummary) => {
+        this.reviews.splice(index, 1);
+        this.reviewSummary = updatedReviewSummary;
+        this.wroteReview = false;
+        this._snackBar.open(`Review has been deleted!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 2500,
+        });
+      });
   }
 
   openEditEventDialog() {
@@ -250,42 +252,18 @@ export class EventDetailComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((updatedEvent: Event) => {
       if (updatedEvent) {
-        this._eventService
-          .getEventById(updatedEvent._id)
-          .subscribe((updatedEvent) => {
-            this.event = updatedEvent;
-          });
+        this.event = updatedEvent;
+        this._breadcrumbService.set('@eventName', this.event.name);
+        this._snackBar.open(`Event details has been updated!`, 'X', {
+          panelClass: ['snackbar'],
+          horizontalPosition: 'left',
+          duration: 2500,
+        });
       }
     });
   }
 
-  calculateAvgRating() {
-    const totalRatings =
-      this.reviews.reduce((total, review) => total + review.rating, 0) || 0;
-
-    this.avgRating =
-      this.reviews.length === 0
-        ? 0
-        : Math.floor(totalRatings / this.reviews.length);
-  }
-
   roundPercent(percent: number) {
     return Math.floor(percent);
-  }
-
-  groupReviewsByRating() {
-    this.groupedReviews = this.reviews.reduce(
-      (rv: { [key: number]: Review[] }, review) => {
-        (rv[review['rating']] = rv[review['rating']] || []).push(review);
-        return rv;
-      },
-      {
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-      }
-    );
   }
 }

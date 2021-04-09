@@ -1,13 +1,13 @@
-import { Router, Request, Response } from "express";
-import middlewares from "../middlewares";
+import { Router } from "express";
 import {
-  IUser,
   IUpdateUserProfileDTO,
   IResetPasswordEmailDTO,
   IResetPasswordInputDTO
 } from "../../interfaces/IUser";
-import User from "../../models/user";
 import UserService from "../../services/user";
+import ErrorService from "../../services/error";
+import passport from "passport";
+import middlewares from "../middlewares";
 
 const route = Router();
 
@@ -23,7 +23,8 @@ export default (app: Router) => {
    */
   route.get("", async (req, res, next) => {
     try {
-      const users: IUser[] = await User.find({});
+      const userService = new UserService();
+      const users = await userService.getAllUsers();
       res.status(200).send(users);
     } catch (err) {
       return next(err);
@@ -70,10 +71,14 @@ export default (app: Router) => {
       const reqBody = req.body as IResetPasswordInputDTO;
       const userService = new UserService();
       await userService.resetPassword(reqBody);
-
       res.status(200).send();
     } catch (err) {
-      return next(err);
+      return next(
+        new ErrorService(
+          "UnauthorizedError",
+          "The verification code is incorrect or has expired"
+        )
+      );
     }
   });
 
@@ -85,15 +90,18 @@ export default (app: Router) => {
    * {
    *    username: string
    * }
-   * description: get a user with username
+   * description: gets a user with username
    */
   route.get("/:username", async (req, res, next) => {
     try {
       const username = req.params.username;
       const userService = new UserService();
       const userDoc = await userService.getUserByUsername(username);
+
       const user = userDoc.toObject();
       Reflect.deleteProperty(user, "password");
+      Reflect.deleteProperty(user, "resetPasswordToken");
+      Reflect.deleteProperty(user, "role");
       res.status(200).send(user);
     } catch (err) {
       return next(err);
@@ -110,19 +118,49 @@ export default (app: Router) => {
    * }
    * description: deletes a user
    */
-  route.delete("/:username", async (req, res, next) => {
-    try {
-      const username = req.params.username;
-      const userService = new UserService();
-      const user = await userService.deleteUserByUsername(username);
-      res.status(200).send();
-    } catch (err) {
-      return next(err);
+  route.delete(
+    "/:username",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const username = req.params.username;
+        const userService = new UserService();
+        await userService.deleteUserByUsername(username, req.user!);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
-   * path: /api/users/:username
+   * path: /api/users/:username/update-ban
+   * method: PATCH
+   * body: None
+   * params:
+   * {
+   *  username: string
+   * }
+   * description: toggles user's ban
+   */
+  route.patch(
+    "/:username/update-ban",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    middlewares.isAdmin,
+    async (req, res, next) => {
+      try {
+        const username = req.params.username;
+        const userService = new UserService();
+        await userService.toggleUserBan(username);
+        res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  /**
+   * path: /api/users/:userId
    * method: PATCH
    * body:
    * {
@@ -132,27 +170,29 @@ export default (app: Router) => {
    *  email: string,
    *  fullName: string,
    *  profileURL: string,
+   *  username: string
    * }
    * params:
    * {
-   *  username: string
+   *  userId: string
    * }
    * description: updates an user
    */
-  route.patch("/:username", async (req, res, next) => {
-    try {
-      const username = req.params.username;
-      const userService = new UserService();
-      const reqBody = req.body as IUpdateUserProfileDTO;
-
-      //Should be passing in req.user.id instead of undefined
-      const user = await userService.updateUser(username, reqBody);
-
-      res.status(200).send(user);
-    } catch (err) {
-      return next(err);
+  route.patch(
+    "/:userId",
+    passport.authenticate("jwt", { session: false, failWithError: true }),
+    async (req, res, next) => {
+      try {
+        const userId = req.params.userId;
+        const userService = new UserService();
+        const reqBody = req.body as IUpdateUserProfileDTO;
+        const user = await userService.updateUser(userId, reqBody, req.user!);
+        res.status(200).send(user);
+      } catch (err) {
+        return next(err);
+      }
     }
-  });
+  );
 
   /**
    * path: /api/users/:username/events
@@ -190,7 +230,6 @@ export default (app: Router) => {
       const username = req.params.username;
       const userService = new UserService();
       const fandoms = await userService.getUserFandoms(username);
-
       res.status(200).send(fandoms);
     } catch (err) {
       return next(err);

@@ -10,7 +10,6 @@ import {
   IUserLikeOnlyUser,
 } from 'src/app/shared/models/fandom-post';
 import { CreatePostDialogComponent } from '../create-post-dialog/create-post-dialog.component';
-import Event from 'src/app/shared/models/event';
 import { finalize } from 'rxjs/operators';
 import { DeleteDialogComponent } from 'src/app/shared/components/delete-dialog/delete-dialog.component';
 import { AddDialogComponent } from 'src/app/shared/components/add-dialog/add-dialog.component';
@@ -18,6 +17,7 @@ import { Subscription } from 'rxjs';
 import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalService } from 'src/app/core/services/global.service';
+import { IEventSummary } from 'src/app/shared/models/event-summary';
 
 @Component({
   selector: 'app-fandom-detail',
@@ -25,7 +25,7 @@ import { GlobalService } from 'src/app/core/services/global.service';
   styleUrls: ['./fandom-detail.component.sass'],
 })
 export class FandomDetailComponent implements OnInit {
-  events: Event[] = [];
+  events: IEventSummary[] = [];
   fandomCategory: string = '';
   fandomName: string = '';
   posts: FandomPost[] = [];
