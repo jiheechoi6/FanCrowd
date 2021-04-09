@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
 import Category from 'src/app/shared/models/category';
 import Fandom from 'src/app/shared/models/fandom';
 import { EventService } from '../../core/services/event.service';
@@ -9,11 +10,6 @@ import Event from '../../shared/models/event';
 
 interface DialogData {
   eventBeingUpdated?: Event;
-  user: {
-    username: string;
-    profileURL: string;
-    role: string;
-  };
 }
 
 @Component({
@@ -28,6 +24,9 @@ export class EventCreateDialogComponent implements OnInit {
   fandomsForCategory: Fandom[] = [];
   eventDateRange: Date[];
   isEditingEvent = false;
+
+  isLoading = false;
+  errorMsg: string | null = null;
 
   dateRangeErrorMatcher = {
     isErrorState: (control: FormControl, form: FormGroupDirective): boolean => {
@@ -119,16 +118,22 @@ export class EventCreateDialogComponent implements OnInit {
   }
 
   createEvent() {
+    this.isLoading = true;
     this.setStartDateAndEndDate();
-    this._eventService.createEvent(this.event).subscribe((newEvent) => {
-      this.dialogRef.close(newEvent);
-    });
+    this._eventService
+      .createEvent(this.event)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((newEvent) => {
+        this.dialogRef.close(newEvent);
+      });
   }
 
   updateEvent() {
+    this.isLoading = true;
     this.setStartDateAndEndDate();
     this._eventService
       .updateEventById(this.event._id, this.event)
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((updatedEvent) => {
         this.dialogRef.close(updatedEvent);
       });

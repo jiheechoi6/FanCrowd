@@ -25,7 +25,7 @@
                         <p>{{ event?.description }}</p>
                     </article>
                     <p class="created-by">Created By: <a
-                            [routerLink]="['/users', event.postedBy.username]">{{event.postedBy.username | titlecase}}</a>
+                            [routerLink]="['/users', event!.postedBy!.username]">{{event!.postedBy!.username | titlecase}}</a>
                     </p>
                     <p>
                         Fandom: <a
@@ -39,7 +39,7 @@
                         <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
                             Attend
                         </button>
-                        <div *ngIf="user?.role === 'admin' || user?.username === event.postedBy.username">
+                        <div *ngIf="user?.role === 'admin' || user?.username === event!.postedBy!.username">
                             <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
                                 mat-flat-button color="warn">
                                 <span>

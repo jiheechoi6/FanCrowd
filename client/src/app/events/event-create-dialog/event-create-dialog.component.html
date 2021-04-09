@@ -62,9 +62,8 @@
         <div class="form-group">
             <mat-form-field color="accent">
                 <mat-label>Fandom</mat-label>
-                <mat-select name="fandom" (selectionChange)="fandomChange($event)"
-                  [(ngModel)]="event.fandom.name" required
-                    [disabled]="!event.fandom.category">
+                <mat-select name="fandom" (selectionChange)="fandomChange($event)" [(ngModel)]="event.fandom.name"
+                    required [disabled]="!event.fandom.category">
                     <mat-option>--Select Fandom--</mat-option>
                     <mat-option *ngFor="let fandom of fandomsForCategory" [value]="fandom.name">
                         {{fandom.name | titlecase}}
@@ -74,20 +73,26 @@
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
+    <button mat-flat-button mat-dialog-close color="basic" [disabled]="isLoading">Cancel</button>
     <button mat-flat-button color="primary" *ngIf="!isEditingEvent" (click)="createEventForm.ngSubmit.emit()"
-        [disabled]="!createEventForm.form.valid">
-        <span>
-            Create <i class="fas fa-check"></i>
-        </span>
+        [disabled]="!createEventForm.form.valid || isLoading">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isLoading">Create <i class="fas fa-plus"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Creating</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
     </button>
     <button mat-flat-button color="primary" *ngIf="isEditingEvent" (click)="updateEvent()"
-        [disabled]="!createEventForm.form.valid">
-        <span>
-            Confirm <i class="fas fa-check"></i>
-        </span>
+        [disabled]="!createEventForm.form.valid  || isLoading">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isLoading">Confirm <i class="fas fa-check"></i></span>
+            <span class="margin-right-2" *ngIf="isLoading">Updating</span>
+            <app-spinner *ngIf="isLoading" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </mat-dialog-actions>

@@ -236,8 +236,7 @@ export default class EventService {
     EventService._fandomService.getFandomById(newEvent.fandom);
     const newEventDoc = await Event.create(newEvent);
 
-    const event = newEventDoc.toObject();
-    Reflect.deleteProperty(event, "postedBy");
+    const event = await this.getEventById(newEventDoc._id);
     return event;
   }
 

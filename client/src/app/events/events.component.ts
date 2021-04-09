@@ -5,6 +5,9 @@ import { EventCreateDialogComponent } from './event-create-dialog/event-create-d
 import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
 import { UserIdentity } from 'src/app/shared/models/user-identity-token';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalService } from '../core/services/global.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-events',
@@ -20,18 +23,25 @@ export class EventsComponent implements OnInit {
   today: Date = new Date();
   user: UserIdentity | null = null;
 
+  isLoadingEvents = true;
+
   constructor(
     private _authService: AuthService,
     private _eventService: EventService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    private _globalService: GlobalService
   ) {}
 
   ngOnInit() {
     this._authService.currentUser.subscribe((user) => (this.user = user));
-    this._eventService.getEvents().subscribe((events) => {
-      this.allEvents = events;
-      this.events = this.allEvents.slice(0, this.pageSize);
-    });
+    this._eventService
+      .getEvents()
+      .pipe(finalize(() => (this.isLoadingEvents = false)))
+      .subscribe((events) => {
+        this.allEvents = events;
+        this.events = this.allEvents.slice(0, this.pageSize);
+      });
   }
 
   selectPage(event: any) {
@@ -58,9 +68,17 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this._eventService.getEvents().subscribe((events) => {
-          this.allEvents = events;
-        });
+        this.allEvents.push(newEvent);
+        this.events = this.allEvents.slice(0, this.pageSize);
+        this._snackBar.open(
+          `${this._globalService.toTitleCase(newEvent.name)} has been created!`,
+          'X',
+          {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2500,
+          }
+        );
       }
     });
   }
