@@ -43,7 +43,7 @@ The instructions to test as a user and admin are given below in the **Features**
 
 ## Features and How to Use
 #### Login/Signup
-This feature gives the user access to our web application. It has validation on all it's forms to ensure the data entered is correct. It will only allow the user to click login/signup if the data is valid. We have also included a reset password feature to allow the user to reset their password, it is a two step process where the user will first recieve a verification code on their email and they must enter that code only then will their new password become active.\
+This feature gives the user access to our web application. It has validation on all it's forms to ensure the data entered is correct. It will only allow the user to click login/signup if the data is valid. We have also included a reset password feature to allow the user to reset their password, it is a two step process where the user will first recieve a verification code on their email and they must enter that code only then will their new password become active.
 
 When the user/admin navigates to the login page, they will be asked to give their credentials (given above). If their credentials are entered incorrectly, the form will display a message saying something is invalid. If the information is valid it will enable the login button and allow the user to login in which will take them to the profile page. When users signup they will also be redirected to the profile page. Admins cannot sign up, their accounts must be pre-populated or someone with access to the backend must create one for them.
 
@@ -91,14 +91,14 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 
 ## API Routes
-**IMPORTANT:** ***Then tables below do not contain all the routes and endpoints we used, they just show the structure of our routes so when testing you get a better idea of how we did things. For the full list of endpoints we have exported our list of endpoints from Postman and put them in the following directory: `team09/src/postman-endpoints` please download that file and import it to Postman.***\
+**IMPORTANT:** ***The tables below do not contain all the routes and endpoints we used, they just show the structure of our routes so when testing you get a better idea of how we did things. For the full list of endpoints we have exported our list of endpoints from Postman and put them in the following directory: `team09/src/postman-endpoints` please download that file and import it to Postman.***
 
 **URI**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`.\
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`.
 
-**Note:** Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.\
+**Note:** Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.
 
-**Note:** All the examples below are for _user1_.\
+**Note:** All the examples below are for _user1_.
 
 ### AUTH Endpoints
 <table>
@@ -1173,6 +1173,231 @@ Status code of `200`
 }
  ```
 
+</td>
+</tr>
+</table>
+
+
+### EVENT REVIEWS Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/events/{eventId}/reviews` 
+  
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_POST_review",
+    "content": "Test adding review to event",
+    "rating": 3,
+    "event": "6064b6d3399a41013ef8ce98"
+}
+```
+<br>
+"event" takes in the event id (same as the event id in the URI) which is obtained from the database.
+</td>
+<td>
+  
+```json
+{
+    "review": {
+        "_id": "607086b0167f3c00a143dbc4",
+        "title": "Testing_POST_review",
+        "content": "Test adding review to event",
+        "rating": 3,
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "createdAt": "2021-04-09T16:54:08.765Z",
+        "updatedAt": "2021-04-09T16:54:08.765Z"
+    },
+    "reviewSummary": {
+        "avgRating": 3,
+        "totalRating": 3,
+        "totalReviews": 1,
+        "numOfEachRating": {
+            "1": 0,
+            "2": 0,
+            "3": 1,
+            "4": 0,
+            "5": 0
+        }
+    }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/events/reviews/{reviewId}` 
+  
+</td>
+<td>
+  
+```json
+{
+    "title": "Testing_PATCH_review",
+    "content": "Test updating review",
+    "rating": 5,
+    "event": "6064b6d3399a41013ef8ce98"
+}
+```
+<br>
+"event" takes in the event id which is obtained from the database.
+
+</td>
+<td>
+  
+```json
+{
+    "updatedReview": {
+        "_id": "607086b0167f3c00a143dbc4",
+        "title": "Testing_PATCH_review",
+        "content": "Test updating review",
+        "rating": 5,
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "createdAt": "2021-04-09T16:54:08.765Z",
+        "updatedAt": "2021-04-09T16:56:40.126Z"
+    },
+    "updatedSummary": {
+        "avgRating": 5,
+        "totalRating": 5,
+        "totalReviews": 1,
+        "numOfEachRating": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 1
+        }
+    }
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/event/reviews/{reviewId}` 
+
+</td>
+<td> N/A </td>
+<td> 
+  
+```json
+  {
+    "avgRating": 0,
+    "numOfEachRating": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+    }
+}
+```
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/event/{eventId}/reviews` 
+
+</td>
+<td> N/A </td>
+<td> 
+  
+Status code of `200`
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/events/{eventId}/reviews` 
+  
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+{
+    "reviews": [
+        {
+            "_id": "607051e3f4587500516bf1bb",
+            "title": "Great Event",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
+            "rating": 4,
+            "postedBy": {
+                "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+                "username": "user1"
+            },
+            "createdAt": "2021-02-15T00:00:00.000Z",
+            "updatedAt": "2021-02-15T00:00:00.000Z"
+        },
+        {
+            "_id": "607051e3f4587500516bf1bc",
+            "title": "Amazing, Lot's of fun",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna eget est lorem ipsum dolor sit amet consectetur adipiscing. Congue nisi vitae suscipit tellus mauris a diam maecenas.",
+            "rating": 5,
+            "postedBy": {
+                "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+                "username": "user2"
+            },
+            "createdAt": "2021-02-15T00:00:00.000Z",
+            "updatedAt": "2021-02-15T00:00:00.000Z"
+        }
+    ],
+    "summary": {
+        "avgRating": 4.5,
+        "totalRating": 9,
+        "totalReviews": 2,
+        "numOfEachRating": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 1,
+            "5": 1
+        }
+    }
+}
+ ```
 </td>
 </tr>
 </table>
