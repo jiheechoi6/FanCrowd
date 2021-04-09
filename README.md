@@ -55,15 +55,15 @@ If a user goes to another users profile page they cannot edit that users informa
 
 
 #### Search
-The search bar located in the navigation bar allows the user/admin to search for other users/admins or themselves. It is an elastic search so it will filter on every key input.
+The search bar located in the navigation bar allows the user/admin to search for other users/admins or themselves. It is an elastic search so it will filter on every key input. You will need to click the search icon or on the user itself to be redirected to their profile page, you cannot press `enter`!
 
 Users/admins can both search for other users/admins and checkout their profile pages to see which events they will attend or which fandoms they're interested in!
 
 
 #### Calendar
-This page displays a calendar showing how many events you(the user/admin) will attend and on which dates. It will also display the events and some of their information.
+This page displays a calendar showing how many events you(the user/admin) will attend and on which dates. It will also display the events and some of the event's information such as total attendence, name, date and time, etc.
 
-A user/admin can see how many events they will attend on a particular date. If the  user/admin clicks on the date (the date number), it will open a modal window of all the events that the user/admin will attend on that date. If you click one of the events, you will be redirected to the `event details` page giving you more information about that event.
+A user/admin can see how many events they will attend on a particular date. If the user/admin clicks on the date (the date number), it will open a modal window of all the events that the user/admin will attend on that date. If you click one of the events, you will be redirected to the `event details` page giving you more information about that event.
 
 
 #### Events
@@ -73,9 +73,9 @@ For a user/admin to access more details about the event, they can click the name
 
 If you click the event name, it will redirect you to that event's page where more information will be provided such as reviews from other users, a full description of the event, the overall rating from all the reviews given. Notice that the user/admin who created the event is the only person who can edit or delete the event, but admins can edit or delete all events whether or not they created them.
 
-A user/admin is allowed to write a review once on each event. Only the user/admin that wrote the review can edit or delete the review, but admins can delete all reviews whether or not they created them. The user/admin can click the `Add Review` button, which open a form that has validation messages if information entered is invalid. If the information is valid then the `Add` button will be enable, otherwise disabled (Same as all the other forms on the site). Reviews are ideally sorted by recent first. Right now they are not sorted, but this will be implemented in Phase 2 with the help of the backend.
+A user/admin is allowed to write a review once on each event. Only the user/admin that wrote the review can edit or delete the review, but admins can delete all reviews whether or not they created them. The user/admin can click the `Add Review` button, which open a form that has validation messages if information entered is invalid. If the information is valid then the `Add` button will be enable, otherwise disabled (Same as all the other forms on the site). Reviews are also sorted by recent first.
 
-To navigate back to all events, please use the back button on your browser.
+To navigate back to all events, you can use the breadcrumb on the top left corner of the page or the browser's back button.
 
 
 #### Fandoms
@@ -1397,6 +1397,95 @@ Status code of `200`
         }
     }
 }
+ ```
+</td>
+</tr>
+</table>
+
+
+### EVENT ATTENDANCE Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/events/{eventId}/attends` 
+  
+</td>
+<td>
+  
+```json
+{
+    "event": "60707b62167f3c00a143dbc2",
+    "user": "607051e3f4587500516bf190"
+}
+```
+<br>
+"event" takes in the event id (same as the event id in the URI) which can be obtained from the database. <br>
+"user" takes in the user id which can be obtained from the database.
+</td>
+<td>
+  Status code of `200`
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/event/attends/{attendeeId}` 
+
+</td>
+<td> N/A </td>
+<td> 
+  
+Status code of `200`
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/event/attends/{eventId}` 
+
+</td>
+<td> N/A </td>
+<td> 
+  
+Status code of `200`
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/events/{eventId}/is-attending` 
+  <br>
+  Returns a boolean variable if current signed in user is attending or not
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+true
  ```
 </td>
 </tr>
