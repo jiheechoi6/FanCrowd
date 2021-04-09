@@ -94,7 +94,4 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 | REST Method | Route Name | Route Link | Request Body | Request Response |
 | ----------- | ---------- | ---------- | ------------ | ---------------- |
 | `GET` | CurrentUser | `/auth/currentUser` | N/A | Details of logged in user |
-| `POST` | SignIn | `/auth/signin` | {
-   "username": "user1",
-   "password": "User1234"
-} | Token and user details |
+| `POST` | SignIn | `/auth/signin` | `{<br>"username": "user1", "password": "User1234"}` | Token and user details |
