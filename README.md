@@ -765,3 +765,6 @@ Status code of `200`
 </td>
 </tr>
 </table>
+
+
+### EVENTS Endpoints
