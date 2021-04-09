@@ -92,7 +92,11 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 ## API Routes
 **URI**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`. Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputted for the fields.
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`. 
+
+**Note:** Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.
+
+**Note:** All the examples below are for _user1_
 
 ### AUTH Endpoints
 <table>
@@ -143,7 +147,7 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
   `POST`
   
-</td> <td> SignIn </td> 
+</td>
 
 <td> 
   
@@ -264,7 +268,11 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
 </td>
 <td> N/A </td>
-<td> N/A </td>
+<td> 
+  
+Status code of `200` 
+
+</td>
 </tr>
 <tr>
 <td> 
@@ -338,5 +346,422 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 </td>
 </tr>
 <tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/users/{username}` 
+  
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+{
+    "role": "user",
+    "bio": "Updated BIO",
+    "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+    "city": "Updated City",
+    "country": "Updated Country",
+    "_id": "607051e3f4587500516bf190",
+    "email": "new_email@gmail.com",
+    "fullName": "Updated Name",
+    "username": "user1",
+    "createdAt": "2021-04-09T13:08:51.261Z"
+}
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/users/{username}/events` 
+  
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+[
+    {
+        "_id": "607051e3f4587500516bf1b4",
+        "name": "World Expo",
+        "description": "Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.",
+        "location": "Dubai, UAE",
+        "startDate": "2021-06-12T00:00:00.000Z",
+        "endDate": "2021-06-14T00:00:00.000Z",
+        "totalAttendance": 2
+    },
+    {
+        "_id": "607051e3f4587500516bf1b3",
+        "name": "Comic Con",
+        "description": "A comic book convention or comic con is an event with a primary focus on comic books and comic book culture, in which comic book fans gather to meet creators, experts, and each other. Commonly, comic conventions are multi-day events hosted at convention centers, hotels, or college campuses.",
+        "location": "Toronto, Ontario, Canada",
+        "startDate": "2021-11-12T00:00:00.000Z",
+        "endDate": "2021-11-14T00:00:00.000Z",
+        "totalAttendance": 1
+    },
+    {
+        "_id": "607051e3f4587500516bf1b7",
+        "name": "J.K Rowling Meet & Greet",
+        "description": "Harry Potter is a series of seven fantasy novels written by British author, J. K. Rowling. The novels chronicle the lives of a young wizard, Harry Potter, and his friends Hermione Granger and Ron Weasley, all of whom are students at Hogwarts School of Witchcraft and Wizardry.",
+        "location": "Vancouver, British Columbia, Canada",
+        "startDate": "2021-10-12T00:00:00.000Z",
+        "endDate": "2021-10-15T00:00:00.000Z",
+        "totalAttendance": 1
+    }
+]
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/users/{username}/fandoms` 
+  
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+[
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/311206.jpg",
+        "_id": "607051e3f4587500516bf19a",
+        "name": "avengers",
+        "category": {
+            "backgroundURL": "https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg",
+            "_id": "607051e3f4587500516bf193",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "movies"
+        },
+        "createdBy": "607051e3f4587500516bf190",
+        "createdAt": "2021-04-09T13:08:51.466Z"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/1117133.jpg",
+        "_id": "607051e3f4587500516bf19c",
+        "name": "avengers age of ultron",
+        "category": {
+            "backgroundURL": "https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg",
+            "_id": "607051e3f4587500516bf193",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "movies"
+        },
+        "createdBy": "607051e3f4587500516bf190",
+        "createdAt": "2021-04-09T13:08:51.471Z"
+    },
+    {
+        "backgroundURL": "https://wallpapercave.com/wp/wp1826730.jpg",
+        "_id": "607051e3f4587500516bf19f",
+        "name": "divergent",
+        "category": {
+            "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+            "_id": "607051e3f4587500516bf194",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "books"
+        },
+        "createdBy": "607051e3f4587500516bf191",
+        "createdAt": "2021-04-09T13:08:51.477Z"
+    },
+    {
+        "backgroundURL": "https://images2.alphacoders.com/805/805700.jpg",
+        "_id": "607051e3f4587500516bf19e",
+        "name": "journey to the mysterious island",
+        "category": {
+            "backgroundURL": "https://i.pinimg.com/originals/51/c2/2e/51c22e9f59f506d283c1b07fa92e9a93.jpg",
+            "_id": "607051e3f4587500516bf193",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "movies"
+        },
+        "createdBy": "607051e3f4587500516bf190",
+        "createdAt": "2021-04-09T13:08:51.475Z"
+    }
+]
+ ```
+</td>
+</tr>
+</table>
+
+
+### FANDOM Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms/categories` 
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing_POST_Fandom_Category",
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "_id": "60706e79f4587500516bf234",
+    "name": "testing post category"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/fandoms` 
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing POST Fandom",
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "category": "607051e3f4587500516bf193"
+}
+```
+**category** is an id from the database
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+    "_id": "60706ef5f4587500516bf235",
+    "name": "testing post fandom",
+    "category": "607051e3f4587500516bf193",
+    "createdAt": "2021-04-09T15:12:53.092Z"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/fandoms/categories/{categoryId}` 
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td>
+  
+```json
+{
+    "name": "Testing Patch Category",
+    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "backgroundURL": "https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg",
+    "_id": "607051e3f4587500516bf193",
+    "name": "testing patch category"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/categories/{categoryId}` 
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/fandoms/{fandomId}` 
+  
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/categories` 
+  
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+ [
+    {
+        "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+        "_id": "607051e3f4587500516bf194",
+        "name": "books"
+    },
+    {
+        "backgroundURL": "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
+        "_id": "607051e3f4587500516bf195",
+        "name": "shows"
+    },
+    {
+        "backgroundURL": "https://cdn.wallpapersafari.com/28/72/eMnp5F.jpg",
+        "_id": "607051e3f4587500516bf196",
+        "name": "anime"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/242347.jpg",
+        "_id": "607051e3f4587500516bf197",
+        "name": "games"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/552032.jpg",
+        "_id": "607051e3f4587500516bf198",
+        "name": "sports"
+    },
+    {
+        "backgroundURL": "https://wallpaperaccess.com/full/249743.png",
+        "_id": "607051e3f4587500516bf199",
+        "name": "technology"
+    },
+    {
+        "backgroundURL": "https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg",
+        "_id": "60706e79f4587500516bf234",
+        "name": "testing post category"
+    }
+]
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/fandoms/categories/{categoryName}` 
+  
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+{
+    "fandoms": [
+        {
+            "backgroundURL": "https://i.pinimg.com/originals/dc/eb/80/dceb80db40569f060a1197d7f8c58916.jpg",
+            "_id": "607051e3f4587500516bf1ad",
+            "name": "basketball",
+            "category": "607051e3f4587500516bf198",
+            "createdAt": "2021-04-09T13:08:51.505Z"
+        },
+        {
+            "backgroundURL": "https://wallpapercave.com/wp/4dqP3rn.jpg",
+            "_id": "607051e3f4587500516bf1ae",
+            "name": "soccer",
+            "category": "607051e3f4587500516bf198",
+            "createdAt": "2021-04-09T13:08:51.507Z"
+        },
+        {
+            "backgroundURL": "https://cdn.hipwallpaper.com/i/91/94/rFjELC.jpg",
+            "_id": "607051e3f4587500516bf1af",
+            "name": "golf",
+            "category": "607051e3f4587500516bf198",
+            "createdAt": "2021-04-09T13:08:51.510Z"
+        },
+        {
+            "backgroundURL": "https://images.unsplash.com/photo-1531415074968-036ba1b575da?ixid=MXwxMjA3fDB8MHxzZWFyY2h8M3x8Y3JpY2tldHxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80",
+            "_id": "607051e3f4587500516bf1b0",
+            "name": "cricket",
+            "category": "607051e3f4587500516bf198",
+            "createdAt": "2021-04-09T13:08:51.512Z"
+        }
+    ],
+    "category": {
+        "backgroundURL": "https://wallpaperaccess.com/full/552032.jpg",
+        "_id": "607051e3f4587500516bf198",
+        "createdBy": "607051e3f4587500516bf192",
+        "name": "sports"
+    }
+}
+ ```
+</td>
 </tr>
 </table>
