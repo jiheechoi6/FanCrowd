@@ -67,6 +67,23 @@ export interface IEventReview {
   updatedAt: Date;
 }
 
+export interface IEventReviewDTO {
+  _id: mongoose.Types._ObjectId;
+  title: string;
+  content: string;
+  rating: number;
+  postedBy: IUserPostedBy;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IEventReviewSummary {
+  avgRating: number;
+  numOfEachRating: {
+    [key: string]: number;
+  };
+}
+
 export interface INewEventReviewInputDTO {
   title: string;
   content: string;

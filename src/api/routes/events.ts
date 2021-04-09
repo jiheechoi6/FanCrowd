@@ -225,8 +225,14 @@ export default (app: Router) => {
       try {
         const reviewId = req.params.reviewId;
         const eventService = new EventService();
-        await eventService.deleteReviewById(reviewId, req.user!);
-        res.status(200).send();
+        const deletedReview = await eventService.deleteReviewById(
+          reviewId,
+          req.user!
+        );
+        const updatedSummary = await eventService.getReviewSummary(
+          deletedReview.event
+        );
+        res.status(200).send(updatedSummary);
       } catch (err) {
         return next(err);
       }
@@ -255,19 +261,19 @@ export default (app: Router) => {
     async (req, res, next) => {
       try {
         const reviewId = req.params.reviewId;
-        const eventId = req.body.event;
 
         const eventService = new EventService();
         const reqBody = req.body as IUpdateEventReviewDTO;
 
         const updatedReview = await eventService.updateReviewById(
-          eventId,
           reviewId,
           reqBody,
           req.user!
         );
-
-        res.status(200).send(updatedReview);
+        const updatedSummary = await eventService.getReviewSummary(
+          updatedReview.event
+        );
+        res.status(200).send({ updatedReview, updatedSummary });
       } catch (err) {
         return next(err);
       }
@@ -289,7 +295,8 @@ export default (app: Router) => {
       const eventId = req.params.eventId;
       const eventService = new EventService();
       const reviews = await eventService.getEventReviewsById(eventId);
-      res.status(200).send(reviews);
+      const reviewSummary = await eventService.getReviewSummary(eventId);
+      res.status(200).send({ reviews, summary: reviewSummary });
     } catch (err) {
       return next(err);
     }

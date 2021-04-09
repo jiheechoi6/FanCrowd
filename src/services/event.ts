@@ -5,13 +5,13 @@ import EventReview from "../models/event-review";
 import {
   IEvent,
   INewEventInputDTO,
-  IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
   IUpdateEventReviewDTO,
   IEventSummary,
   IEventFilter,
-  IPopulatedEventDTO
+  IPopulatedEventDTO,
+  IEventReviewSummary
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -299,16 +299,81 @@ export default class EventService {
     await event.delete();
   }
 
-  public async getReviewSummary(eventId: mongoose.Types._ObjectId | string) {}
+  public async getReviewSummary(eventId: mongoose.Types._ObjectId | string) {
+    const avgRatingAndCounts: IEventReviewSummary[] = await EventReview.aggregate(
+      [
+        {
+          $match: {
+            event: mongoose.Types.ObjectId(eventId.toString())
+          }
+        },
+        {
+          $group: {
+            _id: {
+              rating: "$rating",
+              event: "$event"
+            },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id.event",
+            counts: {
+              $push: {
+                rating: "$_id.rating",
+                count: "$count"
+              }
+            },
+            totalReviews: { $sum: "$count" },
+            totalRating: { $sum: "$_id.rating" }
+          }
+        },
+        {
+          $project: {
+            avgRating: { $divide: ["$totalRating", "$totalReviews"] },
+            _id: 0,
+            numOfEachRating: {
+              $arrayToObject: {
+                $map: {
+                  input: "$counts",
+                  as: "el",
+                  in: {
+                    k: { $toString: "$$el.rating" },
+                    v: "$$el.count"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    );
+
+    const reviewSummary = avgRatingAndCounts[0] || {
+      avgRating: 0,
+      numOfEachRating: {}
+    };
+
+    //adds missing rating types
+    for (let i = 1; i <= 5; i++) {
+      if (!reviewSummary.numOfEachRating[i]) {
+        reviewSummary.numOfEachRating[i] = 0;
+      }
+    }
+    return reviewSummary;
+  }
 
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
-    const reviews = await EventReview.find({ event: eventId })
-      .sort({ updatedAt: "ascending" })
+    const reviews = await EventReview.find({
+      event: eventId
+    })
       .populate({
         path: "postedBy",
         select: "username profileURL -_id"
       })
-      .select("-event");
+      .select("-event")
+      .sort({ updatedAt: "ascending" });
     return reviews;
   }
 
@@ -365,19 +430,14 @@ export default class EventService {
     );
 
     await review.delete();
+    return review;
   }
 
   public async updateReviewById(
-    eventId: mongoose.Types._ObjectId | string,
     reviewId: mongoose.Types._ObjectId | string,
     updatedReview: IUpdateEventReviewDTO,
     reqUser: IRequestUser
   ) {
-    EventService._globalService.checkValidObjectId(
-      eventId,
-      `Event with id ${eventId} does not exist`
-    );
-
     EventService._globalService.checkValidObjectId(
       reviewId,
       `Review with id ${reviewId} does not exist`
@@ -395,8 +455,8 @@ export default class EventService {
     reviewDoc.content = updatedReview.content || reviewDoc.content;
     reviewDoc.rating = updatedReview.rating || reviewDoc.rating;
 
-    if (eventId) {
-      const event = await this.getEventDocById(eventId);
+    if (updatedReview.event) {
+      const event = await this.getEventDocById(updatedReview.event);
       reviewDoc.event = event._id;
     }
 
