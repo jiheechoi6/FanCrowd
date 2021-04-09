@@ -218,6 +218,64 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 <tr>
 <td> 
   
+  `POST`
+  <br>
+  <br>
+  Sends a reset password email to a user
+<td> 
+  
+  `/users/reset-password-email` 
+  
+</td>
+<td>
+  
+```json
+{
+    "username": "prof_mark",
+    "email": "professor_mark@gmail.ca"
+}
+```
+
+</td>
+<td>
+  
+Status code of `200`
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  <br>
+  <br>
+  Sends a reset password email to a user
+<td> 
+  
+  `/users/reset-password` 
+  
+</td>
+<td>
+  
+```json
+{
+    "verificationCode": "999999",
+    "password": "Prof_m@rk987",
+    "username": "prof_mark",
+    "email": "professor_mark@gmail.ca"
+}
+```
+
+</td>
+<td>
+  
+Status code of `200`
+
+</td>
+</tr>
+<tr>
+<td> 
+  
   `PATCH`
 
 <td> 
@@ -256,6 +314,27 @@ Notice, for each fandom on it's page on the right side, it displays all the even
     "createdAt": "2021-04-09T13:08:51.261Z"
 }
 ```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/users/{userId}/update-ban` 
+  <br>
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td>
+  N/A
+</td>
+<td>
+  
+Status code of `200`
 
 </td>
 </tr>
@@ -525,6 +604,7 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories` 
+  <br>
   <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
 </td>
