@@ -91,12 +91,14 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 
 ## API Routes
+**IMPORTANT:** ***Then tables below do not contain all the routes and endpoints we used, they just show the structure of our routes so when testing you get a better idea of how we did things. For the full list of endpoints we have exported our list of endpoints from Postman and put them in the following directory: `team09/src/postman-endpoints` please download that file and import it to Postman.***\
+
 **URI**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`. 
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`.\
 
-**Note:** Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.
+**Note:** Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.\
 
-**Note:** All the examples below are for _user1_
+**Note:** All the examples below are for _user1_.\
 
 ### AUTH Endpoints
 <table>
@@ -523,6 +525,7 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories` 
+  <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
 </td>
 <td>
@@ -567,7 +570,8 @@ Status code of `200`
     "category": "607051e3f4587500516bf193"
 }
 ```
-**category** is an id from the database
+<br>
+"category" is a category id from the database
 </td>
 <td>
   
@@ -591,6 +595,7 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories/{categoryId}` 
+  <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
 </td>
 <td>
@@ -623,6 +628,7 @@ Status code of `200`
 <td> 
   
   `/fandoms/categories/{categoryId}` 
+  <br>
   This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
 </td>
 <td> N/A </td>
@@ -768,3 +774,405 @@ Status code of `200`
 
 
 ### EVENTS Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td> 
+<td> 
+  
+  `/events` 
+  <br>
+  This endpoint can only be used by an Admin, so you will need the Admin's token for the `Authorization` Header
+</td>
+<td>
+  
+```json
+{
+    "name": "testing_POST_event",
+    "description": "testing description",
+    "location": "testing loc",
+    "startDate": "2021-11-12T00:00:00.000+00:00",
+    "endDate": "2021-11-12T00:00:00.000+00:00",
+    "fandom": "607051e3f4587500516bf19f"
+}
+```
+<br>
+"fandom" takes in a fandom id from the database
+</td>
+<td>
+  
+```json
+{
+    "_id": "60707b8a167f3c00a143dbc3",
+    "name": "testing_POST_event",
+    "description": "testing description",
+    "location": "testing loc",
+    "startDate": "2021-11-12T00:00:00.000Z",
+    "endDate": "2021-11-12T00:00:00.000Z",
+    "fandom": {
+        "_id": "607051e3f4587500516bf19f",
+        "backgroundURL": "https://wallpapercave.com/wp/wp1826730.jpg",
+        "name": "divergent",
+        "category": {
+            "_id": "607051e3f4587500516bf194",
+            "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "books"
+        },
+        "createdBy": "607051e3f4587500516bf191",
+        "createdAt": "2021-04-09T13:08:51.477Z"
+    },
+    "postedBy": {
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+        "username": "user1"
+    },
+    "totalAttendance": 0
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/events/{eventId}` 
+  
+</td>
+<td>
+  
+```json
+{
+    "name": "testing_PATCH_event",
+    "description": "testing new description",
+    "location": "testing new loc",
+    "startDate": "2021-08-12T00:00:00.000+00:00",
+    "endDate": "2021-10-12T00:00:00.000+00:00",
+    "fandom": "607051e3f4587500516bf19f"
+}
+```
+<br>
+
+"fandom" takes in a fandom id from the database
+
+</td>
+<td>
+  
+```json
+{
+    "_id": "60707b8a167f3c00a143dbc3",
+    "name": "testing_PATCH_event",
+    "description": "testing new description",
+    "location": "testing new loc",
+    "startDate": "2021-08-12T00:00:00.000Z",
+    "endDate": "2021-10-12T00:00:00.000Z",
+    "fandom": {
+        "_id": "607051e3f4587500516bf19f",
+        "backgroundURL": "https://wallpapercave.com/wp/wp1826730.jpg",
+        "name": "divergent",
+        "category": {
+            "_id": "607051e3f4587500516bf194",
+            "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "books"
+        },
+        "createdBy": "607051e3f4587500516bf191",
+        "createdAt": "2021-04-09T13:08:51.477Z"
+    },
+    "postedBy": {
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+        "username": "user1"
+    },
+    "totalAttendance": 0
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/event{eventId}` 
+
+</td>
+<td> N/A </td>
+<td> 
+  
+  Status code of `200` 
+  
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/events` 
+  
+</td>
+<td> N/A </td>
+<td> 
+  
+ ```json
+[
+    {
+        "_id": "607051e3f4587500516bf1b6",
+        "name": "Sony Game Release",
+        "description": "God of War is an action-adventure game franchise created by David Jaffe at Sony's Santa Monica Studio. It began in 2005 on the PlayStation 2 video game console, and has become a flagship title for the PlayStation brand, consisting of eight games across multiple platforms with a ninth currently in development.",
+        "location": "Los Angeles, California, USA",
+        "postedBy": {
+            "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+            "username": "user2"
+        },
+        "startDate": "2021-05-08T00:00:00.000Z",
+        "endDate": "2021-05-11T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf1aa",
+            "backgroundURL": "https://wallpapercave.com/wp/T4xxWSN.jpg",
+            "name": "god of war",
+            "category": {
+                "_id": "607051e3f4587500516bf197",
+                "backgroundURL": "https://wallpaperaccess.com/full/242347.jpg",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "games"
+            },
+            "createdBy": "607051e3f4587500516bf191",
+            "createdAt": "2021-04-09T13:08:51.499Z"
+        },
+        "totalAttendance": 0
+    },
+    {
+        "_id": "607051e3f4587500516bf1b4",
+        "name": "World Expo",
+        "description": "Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.",
+        "location": "Dubai, UAE",
+        "postedBy": {
+            "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+            "username": "user2"
+        },
+        "startDate": "2021-06-12T00:00:00.000Z",
+        "endDate": "2021-06-14T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf1b1",
+            "backgroundURL": "https://wallpapercave.com/wp/8duz5Ir.jpg",
+            "name": "apple",
+            "category": {
+                "_id": "607051e3f4587500516bf199",
+                "backgroundURL": "https://wallpaperaccess.com/full/249743.png",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "technology"
+            },
+            "createdBy": "607051e3f4587500516bf190",
+            "createdAt": "2021-04-09T13:08:51.515Z"
+        },
+        "totalAttendance": 2
+    },
+    {
+        "_id": "60707b8a167f3c00a143dbc3",
+        "name": "testing_PATCH_event",
+        "description": "testing new description",
+        "location": "testing new loc",
+        "startDate": "2021-08-12T00:00:00.000Z",
+        "endDate": "2021-10-12T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf19f",
+            "backgroundURL": "https://wallpapercave.com/wp/wp1826730.jpg",
+            "name": "divergent",
+            "category": {
+                "_id": "607051e3f4587500516bf194",
+                "backgroundURL": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "books"
+            },
+            "createdBy": "607051e3f4587500516bf191",
+            "createdAt": "2021-04-09T13:08:51.477Z"
+        },
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "totalAttendance": 0
+    },
+    {
+        "_id": "607051e3f4587500516bf1b8",
+        "name": "Anime-Fest",
+        "description": "One-Punch Man is a Japanese superhero franchise created by the artist ONE. It tells the story of Saitama, a superhero who can defeat any opponent with a single punch but seeks to find a worthy opponent after growing bored by a lack of challenge due to his overwhelming strength.",
+        "location": "New York City, New York, USA",
+        "postedBy": {
+            "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+            "username": "user2"
+        },
+        "startDate": "2021-08-30T00:00:00.000Z",
+        "endDate": "2021-09-01T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf1a7",
+            "backgroundURL": "https://cdn.wallpapersafari.com/51/10/9A6JeS.jpg",
+            "name": "one punch man",
+            "category": {
+                "_id": "607051e3f4587500516bf196",
+                "backgroundURL": "https://cdn.wallpapersafari.com/28/72/eMnp5F.jpg",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "anime"
+            },
+            "createdBy": "607051e3f4587500516bf190",
+            "createdAt": "2021-04-09T13:08:51.492Z"
+        },
+        "totalAttendance": 0
+    },
+    {
+        "_id": "607051e3f4587500516bf1b9",
+        "name": "FIFA World Cup Party",
+        "description": "The FIFA World Cup, often simply called the World Cup, is an international association football competition contested by the senior men's national teams of the members of the Fédération Internationale de Football Association, the sport's global governing body.",
+        "location": "Westminister, London, United Kingdom",
+        "postedBy": {
+            "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+            "username": "user2"
+        },
+        "startDate": "2021-12-03T00:00:00.000Z",
+        "endDate": "2021-12-08T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf1ae",
+            "backgroundURL": "https://wallpapercave.com/wp/4dqP3rn.jpg",
+            "name": "soccer",
+            "category": {
+                "_id": "607051e3f4587500516bf198",
+                "backgroundURL": "https://wallpaperaccess.com/full/552032.jpg",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "sports"
+            },
+            "createdBy": "607051e3f4587500516bf190",
+            "createdAt": "2021-04-09T13:08:51.507Z"
+        },
+        "totalAttendance": 1
+    },
+    {
+        "_id": "607051e3f4587500516bf1ba",
+        "name": "New HBO Show Press Release",
+        "description": "Home Box Office is an American pay television network owned by WarnerMedia Studios & Networks and the flagship property of parent subsidiary Home Box Office, Inc.",
+        "location": "Seattle, Washington, USA",
+        "postedBy": {
+            "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+            "username": "user1"
+        },
+        "startDate": "2022-01-10T00:00:00.000Z",
+        "endDate": "2022-01-13T00:00:00.000Z",
+        "fandom": {
+            "_id": "607051e3f4587500516bf1a3",
+            "backgroundURL": "https://cdn.wallpapersafari.com/26/33/Fbx3ci.jpg",
+            "name": "game of thrones",
+            "category": {
+                "_id": "607051e3f4587500516bf195",
+                "backgroundURL": "https://www.canvasandwall.co.za/wp-content/uploads/2020/04/TV-Background-3D-wallpaper.jpg",
+                "createdBy": "607051e3f4587500516bf192",
+                "name": "shows"
+            },
+            "createdBy": "607051e3f4587500516bf191",
+            "createdAt": "2021-04-09T13:08:51.484Z"
+        },
+        "totalAttendance": 0
+    }
+]
+ ```
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/events/{categoryName}/{fandomName}` <br>
+  Category and Fandom names must be seperated by dashes and not spaces, for example: _"harry potter"_ should be _"harry-potter"_.
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+[
+    {
+        "_id": "607051e3f4587500516bf1b4",
+        "name": "World Expo",
+        "description": "Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.",
+        "location": "Dubai, UAE",
+        "startDate": "2021-06-12T00:00:00.000Z",
+        "endDate": "2021-06-14T00:00:00.000Z",
+        "totalAttendance": 2
+    }
+]
+ ``` 
+ <br>
+ Category: Technology, Fandom: Apple
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/events/{eventId}` 
+  
+</td> 
+<td> 
+  
+  N/A 
+  
+</td>
+<td> 
+  
+ ```json
+{
+    "_id": "607051e3f4587500516bf1b4",
+    "name": "World Expo",
+    "description": "Our once-in-a-lifetime celebration – the largest event ever staged in the Arab world – is set to welcome 190 participating countries, and millions of visitors from across the globe. Here they will experience warm Emirati hospitality at its finest, as well as the UAE’s values of inclusion, tolerance and cooperation. Youth are at the heart of our World Expo. That’s why Expo 2020 aspires to create a meaningful legacy that will benefit generations to come, both locally and globally, spanning everything from innovations and architecture to friendships and business opportunities.",
+    "location": "Dubai, UAE",
+    "postedBy": {
+        "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+        "username": "user2"
+    },
+    "startDate": "2021-06-12T00:00:00.000Z",
+    "endDate": "2021-06-14T00:00:00.000Z",
+    "fandom": {
+        "_id": "607051e3f4587500516bf1b1",
+        "backgroundURL": "https://wallpapercave.com/wp/8duz5Ir.jpg",
+        "name": "apple",
+        "category": {
+            "_id": "607051e3f4587500516bf199",
+            "backgroundURL": "https://wallpaperaccess.com/full/249743.png",
+            "createdBy": "607051e3f4587500516bf192",
+            "name": "technology"
+        },
+        "createdBy": "607051e3f4587500516bf190",
+        "createdAt": "2021-04-09T13:08:51.515Z"
+    },
+    "totalAttendance": 2
+}
+ ```
+
+</td>
+</tr>
+</table>
