@@ -1,0 +1,1520 @@
+{
+	"info": {
+		"_postman_id": "9996cf67-1c0d-49a6-83bc-b3dc7ce1cbf0",
+		"name": "FanCrowd_309",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Fandoms",
+			"item": [
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "Post Fandom Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_POST_Fandom_Post\",\r\n    \"content\": \"Test creating a new post\",\r\n    \"fandom\": \"607051e3f4587500516bf19f\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Patch Fandom Post by ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_PATCH_Fandom_Post\",\r\n    \"content\": \"Test updating a post\",\r\n    \"fandom\": \"607051e3f4587500516bf19f\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/posts/607093cd167f3c00a143dbc6",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"posts",
+										"607093cd167f3c00a143dbc6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Post by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/posts/607093cd167f3c00a143dbc6",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"posts",
+										"607093cd167f3c00a143dbc6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Posts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/categories/anime/one-punch-man/posts",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"categories",
+										"anime",
+										"one-punch-man",
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Post By ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/posts/607093cd167f3c00a143dbc6",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"posts",
+										"607093cd167f3c00a143dbc6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Post Fandom Post Comment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODExMDR9.vPyaGDybrmH3fdw2I8T6xe3R_RfLNJeSWnu3XAoRqAQ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_POST_Fandom_Comment\",\r\n    \"content\": \"Test creating a new comment\",\r\n    \"fandomPost\": \"6070ac8e167f3c00a143dbca\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/comments",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Fandom Comment",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_PATCH_Fandom_Comment\",\r\n    \"content\": \"Test updating a comment\",\r\n    \"fandomPost\": \"6070ac8e167f3c00a143dbca\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/comments/6070aed4167f3c00a143dbcb",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"comments",
+										"6070aed4167f3c00a143dbcb"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Post Comment by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/comments/6070af2f167f3c00a143dbcc",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"comments",
+										"6070af2f167f3c00a143dbcc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Comments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/posts/6070ac8e167f3c00a143dbca/comments",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"posts",
+										"6070ac8e167f3c00a143dbca",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "Post Fandom Category",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTIiLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6ImFkbWluIiwicHJvZmlsZVVSTCI6Imh0dHBzOi8vbW9jYWgub3JnL3VwbG9hZHMvcG9zdHMvNTQyMDY0MS1tb29uLW5pZ2h0LWJsYWNrLXNwYWNlLWhhbGxvd2Vlbi1zdGFyLXN1cGVybW9vbi1uYXR1cmUtc3Rlcm5lLXN1cGVyLW1vb24tZ2FsYXh5LXVuaXZlcnNlLXNreS1uaWdodGltZS1jcmVhdGl2ZS1jb21tb25zLWltYWdlcy5qcGciLCJpYXQiOjE2MTc5ODA5MzF9.MczOdLIPuumikd-Tmv5mIH_HsrzKJyb6TQYKdMCbSy8",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Testing POST Category\",\r\n    \"backgroundURL\": \"https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Patch Fandom Category By ID",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTIiLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6ImFkbWluIiwicHJvZmlsZVVSTCI6Imh0dHBzOi8vbW9jYWgub3JnL3VwbG9hZHMvcG9zdHMvNTQyMDY0MS1tb29uLW5pZ2h0LWJsYWNrLXNwYWNlLWhhbGxvd2Vlbi1zdGFyLXN1cGVybW9vbi1uYXR1cmUtc3Rlcm5lLXN1cGVyLW1vb24tZ2FsYXh5LXVuaXZlcnNlLXNreS1uaWdodGltZS1jcmVhdGl2ZS1jb21tb25zLWltYWdlcy5qcGciLCJpYXQiOjE2MTc5ODE0NTF9.N_qId8GeQe9kSU71PQbsT4lqpu6Z-W0V10J7XTtRfHw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Testing Patch Category\",\r\n    \"backgroundURL\": \"https://www.sait.ca/images/News%20and%20Events/2021/Pride%20-%20Zoom%20background.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/categories/607051e3f4587500516bf193",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"categories",
+										"607051e3f4587500516bf193"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Fandom Category By ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTIiLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6ImFkbWluIiwicHJvZmlsZVVSTCI6Imh0dHBzOi8vbW9jYWgub3JnL3VwbG9hZHMvcG9zdHMvNTQyMDY0MS1tb29uLW5pZ2h0LWJsYWNrLXNwYWNlLWhhbGxvd2Vlbi1zdGFyLXN1cGVybW9vbi1uYXR1cmUtc3Rlcm5lLXN1cGVyLW1vb24tZ2FsYXh5LXVuaXZlcnNlLXNreS1uaWdodGltZS1jcmVhdGl2ZS1jb21tb25zLWltYWdlcy5qcGciLCJpYXQiOjE2MTc5ODE0NTF9.N_qId8GeQe9kSU71PQbsT4lqpu6Z-W0V10J7XTtRfHw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/fandoms/categories/607051e3f4587500516bf193",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"categories",
+										"607051e3f4587500516bf193"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Fandom Categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/fandoms/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"fandoms",
+										"categories"
+									]
+								},
+								"description": "Get all fandoms"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Post Fandom",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODExMDR9.vPyaGDybrmH3fdw2I8T6xe3R_RfLNJeSWnu3XAoRqAQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Testing POST Fandom\",\r\n    \"backgroundURL\": \"https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg\",\r\n    \"category\": \"607051e3f4587500516bf193\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/fandoms",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Join Fandom",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/fandoms/607051e3f4587500516bf1a1/join",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"607051e3f4587500516bf1a1",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Like",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTEiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjIiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYm9hdGludGVybmF0aW9uYWwuY29tL2JpX3ByZC9iaS9saWJyYXJ5X2ltYWdlcy83d0VpS05TUzQyS2MzVFBYbWhNZ19UaGUtRmx5aW5nLUR1dGNobWFuLUFkb2JlU3RvY2suanBnIiwiaWF0IjoxNjE3OTk0Nzc0fQ.9mXyXu7Z2Cn3R6AGQTVrxFIkVKk4lGwJ8aTCzyhzcVI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fandomPost\": \"607051e3f4587500516bf1c3\",\r\n    \"isLike\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/fandoms/likes",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Fandom by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODExMDR9.vPyaGDybrmH3fdw2I8T6xe3R_RfLNJeSWnu3XAoRqAQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Testing PATCH Fandom\",\r\n    \"backgroundURL\": \"https://starwarsblog.starwars.com/wp-content/uploads/2020/04/star-wars-backgrounds-25.jpg\",\r\n    \"category\": \"607051e3f4587500516bf194\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/fandoms/607051e3f4587500516bf1a2",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"607051e3f4587500516bf1a2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Fandom by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/fandoms/607051e3f4587500516bf1a0",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"607051e3f4587500516bf1a0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by Leaving Fandom",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/fandoms/607051e3f4587500516bf1a1/unjoin",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"607051e3f4587500516bf1a1",
+								"unjoin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fandom in Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/fandoms/categories/sports/basketball",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"categories",
+								"sports",
+								"basketball"
+							]
+						},
+						"description": "Get all fandoms"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Fandoms in Category Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/fandoms/categories/sports",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"categories",
+								"sports"
+							]
+						},
+						"description": "Get all fandoms"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Has Joined",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODExMDR9.vPyaGDybrmH3fdw2I8T6xe3R_RfLNJeSWnu3XAoRqAQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/fandoms/607051e3f4587500516bf19f/hasJoined",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"fandoms",
+								"607051e3f4587500516bf19f",
+								"hasJoined"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Reviews",
+					"item": [
+						{
+							"name": "Post Review on Event Id",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_POST_review\",\r\n    \"content\": \"Test adding review to event\",\r\n    \"rating\": 3,\r\n    \"event\": \"60707b62167f3c00a143dbc2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/events/60707b62167f3c00a143dbc2/reviews",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"60707b62167f3c00a143dbc2",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Patch Review",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Testing_PATCH_review\",\r\n    \"content\": \"Test updating review\",\r\n    \"rating\": 5,\r\n    \"event\": \"60707b62167f3c00a143dbc2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/events/reviews/607086b0167f3c00a143dbc4",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"reviews",
+										"607086b0167f3c00a143dbc4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Reviews of Event",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/events/60707b62167f3c00a143dbc2/reviews",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"60707b62167f3c00a143dbc2",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Review by Id",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/events/reviews/607086b0167f3c00a143dbc4",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"reviews",
+										"607086b0167f3c00a143dbc4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Reviews by Event Id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/events/607051e3f4587500516bf1b3/reviews",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"607051e3f4587500516bf1b3",
+										"reviews"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Attend",
+					"item": [
+						{
+							"name": "Post attendance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"event\": \"60707b62167f3c00a143dbc2\",\r\n    \"user\": \"607051e3f4587500516bf190\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/events/60707b62167f3c00a143dbc2/attends",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"60707b62167f3c00a143dbc2",
+										"attends"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete attendance",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/events/attends/60708ce1167f3c00a143dbc5",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"attends",
+										"60708ce1167f3c00a143dbc5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete attendances of Event",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/events/attends/6064ce365c163b00dda07bf7",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"attends",
+										"6064ce365c163b00dda07bf7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get attendance",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:5000/api/events/6064ce365c163b00dda07bf7/is-attending",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"events",
+										"6064ce365c163b00dda07bf7",
+										"is-attending"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Post Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"testing_POST_event\",\r\n    \"description\": \"testing description\",\r\n    \"location\": \"testing loc\",\r\n    \"startDate\": \"2021-11-12T00:00:00.000+00:00\",\r\n    \"endDate\": \"2021-11-12T00:00:00.000+00:00\",\r\n    \"fandom\": \"607051e3f4587500516bf19f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/events/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Event",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"testing_PATCH_event\",\r\n    \"description\": \"testing new description\",\r\n    \"location\": \"testing new loc\",\r\n    \"startDate\": \"2021-08-12T00:00:00.000+00:00\",\r\n    \"endDate\": \"2021-10-12T00:00:00.000+00:00\",\r\n    \"fandom\": \"607051e3f4587500516bf19f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/events/60707b8a167f3c00a143dbc3",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"60707b8a167f3c00a143dbc3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/events/6064a8ee0f4daa00e2c9f6af",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"6064a8ee0f4daa00e2c9f6af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/events/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events by Fandom Name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:5000/api/events/technology/apple",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"technology",
+								"apple"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/events/607051e3f4587500516bf1b4",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"events",
+								"607051e3f4587500516bf1b4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Post Reset Password Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"prof_mark\",\r\n    \"email\": \"professor_mark@gmail.ca\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/reset-password-email",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"reset-password-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"verificationCode\": \"\",\r\n    \"password\": \"Prof_m@rk987\",\r\n    \"username\": \"prof_mark\",\r\n    \"email\": \"professor_mark@gmail.ca\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/reset-password",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch User by Username",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODE5NTJ9.W54gpGx3_aobi1SWcJXAKlyRVv97yvxQnTqo3GNkTI0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bio\": \"Updated BIO\",\r\n    \"city\": \"Updated City\",\r\n    \"country\": \"Updated Country\",\r\n    \"email\": \"new_email@gmail.com\",\r\n    \"fullName\": \"Updated Name\",\r\n    \"profileURL\": \"https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/users/user1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch User Ban by Username",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTIiLCJyb2xlIjoiYWRtaW4iLCJ1c2VybmFtZSI6ImFkbWluIiwicHJvZmlsZVVSTCI6Imh0dHBzOi8vbW9jYWgub3JnL3VwbG9hZHMvcG9zdHMvNTQyMDY0MS1tb29uLW5pZ2h0LWJsYWNrLXNwYWNlLWhhbGxvd2Vlbi1zdGFyLXN1cGVybW9vbi1uYXR1cmUtc3Rlcm5lLXN1cGVyLW1vb24tZ2FsYXh5LXVuaXZlcnNlLXNreS1uaWdodGltZS1jcmVhdGl2ZS1jb21tb25zLWltYWdlcy5qcGciLCJpYXQiOjE2MTc5OTM4Mjl9.0TOMFORXf_UIJrEH7-D3z2erSZiaJ7WLpa8o4wIZQ0Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:5000/api/users/user1/update-ban",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1",
+								"update-ban"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User by Username",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/user1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users By Username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/user1",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/user1/events",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Fandoms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/users/user1/fandoms",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"users",
+								"user1",
+								"fandoms"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Post Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullName\": \"Professor Mark\",\r\n    \"email\": \"professor_mark@gmail.ca\",\r\n    \"username\": \"prof_mark\",\r\n    \"password\": \"ProfM@rk123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/auth/signup/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signup",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Signin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZmZWEwOGZmOTFhZTAwM2I1N2NlMjYiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9tb2NhaC5vcmcvdXBsb2Fkcy9wb3N0cy81NDIwNjQxLW1vb24tbmlnaHQtYmxhY2stc3BhY2UtaGFsbG93ZWVuLXN0YXItc3VwZXJtb29uLW5hdHVyZS1zdGVybmUtc3VwZXItbW9vbi1nYWxheHktdW5pdmVyc2Utc2t5LW5pZ2h0aW1lLWNyZWF0aXZlLWNvbW1vbnMtaW1hZ2VzLmpwZyIsImlhdCI6MTYxNzk0ODExMH0.fjCFHyV8-tyKdtc1M96PLYXo7fr4iDPbBMaljyOsqjo",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user2\",\r\n    \"password\": \"user2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/auth/signin/",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"signin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTFlM2Y0NTg3NTAwNTE2YmYxOTAiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9jZG4uYnVzaW5lc3MyY29tbXVuaXR5LmNvbS93cC1jb250ZW50L3VwbG9hZHMvMjAxNy8wOC9ibGFuay1wcm9maWxlLXBpY3R1cmUtOTczNDYwXzY0MC5wbmciLCJpYXQiOjE2MTc5ODA4MDZ9.QwzbJ9OtaCj1_DVEhniapvAyxnBKZNVQKn8GjL5Wm74",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/auth/currentUser",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"currentUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
