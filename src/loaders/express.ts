@@ -3,11 +3,17 @@ import cors from "cors";
 import routes from "../api";
 import config from "../config";
 import passport from "passport";
+import path from "path";
 
 export default async ({ app }: { app: express.Application }) => {
   app.enable("trust proxy");
   app.use(cors());
   app.use(express.json());
+
+  if (config.env === "production") {
+    app.use(express.static(path.join(__dirname, "client/build")));
+  }
+
   app.use(config.api.prefix, routes());
 
   // Passport Middleware
@@ -37,7 +43,6 @@ export default async ({ app }: { app: express.Application }) => {
     } else if (err.name === "NotFoundError") {
       return res.status(404).send({ message: err.message }).end();
     }
-    console.log(err);
     res.status(500).send({ message: "Internal Server Error" }).end();
   });
 };

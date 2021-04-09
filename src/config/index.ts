@@ -11,5 +11,6 @@ export default {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     googleRefreshToken: process.env.GOOGLE_REFRESH_TOKEN,
     redirectUri: "https://developers.google.com/oauthplayground"
-  }
+  },
+  env: process.env.NODE_ENV || "development"
 };
