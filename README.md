@@ -194,7 +194,7 @@ To read more about each post and the comments on a particular post, click the `R
   
   `GET`
   
-</td> <td> Current User </td> 
+</td>
 <td> 
   
   `/auth/currentUser` 
