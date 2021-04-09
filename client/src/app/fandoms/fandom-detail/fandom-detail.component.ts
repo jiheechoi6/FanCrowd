@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 import { UserIdentity } from 'src/app/shared/models/user-identity-token';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GlobalService } from 'src/app/core/services/global.service';
-import { IEventSummary } from 'src/app/shared/models/event-summar';
+import { IEventSummary } from 'src/app/shared/models/event-summary';
 
 @Component({
   selector: 'app-fandom-detail',

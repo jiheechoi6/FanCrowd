@@ -7,10 +7,9 @@ import { UserService } from '../core/services/user.service';
 import { DeleteDialogComponent } from '../shared/components/delete-dialog/delete-dialog.component';
 import UserProfileDTO from '../shared/models/user-dto';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
-import { BioEditDialogComponent } from './bio-edit-dialog/bio-edit-dialog.component';
 import { UserIdentity } from '../shared/models/user-identity-token';
 import UserFandomRes from '../shared/models/user-fandom-res';
-import { IEventSummary } from '../shared/models/event-summar';
+import { IEventSummary } from '../shared/models/event-summary';
 
 @Component({
   selector: 'app-user',
@@ -23,6 +22,8 @@ export class UserComponent implements OnInit, OnDestroy {
   loggedInUser: UserIdentity | null = null;
   events: IEventSummary[] = [];
   fandoms: UserFandomRes[] = [];
+
+  isUserBanned = false;
 
   constructor(
     private _userService: UserService,
@@ -66,14 +67,18 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   deleteUser() {
-    this._userService.deleteUserByUsername(this.user?.username || '');
-    this._authService.logOut();
-    this._router.navigate(['../']);
+    this._userService
+      .deleteUserByUsername(this.user!.username)
+      .subscribe(() => {
+        this._authService.logOut();
+        this._router.navigate(['/login']);
+      });
   }
 
-  banUser() {
-    this._userService.banUserByUsername(this.user?.username || '');
-    this._router.navigate(['../']);
+  toggleUserBan() {
+    this._userService
+      .banUserByUsername(this.user!.username)
+      .subscribe(() => (this.user!.isBanned = !this.user!.isBanned));
   }
 
   openEditAccountDialog() {
@@ -115,35 +120,15 @@ export class UserComponent implements OnInit, OnDestroy {
   openBanUserAccountDialog() {
     this._dialog.open(DeleteDialogComponent, {
       data: {
-        title: 'Ban UserProfileDTO Confirmation',
-        details: `Are you sure you want to ban ${this.user?.username}?`,
-        onConfirmCb: this.banUser.bind(this),
+        title: `${this.user!.isBanned ? 'Unban' : 'Ban'} User Confirmation`,
+        details: `Are you sure you want to ${
+          this.user!.isBanned ? 'unban' : 'ban'
+        } ${this.user!.username}?`,
+        onConfirmCb: this.toggleUserBan.bind(this),
       },
       width: '360px',
       height: '180px',
       autoFocus: false,
-    });
-  }
-
-  openEditBioDialog() {
-    const dialogRef = this._dialog.open(BioEditDialogComponent, {
-      data: { ...this.user },
-      autoFocus: false,
-      width: '450px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe((updatedUser: UserProfileDTO) => {
-      if (updatedUser) {
-        this.user = updatedUser;
-        if (!this._authService.currentUser.value) {
-          return;
-        }
-        this._authService.currentUser.next({
-          ...this._authService.currentUser.value,
-          username: updatedUser.username,
-          profileURL: updatedUser.profileURL,
-        });
-      }
     });
   }
 
@@ -156,7 +141,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   isEventsEmpty(): boolean {
-    return !this.events;
+    return !this.events.length;
   }
 
   isSelf(): boolean {

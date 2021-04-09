@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EventService } from '../core/services/event.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EventCreateDialogComponent } from './event-create-dialog/event-create-dialog.component';
 import { AuthService } from '../core/services/auth.service';
 import Event from '../shared/models/event';
 import { UserIdentity } from 'src/app/shared/models/user-identity-token';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { GlobalService } from '../core/services/global.service';
+import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.sass'],
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, OnDestroy {
   events: Array<Event> = [];
   allEvents: Array<Event> = [];
   pageSizeOptions: number[] = [5, 10, 20];
@@ -20,18 +24,32 @@ export class EventsComponent implements OnInit {
   today: Date = new Date();
   user: UserIdentity | null = null;
 
+  isLoadingEvents = true;
+  userSubscription!: Subscription;
+
   constructor(
     private _authService: AuthService,
     private _eventService: EventService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
+    private _globalService: GlobalService
   ) {}
 
   ngOnInit() {
-    this._authService.currentUser.subscribe((user) => (this.user = user));
-    this._eventService.getEvents().subscribe((events) => {
-      this.allEvents = events;
-      this.events = this.allEvents.slice(0, this.pageSize);
-    });
+    this.userSubscription = this._authService.currentUser.subscribe(
+      (user) => (this.user = user)
+    );
+    this._eventService
+      .getEvents()
+      .pipe(finalize(() => (this.isLoadingEvents = false)))
+      .subscribe((events) => {
+        this.allEvents = events;
+        this.events = this.allEvents.slice(0, this.pageSize);
+      });
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 
   selectPage(event: any) {
@@ -58,9 +76,17 @@ export class EventsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((newEvent: Event) => {
       if (newEvent) {
-        this._eventService.getEvents().subscribe((events) => {
-          this.allEvents = events;
-        });
+        this.allEvents.push(newEvent);
+        this.events = this.allEvents.slice(0, this.pageSize);
+        this._snackBar.open(
+          `${this._globalService.toTitleCase(newEvent.name)} has been created!`,
+          'X',
+          {
+            panelClass: ['snackbar'],
+            horizontalPosition: 'left',
+            duration: 2500,
+          }
+        );
       }
     });
   }

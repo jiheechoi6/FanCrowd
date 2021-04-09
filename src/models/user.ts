@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: [true, "Email is required"],
+      lowercase: true,
       validate(value: string) {
         const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
         if (!emailRegex.test(value)) {
@@ -22,6 +23,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: [true, "Username is required"],
+      lowercase: true,
       validate(value: string) {
         const usernameRegex = /^[a-z0-9_]+$/;
         if (!usernameRegex.test(value)) {
@@ -42,23 +44,19 @@ const UserSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      // required: [isNotAdmin, "Bio is required"],
       default: ""
     },
     profileURL: {
       type: String,
-      // required: [isNotAdmin, "Profile URL is required"],
       default:
         "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png"
     },
     city: {
       type: String,
-      // required: [isNotAdmin, "City is required"],
       default: ""
     },
     country: {
       type: String,
-      // required: [isNotAdmin, "Country is required"],
       default: ""
     },
     resetPasswordToken: {
@@ -68,18 +66,16 @@ const UserSchema = new mongoose.Schema(
       expiresIn: {
         type: Date
       }
+    },
+    isBanned: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: { updatedAt: false }, versionKey: false }
 );
 
-function isNotAdmin(this: IUser) {
-  return this.role === "user";
-}
-
-//Remove all posts, comments, events,..etc when user is removed
 UserSchema.pre("remove", async function (next) {
-  console.log(this);
   next();
 });
 

@@ -5,13 +5,14 @@ import EventReview from "../models/event-review";
 import {
   IEvent,
   INewEventInputDTO,
-  IEventReview,
   INewEventReviewInputDTO,
   IUpdateEventDTO,
   IUpdateEventReviewDTO,
   IEventSummary,
   IEventFilter,
-  IPopulatedEventDTO
+  IPopulatedEventDTO,
+  IEventReviewSummary,
+  IEventReviewDTO
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -45,6 +46,22 @@ export default class EventService {
     return event;
   }
 
+  public async deleteAllReviews(eventId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+    await EventReview.deleteMany({ event: eventId });
+  }
+
+  public async deleteAllAttendees(eventId: mongoose.Types._ObjectId | string) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+    await Attend.deleteMany({ event: eventId });
+  }
+
   public async getEventById(eventId: string) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -65,10 +82,6 @@ export default class EventService {
     }
 
     return eventWithId;
-  }
-
-  public async getEvents() {
-    return await this.getEventsMatchingFilters({});
   }
 
   public async getEventsMatchingFilters(eventFilter: IEventFilter) {
@@ -223,9 +236,8 @@ export default class EventService {
 
     EventService._fandomService.getFandomById(newEvent.fandom);
     const newEventDoc = await Event.create(newEvent);
-    const event = newEventDoc.toObject();
-    Reflect.deleteProperty(event, "postedBy");
 
+    const event = await this.getEventById(newEventDoc._id);
     return event;
   }
 
@@ -261,13 +273,11 @@ export default class EventService {
     }
 
     const updatedEventDoc = await eventDoc.save();
-    const event = updatedEventDoc.toObject();
-    Reflect.deleteProperty(event, "postedBy");
 
+    const event = await this.getEventById(updatedEventDoc._id);
     return event;
   }
 
-  // TODO: Create two more methods to delete all reviews and attendees
   public async deleteEventById(
     eventId: mongoose.Types._ObjectId | string,
     reqUser: IRequestUser
@@ -288,12 +298,83 @@ export default class EventService {
     await event.delete();
   }
 
+  public async getReviewSummary(eventId: mongoose.Types._ObjectId | string) {
+    const avgRatingAndCounts: IEventReviewSummary[] = await EventReview.aggregate(
+      [
+        {
+          $match: {
+            event: mongoose.Types.ObjectId(eventId.toString())
+          }
+        },
+        {
+          $group: {
+            _id: {
+              rating: "$rating",
+              event: "$event"
+            },
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id.event",
+            counts: {
+              $push: {
+                rating: "$_id.rating",
+                count: "$count"
+              }
+            },
+            totalReviews: { $sum: "$count" },
+            totalRating: { $sum: { $multiply: ["$_id.rating", "$count"] } }
+          }
+        },
+        {
+          $project: {
+            avgRating: { $divide: ["$totalRating", "$totalReviews"] },
+            totalRating: "$totalRating",
+            totalReviews: "$totalReviews",
+            _id: 0,
+            numOfEachRating: {
+              $arrayToObject: {
+                $map: {
+                  input: "$counts",
+                  as: "el",
+                  in: {
+                    k: { $toString: "$$el.rating" },
+                    v: "$$el.count"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    );
+
+    const reviewSummary = avgRatingAndCounts[0] || {
+      avgRating: 0,
+      numOfEachRating: {}
+    };
+
+    //adds missing rating types
+    for (let i = 1; i <= 5; i++) {
+      if (!reviewSummary.numOfEachRating[i]) {
+        reviewSummary.numOfEachRating[i] = 0;
+      }
+    }
+    return reviewSummary;
+  }
+
   public async getEventReviewsById(eventId: mongoose.Types._ObjectId | string) {
-    const eventDoc: IEvent = await this.getEventDocById(eventId);
-    const reviews: IEventReview[] = await EventReview.find({ event: eventDoc })
-      .sort({ updatedAt: "ascending" })
-      .populate("postedBy", ["username", "role", "profileURL"])
-      .populate("event");
+    const reviews = await EventReview.find({
+      event: eventId
+    })
+      .populate({
+        path: "postedBy",
+        select: "username profileURL -_id"
+      })
+      .select("-event")
+      .sort({ updatedAt: "ascending" });
     return reviews;
   }
 
@@ -317,7 +398,8 @@ export default class EventService {
 
   public async createReview(
     eventId: mongoose.Types._ObjectId | string,
-    newReview: INewEventReviewInputDTO
+    newReview: INewEventReviewInputDTO,
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -326,9 +408,13 @@ export default class EventService {
 
     this.getEventDocById(eventId);
     const newReviewDoc = await EventReview.create(newReview);
-    const review = newReviewDoc.toObject();
-    Reflect.deleteProperty(review, "postedBy");
-
+    const review = {
+      ...newReviewDoc.toObject(),
+      postedBy: {
+        profileURL: reqUser.profileURL,
+        username: reqUser.username
+      }
+    };
     return review;
   }
 
@@ -344,25 +430,20 @@ export default class EventService {
     const review = await this.getReviewById(reviewId);
 
     EventService._globalService.hasPermission(
-      review.postedBy._id,
+      review.postedBy,
       reqUser,
       `Only the creator or an admin may delete review with id ${reviewId}`
     );
 
     await review.delete();
+    return review;
   }
 
   public async updateReviewById(
-    eventId: mongoose.Types._ObjectId | string,
     reviewId: mongoose.Types._ObjectId | string,
     updatedReview: IUpdateEventReviewDTO,
     reqUser: IRequestUser
   ) {
-    EventService._globalService.checkValidObjectId(
-      eventId,
-      `Event with id ${eventId} does not exist`
-    );
-
     EventService._globalService.checkValidObjectId(
       reviewId,
       `Review with id ${reviewId} does not exist`
@@ -371,7 +452,7 @@ export default class EventService {
     const reviewDoc = await this.getReviewById(reviewId);
 
     EventService._globalService.hasPermission(
-      reviewDoc.postedBy._id,
+      reviewDoc.postedBy,
       reqUser,
       `Only the creator or an admin may update review with id ${reviewId}`
     );
@@ -380,27 +461,31 @@ export default class EventService {
     reviewDoc.content = updatedReview.content || reviewDoc.content;
     reviewDoc.rating = updatedReview.rating || reviewDoc.rating;
 
-    if (eventId) {
-      const event = await this.getEventDocById(eventId);
-      reviewDoc.event = event;
+    if (updatedReview.event) {
+      const event = await this.getEventDocById(updatedReview.event);
+      reviewDoc.event = event._id;
     }
 
     const updatedReviewDoc = await reviewDoc.save();
-    const review = updatedReviewDoc.toObject();
-    Reflect.deleteProperty(review, "postedBy");
-
+    const review = {
+      ...updatedReviewDoc.toObject(),
+      postedBy: {
+        profileURL: reqUser.profileURL,
+        username: reqUser.username
+      }
+    };
     return review;
   }
 
-  public async getEventAttendeesById(
-    eventId: mongoose.Types._ObjectId | string
+  public async isUserAttendingEvent(
+    eventId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | string
   ) {
-    const eventDoc: IEvent = await this.getEventDocById(eventId);
-    const attendees: IAttendEvent[] = await Attend.find({
-      event: eventDoc._id
-    });
-
-    return attendees;
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
+    return await Attend.exists({ event: eventId, user: userId });
   }
 
   public async getAttendeeById(attendeeId: mongoose.Types._ObjectId | string) {
@@ -421,40 +506,20 @@ export default class EventService {
     return attendee;
   }
 
-  public async createAttendee(
-    eventId: mongoose.Types._ObjectId | string,
-    newAttendee: INewAttendEventDTO
-  ) {
+  public async createAttendee(newAttendee: INewAttendEventDTO) {
     EventService._globalService.checkValidObjectId(
-      eventId,
-      `Event with id ${eventId} does not exist`
+      newAttendee.event,
+      `Event with id ${newAttendee.event} does not exist`
     );
 
-    this.getEventDocById(eventId);
-    const newAttendeeDoc = await Attend.create(newAttendee);
-    const attendee = newAttendeeDoc.toObject();
-    Reflect.deleteProperty(attendee, "user");
-
-    return attendee;
+    this.getEventDocById(newAttendee.event);
+    await Attend.create(newAttendee);
   }
 
-  public async deleteAttendeeById(
-    attendeeId: mongoose.Types._ObjectId | string,
-    reqUser: IRequestUser
+  public async removeUserFromEvent(
+    eventId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | string
   ) {
-    EventService._globalService.checkValidObjectId(
-      attendeeId,
-      `Attendee with id ${attendeeId} does not exist`
-    );
-
-    const attendee = await this.getAttendeeById(attendeeId);
-
-    EventService._globalService.hasPermission(
-      attendee.user,
-      reqUser,
-      `Only the attendee or an admin may delete attendee with id ${attendeeId}`
-    );
-
-    await attendee.delete();
+    await Attend.deleteOne({ user: userId, event: eventId });
   }
 }

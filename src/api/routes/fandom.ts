@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import middlewares from "../middlewares";
 import passport from "passport";
 import {

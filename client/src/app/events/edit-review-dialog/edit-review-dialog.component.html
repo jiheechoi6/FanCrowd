@@ -34,14 +34,18 @@
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <div mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="warn" type="button">Cancel</button>
+    <button mat-flat-button mat-dialog-close color="warn" type="button" [disabled]="isUpdating">Cancel</button>
     <button mat-flat-button color="primary" (click)="editReviewForm.ngSubmit.emit()"
-        [disabled]="!editReviewForm.form.valid">
-        <span>
-            Confirm <i class="fas fa-check"></i>
-        </span>
+        [disabled]="!editReviewForm.form.valid || isUpdating">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isUpdating">Confirm <i class="fas fa-check"></i></span>
+            <span class="margin-right-2" *ngIf="isUpdating">Updating</span>
+            <app-spinner *ngIf="isUpdating" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </div>

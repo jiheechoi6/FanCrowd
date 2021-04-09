@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IEventSummary } from '../../models/event-summar';
+import { IEventSummary } from '../../models/event-summary';
 
 @Component({
   selector: 'app-events-summary-card',
