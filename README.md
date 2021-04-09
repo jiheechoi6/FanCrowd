@@ -95,12 +95,10 @@ To read more about each post and the comments on a particular post, click the `R
 ## API Routes
 **IMPORTANT:** ***To make testing easier, we have exported our list of endpoints consisting of 49 different endpoints into a json file and put it in the following directory: `team09/src/api/postman-endpoints` please download that file and import it to Postman.***
 
-**URI**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in  an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signIn, signUp, or currentUser endpoint in the form  of `"JWT {token}"`.
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in  an error message explaining what went wrong. Also all, but 3 endpoints require a header field called `Authorization` whose value is the token returned by the signIn, signUp, or currentUser endpoint in the form  of `"{token}"`. Anywhere in the tables below if you see the format `{id}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.
 
-**Note:** Anywhere in the tables below if you see the format `{id}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputed for the fields.
-
-**Note:** All the examples below are for _user1_.
+**NOTE:** All the examples below are for _user1_, and everytime you run the backend locally it will seed the database resulting in different id's.\
+**URI**: `http://localhost:5000/api/`
 
 ### AUTH Endpoints
 <table>
