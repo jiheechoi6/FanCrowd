@@ -91,13 +91,52 @@ Notice, for each fandom on it's page on the right side, it displays all the even
 
 
 ## API Routes
-**API**: `http://localhost:5000/api/`\
-**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin endpoint of the form `JWT {token}`.
+**URI**: `http://localhost:5000/api/`\
+**Note:** The following table shows the responses returned for status code `200`, any other status code would result in some sort of an error message explaining what went wrong. Also all these endpoints require a header field called `Authorization` whose value is the token returned by the signin or signup endpoint in the form  of `"JWT {token}"`. Anywhere in the tables below if you see the format `{something}`, this means it should be replaced with the correct field and value from the database, for example; `{eventId}` means replace it with an actual event id from the database. The request bodies and responses are just examples, when testing expect to see different results for different values inputted for the fields.
 
 ### AUTH Endpoints
 <table>
 <tr>
-<td> Method </td> <td> Name </td> <td> Route </td> <td> Body </td> <td> Response </td>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `POST`
+  
+</td>
+<td> 
+  
+  `/auth/signup` 
+  
+</td>
+<td>
+  
+```json
+{
+   "fullName": "Professor Mark",
+   "email": "professor_mark@gmail.ca",
+   "username": "prof_mark",
+   "password": "ProfM@rk123"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "user": {
+        "_id": "607054bcf4587500516bf232",
+        "role": "user",
+        "username": "prof_mark",
+        "profileURL": "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png"
+    },
+    "token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDcwNTRiY2Y0NTg3NTAwNTE2YmYyMzIiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoicHJvZl9tYXJrIiwicHJvZmlsZVVSTCI6Imh0dHBzOi8vd3d3LnBuZ2l0ZW0uY29tL3BpbWdzL20vMzAtMzA3NDE2X3Byb2ZpbGUtaWNvbi1wbmctaW1hZ2UtZnJlZS1kb3dubG9hZC1zZWFyY2hwbmctZW1wbG95ZWUucG5nIiwiaWF0IjoxNjE3OTc0NDYwfQ.KPMfaQ4X8TLshCC857vnFs-LV3Ag4DgVDgOuDHA-NQo"
+}
+```
+
+</td>
 </tr>
 <tr>
 <td> 
@@ -115,8 +154,8 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
 ```json
 {
-    "username": string,
-    "password": string
+    "username": "user1",
+    "password": "user1"
 }
 ```
 
@@ -125,12 +164,12 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
 ```json
 {
-    "token": token,
+    "token": "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZmZWEwOGZmOTFhZTAwM2I1N2NlMjYiLCJyb2xlIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJwcm9maWxlVVJMIjoiaHR0cHM6Ly9tb2NhaC5vcmcvdXBsb2Fkcy9wb3N0cy81NDIwNjQxLW1vb24tbmlnaHQtYmxhY2stc3BhY2UtaGFsbG93ZWVuLXN0YXItc3VwZXJtb29uLW5hdHVyZS1zdGVybmUtc3VwZXItbW9vbi1nYWxheHktdW5pdmVyc2Utc2t5LW5pZ2h0aW1lLWNyZWF0aXZlLWNvbW1vbnMtaW1hZ2VzLmpwZyIsImlhdCI6MTYxNzk0ODExMH0.fjCFHyV8-tyKdtc1M96PLYXo7fr4iDPbBMaljyOsqjo",
     "user": {
-        "_id": ObjectId as string,
-        "role": string,
-        "username": string,
-        "profileURL": string
+        "_id": "606fea08ff91ae003b57ce26",
+        "role": "user",
+        "username": "user1",
+        "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
     }
 }
 ```
@@ -152,11 +191,149 @@ Notice, for each fandom on it's page on the right side, it displays all the even
   
  ```json
  {
-   "_id": ObjectId as string,
-   "role": string,
-   "username": string,
-   "profileURL": string
+   "_id": "606fea08ff91ae003b57ce26",
+   "role": "user",
+   "username": "user1",
+   "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg"
  }
+ ```
+</td>
+</tr>
+<tr>
+</tr>
+</table>
+
+
+### USER Endpoints
+<table>
+<tr>
+<td> Method </td> <td> Route </td> <td> Body </td> <td> Response </td>
+</tr>
+<tr>
+<td> 
+  
+  `PATCH`
+
+<td> 
+  
+  `/users/{username}` 
+  
+</td>
+<td>
+  
+```json
+{
+    "bio": "Updated BIO",
+    "city": "Updated City",
+    "country": "Updated Country",
+    "email": "new_email@gmail.com",
+    "fullName": "Updated Name",
+    "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
+}
+```
+
+</td>
+<td>
+  
+```json
+{
+    "role": "user",
+    "bio": "Updated BIO",
+    "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+    "city": "Updated City",
+    "country": "Updated Country",
+    "_id": "607051e3f4587500516bf190",
+    "email": "new_email@gmail.com",
+    "fullName": "Updated Name",
+    "password": "$2a$10$q4Q..NiwGeHDPBkkfeu.zO7wBnOtFrag6Tg5z8e31EeCER9UMuzQ2",
+    "username": "user1",
+    "createdAt": "2021-04-09T13:08:51.261Z"
+}
+```
+
+</td>
+</tr>
+<tr>
+<td> 
+  
+  `DELETE`
+
+<td> 
+  
+  `/users/{username}` 
+  
+</td>
+<td> N/A </td>
+<td> N/A </td>
+</tr>
+<tr>
+<td> 
+  
+  `GET`
+  
+</td>
+<td> 
+  
+  `/users` 
+  
+</td> <td> N/A </td>
+<td> 
+  
+ ```json
+ [
+    {
+        "role": "user",
+        "bio": "Updated BIO",
+        "profileURL": "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png",
+        "city": "Updated City",
+        "country": "Updated Country",
+        "_id": "607051e3f4587500516bf190",
+        "email": "new_email@gmail.com",
+        "fullName": "Updated Name",
+        "password": "$2a$10$q4Q..NiwGeHDPBkkfeu.zO7wBnOtFrag6Tg5z8e31EeCER9UMuzQ2",
+        "username": "user1",
+        "createdAt": "2021-04-09T13:08:51.261Z"
+    },
+    {
+        "role": "user",
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "profileURL": "https://cdn.boatinternational.com/bi_prd/bi/library_images/7wEiKNSS42Kc3TPXmhMg_The-Flying-Dutchman-AdobeStock.jpg",
+        "city": "Toronto",
+        "country": "Canada",
+        "_id": "607051e3f4587500516bf191",
+        "email": "raj@gmail.com",
+        "fullName": "Raj Patel",
+        "password": "$2a$10$v4odtrBLXTOynBeAOMcTL.cmf33r/m109lD.zPKtpW2Gp51FNme32",
+        "username": "user2",
+        "createdAt": "2021-04-09T13:08:51.357Z"
+    },
+    {
+        "role": "admin",
+        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        "profileURL": "https://mocah.org/uploads/posts/5420641-moon-night-black-space-halloween-star-supermoon-nature-sterne-super-moon-galaxy-universe-sky-nightime-creative-commons-images.jpg",
+        "city": "Toronto",
+        "country": "Canada",
+        "_id": "607051e3f4587500516bf192",
+        "email": "jihee@gmail.com",
+        "fullName": "Jihee",
+        "password": "$2a$10$YHF9YBbw3MyodDnBD00cfuU2Mq6i4yFYsOiH3aF6TvVwnVJFO6rlO",
+        "username": "admin",
+        "createdAt": "2021-04-09T13:08:51.448Z"
+    },
+    {
+        "role": "user",
+        "bio": "",
+        "profileURL": "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png",
+        "city": "",
+        "country": "",
+        "_id": "607054bcf4587500516bf232",
+        "fullName": "Professor Mark",
+        "email": "professor_mark@gmail.ca",
+        "username": "prof_mark",
+        "password": "$2a$10$kdIgJPQugSWDWe.uiwpB9uOQWM/w6XH4ZCGTYVBIOm81WzeFdGgii",
+        "createdAt": "2021-04-09T13:21:00.241Z"
+    }
+]
  ```
 </td>
 </tr>
