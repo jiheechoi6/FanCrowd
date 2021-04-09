@@ -34,14 +34,18 @@
             </mat-form-field>
         </div>
     </form>
+
+    <span class="error">{{errorMsg}}</span>
 </section>
 
 <mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close color="basic">Cancel</button>
+    <button mat-flat-button mat-dialog-close color="basic" [disabled]="isCreating">Cancel</button>
     <button mat-flat-button color="primary" (click)="addReviewForm.ngSubmit.emit()"
-        [disabled]="!addReviewForm.form.valid">
-        <span>
-            Add <i class="fas fa-plus"></i>
-        </span>
+        [disabled]="!addReviewForm.form.valid || isCreating">
+        <div class="flex-row-container-space-between">
+            <span *ngIf="!isCreating">Create <i class="fas fa-plus"></i></span>
+            <span class="margin-right-2" *ngIf="isCreating">Creating</span>
+            <app-spinner *ngIf="isCreating" [diameter]="25"></app-spinner>
+        </div>
     </button>
 </mat-dialog-actions>

@@ -34,16 +34,15 @@
                                 [routerLink]="['/fandoms', event.fandom.category.name | lowercase, event.fandom.name | spacesToHyphen | lowercase]">{{event.fandom.name | titlecase}}</a>
                         </p>
                         <div class="flex-row-container-space-between">
-                            <button *ngIf="isAttending" (click)="removeEventFromProfile(event?._id)" mat-flat-button
-                                color="primary">
+                            <button *ngIf="isAttending" (click)="unattendEvent()" mat-flat-button color="primary">
                                 Unattend
                             </button>
-                            <button *ngIf="!isAttending" (click)="addEventToProfile()" mat-flat-button color="primary">
+                            <button *ngIf="!isAttending" (click)="attendEvent()" mat-flat-button color="primary">
                                 Attend
                             </button>
                             <div *ngIf="user?.role === 'admin' || user?.username === event!.postedBy!.username">
-                                <button class="delete-event-button" (click)="openDeleteEventDialog(event?._id)"
-                                    mat-flat-button color="warn">
+                                <button class="delete-event-button" (click)="openDeleteEventDialog()" mat-flat-button
+                                    color="warn">
                                     <span>
                                         Delete <i class="fas fa-trash-alt"></i>
                                     </span>
@@ -63,7 +62,7 @@
                 <app-spinner *ngIf="isLoadingReviews"></app-spinner>
                 <mat-card-content class="rating-summary" *ngIf="reviewSummary">
                     <div class="avg-rating">
-                        <span class="number">{{reviewSummary!.avgRating}}</span>
+                        <span class="number">{{roundPercent(reviewSummary!.avgRating)}}</span>
                         <app-review-stars [outOf]="5" [rating]="reviewSummary!.avgRating"></app-review-stars>
                         <span>Average Rating</span>
                         <span class="total-reviews"><i class="fas fa-user"></i> {{reviews.length}} total</span>
@@ -99,7 +98,7 @@
 
             <app-spinner *ngIf="isLoadingReviews"></app-spinner>
 
-            <mat-card class="review-card rounded-corners box-shadow" *ngFor="let review of reviews">
+            <mat-card class="review-card rounded-corners box-shadow" *ngFor="let review of reviews; let i = index">
                 <mat-card-content>
                     <div class="username-container">
                         <div class="profile-img-wrapper">
@@ -117,13 +116,13 @@
                     <div class="flex-row-container-right">
                         <button mat-flat-button color="warn" class="delete-button"
                             *ngIf="user?.role === 'admin' || user?.username === review.postedBy.username"
-                            (click)="openDeleteReviewDialog(review._id)">
+                            (click)="openDeleteReviewDialog(review._id!, i)">
                             <span>
                                 Delete <i class="fas fa-trash-alt"></i>
                             </span>
                         </button>
                         <button *ngIf="user?.username === review.postedBy.username" mat-flat-button color="primary"
-                            (click)="openEditDialog(review)">
+                            (click)="openEditReviewDialog(review, i)">
                             <span>
                                 Edit <i class="fas fa-edit"></i>
                             </span>

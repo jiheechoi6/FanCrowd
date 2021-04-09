@@ -56,7 +56,7 @@ export interface IAttendEventFilter {
 
 export interface INewAttendEventDTO {
   user: mongoose.Types._ObjectId;
-  event: mongoose.Types._ObjectId;
+  event: mongoose.Types._ObjectId | string;
 }
 
 export interface IFandomMember {

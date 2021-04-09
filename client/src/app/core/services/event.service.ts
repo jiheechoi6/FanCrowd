@@ -49,17 +49,13 @@ export class EventService {
     return this._http.get<boolean>(`/api/events/${eventId}/is-attending`);
   }
 
-  createAttendee(eventId: string, newAttendee: Attendee): Observable<Attendee> {
+  createAttendee(eventId: string = '') {
     // Create an attendee
-    return this._http.post<Attendee>(
-      `/api/events/attend/${eventId}`,
-      newAttendee
-    );
+    return this._http.post<Attendee>(`/api/events/${eventId}/attends`, {});
   }
 
-  deleteAttendee(attendeeId: string): Observable<Object> {
-    // Delete user as an attendee for an event
-    return this._http.delete(`/api/events/attend/${attendeeId}`);
+  deleteAttendee(eventId: string) {
+    return this._http.delete(`/api/events/${eventId}/unattend`);
   }
 
   deleteAttendees(eventId: string): Observable<Object> {

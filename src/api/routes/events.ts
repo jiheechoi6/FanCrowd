@@ -175,8 +175,13 @@ export default (app: Router) => {
         };
 
         const eventService = new EventService();
-        const review = await eventService.createReview(eventId, newReview);
+        const review = await eventService.createReview(
+          eventId,
+          newReview,
+          req.user!
+        );
         const reviewSummary = await eventService.getReviewSummary(review.event);
+        Reflect.deleteProperty(review, "event");
         res.status(200).send({ review, reviewSummary });
       } catch (err) {
         return next(err);
@@ -274,6 +279,7 @@ export default (app: Router) => {
         const updatedSummary = await eventService.getReviewSummary(
           updatedReview.event
         );
+        Reflect.deleteProperty(updatedReview, "event");
         res.status(200).send({ updatedReview, updatedSummary });
       } catch (err) {
         return next(err);
@@ -304,37 +310,29 @@ export default (app: Router) => {
   });
 
   /**
-   * path: /api/events/attend/:eventId
+   * path: /api/events/:eventId/attends
    * method: POST
-   * body:
-   * {
-   *  event: string,
-   *  user: string
-   * }
+   * body: None
    * params:
    * {
    *  eventId: string
    * }
-   * description: user attends an event
+   * description: adds a new attendee to event with id eventId
    */
   route.post(
-    "/attend/:eventId",
+    "/:eventId/attends",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
-        const eventId = req.params.eventId;
         const newAttendee: INewAttendEventDTO = {
-          ...req.body,
+          event: req.params.eventId,
           user: req.user!._id!
         };
 
         const eventService = new EventService();
-        const attendee = await eventService.createAttendee(
-          eventId,
-          newAttendee
-        );
+        await eventService.createAttendee(newAttendee);
 
-        res.status(200).send(attendee);
+        res.status(200).send();
       } catch (err) {
         return next(err);
       }
@@ -342,23 +340,23 @@ export default (app: Router) => {
   );
 
   /**
-   * path: /api/events/attend/:attendId
+   * path: /api/events/:eventId/unattend
    * method: DELETE
    * body: None
    * params:
    * {
-   *  attendId: string
+   *  eventId: string
    * }
    * description: deletes an attendee from an event
    */
   route.delete(
-    "/attend/:attendId",
+    "/:eventId/unattend",
     passport.authenticate("jwt", { session: false, failWithError: true }),
     async (req, res, next) => {
       try {
-        const attendeeId = req.params.attendId;
+        const eventId = req.params.eventId;
         const eventService = new EventService();
-        await eventService.deleteAttendeeById(attendeeId, req.user!);
+        await eventService.removeUserFromEvent(eventId, req.user!._id!);
         res.status(200).send();
       } catch (err) {
         return next(err);

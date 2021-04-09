@@ -11,7 +11,8 @@ import {
   IEventSummary,
   IEventFilter,
   IPopulatedEventDTO,
-  IEventReviewSummary
+  IEventReviewSummary,
+  IEventReviewDTO
 } from "../interfaces/IEvent";
 import ErrorService from "./error";
 import GlobalService from "./global";
@@ -272,9 +273,8 @@ export default class EventService {
     }
 
     const updatedEventDoc = await eventDoc.save();
-    const event = updatedEventDoc.toObject();
-    Reflect.deleteProperty(event, "postedBy");
 
+    const event = await this.getEventById(updatedEventDoc._id);
     return event;
   }
 
@@ -325,12 +325,14 @@ export default class EventService {
               }
             },
             totalReviews: { $sum: "$count" },
-            totalRating: { $sum: "$_id.rating" }
+            totalRating: { $sum: { $multiply: ["$_id.rating", "$count"] } }
           }
         },
         {
           $project: {
             avgRating: { $divide: ["$totalRating", "$totalReviews"] },
+            totalRating: "$totalRating",
+            totalReviews: "$totalReviews",
             _id: 0,
             numOfEachRating: {
               $arrayToObject: {
@@ -396,7 +398,8 @@ export default class EventService {
 
   public async createReview(
     eventId: mongoose.Types._ObjectId | string,
-    newReview: INewEventReviewInputDTO
+    newReview: INewEventReviewInputDTO,
+    reqUser: IRequestUser
   ) {
     EventService._globalService.checkValidObjectId(
       eventId,
@@ -405,9 +408,13 @@ export default class EventService {
 
     this.getEventDocById(eventId);
     const newReviewDoc = await EventReview.create(newReview);
-    const review = newReviewDoc.toObject();
-    Reflect.deleteProperty(review, "postedBy");
-
+    const review = {
+      ...newReviewDoc.toObject(),
+      postedBy: {
+        profileURL: reqUser.profileURL,
+        username: reqUser.username
+      }
+    };
     return review;
   }
 
@@ -460,9 +467,13 @@ export default class EventService {
     }
 
     const updatedReviewDoc = await reviewDoc.save();
-    const review = updatedReviewDoc.toObject();
-    Reflect.deleteProperty(review, "postedBy");
-
+    const review = {
+      ...updatedReviewDoc.toObject(),
+      postedBy: {
+        profileURL: reqUser.profileURL,
+        username: reqUser.username
+      }
+    };
     return review;
   }
 
@@ -470,6 +481,10 @@ export default class EventService {
     eventId: mongoose.Types._ObjectId | string,
     userId: mongoose.Types._ObjectId | string
   ) {
+    EventService._globalService.checkValidObjectId(
+      eventId,
+      `Event with id ${eventId} does not exist`
+    );
     return await Attend.exists({ event: eventId, user: userId });
   }
 
@@ -491,40 +506,20 @@ export default class EventService {
     return attendee;
   }
 
-  public async createAttendee(
-    eventId: mongoose.Types._ObjectId | string,
-    newAttendee: INewAttendEventDTO
-  ) {
+  public async createAttendee(newAttendee: INewAttendEventDTO) {
     EventService._globalService.checkValidObjectId(
-      eventId,
-      `Event with id ${eventId} does not exist`
+      newAttendee.event,
+      `Event with id ${newAttendee.event} does not exist`
     );
 
-    this.getEventDocById(eventId);
-    const newAttendeeDoc = await Attend.create(newAttendee);
-    const attendee = newAttendeeDoc.toObject();
-    Reflect.deleteProperty(attendee, "user");
-
-    return attendee;
+    this.getEventDocById(newAttendee.event);
+    await Attend.create(newAttendee);
   }
 
-  public async deleteAttendeeById(
-    attendeeId: mongoose.Types._ObjectId | string,
-    reqUser: IRequestUser
+  public async removeUserFromEvent(
+    eventId: mongoose.Types._ObjectId | string,
+    userId: mongoose.Types._ObjectId | string
   ) {
-    EventService._globalService.checkValidObjectId(
-      attendeeId,
-      `Attendee with id ${attendeeId} does not exist`
-    );
-
-    const attendee = await this.getAttendeeById(attendeeId);
-
-    EventService._globalService.hasPermission(
-      attendee.user,
-      reqUser,
-      `Only the attendee or an admin may delete attendee with id ${attendeeId}`
-    );
-
-    await attendee.delete();
+    await Attend.deleteOne({ user: userId, event: eventId });
   }
 }
