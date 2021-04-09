@@ -49,7 +49,6 @@ export default async ({ app }: { app: express.Application }) => {
     } else if (err.name === "NotFoundError") {
       return res.status(404).send({ message: err.message }).end();
     }
-    console.log(err);
     res.status(500).send({ message: "Internal Server Error" }).end();
   });
 };
