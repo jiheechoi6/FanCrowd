@@ -21,6 +21,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 **Note:** You will need `Docker` and `MongoDB` installed correctly to run the backend.
 Clone the repository to your local machine, then follow the steps to run the backend and frontend:
 
+**Note:** Please checkout dev branch as that has the Dockerfiles. The main branch is the one that is deployed (without Docker), so to
+run locally, you will have to checkout dev branch.
+
 ### Backend
 **1.)** Open `Docker Desktop`, and then open a new terminal in the `team09/src` directory as administrator\
 **2.)** Run `docker-compose build`, it will say `Successfully built ...` on completion\
